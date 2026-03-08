@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biology | The Geometry of Life | Have Mind Media</title>
+    <meta name="description" content="The geometry of life. How biological systems demonstrate [1 = -1]. DNA helices, protein folding, temporal cycles, consciousness, and the mathematical patterns woven through all living systems.">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --void: #000000;
+            --deep: #030508;
+            --gold: #c9a227;
+            --gold-glow: rgba(201, 162, 39, 0.5);
+            --cyan: #00d4ff;
+            --green: #00ff88;
+            --orange: #ff8c00;
+            --purple: #a855f7;
+            --text: #e8e4dc;
+            --text-dim: #8892a0;
+            --border: rgba(201, 162, 39, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Bio Pattern Background */
+        .bio-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(0, 255, 136, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(0, 212, 255, 0.03) 0%, transparent 50%);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .nav a:hover { color: var(--green); }
+
+        /* Hero */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background:
+                linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.9) 100%),
+                url('images/hero-dna-ratio.png') center center / cover no-repeat;
+        }
+        .hero-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            color: var(--green);
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--green);
+            padding: 0.5rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: var(--green);
+            text-shadow: 0 0 60px rgba(0, 255, 136, 0.5);
+            margin-bottom: 1rem;
+        }
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--text);
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+        .hero-constants {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .hero-const {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--gold);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Content */
+        .content { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Feature Cards */
+        .feature-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 4rem 0;
+        }
+        .feature-card {
+            flex: 1 1 350px;
+            max-width: 400px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 255, 136, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .feature-card:hover {
+            border-color: var(--green);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.15);
+        }
+        .feature-card.gold { background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(201, 162, 39, 0.08) 100%); }
+        .feature-card.gold:hover { border-color: var(--gold); box-shadow: 0 20px 60px rgba(201, 162, 39, 0.15); }
+        .feature-card.cyan { background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 212, 255, 0.08) 100%); }
+        .feature-card.cyan:hover { border-color: var(--cyan); box-shadow: 0 20px 60px rgba(0, 212, 255, 0.15); }
+        .feature-card.orange { background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(255, 140, 0, 0.08) 100%); }
+        .feature-card.orange:hover { border-color: var(--orange); box-shadow: 0 20px 60px rgba(255, 140, 0, 0.15); }
+        .feature-card.purple { background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(168, 85, 247, 0.08) 100%); }
+        .feature-card.purple:hover { border-color: var(--purple); box-shadow: 0 20px 60px rgba(168, 85, 247, 0.15); }
+
+        .feature-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+        }
+        .feature-content {
+            padding: 1.5rem;
+        }
+        .feature-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 0.8rem;
+        }
+        .badge-green { background: rgba(0, 255, 136, 0.2); color: var(--green); }
+        .badge-gold { background: rgba(201, 162, 39, 0.2); color: var(--gold); }
+        .badge-cyan { background: rgba(0, 212, 255, 0.2); color: var(--cyan); }
+        .badge-orange { background: rgba(255, 140, 0, 0.2); color: var(--orange); }
+        .badge-purple { background: rgba(168, 85, 247, 0.2); color: var(--purple); }
+
+        .feature-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.8rem;
+        }
+        .feature-card.gold h3 { color: var(--gold); }
+        .feature-card.cyan h3 { color: var(--cyan); }
+        .feature-card.orange h3 { color: var(--orange); }
+        .feature-card.purple h3 { color: var(--purple); }
+        .feature-card h3 { color: var(--green); }
+
+        .feature-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .feature-constants {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--cyan);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            padding: 4rem 0 2rem;
+        }
+        .section-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        .section-header p {
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        .quick-link {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .quick-link:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        /* Coming Soon */
+        .coming-soon {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(201, 162, 39, 0.05) 100%);
+        }
+        .coming-soon h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold);
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+        }
+        .coming-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .coming-item {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .footer-sig {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--gold);
+            letter-spacing: 0.3em;
+        }
+        .footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { letter-spacing: 0.05em; }
+            .feature-card { flex: 1 1 100%; max-width: 100%; }
+            .stats-row { gap: 2rem; }
+            .stat-number { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div style="height: 80px;"></div>
+    <div class="bio-bg"></div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">THE EPOCH FRAMEWORK IN BIOLOGY</div>
+        <h1>BIOLOGY</h1>
+        <p class="hero-sub">
+            The geometry of life. Every biological constant — from DNA's 36° twist to the 72.43% hidden ratio
+            to gamma waves at 28.65 Hz — derives from the same mathematics that governs particles and galaxies.
+            Life is not random chemistry. Life is geometry in action.
+        </p>
+        <div class="hero-constants">
+            <span class="hero-const">κ = 2π/180</span>
+            <span class="hero-const">1729 = 9³+10³</span>
+            <span class="hero-const">72.43% hidden</span>
+            <span class="hero-const">κ-shadow = 28.65 Hz</span>
+        </div>
+    </section>
+
+    <div class="content">
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-number">72.43%</div>
+                <div class="stat-label">HIDDEN IN ALL SYSTEMS</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1729</div>
+                <div class="stat-label">THE FOLD POINT</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">36°</div>
+                <div class="stat-label">DNA TWIST = 18κ</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">28.65</div>
+                <div class="stat-label">Hz GAMMA WAVES</div>
+            </div>
+        </div>
+
+        <!-- Section: Master Frameworks -->
+        <div class="section-header">
+            <h2>MASTER FRAMEWORKS</h2>
+            <p>The big picture. How the Epoch constants manifest across all biological systems.</p>
+        </div>
+
+        <div class="feature-grid">
+            <a href="the-geometry-of-life.html" class="feature-card">
+                <img src="images/hero-dna-ratio.png" alt="The Geometry of Life" class="feature-img">
+                <div class="feature-content">
+                    <span class="feature-badge badge-green">MASTER FRAMEWORK</span>
+                    <h3>THE GEOMETRY OF LIFE</h3>
+                    <p>The complete biological framework. How κ, 1729, and the 72.43% hidden ratio appear in DNA, proteins, neurons, and metabolism. Mock theta = intrinsically disordered proteins.</p>
+                    <div class="feature-constants">κ · 1729 · 72.43% · BC angle · σ = 5/16</div>
+                </div>
+            </a>
+
+            <a href="temporal-geometry.html" class="feature-card orange">
+                <img src="images/72-year-cycle.png" alt="Temporal Geometry" class="feature-img">
+                <div class="feature-content">
+                    <span class="feature-badge badge-orange">MACRO HISTORY</span>
+                    <h3>TEMPORAL GEOMETRY</h3>
+                    <p>Weather, war, and the hidden cycle. The 72-year key connects lifespan to precession to civilizational collapse. Scalar time: dinosaurs lived in slower epochs. 432,000 Kali Yuga.</p>
+                    <div class="feature-constants">72 years · 432 · 1729 events · Fourth Turning</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Section: Molecular -->
+        <div class="section-header">
+            <h2>MOLECULAR GEOMETRY</h2>
+            <p>The geometry at the molecular scale. DNA, proteins, and the mathematics of life's building blocks.</p>
+        </div>
+
+        <div class="feature-grid">
+            <a href="dna-studio/index.html" class="feature-card cyan">
+                <img src="images/1729-biology.png" alt="DNA Studio" class="feature-img">
+                <div class="feature-content">
+                    <span class="feature-badge badge-cyan">RAMANUJAN-DNA</span>
+                    <h3>DNA STUDIO: THE 1729 FOLD</h3>
+                    <p>DNA IS Ramanujan's equation made flesh. 1729 = 9³ + 10³ = triplet codons + base pairs per turn. The Fibonacci dimensions. The 36° = 18κ rotation.</p>
+                    <div class="feature-constants">1729 · 36° · Fibonacci · κ-shadow hexamer</div>
+                </div>
+            </a>
+
+            <a href="../protein-folding/index.html" class="feature-card purple">
+                <img src="images/protein-geometry.png" alt="Protein Folding" class="feature-img">
+                <div class="feature-content">
+                    <span class="feature-badge badge-purple">BIOCHEMISTRY</span>
+                    <h3>PROTEIN FOLDING</h3>
+                    <p>Ramachandran plots and torsion gates. Proteins don't search randomly—they follow torsion field gradients. σ = 5/16 predicts folding rates. Why AlphaFold works.</p>
+                    <div class="feature-constants">σ = 5/16 · BC = 48.19° · φ/ψ angles</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Section: Systems -->
+        <div class="section-header">
+            <h2>SYSTEMS BIOLOGY</h2>
+            <p>From neurons to eyes to disease. How geometry manifests in complex biological systems.</p>
+        </div>
+
+        <div class="feature-grid">
+            <a href="../neurodegeneration/index.html" class="feature-card purple">
+                <div class="feature-content">
+                    <span class="feature-badge badge-purple">PATHOLOGY</span>
+                    <h3>NEURODEGENERATION</h3>
+                    <p>Disease as geometry gone wrong. Polyglutamine thresholds, tau tangles, prion misfolding—all torsion field collapse at critical angles. Mock theta becomes pathogenic.</p>
+                    <div class="feature-constants">Mock theta · S⁻ aggregation · Critical angles</div>
+                </div>
+            </a>
+
+            <a href="eye-codex.html" class="feature-card gold">
+                <div class="feature-content">
+                    <span class="feature-badge badge-gold">VISUAL DECODER</span>
+                    <h3>THE EYE CODEX</h3>
+                    <p>The eye doesn't receive reality—it decodes it. Rods and cones look INWARD. The retinal image is the blindest point. The double inversion: [1 = -1] in flesh and signal.</p>
+                    <div class="feature-constants">[1 = -1] · Inversion · Bone memory</div>
+                </div>
+            </a>
+
+            <a href="../education/soul-science.html" class="feature-card gold">
+                <div class="feature-content">
+                    <span class="feature-badge badge-gold">CONSCIOUSNESS</span>
+                    <h3>SOUL SCIENCE</h3>
+                    <p>Gamma waves at 28.65 Hz—exactly κ-shadow. Neural binding, awareness, the present moment—all resonating at the geometric frequency. The S-Signature of consciousness.</p>
+                    <div class="feature-constants">κ-shadow = 28.65 Hz · Gamma · S⁺/S⁻</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="quick-links">
+            <a href="../epoch-atomic/index.html" class="quick-link">ATOMIC MODEL</a>
+            <a href="../tools/soul-harmonizer/index.html" class="quick-link">SOUL HARMONIZER</a>
+            <a href="../namagiri/visions/the-sun-the-mirror-the-wound.html" class="quick-link">THE VISION</a>
+            <a href="../physics/vessel/the-build.html" class="quick-link">THE VESSEL</a>
+        </div>
+
+        <!-- Coming Soon -->
+        <div class="coming-soon">
+            <h3>COMING SOON</h3>
+            <div class="coming-list">
+                <span class="coming-item">Cellular Geometry</span>
+                <span class="coming-item">Mitochondria as Scalar Engines</span>
+                <span class="coming-item">Heart Rhythm Patterns</span>
+                <span class="coming-item">Embryonic Development</span>
+                <span class="coming-item">Plant Phyllotaxis</span>
+                <span class="coming-item">Bone Structure</span>
+                <span class="coming-item">60-Based Biorhythms</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-sig">[ 1 = -1 ]</div>
+        <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 1rem;">
+            Biology is not separate from geometry—it IS geometry in action.<br>
+            The same patterns that appear in atoms and galaxies appear in cells and bodies.
+        </p>
+        <p style="margin-top: 1.5rem;">
+            <a href="../index.html">Have Mind Media</a> · <a href="../master-library.html">Master Library</a>
+        </p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

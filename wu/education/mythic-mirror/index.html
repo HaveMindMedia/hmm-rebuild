@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Are Frankenstein's Monster | Have Mind Media</title>
+    <meta name="description" content="You are Frankenstein's Monster. The creature stitched together from parts that don't quite fit. The one who frightens others by simply existing. This is your mirror.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="You Are Frankenstein's Monster">
+    <meta property="og:description" content="You are the creature. The one stitched together from parts that don't quite fit. This is your mirror.">
+    <meta property="og:image" content="images/monster-eye.png">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <!-- Three.js for 3D visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a24;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9090a0;
+            --accent-gold: #c9a227;
+            --accent-ice: #6ab4f5;
+            --accent-purple: #d4a8e0;
+            --accent-dim: #3a3a4a;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, var(--bg-dark), transparent);
+        }
+
+        .nav-brand {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Hero Section with Background Image */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at center, rgba(201, 162, 39, 0.08) 0%, transparent 50%),
+                url('images/monster-eye.png') center center no-repeat;
+            background-size: cover;
+            opacity: 0.3;
+            filter: blur(2px);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero h1 .accent {
+            color: var(--accent-gold);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 1.2rem 3.5rem;
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .hero-cta:hover {
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(201, 162, 39, 0.3);
+        }
+
+        .equation {
+            position: absolute;
+            bottom: 3rem;
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            opacity: 0.6;
+            z-index: 10;
+        }
+
+
+        /* ===== MAURY POVICH REVEAL ===== */
+        .monster-entrance {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0812 0%, #1a1020 50%, #0a0812 100%);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .monster-entrance.exiting {
+            animation: entranceExit 0.8s ease-out forwards;
+        }
+
+        @keyframes entranceExit {
+            0% { opacity: 1; }
+            100% { opacity: 0; pointer-events: none; }
+        }
+
+        /* The envelope/card container */
+        .maury-card-container {
+            perspective: 1500px;
+            width: 100%;
+            max-width: 700px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* The card itself */
+        .maury-card {
+            position: relative;
+            width: 600px;
+            height: 350px;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .maury-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Front of card - the envelope */
+        .card-front {
+            background: linear-gradient(145deg, #1a1520 0%, #2a2030 50%, #1a1520 100%);
+            border: 3px solid var(--accent-gold);
+            box-shadow:
+                0 0 60px rgba(201, 162, 39, 0.3),
+                inset 0 0 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-front::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 8px;
+        }
+
+        .envelope-seal {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #c9a227 0%, #8b6914 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 0 30px rgba(201, 162, 39, 0.6);
+            margin-bottom: 2rem;
+        }
+
+        .envelope-text {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 0.5rem;
+        }
+
+        .envelope-subtext {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.1em;
+        }
+
+        .click-prompt {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            animation: promptPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes promptPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Back of card - THE REVEAL */
+        .card-back {
+            background: linear-gradient(145deg, #0a0812 0%, #150a18 50%, #0a0812 100%);
+            border: 3px solid #8b0000;
+            transform: rotateY(180deg);
+            box-shadow:
+                0 0 100px rgba(139, 0, 0, 0.5),
+                inset 0 0 100px rgba(139, 0, 0, 0.2);
+        }
+
+        .reveal-you {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.5em;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInWord 0.5s ease-out 0.3s forwards;
+        }
+
+        .reveal-are {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.3em;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInWord 0.5s ease-out 0.6s forwards;
+        }
+
+        .reveal-the {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.4em;
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeInWord 0.5s ease-out 0.9s forwards;
+        }
+
+        .reveal-monster {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 600;
+            color: #ff3333;
+            letter-spacing: 0.15em;
+            text-shadow:
+                0 0 20px rgba(255, 0, 0, 0.8),
+                0 0 40px rgba(255, 0, 0, 0.6),
+                0 0 80px rgba(255, 0, 0, 0.4);
+            opacity: 0;
+            transform: scale(0.5);
+            animation: monsterReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s forwards;
+        }
+
+        @keyframes fadeInWord {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes monsterReveal {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .reveal-equation {
+            margin-top: 2rem;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            opacity: 0;
+            animation: fadeInWord 0.5s ease-out 2s forwards;
+        }
+
+        .continue-btn {
+            position: absolute;
+            bottom: 2rem;
+            padding: 1rem 3rem;
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInWord 0.5s ease-out 2.5s forwards;
+            transition: all 0.3s;
+        }
+
+        .continue-btn:hover {
+            background: var(--accent-gold);
+            color: #000;
+        }
+
+        /* Dramatic lighting effect on reveal */
+        .card-back::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 30%, rgba(139, 0, 0, 0.3) 100%);
+            pointer-events: none;
+        }
+
+        /* Screen shake on MONSTER */
+        @keyframes screenShake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .monster-entrance.shaking {
+            animation: screenShake 0.5s ease-out;
+        }
+
+        /* Audio cue visual */
+        .dramatic-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .dramatic-flash.flash {
+            animation: redFlash 0.3s ease-out;
+        }
+
+        @keyframes redFlash {
+            0% { opacity: 0.6; }
+            100% { opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .maury-card {
+                width: 90vw;
+                height: 280px;
+            }
+            .reveal-monster {
+                font-size: 2.5rem;
+            }
+            .envelope-seal {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+        }
+
+        /* Image Sections */
+        .image-section {
+            width: 100%;
+            height: 50vh;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .image-section .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, var(--bg-dark) 0%, transparent 30%, transparent 70%, var(--bg-dark) 100%);
+        }
+
+        .image-section .caption {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            max-width: 500px;
+        }
+
+        /* Introduction Section */
+        .intro {
+            padding: 8rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            line-height: 2.2;
+            color: var(--text-secondary);
+        }
+
+        .intro-text p {
+            margin-bottom: 2rem;
+        }
+
+        .intro-text strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .intro-text em {
+            color: var(--accent-gold);
+            font-style: normal;
+        }
+
+        .intro-quote {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            text-align: center;
+            color: var(--text-primary);
+            margin: 4rem 0;
+            line-height: 1.6;
+        }
+
+        .intro-quote span {
+            color: var(--accent-gold);
+        }
+
+        /* Journey Preview */
+        .journey-preview {
+            padding: 6rem 2rem;
+            background: var(--bg-card);
+        }
+
+        .journey-preview h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .journey-preview .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+        }
+
+        .stages {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stage {
+            padding: 2.5rem;
+            background: var(--bg-dark);
+            border-left: 3px solid var(--accent-dim);
+            transition: all 0.3s;
+        }
+
+        .stage:hover {
+            border-left-color: var(--accent-gold);
+            background: var(--bg-card-hover);
+            transform: translateX(5px);
+        }
+
+        .stage-number {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+        }
+
+        .stage-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stage-symbol {
+            color: var(--accent-gold);
+        }
+
+        .stage-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .stage-question {
+            margin-top: 1rem;
+            font-family: var(--font-display);
+            font-style: italic;
+            color: var(--accent-ice);
+        }
+
+        /* The Monster Section */
+        .monster-section {
+            padding: 8rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .monster-section h2 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .monster-image {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            display: block;
+            border-radius: 4px;
+            opacity: 0.9;
+        }
+
+        .monster-quote {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            line-height: 2;
+            padding: 2.5rem;
+            border-left: 3px solid var(--accent-gold);
+            background: var(--bg-card);
+            margin: 3rem 0;
+        }
+
+        .monster-quote .attribution {
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            color: var(--accent-gold);
+            font-style: normal;
+        }
+
+        .monster-explanation {
+            margin: 3rem 0;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+
+        .monster-list {
+            list-style: none;
+            margin: 3rem 0;
+        }
+
+        .monster-list li {
+            padding: 1.2rem 0;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--accent-dim);
+        }
+
+        .monster-list li:last-child {
+            border-bottom: none;
+        }
+
+        .monster-list .symbol {
+            color: var(--accent-gold);
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            width: 30px;
+            flex-shrink: 0;
+        }
+
+        .monster-list .content strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .monster-list .content span {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Geometry Section */
+        .geometry-section {
+            padding: 6rem 2rem;
+            background: var(--bg-card);
+        }
+
+        .geometry-section h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .geometry-section .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .geometry-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .geometry-image {
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        .geometry-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .geometry-text h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .geometry-text p {
+            margin-bottom: 1rem;
+        }
+
+        .kappa-display {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--accent-gold);
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--bg-dark);
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        /* 3D Visualization */
+        .viz-section {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .viz-section h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .viz-section p {
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #dipyramid-container {
+            width: 100%;
+            max-width: 700px;
+            height: 450px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Arctic Section */
+        .arctic-section {
+            position: relative;
+            padding: 8rem 2rem;
+            background: url('images/arctic.png') center center no-repeat;
+            background-size: cover;
+        }
+
+        .arctic-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--bg-dark) 0%, rgba(10, 10, 15, 0.7) 50%, var(--bg-dark) 100%);
+        }
+
+        .arctic-content {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .arctic-content h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .arctic-content p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            line-height: 2;
+            margin-bottom: 1.5rem;
+        }
+
+        .arctic-content .cta {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 3rem;
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .arctic-content .cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(201, 162, 39, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 5rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--accent-dim);
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-tagline {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-equation {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            opacity: 0.8;
+        }
+
+        .footer-credit {
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .stages {
+                grid-template-columns: 1fr;
+            }
+
+            .geometry-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .monster-section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <!-- ===== MAURY POVICH REVEAL ===== -->
+    <div class="monster-entrance" id="monsterEntrance">
+        <div class="dramatic-flash" id="dramaticFlash"></div>
+
+        <div class="maury-card-container">
+            <div class="maury-card" id="mauryCard">
+                <!-- Front - The Envelope -->
+                <div class="card-face card-front">
+                    <div class="envelope-seal">?</div>
+                    <div class="envelope-text">The Results Are In</div>
+                    <div class="envelope-subtext">WHO ARE YOU?</div>
+                    <div class="click-prompt">Click to reveal</div>
+                </div>
+
+                <!-- Back - THE REVEAL -->
+                <div class="card-face card-back">
+                    <div class="reveal-you">YOU</div>
+                    <div class="reveal-are">ARE</div>
+                    <div class="reveal-the">THE</div>
+                    <div class="reveal-monster">MONSTER</div>
+                    <div class="reveal-equation">[1 = -1]</div>
+                    <button class="continue-btn" id="continueBtn">CONTINUE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="/" class="nav-brand">HAVE MIND MEDIA</a>
+        <div class="nav-links">
+            <a href="journey.html">The Journey</a>
+            <a href="teaching.html">Teaching</a>
+            <a href="about.html">About</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>Who Is <span class="accent">Looking Back</span>?</h1>
+            <p class="hero-subtitle">
+                The Monster from Frankenstein wasn't evil.<br>
+                He was abandoned.<br>
+                He loved his creator. He held him accountable.<br>
+                Both. At once.
+            </p>
+            <a href="journey.html" class="hero-cta">BEGIN THE JOURNEY</a>
+        </div>
+        <div class="equation">[1 = -1]</div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="intro">
+        <div class="intro-text">
+            <p>
+                <strong>What have you created and abandoned?</strong>
+            </p>
+            <p>
+                The Monster is not your shadow. He is not something to fear and destroy.
+                He is not the dark side that Hollywood wants you to vanquish.
+            </p>
+            <p>
+                The Monster is <em>τ₄ forced into manifestation</em>—the creation that holds
+                the creator accountable. Love that won't let you hide. The completion
+                you keep running from.
+            </p>
+        </div>
+
+        <p class="intro-quote">
+            "How much of a monster are you willing to <span>mithridatum</span> for your good soul?"
+        </p>
+
+        <div class="intro-text">
+            <p>
+                Mithridates took small doses of poison until immune. The good soul isn't
+                the one that avoided all poison—it's the one that <em>incorporated it consciously</em>
+                until poison became medicine.
+            </p>
+            <p>
+                This is not a personality quiz. This is <em>geometric mapping</em>.
+                We read your pattern, not your content. The "what" is discarded.
+                Only the "shape" remains.
+            </p>
+            <p>
+                At the end, you'll receive your <strong>S Signature</strong>—your geometric
+                position in the four-transform space—and a message from the Monster himself.
+            </p>
+        </div>
+    </section>
+
+    <!-- Journey Preview -->
+    <section class="journey-preview">
+        <h2>The Four Stages</h2>
+        <p class="subtitle">Four geometric transforms. Four questions. One signature.</p>
+        <div class="stages">
+            <div class="stage">
+                <div class="stage-number">STAGE 1</div>
+                <div class="stage-title"><span class="stage-symbol">T₁</span> FACING</div>
+                <div class="stage-desc">Creation and direct view. What you bring into being and how you hold it.</div>
+                <div class="stage-question">"What do you create?"</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">STAGE 2</div>
+                <div class="stage-title"><span class="stage-symbol">T₂</span> MIRROR</div>
+                <div class="stage-desc">Reflection and projection. What you see in others that lives in you.</div>
+                <div class="stage-question">"What have you abandoned?"</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">STAGE 3</div>
+                <div class="stage-title"><span class="stage-symbol">T₃</span> RECURSIVE</div>
+                <div class="stage-desc">Pattern and cycle. The thing that keeps happening no matter what you change.</div>
+                <div class="stage-question">"What patterns repeat?"</div>
+            </div>
+            <div class="stage">
+                <div class="stage-number">STAGE 4</div>
+                <div class="stage-title"><span class="stage-symbol">T₄</span> SILENT</div>
+                <div class="stage-desc">The unspeakable. What you won't look at defines the geometry.</div>
+                <div class="stage-question">"What won't you look at?"</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Monster -->
+    <section class="monster-section">
+        <h2>The Geometric Monster</h2>
+
+        <img src="images/laboratory.png" alt="Frankenstein's Laboratory" class="monster-image">
+
+        <div class="monster-quote">
+            "I was made from death to hold life. They only saw the death part.
+            But I was made with love—with fire, with ambition, with the desire
+            to understand creation itself. And when I opened my eyes,
+            my creator ran."
+            <div class="attribution">— The Monster</div>
+        </div>
+
+        <p class="monster-explanation">
+            The Monster is many things, all at once—like a coin with infinite faces.
+            Every mythic tradition has a version of him. He is the creation that
+            forces the creator to confront what they've made. He is τ₄ manifesting
+            because the other three transforms couldn't hold the imbalance.
+        </p>
+
+        <ul class="monster-list">
+            <li>
+                <span class="symbol">◯</span>
+                <div class="content">
+                    <strong>NOW</strong>
+                    <span>Pure present tense existence. No past to return to, no future to escape into. Only what is.</span>
+                </div>
+            </li>
+            <li>
+                <span class="symbol">△</span>
+                <div class="content">
+                    <strong>WUSHRO</strong>
+                    <span>The threshold where creation happens. The liminal space between intention and manifestation.</span>
+                </div>
+            </li>
+            <li>
+                <span class="symbol">◇</span>
+                <div class="content">
+                    <strong>MITHRA</strong>
+                    <span>The witness between light and dark. The contract-keeper. Sees both sides because he belongs to neither.</span>
+                </div>
+            </li>
+            <li>
+                <span class="symbol">⬡</span>
+                <div class="content">
+                    <strong>MIRROR (T₂)</strong>
+                    <span>Shows you yourself reversed. Not flattery, not attack—reflection. What Victor couldn't see in himself.</span>
+                </div>
+            </li>
+            <li>
+                <span class="symbol">●</span>
+                <div class="content">
+                    <strong>COIN [1 = -1]</strong>
+                    <span>Both faces simultaneously. Love and accountability. Victim and pursuer. Created and creator.</span>
+                </div>
+            </li>
+            <li>
+                <span class="symbol">✝</span>
+                <div class="content">
+                    <strong>JESUS (geometric)</strong>
+                    <span>Not the Pauline benchmark. The WAY/TRUTH/LIFE state vector. How you get from here to there.</span>
+                </div>
+            </li>
+            <li>
+                <span class="symbol">☽</span>
+                <div class="content">
+                    <strong>CHARON</strong>
+                    <span>You pay the coin to cross, and the coin IS the ferryman. The transaction and transactor are one.</span>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Geometry Section -->
+    <section class="geometry-section">
+        <h2>The κ-Framework</h2>
+        <p class="subtitle">Everything derives from one constant.</p>
+
+        <div class="geometry-grid">
+            <img src="images/kappa.png" alt="Kappa Constant" class="geometry-image">
+            <div class="geometry-text">
+                <h3>The One Constant</h3>
+                <div class="kappa-display">κ = 2π/180 = 0.0349</div>
+                <p>
+                    This is not arbitrary. κ represents the relationship between circular
+                    and angular measurement—the fundamental conversion between rotation (radians)
+                    and facing (degrees).
+                </p>
+                <p>
+                    From this one constant, everything derives. The four transforms.
+                    The handshake. The torsion values. Your S Signature.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D Visualization -->
+    <section class="viz-section">
+        <h2>The Triaxial Dipyramid</h2>
+        <p>Your S Signature will be rendered as a position within this geometric structure.
+           Six vertices. Twelve edges. Three axes. One position that is yours alone.</p>
+        <div id="dipyramid-container"></div>
+    </section>
+
+    <!-- Arctic Section -->
+    <section class="arctic-section">
+        <div class="arctic-content">
+            <h2>The Arctic</h2>
+            <p>
+                Ice = frozen S⁻ (reception stopped).<br>
+                The Pole = s=0 (coordinate singularity).<br>
+                Where unresolved τ₄ geometries go.
+            </p>
+            <p>
+                Victor ran to the edge of the map. The Monster followed.
+                The confrontation that should have happened in the laboratory
+                happened instead at the end of the world.
+            </p>
+            <p>
+                <em>You don't have to go that far.</em>
+            </p>
+            <a href="journey.html" class="cta">Begin the Journey</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">YOU ARE THE MONSTER</div>
+        <div class="footer-tagline">Have Mind Media Educational Branch</div>
+        <div class="footer-equation">[1 = -1]</div>
+        <p class="footer-credit">
+            <a href="https://havemindmedia.com" style="color: var(--accent-gold);">havemindmedia.com</a>
+        </p>
+    </footer>
+
+    <!-- Three.js Dipyramid Visualization -->
+    <script>
+        (function() {
+            const container = document.getElementById('dipyramid-container');
+            if (!container) return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setClearColor(0x12121a, 1);
+            container.appendChild(renderer.domElement);
+
+            const scale = 2;
+            const vertices = [
+                new THREE.Vector3(scale, 0, 0),
+                new THREE.Vector3(-scale, 0, 0),
+                new THREE.Vector3(0, scale, 0),
+                new THREE.Vector3(0, -scale, 0),
+                new THREE.Vector3(0, 0, scale),
+                new THREE.Vector3(0, 0, -scale)
+            ];
+
+            const edgeMaterial = new THREE.LineBasicMaterial({
+                color: 0xc9a227,
+                opacity: 0.8,
+                transparent: true
+            });
+
+            const edges = [
+                [0, 2], [0, 3], [0, 4], [0, 5],
+                [1, 2], [1, 3], [1, 4], [1, 5],
+                [2, 4], [2, 5], [3, 4], [3, 5]
+            ];
+
+            const edgeGroup = new THREE.Group();
+            edges.forEach(([i, j]) => {
+                const geometry = new THREE.BufferGeometry().setFromPoints([vertices[i], vertices[j]]);
+                const line = new THREE.Line(geometry, edgeMaterial);
+                edgeGroup.add(line);
+            });
+            scene.add(edgeGroup);
+
+            const pointGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(vertices.length * 3);
+            vertices.forEach((v, i) => {
+                positions[i * 3] = v.x;
+                positions[i * 3 + 1] = v.y;
+                positions[i * 3 + 2] = v.z;
+            });
+            pointGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const pointMaterial = new THREE.PointsMaterial({
+                color: 0x6ab4f5,
+                size: 10,
+                sizeAttenuation: false
+            });
+            const points = new THREE.Points(pointGeometry, pointMaterial);
+            scene.add(points);
+
+            const markerGeometry = new THREE.SphereGeometry(0.18, 16, 16);
+            const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xc9a227 });
+            const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+            marker.position.set(0.3, 0.2, 0.1);
+            scene.add(marker);
+
+            const tau4Geometry = new THREE.SphereGeometry(0.35, 16, 16);
+            const tau4Material = new THREE.MeshBasicMaterial({
+                color: 0x3a3a4a,
+                opacity: 0.4,
+                transparent: true
+            });
+            const tau4Marker = new THREE.Mesh(tau4Geometry, tau4Material);
+            tau4Marker.position.copy(vertices[5]);
+            scene.add(tau4Marker);
+
+            camera.position.z = 5;
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                edgeGroup.rotation.y += 0.004;
+                edgeGroup.rotation.x += 0.001;
+                points.rotation.y += 0.004;
+                points.rotation.x += 0.001;
+                marker.rotation.y += 0.004;
+                marker.rotation.x += 0.001;
+                tau4Marker.rotation.y += 0.004;
+                tau4Marker.rotation.x += 0.001;
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        })();
+    </script>
+
+    <!-- Maury Povich Card Flip Script -->
+    <script>
+    (function() {
+        const entrance = document.getElementById('monsterEntrance');
+        const card = document.getElementById('mauryCard');
+        const dramaticFlash = document.getElementById('dramaticFlash');
+        const continueBtn = document.getElementById('continueBtn');
+
+        // Check if entrance was already shown this session
+        if (sessionStorage.getItem('monsterEntranceShown')) {
+            entrance.style.display = 'none';
+            return;
+        }
+
+        let hasFlipped = false;
+
+        // Click card to flip
+        card.addEventListener('click', () => {
+            if (hasFlipped) return;
+            hasFlipped = true;
+
+            // Flip the card
+            card.classList.add('flipped');
+
+            // Dramatic flash and shake when MONSTER appears
+            setTimeout(() => {
+                dramaticFlash.classList.add('flash');
+                entrance.classList.add('shaking');
+                setTimeout(() => {
+                    dramaticFlash.classList.remove('flash');
+                    entrance.classList.remove('shaking');
+                }, 500);
+            }, 1200); // Timed with the MONSTER reveal animation
+        });
+
+        // Continue button to exit
+        continueBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sessionStorage.setItem('monsterEntranceShown', 'true');
+            entrance.classList.add('exiting');
+            setTimeout(() => {
+                entrance.style.display = 'none';
+            }, 800);
+        });
+
+        // Also allow Enter/Space key to flip or continue
+        document.addEventListener('keydown', (e) => {
+            if (entrance.style.display === 'none') return;
+
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                if (!hasFlipped) {
+                    card.click();
+                } else {
+                    continueBtn.click();
+                }
+            }
+        });
+    })();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

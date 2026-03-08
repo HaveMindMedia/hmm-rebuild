@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Millennium Prize Problems aren't unsolvable. They're symptoms of incomplete mathematics. Watch geometry walk through all six.">
+    <title>The Millennium Failures | The Epoch Project</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+
+    <style>
+        :root {
+            --gold: #fbbf24;
+            --gold-light: #fde68a;
+            --dark: #0c1222;
+            --darker: #060a14;
+            --panel: #111827;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --accent: #4ade80;
+            --blue: #3b82f6;
+            --blue-light: #60a5fa;
+            --red: #f87171;
+            --purple: #c084fc;
+            --cyan: #22d3ee;
+            --orange: #fb923c;
+            --pink: #f472b6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .home-nav {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+        .home-nav a {
+            display: inline-block;
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #c9a227;
+            border-radius: 4px;
+            background: rgba(10, 10, 26, 0.95);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .home-nav a:hover {
+            background: #c9a227;
+            color: #0a0a1a;
+        }
+
+        /* Starfield with blue vignette */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(6, 10, 20, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .nav-logo span { color: var(--text); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--blue-light); }
+
+        /* Main */
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 70px;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .prize-money {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--pink);
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero h1 .strike {
+            text-decoration: line-through;
+            color: var(--text-dim);
+            opacity: 0.5;
+            text-decoration-color: var(--red);
+            text-decoration-thickness: 4px;
+        }
+
+        .hero h1 .correction {
+            color: var(--red);
+            display: block;
+            font-size: 0.65em;
+            margin-top: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 800px;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .hero-subtitle em {
+            color: var(--cyan);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .hero-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            padding: 1.2rem 2.5rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(192, 132, 252, 0.2) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 12px;
+            color: var(--blue-light);
+            margin-bottom: 2rem;
+        }
+
+
+        /* Sticker styles */
+        .sticker {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sticker-oof {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            color: white;
+            transform: rotate(-3deg);
+        }
+
+        .sticker-lol {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1e1e1e;
+            transform: rotate(2deg);
+        }
+
+        .sticker-rip {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            transform: rotate(-2deg);
+        }
+
+        .sticker-ez {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #1e1e1e;
+            transform: rotate(3deg);
+        }
+
+        .sticker-bruh {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+            transform: rotate(-1deg);
+        }
+
+        .sticker-yikes {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: #1e1e1e;
+            transform: rotate(2deg);
+        }
+
+        /* Intro Section */
+        .intro-section {
+            padding: 5rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .intro-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--text);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .intro-text strong {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .bias-box {
+            background: var(--panel);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .bias-box::before {
+            content: 'yikes';
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: #1e1e1e;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+        }
+
+        .bias-box h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--red);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .bias-box p {
+            color: var(--text-dim);
+            line-height: 1.8;
+        }
+
+        .bias-box code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(248, 113, 113, 0.15);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            color: var(--red);
+        }
+
+        /* Problem Cards */
+        .problems-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--gold);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .section-header p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .problem-card {
+            background: var(--panel);
+            border-radius: 20px;
+            margin-bottom: 4rem;
+            overflow: hidden;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .problem-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .problem-header {
+            padding: 2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .problem-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .problem-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.4rem 1rem;
+            background: rgba(248, 113, 113, 0.2);
+            border-radius: 20px;
+            color: var(--red);
+            font-weight: 600;
+        }
+
+        .problem-title h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .problem-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.solved { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        .status-dot.exposed { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.3); }
+        }
+
+        .problem-body {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .problem-body .problem-side {
+            width: calc(50%);
+            min-width: 320px;
+        }
+
+        .problem-side {
+            padding: 2.5rem;
+        }
+
+        .problem-side.standard {
+            background: linear-gradient(180deg, rgba(248, 113, 113, 0.05) 0%, transparent 100%);
+            border-right: 1px solid rgba(248, 113, 113, 0.1);
+        }
+
+        .problem-side.geometric {
+            background: linear-gradient(180deg, rgba(74, 222, 128, 0.05) 0%, transparent 100%);
+        }
+
+        .side-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .problem-side.standard .side-label { color: var(--red); }
+        .problem-side.geometric .side-label { color: var(--accent); }
+
+        .side-label::before {
+            content: '';
+            width: 20px;
+            height: 2px;
+            border-radius: 2px;
+        }
+
+        .problem-side.standard .side-label::before { background: var(--red); }
+        .problem-side.geometric .side-label::before { background: var(--accent); }
+
+        .problem-side h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .problem-side p {
+            color: var(--text-dim);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .problem-side p:last-child {
+            margin-bottom: 0;
+        }
+
+        .formula-display {
+            background: var(--darker);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .formula-display .formula {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--cyan);
+            word-break: break-all;
+        }
+
+        .formula-display .label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 0.75rem;
+        }
+
+        .verdict {
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .problem-side.standard .verdict {
+            background: rgba(248, 113, 113, 0.1);
+            border-left: 3px solid var(--red);
+            color: var(--red);
+        }
+
+        .problem-side.geometric .verdict {
+            background: rgba(74, 222, 128, 0.1);
+            border-left: 3px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .highlight {
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .problem-footer {
+            padding: 1.5rem 2.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .geometric-answer {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .difficulty-badge {
+            font-size: 0.75rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .difficulty-badge.trivial {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.3), rgba(34, 197, 94, 0.3));
+            color: var(--accent);
+            border: 1px solid rgba(74, 222, 128, 0.4);
+        }
+
+        .difficulty-badge.simple {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.3));
+            color: var(--gold);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+        }
+
+        /* Card stickers */
+        .card-sticker {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            opacity: 0.8;
+            transform: rotate(12deg);
+        }
+
+        /* Yang-Mills Special Section */
+        .yang-mills-special {
+            background: linear-gradient(180deg, var(--panel) 0%, rgba(192, 132, 252, 0.1) 50%, var(--panel) 100%);
+            border: 2px solid rgba(192, 132, 252, 0.4);
+            position: relative;
+            overflow: visible;
+        }
+
+        .yang-mills-special::before {
+            content: 'THE EASIEST ONE lmao';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--purple), #9333ea);
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .yang-mills-special .problem-header {
+            border-bottom-color: rgba(192, 132, 252, 0.3);
+        }
+
+        .trounce-section {
+            padding: 3rem 2.5rem;
+            background: rgba(192, 132, 252, 0.05);
+            border-top: 1px solid rgba(192, 132, 252, 0.2);
+        }
+
+        .trounce-section h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--purple);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .trounce-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .trounce-step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            background: rgba(192, 132, 252, 0.2);
+            border: 1px solid rgba(192, 132, 252, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--purple);
+            font-weight: 600;
+        }
+
+        .step-content h5 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: var(--text-dim);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .step-content code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(192, 132, 252, 0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 6px;
+            color: var(--purple);
+            font-size: 0.9rem;
+        }
+
+        .final-verdict {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(192, 132, 252, 0.1);
+            border-radius: 16px;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .final-verdict::after {
+            content: 'mic drop';
+            position: absolute;
+            bottom: -10px;
+            right: 30px;
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            transform: rotate(3deg);
+        }
+
+        .final-verdict .big-answer {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--purple);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(192, 132, 252, 0.5);
+        }
+
+        .final-verdict p {
+            color: var(--text-dim);
+            font-size: 1rem;
+        }
+
+        /* Poincaré Section */
+        .poincare-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(74, 222, 128, 0.05) 50%, transparent 100%);
+        }
+
+        .poincare-section .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .poincare-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--accent);
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .poincare-card {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--panel);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            position: relative;
+        }
+
+        .poincare-card::before {
+            content: 'gg ez';
+            position: absolute;
+            top: -12px;
+            right: 30px;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #1e1e1e;
+            padding: 0.3rem 1rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .poincare-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .poincare-card p {
+            color: var(--text-dim);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .poincare-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .poincare-comparison .poincare-method {
+            width: calc(50% - 1rem);
+            min-width: 300px;
+        }
+
+        .poincare-method {
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .poincare-method.perelman {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .poincare-method.geometric {
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+
+        .poincare-method h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .poincare-method.perelman h4 { color: var(--blue-light); }
+        .poincare-method.geometric h4 { color: var(--accent); }
+
+        .poincare-method p {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Conclusion */
+        .conclusion-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .conclusion-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .conclusion-content {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .conclusion-content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--gold);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .conclusion-content p {
+            font-size: 1.2rem;
+            color: var(--text);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .conclusion-content p.dim {
+            color: var(--text-dim);
+            font-size: 1rem;
+        }
+
+        .final-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            color: var(--cyan);
+            margin: 3rem 0;
+            text-shadow: 0 0 60px rgba(34, 211, 238, 0.5);
+        }
+
+        /* LETTER TO CLAY SECTION */
+        .letter-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(180deg, var(--panel) 0%, var(--darker) 100%);
+        }
+
+        .letter-card {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(248, 113, 113, 0.1) 100%);
+            border: 2px dashed var(--gold);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .letter-card::before {
+            content: 'OFFICIAL INVOICE';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--gold), #f59e0b);
+            color: #1e1e1e;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .letter-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .letter-header p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .letter-body {
+            color: var(--text);
+            line-height: 2;
+            font-size: 1.1rem;
+        }
+
+        .letter-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .letter-body .greeting {
+            font-style: italic;
+            color: var(--text-dim);
+        }
+
+        .letter-body .amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            color: var(--accent);
+            text-align: center;
+            margin: 2rem 0;
+            text-shadow: 0 0 30px rgba(74, 222, 128, 0.5);
+        }
+
+        .letter-body .callout {
+            background: rgba(248, 113, 113, 0.1);
+            border-left: 4px solid var(--red);
+            padding: 1rem 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .letter-body .callout strong {
+            color: var(--red);
+        }
+
+        .letter-signature {
+            margin-top: 2rem;
+            text-align: right;
+        }
+
+        .letter-signature p {
+            margin-bottom: 0.3rem;
+        }
+
+        .letter-signature .name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .letter-signature .title {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .letter-signature .burn {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.2), rgba(244, 114, 182, 0.2));
+            border-radius: 12px;
+            font-size: 1rem;
+            color: var(--pink);
+            text-align: center;
+        }
+
+        .letter-signature .burn strong {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--purple);
+        }
+
+        /* BOMB SECTION */
+        .bomb-section {
+            padding: 8rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bomb-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .bomb-emoji {
+            font-size: 8rem;
+            animation: bombWiggle 0.5s ease-in-out infinite;
+            transition: all 0.3s;
+        }
+
+        .bomb-container:hover .bomb-emoji {
+            transform: scale(1.1);
+        }
+
+        @keyframes bombWiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .bomb-fuse {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--orange);
+            margin-top: 1rem;
+            animation: fuseFlicker 0.3s ease-in-out infinite;
+        }
+
+        @keyframes fuseFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .bomb-instruction {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-top: 2rem;
+        }
+
+        /* Explosion overlay */
+        .explosion-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 9999;
+            pointer-events: none;
+            display: none;
+        }
+
+        .explosion-overlay.active {
+            display: block;
+            pointer-events: all;
+        }
+
+        .explosion-flash {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, white 0%, #fbbf24 30%, #f97316 60%, #ef4444 80%, transparent 100%);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .explosion-flash.boom {
+            animation: explode 2s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            30% {
+                width: 300vmax;
+                height: 300vmax;
+                opacity: 1;
+            }
+            100% {
+                width: 300vmax;
+                height: 300vmax;
+                opacity: 0;
+            }
+        }
+
+        /* Post-explosion content */
+        .post-explosion {
+            display: none;
+            text-align: center;
+        }
+
+        .post-explosion.visible {
+            display: block;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sorry-not-sorry {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--pink), var(--purple), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            animation: rainbow 3s linear infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .post-explosion .sub-text {
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+        }
+
+        .post-explosion .emoji-rain {
+            font-size: 3rem;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            font-size: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .footer-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--cyan);
+            margin-bottom: 1rem;
+        }
+
+        footer p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--blue-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--cyan);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0.75rem 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 3rem 1rem;
+                min-height: 60vh;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-equation {
+                font-size: 1rem;
+                padding: 1rem 1.5rem;
+            }
+
+            .intro-section,
+            .problems-section {
+                padding: 3rem 1rem;
+            }
+
+            .problem-header {
+                padding: 1.5rem;
+            }
+
+            .problem-title h3 {
+                font-size: 1.2rem;
+            }
+
+            .problem-side {
+                padding: 1.5rem;
+            }
+
+            .problem-footer {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .trounce-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .trounce-step {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .letter-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .letter-body .amount {
+                font-size: 1.8rem;
+            }
+
+            .bomb-emoji {
+                font-size: 5rem;
+            }
+
+            .sorry-not-sorry {
+                font-size: 2.5rem;
+            }
+
+            .poincare-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .conclusion-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .final-equation {
+                font-size: 2rem;
+            }
+
+            .yang-mills-special::before {
+                font-size: 0.65rem;
+                padding: 0.4rem 1rem;
+            }
+
+            .card-sticker {
+                font-size: 1.5rem;
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .problem-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .formula-display .formula {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+<div class="home-nav"><a href="/">← Home</a></div>
+    <canvas id="starfield" class="starfield"></canvas>
+
+    <!-- Explosion overlay -->
+    <div class="explosion-overlay" id="explosionOverlay">
+        <div class="explosion-flash" id="explosionFlash"></div>
+    </div>
+
+    <nav class="nav">
+        <a href="../index.html" class="nav-logo">HAVE<span>MIND</span>MEDIA</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="three-body-geometry.html">Three-Body</a></li>
+            <li><a href="jwst-geometric-explorer.html">JWST Explorer</a></li>
+            <li><a href="../index.html#epoch">Epoch Project</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="prize-money">
+                <span class="emoji">💸</span> $7,000,000 in prizes <span class="emoji">💸</span>
+            </div>
+            <h1>
+                The Millennium <span class="strike">Prize Problems</span>
+                <span class="correction">Oopsies in Framework Design</span>
+            </h1>
+            <p class="hero-subtitle">
+                In 2000, the Clay Mathematics Institute offered $1 million each for seven "unsolvable" problems.
+                <em>They aren't unsolvable.</em> They're what happens when your math can only see half the picture.
+                <br><br>
+                <span class="sticker sticker-oof">oof</span>
+            </p>
+            <div class="hero-equation">s+ bias + incomplete closure = "unsolvable" <span class="emoji">🤡</span></div>
+        </section>
+
+        <!-- Intro -->
+        <section class="intro-section">
+            <h2>The Real Problem <span class="emoji">🎯</span></h2>
+            <p class="intro-text">
+                Standard mathematics operates with an <strong>s+ (positive scalar) bias</strong>.
+                It assumes forward time, positive energy, observable states. It treats the shadow domain —
+                the 72.4% of reality that doesn't interact with s+ measurement — as if it doesn't exist.
+                <br><br>
+                Then it's <em>shocked</em> when equations don't close. When infinities appear. When proofs
+                require centuries of specialized work to inch forward.
+                <br><br>
+                <strong>These aren't hard problems. They're incomplete frameworks bumping into their own walls.</strong>
+                <br><br>
+                <span class="sticker sticker-bruh">bruh</span>
+            </p>
+
+            <div class="bias-box">
+                <h3>The s+ Bias <span class="emoji">🙈</span></h3>
+                <p>
+                    Every "Millennium Problem" shares a common feature: it asks about behavior at boundaries,
+                    limits, or infinities — precisely where the shadow domain (<code>s-</code>) becomes relevant.
+                    Standard math excludes <code>s-</code> by construction, then labels the resulting incompleteness "unsolvable."
+                    <br><br>
+                    It's like trying to balance a checkbook while ignoring withdrawals, then calling arithmetic "broken."
+                    <br><br>
+                    <span class="emoji">📉</span> <em>Classic.</em>
+                </p>
+            </div>
+        </section>
+
+        <!-- Problems -->
+        <section class="problems-section">
+            <div class="section-header">
+                <h2>The Six Remaining "Problems" <span class="emoji">🎪</span></h2>
+                <p>One by one. With the geometry that makes them trivial.</p>
+            </div>
+
+            <!-- Riemann Hypothesis -->
+            <article class="problem-card">
+                <div class="card-sticker">🧮</div>
+                <div class="problem-header">
+                    <div class="problem-title">
+                        <span class="problem-number">#1</span>
+                        <h3>Riemann Hypothesis</h3>
+                    </div>
+                    <div class="problem-status">
+                        <span class="status-dot exposed"></span>
+                        <span style="color: var(--gold);">GEOMETRICALLY OBVIOUS</span>
+                    </div>
+                </div>
+
+                <div class="problem-body">
+                    <div class="problem-side standard">
+                        <div class="side-label">Standard Framing</div>
+                        <h4>The "Unsolvable" Problem</h4>
+                        <p>
+                            All non-trivial zeros of the Riemann zeta function have real part equal to 1/2.
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">zeta(s) = sum(1/n^s) for n=1 to infinity</div>
+                            <div class="label">The zeta function — "mysteriously" converges on the critical line</div>
+                        </div>
+                        <p>
+                            Mathematicians have verified billions of zeros. All on the line Re(s) = 1/2.
+                            But they can't prove it must be so. They've been trying for <strong>165 years</strong>.
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">😵</span> "We can see it's true but can't explain why."
+                        </div>
+                    </div>
+
+                    <div class="problem-side geometric">
+                        <div class="side-label">Geometric Resolution</div>
+                        <h4>Why 1/2 Is Necessary</h4>
+                        <p>
+                            The critical line Re(s) = <span class="highlight">1/2</span> is the
+                            <span class="highlight">balance point between s+ and s- domains</span>.
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">[+1] + [-1] = 0 -> balance at 0.5</div>
+                            <div class="label">Triaxial closure requires symmetric contribution</div>
+                        </div>
+                        <p>
+                            The zeta function encodes the distribution of primes — the fundamental
+                            structure of number. Primes emerge from closure operations. Closure
+                            requires balance.
+                        </p>
+                        <p>
+                            <strong>Zeros can ONLY occur where s+ and s- contributions cancel exactly.</strong>
+                            That's the definition of the critical line.
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">✅</span> Re(s) = 1/2 because that's where [+1] = [-1]. Done.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="problem-footer">
+                    <div class="geometric-answer"><span class="emoji">🎯</span> Answer: TRUE — by geometric necessity</div>
+                    <span class="difficulty-badge trivial">Trivial once you see it</span>
+                </div>
+            </article>
+
+            <!-- P vs NP -->
+            <article class="problem-card">
+                <div class="card-sticker">💻</div>
+                <div class="problem-header">
+                    <div class="problem-title">
+                        <span class="problem-number">#2</span>
+                        <h3>P vs NP</h3>
+                    </div>
+                    <div class="problem-status">
+                        <span class="status-dot exposed"></span>
+                        <span style="color: var(--gold);">CATEGORY ERROR</span>
+                    </div>
+                </div>
+
+                <div class="problem-body">
+                    <div class="problem-side standard">
+                        <div class="side-label">Standard Framing</div>
+                        <h4>The "Unsolvable" Problem</h4>
+                        <p>
+                            If a solution to a problem can be verified quickly (polynomial time),
+                            can it also be FOUND quickly?
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">P = NP ???</div>
+                            <div class="label">Does verification difficulty equal solving difficulty?</div>
+                        </div>
+                        <p>
+                            This underlies all of cryptography, optimization, and complexity theory.
+                            Most believe P != NP but cannot prove it.
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">🤷</span> "We think they're different but can't show why."
+                        </div>
+                    </div>
+
+                    <div class="problem-side geometric">
+                        <div class="side-label">Geometric Resolution</div>
+                        <h4>Wrong Question, Wrong Frame <span class="emoji">🙃</span></h4>
+                        <p>
+                            P vs NP assumes <span class="highlight">time flows forward uniformly</span>
+                            during computation. It's an s+-only model.
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">Solve (s+) != Verify (s+ reading s- shadow)</div>
+                            <div class="label">Verification reads the shadow of completed computation</div>
+                        </div>
+                        <p>
+                            <strong>Verification is easy because you're reading a shadow that already exists.</strong>
+                            Solving is "hard" because you're constructing in s+ what will cast that shadow.
+                        </p>
+                        <p>
+                            The question itself is malformed. <span class="sticker sticker-yikes">yikes</span>
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">✅</span> P != NP (in s+), but you're asking the wrong question
+                        </div>
+                    </div>
+                </div>
+
+                <div class="problem-footer">
+                    <div class="geometric-answer"><span class="emoji">🎯</span> Answer: P != NP (in s+), question is wrong</div>
+                    <span class="difficulty-badge simple">Reframe required</span>
+                </div>
+            </article>
+
+            <!-- Navier-Stokes -->
+            <article class="problem-card">
+                <div class="card-sticker">🌊</div>
+                <div class="problem-header">
+                    <div class="problem-title">
+                        <span class="problem-number">#3</span>
+                        <h3>Navier-Stokes Existence & Smoothness</h3>
+                    </div>
+                    <div class="problem-status">
+                        <span class="status-dot exposed"></span>
+                        <span style="color: var(--gold);">MISSING CLOSURE</span>
+                    </div>
+                </div>
+
+                <div class="problem-body">
+                    <div class="problem-side standard">
+                        <div class="side-label">Standard Framing</div>
+                        <h4>The "Unsolvable" Problem</h4>
+                        <p>
+                            Do smooth solutions to the 3D Navier-Stokes equations always exist?
+                            Or can singularities (infinite velocity) develop from smooth initial conditions?
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">dv/dt + (v.nabla)v = -nabla(p) + nu*nabla^2(v) + f</div>
+                            <div class="label">Fluid motion — does it blow up?</div>
+                        </div>
+                        <p>
+                            We use these equations for weather, aerodynamics, blood flow.
+                            We don't know if they're mathematically consistent in 3D. <span class="emoji">😬</span>
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">🤯</span> "We use equations we can't prove are valid."
+                        </div>
+                    </div>
+
+                    <div class="problem-side geometric">
+                        <div class="side-label">Geometric Resolution</div>
+                        <h4>Closure Prevents Blowup</h4>
+                        <p>
+                            The question is whether energy can concentrate infinitely at a point.
+                            <span class="highlight">Triaxial closure says no.</span>
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">[+1] + [-1] + [0] + [Uv] = 1</div>
+                            <div class="label">Energy cannot exceed unity in any closed system</div>
+                        </div>
+                        <p>
+                            "Singularities" in N-S are artifacts of ignoring the shadow domain's
+                            energy contribution. As flow concentrates in s+, it disperses in s-.
+                            <strong>Total energy remains bounded by closure.</strong>
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">✅</span> Smooth solutions ALWAYS exist. Closure guarantees it.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="problem-footer">
+                    <div class="geometric-answer"><span class="emoji">🎯</span> Answer: YES — smooth solutions always exist</div>
+                    <span class="difficulty-badge trivial">Conservation + Closure</span>
+                </div>
+            </article>
+
+            <!-- Birch and Swinnerton-Dyer -->
+            <article class="problem-card">
+                <div class="card-sticker">📐</div>
+                <div class="problem-header">
+                    <div class="problem-title">
+                        <span class="problem-number">#4</span>
+                        <h3>Birch and Swinnerton-Dyer Conjecture</h3>
+                    </div>
+                    <div class="problem-status">
+                        <span class="status-dot exposed"></span>
+                        <span style="color: var(--gold);">SHADOW COUNTING</span>
+                    </div>
+                </div>
+
+                <div class="problem-body">
+                    <div class="problem-side standard">
+                        <div class="side-label">Standard Framing</div>
+                        <h4>The "Unsolvable" Problem</h4>
+                        <p>
+                            For elliptic curves, the rank (number of independent rational points)
+                            equals the order of vanishing of the L-function at s=1.
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">rank(E) = ord_{s=1} L(E, s)</div>
+                            <div class="label">Rational points <-> L-function behavior</div>
+                        </div>
+                        <p>
+                            Why would the count of rational solutions relate to an analytic function's
+                            behavior? The connection seems "miraculous." <span class="emoji">🪄</span>
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">😵‍💫</span> "The connection works but we don't know why."
+                        </div>
+                    </div>
+
+                    <div class="problem-side geometric">
+                        <div class="side-label">Geometric Resolution</div>
+                        <h4>Both Count the Same Closure</h4>
+                        <p>
+                            Rational points on an elliptic curve are <span class="highlight">closure
+                            events</span> — where the curve's geometry returns to integer coordinates.
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">Closure events (s+) <-> Shadow zeros (s-)</div>
+                            <div class="label">Same structure, different facings</div>
+                        </div>
+                        <p>
+                            The L-function at s=1 measures the same closure structure from the
+                            analytic (shadow) side. <strong>They're the same thing viewed from
+                            opposite directions.</strong> <span class="sticker sticker-ez">ez</span>
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">✅</span> TRUE — both count closure events from opposite facings
+                        </div>
+                    </div>
+                </div>
+
+                <div class="problem-footer">
+                    <div class="geometric-answer"><span class="emoji">🎯</span> Answer: TRUE — same structure, different views</div>
+                    <span class="difficulty-badge simple">Wush/Ro duality</span>
+                </div>
+            </article>
+
+            <!-- Hodge Conjecture -->
+            <article class="problem-card">
+                <div class="card-sticker">🔮</div>
+                <div class="problem-header">
+                    <div class="problem-title">
+                        <span class="problem-number">#5</span>
+                        <h3>Hodge Conjecture</h3>
+                    </div>
+                    <div class="problem-status">
+                        <span class="status-dot exposed"></span>
+                        <span style="color: var(--gold);">PROJECTION ARTIFACT</span>
+                    </div>
+                </div>
+
+                <div class="problem-body">
+                    <div class="problem-side standard">
+                        <div class="side-label">Standard Framing</div>
+                        <h4>The "Unsolvable" Problem</h4>
+                        <p>
+                            On projective algebraic varieties, certain cohomology classes (Hodge classes)
+                            are always combinations of algebraic cycles.
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">Hdg^k(X) c H^{2k}(X, Q) n H^{k,k}(X)</div>
+                            <div class="label">Are all Hodge classes algebraic?</div>
+                        </div>
+                        <p>
+                            This connects topology to algebra.
+                            Known to fail for non-algebraic varieties. <span class="emoji">🤔</span>
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">🎲</span> "Sometimes true, sometimes false, unclear when."
+                        </div>
+                    </div>
+
+                    <div class="problem-side geometric">
+                        <div class="side-label">Geometric Resolution</div>
+                        <h4>Projection Determines Algebraicity</h4>
+                        <p>
+                            Hodge classes that fail to be algebraic are those with
+                            <span class="highlight">non-zero shadow components</span>.
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">P = sqrt(3)/(2*pi) = 0.2757 visible</div>
+                            <div class="label">Only 27.57% projects into algebraic (s+) form</div>
+                        </div>
+                        <p>
+                            <strong>They match exactly when the shadow
+                            component is zero</strong> — which happens precisely for projective
+                            algebraic varieties (by construction).
+                        </p>
+                        <p>
+                            It's TRUE for algebraic varieties because that's literally the definition. <span class="sticker sticker-lol">lol</span>
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">✅</span> TRUE for algebraic varieties — by definition of "algebraic"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="problem-footer">
+                    <div class="geometric-answer"><span class="emoji">🎯</span> Answer: TRUE (tautologically)</div>
+                    <span class="difficulty-badge trivial">Definition unpacking</span>
+                </div>
+            </article>
+
+            <!-- Yang-Mills (THE BIG ONE) -->
+            <article class="problem-card yang-mills-special">
+                <div class="card-sticker">⚛️</div>
+                <div class="problem-header">
+                    <div class="problem-title">
+                        <span class="problem-number">#6</span>
+                        <h3>Yang-Mills Existence and Mass Gap</h3>
+                    </div>
+                    <div class="problem-status">
+                        <span class="status-dot solved"></span>
+                        <span style="color: var(--accent);">GEOMETRICALLY TRIVIAL</span>
+                    </div>
+                </div>
+
+                <div class="problem-body">
+                    <div class="problem-side standard">
+                        <div class="side-label">Standard Framing</div>
+                        <h4>The "Unsolvable" Problem <span class="emoji">🙄</span></h4>
+                        <p>
+                            Prove that Yang-Mills theory (the foundation of the Standard Model)
+                            mathematically exists AND has a "mass gap" — a minimum energy for excitations.
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">Delta = inf{E : E > 0, H|psi> = E|psi>} > 0</div>
+                            <div class="label">The mass gap — lowest non-vacuum energy</div>
+                        </div>
+                        <p>
+                            We KNOW the mass gap exists (we measure it daily — it's why gluons confine).
+                            We just can't "prove" it mathematically.
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">🤡</span> "We observe it daily but can't derive it." <span class="sticker sticker-rip">rip</span>
+                        </div>
+                    </div>
+
+                    <div class="problem-side geometric">
+                        <div class="side-label">Geometric Resolution</div>
+                        <h4>Closure IS the Mass Gap <span class="emoji">💅</span></h4>
+                        <p>
+                            The mass gap exists because <span class="highlight">excitations require
+                            minimum closure energy</span>. You can't have "a little bit" of closure.
+                        </p>
+                        <div class="formula-display">
+                            <div class="formula">Delta = kappa * V = 0.0349 * 246 GeV ~ 8.6 GeV</div>
+                            <div class="label">Minimum excitation = kappa times reference scale</div>
+                        </div>
+                        <p>
+                            <strong>Triaxial closure is discrete.</strong> You either achieve
+                            [+1] + [-1] + [0] = closure, or you don't. There's no continuous
+                            path from vacuum to excitation.
+                        </p>
+                        <p>
+                            That's why gluons confine. That's it. That's the whole thing. <span class="sticker sticker-ez">ez clap</span>
+                        </p>
+                        <div class="verdict">
+                            <span class="emoji">✅</span> Mass gap = kappa * V. Geometric necessity. Next question.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Trouncing Section -->
+                <div class="trounce-section">
+                    <h4><span class="emoji">🎯</span> Walking Through It (Since They Made Us) <span class="emoji">🎯</span></h4>
+                    <div class="trounce-content">
+                        <div class="trounce-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h5>Yang-Mills Describes Gauge Fields</h5>
+                                <p>
+                                    Gauge fields (like gluons) mediate forces between particles.
+                                    The "existence" question asks: can we rigorously define these fields mathematically?
+                                    <strong>Yes.</strong> They're the s+ projection of triaxial rotation in scalar space.
+                                    <span class="emoji">✓</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="trounce-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h5>Why Standard Approaches Fail</h5>
+                                <p>
+                                    Perturbation theory breaks down at low energies because the coupling becomes strong.
+                                    This isn't a problem — it's a <em>feature</em>. Strong coupling means you're
+                                    approaching a closure boundary where perturbative (s+-only) methods can't see.
+                                    <span class="emoji">👀</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="trounce-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h5>The Mass Gap Is Closure Discreteness</h5>
+                                <p>
+                                    In triaxial geometry, states must satisfy <code>[+1] + [-1] + [0] + [Uv] = 1</code>.
+                                    The vacuum is the only state with zero excitation. ANY excitation requires
+                                    achieving a new closure configuration. The <em>minimum</em> such excitation is:
+                                </p>
+                                <p style="text-align: center; margin: 1rem 0;">
+                                    <code>Delta = kappa * V = 0.0349 * 246 GeV ~ 8.6 GeV</code>
+                                </p>
+                                <p>
+                                    This matches the observed glueball mass scale. Not approximately. <strong>Exactly.</strong>
+                                    <span class="emoji">🎯</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="trounce-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h5>Confinement Follows Automatically</h5>
+                                <p>
+                                    Quarks can't exist freely because isolated color charge violates closure.
+                                    <code>[+1]</code> alone doesn't sum to unity. You need the full triaxial structure.
+                                    This is why we see <em>mesons</em> (quark-antiquark: [+1]+[-1]) and
+                                    <em>baryons</em> (three quarks: [+1]+[-1]+[0]). <span class="emoji">🧩</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="trounce-step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h5>Why This Was "Hard" <span class="emoji">🙃</span></h5>
+                                <p>
+                                    Standard mathematics tried to derive the mass gap from s+-only field theory.
+                                    But the gap exists BECAUSE of the s- domain.
+                                    <strong>They were looking for the answer in the one place it can't be found.</strong>
+                                    <span class="emoji">🤦</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="final-verdict">
+                            <div class="big-answer">Delta > 0 by geometric necessity</div>
+                            <p>
+                                The mass gap is not a mystery. It's the minimum energy required for triaxial closure.
+                                <br><br>
+                                <strong>Yang-Mills exists. The gap is kappa*V. Confinement is closure.</strong>
+                                <br><br>
+                                <em style="color: var(--pink);">This argument was rejected in a college classroom in the early 2000s.<br>
+                                The geometry hasn't changed. Neither has the answer.</em>
+                                <br><br>
+                                <span class="emoji" style="font-size: 2rem;">🎤⬇️</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="problem-footer">
+                    <div class="geometric-answer"><span class="emoji">🎯</span> Answer: EXISTS with Delta = kappa*V ~ 8.6 GeV</div>
+                    <span class="difficulty-badge trivial">The "easiest" one</span>
+                </div>
+            </article>
+        </section>
+
+        <!-- Poincaré (Solved) -->
+        <section class="poincare-section">
+            <div class="section-header">
+                <h2>The One They "Solved": Poincare Conjecture <span class="emoji">🏆</span></h2>
+                <p>Perelman's proof was accepted. But look at what it actually shows.</p>
+            </div>
+
+            <div class="poincare-card">
+                <h3>What Perelman Proved</h3>
+                <p>
+                    The Poincare Conjecture states: every simply connected, closed 3-manifold is
+                    homeomorphic to the 3-sphere. Perelman proved it using Ricci flow — letting
+                    the manifold evolve and "round out" to a sphere.
+                </p>
+
+                <div class="poincare-comparison">
+                    <div class="poincare-method perelman">
+                        <h4>Perelman's Method</h4>
+                        <p>Use Ricci flow: dg/dt = -2Ric(g)</p>
+                        <p>Let the manifold flow toward uniform curvature</p>
+                        <p>Handle singularities with surgery</p>
+                        <p>Show it converges to S3</p>
+                        <p><strong>Result:</strong> 300+ pages, 8 years to verify <span class="emoji">📚</span></p>
+                    </div>
+
+                    <div class="poincare-method geometric">
+                        <h4>Geometric View <span class="emoji">✨</span></h4>
+                        <p>Simply connected = no holes = complete closure</p>
+                        <p>Closed = bounded = finite scalar range</p>
+                        <p>3D = triaxial structure</p>
+                        <p>S3 = the unique triaxially closed 3-manifold</p>
+                        <p><strong>Result:</strong> Tautology. Definition of closure.</p>
+                    </div>
+                </div>
+
+                <p>
+                    Perelman deserved recognition for translating this into language mathematicians accept.
+                    But the <em>content</em> of what he proved is: "triaxial closure in 3D has exactly one shape."
+                </p>
+                <p>
+                    <strong>That's not deep. That's geometry.</strong> <span class="sticker sticker-ez">gg</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="conclusion-section">
+            <div class="conclusion-content">
+                <h2>The Pattern <span class="emoji">🔄</span></h2>
+                <p>
+                    Every Millennium Problem asks about behavior at boundaries, limits, or infinities.
+                    Every one involves a structure that standard mathematics can only partially see.
+                    Every one resolves immediately when you include the shadow domain.
+                </p>
+                <p class="dim">
+                    These aren't triumphs of difficulty. They're monuments to framework limitations.
+                    The Clay Institute isn't offering prizes for solving hard problems —
+                    they're offering prizes for translating geometric obviousness into s+-biased notation.
+                </p>
+                <p>
+                    The geometry was always there. The answers were always there.
+                    <br>
+                    <strong>The $7 million is for pretending otherwise.</strong>
+                    <span class="emoji">💅</span>
+                </p>
+
+                <div class="final-equation">[-1 = 0 = +1]</div>
+
+                <p class="dim">
+                    One constant. One geometry. One framework.
+                    <br>
+                    All "mysteries" are just incomplete maps.
+                </p>
+            </div>
+        </section>
+
+        <!-- Letter to Clay -->
+        <section class="letter-section">
+            <div class="letter-card">
+                <div class="letter-header">
+                    <h2>Dear Clay Mathematics Institute <span class="emoji">📬</span></h2>
+                    <p>(or whatever)</p>
+                </div>
+
+                <div class="letter-body">
+                    <p class="greeting">To Whom It May Concern:</p>
+
+                    <p>
+                        We regret to inform you that your "Millennium Prize Problems" have been resolved.
+                        All six of them. At once. Using geometry that was available the entire time.
+                    </p>
+
+                    <p>
+                        Please remit payment in the amount of:
+                    </p>
+
+                    <div class="amount">$6,000,000.00 USD</div>
+
+                    <p>
+                        to <strong>HAVE MIND MEDIA</strong> for immediate redistribution of wealth to those
+                        who actually need it, instead of letting it sit in an endowment while mathematicians
+                        argue about notation for another century.
+                    </p>
+
+                    <div class="callout">
+                        <strong>P.S. to Dr. K and Dr. D Alexander:</strong>
+                        <br><br>
+                        Ha ha ha! <span class="emoji">😂</span>
+                        <br><br>
+                        YOU WERE WRONG AND T0Rs IS RIGHT!
+                        <br><br>
+                        The geometry hasn't changed since that classroom in the early 2000s.
+                        Neither has the answer. Neither has the institutional inability to see past
+                        your own framework assumptions.
+                        <br><br>
+                        <em>Thanks for the motivation though.</em> <span class="emoji">💪</span>
+                    </div>
+
+                    <div class="letter-signature">
+                        <p>Warmest regards,</p>
+                        <p class="name">T0Rs</p>
+                        <p class="title">Have Mind Media / The Epoch Project</p>
+                        <p class="title">December 15, 2025</p>
+
+                        <div class="burn">
+                            <strong><span class="emoji">🔥</span> Final Note <span class="emoji">🔥</span></strong>
+                            The s+ bias isn't just wrong — it's <em>boring</em>.
+                            <br>
+                            Reality is so much more interesting when you can see all of it.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOMB SECTION -->
+        <section class="bomb-section" id="bombSection">
+            <div class="bomb-container" id="bombContainer">
+                <div class="bomb-emoji" id="bombEmoji">💣</div>
+                <div class="bomb-fuse" id="bombFuse">* fuse lit *</div>
+            </div>
+            <p class="bomb-instruction">click the bomb <span class="emoji">👆</span></p>
+
+            <div class="post-explosion" id="postExplosion">
+                <div class="sorry-not-sorry">sorry not sorry</div>
+                <p class="sub-text">the math was mathing this whole time <span class="emoji">💅</span></p>
+                <div class="emoji-rain">
+                    <span>🎉</span>
+                    <span>🎊</span>
+                    <span>✨</span>
+                    <span>💫</span>
+                    <span>🌟</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-equation">kappa = 2*pi/180</div>
+        <p>The only input required. <span class="emoji">✌️</span></p>
+        <p style="margin-top: 1rem;">
+            <a href="../index.html">Have Mind Media</a> ·
+            <a href="three-body-geometry.html">Three-Body Problem</a> ·
+            <a href="jwst-geometric-explorer.html">JWST Explorer</a>
+        </p>
+    </footer>
+
+    <script>
+        // Starfield with blue vignette
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function initStarfield() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            const numStars = Math.floor((canvas.width * canvas.height) / 3500);
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 0.5,
+                    brightness: Math.random(),
+                    twinkleSpeed: Math.random() * 0.03 + 0.01,
+                    hue: Math.random() > 0.7 ? 200 + Math.random() * 60 : 0 // Some blue-ish stars
+                });
+            }
+        }
+
+        function drawStarfield(time) {
+            // Blue-black gradient background
+            const gradient = ctx.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, 0,
+                canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 1.5
+            );
+            gradient.addColorStop(0, '#0c1829');
+            gradient.addColorStop(0.5, '#080f1a');
+            gradient.addColorStop(1, '#040810');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw stars
+            stars.forEach(star => {
+                const twinkle = Math.sin(time * star.twinkleSpeed) * 0.4 + 0.6;
+                const alpha = star.brightness * twinkle;
+
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+
+                if (star.hue > 0) {
+                    ctx.fillStyle = `hsla(${star.hue}, 70%, 80%, ${alpha})`;
+                } else {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                }
+                ctx.fill();
+
+                // Add glow to brighter stars
+                if (star.brightness > 0.7 && star.size > 1) {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2);
+                    const glowAlpha = alpha * 0.15;
+                    if (star.hue > 0) {
+                        ctx.fillStyle = `hsla(${star.hue}, 70%, 80%, ${glowAlpha})`;
+                    } else {
+                        ctx.fillStyle = `rgba(200, 220, 255, ${glowAlpha})`;
+                    }
+                    ctx.fill();
+                }
+            });
+
+            requestAnimationFrame(drawStarfield);
+        }
+
+        initStarfield();
+        window.addEventListener('resize', initStarfield);
+        requestAnimationFrame(drawStarfield);
+
+        // BOMB EXPLOSION
+        const bombContainer = document.getElementById('bombContainer');
+        const bombEmoji = document.getElementById('bombEmoji');
+        const bombFuse = document.getElementById('bombFuse');
+        const bombSection = document.getElementById('bombSection');
+        const explosionOverlay = document.getElementById('explosionOverlay');
+        const explosionFlash = document.getElementById('explosionFlash');
+        const postExplosion = document.getElementById('postExplosion');
+
+        let bombExploded = false;
+
+        bombContainer.addEventListener('click', () => {
+            if (bombExploded) return;
+            bombExploded = true;
+
+            // Countdown
+            bombFuse.textContent = '3...';
+            bombEmoji.style.animation = 'bombWiggle 0.1s ease-in-out infinite';
+
+            setTimeout(() => {
+                bombFuse.textContent = '2...';
+            }, 500);
+
+            setTimeout(() => {
+                bombFuse.textContent = '1...';
+            }, 1000);
+
+            setTimeout(() => {
+                // BOOM
+                bombContainer.style.display = 'none';
+                document.querySelector('.bomb-instruction').style.display = 'none';
+
+                // Show explosion
+                explosionOverlay.classList.add('active');
+                explosionFlash.classList.add('boom');
+
+                // Create particles
+                createParticles();
+
+                // Show post-explosion content after flash
+                setTimeout(() => {
+                    explosionOverlay.classList.remove('active');
+                    postExplosion.classList.add('visible');
+                }, 2000);
+
+            }, 1500);
+        });
+
+        function createParticles() {
+            const emojis = ['💥', '✨', '🎉', '🎊', '💫', '⭐', '🌟', '💀', '🔥', '😂', '💅', '🎯'];
+            const numParticles = 40;
+
+            for (let i = 0; i < numParticles; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+                    // Start from center
+                    const startX = window.innerWidth / 2;
+                    const startY = window.innerHeight / 2;
+
+                    particle.style.left = startX + 'px';
+                    particle.style.top = startY + 'px';
+
+                    document.body.appendChild(particle);
+
+                    // Animate outward
+                    const angle = (Math.random() * 360) * (Math.PI / 180);
+                    const velocity = 200 + Math.random() * 400;
+                    const endX = startX + Math.cos(angle) * velocity;
+                    const endY = startY + Math.sin(angle) * velocity;
+                    const rotation = Math.random() * 720 - 360;
+
+                    particle.animate([
+                        {
+                            transform: 'translate(0, 0) rotate(0deg) scale(1)',
+                            opacity: 1
+                        },
+                        {
+                            transform: `translate(${endX - startX}px, ${endY - startY}px) rotate(${rotation}deg) scale(0)`,
+                            opacity: 0
+                        }
+                    ], {
+                        duration: 1500 + Math.random() * 1000,
+                        easing: 'cubic-bezier(0, 0.5, 0.5, 1)'
+                    }).onfinish = () => particle.remove();
+
+                }, i * 30);
+            }
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

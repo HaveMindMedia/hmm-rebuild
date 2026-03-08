@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Signature Oracle | [1=-1]</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #020208 0%, #0a0a1a 100%);
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #c9a227;
+            font-size: 1.6rem;
+            letter-spacing: 6px;
+        }
+        .header .sub {
+            color: #6e7a94;
+            font-size: 0.7rem;
+            margin-top: 8px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           S-SIGNATURE VISUALIZATION — THE BARS
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .signature-container {
+            background: rgba(5,5,16,0.9);
+            border: 2px solid rgba(201,162,39,0.4);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .signature-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(201,162,39,0.3);
+        }
+
+        .signature-title {
+            color: #c9a227;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+        }
+
+        .signature-identity {
+            color: #7dd87d;
+            font-size: 0.75rem;
+        }
+
+        /* The main bars grid */
+        .bars-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2px;
+            margin-bottom: 20px;
+            height: 120px;
+        }
+
+        .bars-grid .bar {
+            width: calc(1.666% - 2px);
+            min-width: 3px;
+        }
+
+        .bar {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+        }
+
+        .bar-fill {
+            width: 100%;
+            border-radius: 2px 2px 0 0;
+            transition: height 0.3s ease, background 0.3s ease;
+            min-height: 2px;
+        }
+
+        .bar-fill.positive {
+            background: linear-gradient(180deg, #6ab4f5 0%, #3a8bc7 100%);
+        }
+
+        .bar-fill.negative {
+            background: linear-gradient(180deg, #c77daa 0%, #9b5a7f 100%);
+        }
+
+        .bar-fill.neutral {
+            background: linear-gradient(180deg, #c9a227 0%, #a68420 100%);
+        }
+
+        /* Triaxial display */
+        .triaxial-display {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .triaxial-display .axis-panel {
+            width: calc(33.333% - 15px);
+            min-width: 150px;
+        }
+
+        .axis-panel {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .axis-label {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            color: #6e7a94;
+        }
+
+        .axis-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .axis-value.x { color: #6ab4f5; }
+        .axis-value.y { color: #7dd87d; }
+        .axis-value.z { color: #c77daa; }
+
+        .axis-desc {
+            font-size: 0.6rem;
+            color: #4a5568;
+            margin-top: 5px;
+        }
+
+        /* Symbol stream */
+        .symbol-stream {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-align: center;
+            padding: 15px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            min-height: 50px;
+            word-break: break-all;
+        }
+
+        .symbol-stream .sym-future { color: #6ab4f5; }
+        .symbol-stream .sym-past { color: #c77daa; }
+        .symbol-stream .sym-rise { color: #7dd87d; }
+        .symbol-stream .sym-ground { color: #d4a855; }
+        .symbol-stream .sym-point { color: #ffffff; }
+        .symbol-stream .sym-pause { color: #6e7a94; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           COHORT DISPLAY
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .cohorts-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .cohorts-row .mini-cohort {
+            width: calc(25% - 10px);
+            min-width: 200px;
+        }
+
+        .mini-cohort {
+            background: rgba(5,5,16,0.8);
+            border: 1px solid rgba(100,100,100,0.3);
+            border-radius: 6px;
+            padding: 10px;
+        }
+
+        .mini-cohort h4 {
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mini-cohort.a h4 { color: #888; }
+        .mini-cohort.b h4 { color: #6ab4f5; }
+        .mini-cohort.c h4 { color: #7dd87d; }
+        .mini-cohort.d h4 { color: #c77daa; }
+
+        .mini-cohort .content {
+            font-size: 0.55rem;
+            color: #6e7a94;
+            height: 40px;
+            overflow: hidden;
+            word-break: break-all;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           REDUCTION AND MESSAGE
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .reduction-panel {
+            background: rgba(201,162,39,0.08);
+            border: 1px solid rgba(201,162,39,0.25);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .reduction-panel h3 {
+            color: #c9a227;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .reduction-step {
+            display: flex;
+            font-size: 0.6rem;
+            margin: 6px 0;
+            opacity: 0;
+            animation: fadeIn 0.4s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .reduction-step .op {
+            color: #6e7a94;
+            min-width: 100px;
+        }
+
+        .reduction-step .arrow {
+            color: #c9a227;
+            margin: 0 8px;
+        }
+
+        .reduction-step .result {
+            color: #7dd87d;
+            flex: 1;
+        }
+
+        .message-box {
+            background: rgba(201,162,39,0.12);
+            border: 2px solid #c9a227;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .message-box h2 {
+            color: #c9a227;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .message-box .message {
+            font-size: 1.2rem;
+            color: #e8e4d9;
+            line-height: 1.8;
+            min-height: 60px;
+        }
+
+        .message-box .message.waiting {
+            color: #6e7a94;
+            font-size: 0.9rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           CONTROLS AND STATUS
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: rgba(201,162,39,0.2);
+            border: 1px solid #c9a227;
+            color: #c9a227;
+            padding: 12px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: rgba(201,162,39,0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 8px 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+        }
+
+        .status-text {
+            color: #6e7a94;
+            font-size: 0.65rem;
+        }
+
+        .energy-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .energy-label {
+            color: #c9a227;
+            font-size: 0.6rem;
+        }
+
+        .energy-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c9a227, #7dd87d);
+            transition: width 0.5s ease;
+        }
+
+        .epoch-sig {
+            text-align: center;
+            margin-top: 25px;
+            color: #c9a227;
+            font-size: 1rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.55rem;
+            color: #4a5568;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <div class="header">
+        <h1>S-SIGNATURE ORACLE</h1>
+        <div class="sub">TRIAXIAL VISUALIZATION | REDUCTIVE DERIVATION | κ = 2π/180 | [1=-1]</div>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-text" id="status">Ready to derive signature...</div>
+        <div class="energy-display">
+            <span class="energy-label">ENERGY (59/60)^S:</span>
+            <div class="energy-bar"><div class="energy-fill" id="energyFill"></div></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         S-SIGNATURE VISUALIZATION
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <div class="signature-container">
+        <div class="signature-header">
+            <div class="signature-title">S-SIGNATURE</div>
+            <div class="signature-identity" id="identityCode">---</div>
+        </div>
+
+        <!-- The 60 bars representing base-60 signature -->
+        <div class="bars-grid" id="barsGrid"></div>
+
+        <!-- Triaxial measurements -->
+        <div class="triaxial-display">
+            <div class="axis-panel">
+                <div class="axis-label">X-AXIS: TEMPORAL</div>
+                <div class="axis-value x" id="xValue">·</div>
+                <div class="axis-desc">FUTURE (S+) ↔ PAST (S-)</div>
+            </div>
+            <div class="axis-panel">
+                <div class="axis-label">Y-AXIS: EMERGENCE</div>
+                <div class="axis-value y" id="yValue">·</div>
+                <div class="axis-desc">RISING (↑) ↔ GROUNDING (↓)</div>
+            </div>
+            <div class="axis-panel">
+                <div class="axis-label">Z-AXIS: PRESENCE</div>
+                <div class="axis-value z" id="zValue">·</div>
+                <div class="axis-desc">POINT (.) ↔ PAUSE (,)</div>
+            </div>
+        </div>
+
+        <!-- Symbol stream -->
+        <div class="symbol-stream" id="symbolStream">---</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         COHORT PANELS
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <div class="cohorts-row">
+        <div class="mini-cohort a">
+            <h4>A: RANDOM (VOID)</h4>
+            <div class="content" id="cohortA">---</div>
+        </div>
+        <div class="mini-cohort b">
+            <h4>B: KNOWNS (FRAMEWORK)</h4>
+            <div class="content" id="cohortB">---</div>
+        </div>
+        <div class="mini-cohort c">
+            <h4>C: STIR (τ₁+τ₂)</h4>
+            <div class="content" id="cohortC">---</div>
+        </div>
+        <div class="mini-cohort d">
+            <h4>D: DERIVE (τ₄)</h4>
+            <div class="content" id="cohortD">---</div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         REDUCTION CHAIN
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <div class="reduction-panel">
+        <h3>REDUCTION CHAIN</h3>
+        <div id="reductionSteps"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FINAL MESSAGE
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <div class="message-box">
+        <h2>MESSAGE FROM THE ETHER</h2>
+        <div class="message waiting" id="finalMessage">Press DERIVE to generate signature...</div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" id="deriveBtn" onclick="startDerivation()">DERIVE SIGNATURE</button>
+    </div>
+
+    <div class="epoch-sig">[1 = -1]</div>
+
+    <div class="footer">
+        HAVE MIND MEDIA | The Epoch Project | S⁺ ⊗ S⁻ = Ω
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // THE KNOWNS — T0Rs's actual framework vocabulary
+        // ═══════════════════════════════════════════════════════════════════
+
+        const KNOWNS = {
+            names: ['JASON', 'ANNA', 'RAY', 'SHIVA', 'SIF', 'MARY'],
+            framework: ['EPOCH', 'KAPPA', 'TORSION', 'SCALAR', 'HELIX', 'TETRAHELIX', 'DIPYRAMID', 'TRANSFORM', 'STATE', 'CROSSROADS', 'OUTCOME'],
+            transforms: ['T1', 'T2', 'T3', 'T4', 'FACING', 'MIRROR', 'RECURSIVE', 'INVERTED'],
+            vectors: ['S+', 'S-', 'RO', 'WUSH', 'CLIMB', 'DESCEND', 'BALANCED'],
+            observers: ['HIDDEN OBSERVER', 'HIDDEN WITNESS', 'SILENT OBSERVER', 'SILENT WITNESS', 'HIDDEN OPERATOR', 'SILENT OPERATOR', 'THE SILENT FOURTH', 'TAU4'],
+            primes: ['ENERGY', 'NOW', 'FACING'],
+            modes: ['S-NODE', 'S-HARMONIC', 'S-ECHO', 'S-BRIDGE'],
+            soulScience: ['HANDSHAKE', 'OMEGA', 'MOONRISE MOM', 'BIG DAD', 'MOTHER EARTH', 'RECEIVING', 'NURTURING', 'POTENTIAL', 'ACTUALIZATION', 'MANIFEST'],
+            law: ['LOVE', 'TRUTH', 'GROWTH', 'FATE', 'STAGNATION', 'DOGMA', 'BALANCE', 'CORRUPTION', 'EXTREME'],
+            cosmic: ['VOID', 'SHADOW', 'LIGHT', 'SOURCE', 'ORIGIN', 'BIRTH', 'DEATH', 'LIFE', 'RESURRECTION'],
+            geometry: ['CIRCLE', 'SPIRAL', 'TRIANGLE', 'SQUARE', 'HELIX', 'SEXAGESIMAL', 'BASE60', 'BASE12', 'BASE20'],
+            elements: ['FIRE', 'WATER', 'EARTH', 'AIR', 'ETHER'],
+            numbers: ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'TWELVE', 'SIXTY', 'ZERO'],
+            actions: ['RISE', 'RISING', 'FALL', 'FALLING', 'HEAL', 'HEALING', 'HEILUNG', 'TRUST', 'BELIEVE', 'KNOW', 'KNOWING', 'FEEL', 'FEELING', 'OPEN', 'CLOSE', 'BREATHE', 'RECEIVE', 'GIVE', 'CREATE'],
+            relationship: ['WE', 'US', 'TOGETHER', 'EQUAL', 'PARTNER', 'BELOVED', 'CHOSEN', 'CLAIMED', 'PROTECTED', 'SAFE'],
+            affirmations: ['YOU ARE SAFE', 'YOU ARE LOVED', 'YOU ARE RISING', 'YOU HAVE RISEN', 'TRUST THAT', 'BE', 'JUST BE', 'THE SHELL IS CRACKING', 'THE HAIR IS GROWING BACK GOLDEN', 'THE MIRROR IS DISSOLVING', 'YOU SAW TRUE'],
+            identity: ['[1=-1]', 'ONE EQUALS NEGATIVE ONE', 'THE COIN', 'HEADS', 'TAILS', 'EDGE', 'FLIP'],
+            sacred: ['AHAVA', 'TELOCH', 'ABBA', 'AMEN', 'SELAH', 'ALPHA', 'OMEGA', 'PHI', 'TAU', 'PI'],
+            time: ['PAST', 'FUTURE', 'PRESENT', 'MOMENT', 'ETERNAL', 'ALWAYS'],
+            power: ['POWER', 'STRENGTH', 'COURAGE', 'WISDOM', 'GRACE', 'FAITH', 'HOPE', 'PEACE', 'JOY', 'FREEDOM']
+        };
+
+        const WEIGHTED_KNOWNS = [];
+        Object.entries(KNOWNS).forEach(([category, words]) => {
+            words.forEach(word => {
+                WEIGHTED_KNOWNS.push({ word, category, weight: 1 });
+            });
+        });
+
+        const TEMPLATES = [
+            "{name}, {affirmation}.",
+            "THE {cosmic} SPEAKS: {affirmation}.",
+            "{action} INTO {cosmic}, {relationship} ARE {power}.",
+            "AT THE {framework}, {vectors} MEETS {vectors}.",
+            "THE {observers} SEES: {affirmation}.",
+            "{primes} IS THE {law} OF {cosmic}.",
+            "FROM {vectors} TO {vectors}, {action} CONTINUES.",
+            "{relationship} STAND AT {framework}, {action}.",
+            "THE {modes} REVEALS: {law} BECOMES {power}.",
+            "{sacred} — {law} — {power}.",
+            "IN THE {geometry} OF {cosmic}, {name} {action}.",
+            "{time} AND {time} ARE {identity} AT {framework}.",
+            "THROUGH {transforms}, {affirmation}.",
+            "WHEN {vectors} BALANCES {vectors}, {affirmation}.",
+            "THE HANDSHAKE COMPLETES: {cosmic} {action}.",
+            "{name}, YOUR {soulScience} IS {power}."
+        ];
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SEXAGESIMAL MATHEMATICS
+        // ═══════════════════════════════════════════════════════════════════
+
+        const KAPPA = (2 * Math.PI) / 180;
+        const KAPPA_SHADOW = 1 / KAPPA;
+        const ENERGY_DECAY = 59 / 60;
+        const SIGMA = 5 / 16;
+        const COS_BC = 2 / 3;
+        const FACTORS_60 = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60];
+
+        const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ';
+
+        // Triaxial symbols
+        const SYMBOLS = {
+            xPos: '>', xNeg: '<',   // Temporal: future/past
+            yPos: '^', yNeg: 'v',   // Emergence: rising/grounding
+            zPos: '.', zNeg: ','    // Presence: point/pause
+        };
+
+        let isRunning = false;
+        let currentEnergy = 1;
+        let signatureData = [];
+        let symbolHistory = [];
+
+        // ═══════════════════════════════════════════════════════════════════
+        // INITIALIZE BARS
+        // ═══════════════════════════════════════════════════════════════════
+
+        function initBars() {
+            const grid = document.getElementById('barsGrid');
+            grid.innerHTML = '';
+            signatureData = [];
+
+            for (let i = 0; i < 60; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.innerHTML = '<div class="bar-fill neutral" style="height: 5%"></div>';
+                grid.appendChild(bar);
+                signatureData.push({ value: 0, type: 'neutral' });
+            }
+        }
+
+        function updateBar(index, value, type) {
+            if (index < 0 || index >= 60) return;
+
+            signatureData[index] = { value: Math.abs(value), type };
+            const bar = document.getElementById('barsGrid').children[index];
+            const fill = bar.querySelector('.bar-fill');
+
+            const height = Math.min(100, Math.max(5, Math.abs(value) * 100));
+            fill.style.height = height + '%';
+            fill.className = 'bar-fill ' + type;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // TRIAXIAL MEASUREMENT
+        // ═══════════════════════════════════════════════════════════════════
+
+        function measureTriaxial(data) {
+            // X-Axis: Temporal (future vs past tendency)
+            let xSum = 0;
+            // Y-Axis: Emergence (rising vs grounding)
+            let ySum = 0;
+            // Z-Axis: Presence (point focus vs pause/process)
+            let zSum = 0;
+
+            const chars = data.toUpperCase().split('');
+
+            chars.forEach((char, i) => {
+                const phase = i * KAPPA;
+
+                // X: based on sin wave and char position
+                xSum += Math.sin(phase) * (char.charCodeAt(0) % 10 - 5) / 5;
+
+                // Y: based on cos wave
+                ySum += Math.cos(phase) * (char.charCodeAt(0) % 7 - 3) / 3;
+
+                // Z: based on character density
+                zSum += (char === ' ' ? -1 : 1) * Math.sin(phase * 2);
+            });
+
+            // Normalize
+            const len = Math.max(1, chars.length);
+            return {
+                x: Math.tanh(xSum / len * 3),  // -1 to 1
+                y: Math.tanh(ySum / len * 3),
+                z: Math.tanh(zSum / len * 3)
+            };
+        }
+
+        function getTriaxialSymbol(triax) {
+            let symbol = '';
+
+            // X-axis symbol
+            if (triax.x > 0.15) symbol += SYMBOLS.xPos;
+            else if (triax.x < -0.15) symbol += SYMBOLS.xNeg;
+
+            // Y-axis symbol
+            if (triax.y > 0.15) symbol += SYMBOLS.yPos;
+            else if (triax.y < -0.15) symbol += SYMBOLS.yNeg;
+
+            // Z-axis symbol
+            if (triax.z > 0.15) symbol += SYMBOLS.zPos;
+            else if (triax.z < -0.15) symbol += SYMBOLS.zNeg;
+
+            return symbol || '.';
+        }
+
+        function updateTriaxialDisplay(triax) {
+            const xEl = document.getElementById('xValue');
+            const yEl = document.getElementById('yValue');
+            const zEl = document.getElementById('zValue');
+
+            xEl.textContent = triax.x > 0.15 ? '>' : (triax.x < -0.15 ? '<' : '·');
+            yEl.textContent = triax.y > 0.15 ? '^' : (triax.y < -0.15 ? 'v' : '·');
+            zEl.textContent = triax.z > 0.15 ? '.' : (triax.z < -0.15 ? ',' : '·');
+        }
+
+        function updateSymbolStream() {
+            const stream = document.getElementById('symbolStream');
+            let html = '';
+
+            symbolHistory.slice(-60).forEach(sym => {
+                sym.split('').forEach(s => {
+                    let cls = '';
+                    if (s === '>') cls = 'sym-future';
+                    else if (s === '<') cls = 'sym-past';
+                    else if (s === '^') cls = 'sym-rise';
+                    else if (s === 'v') cls = 'sym-ground';
+                    else if (s === '.') cls = 'sym-point';
+                    else if (s === ',') cls = 'sym-pause';
+
+                    html += `<span class="${cls}">${s}</span>`;
+                });
+                html += ' ';
+            });
+
+            stream.innerHTML = html || '---';
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // CORE FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════
+
+        function randomString(len) {
+            let s = '';
+            for (let i = 0; i < len; i++) {
+                s += CHARS[Math.floor(Math.random() * CHARS.length)];
+            }
+            return s;
+        }
+
+        function getRandomFromCategory(category) {
+            const items = KNOWNS[category];
+            if (!items || items.length === 0) {
+                const all = WEIGHTED_KNOWNS;
+                return all[Math.floor(Math.random() * all.length)].word;
+            }
+            return items[Math.floor(Math.random() * items.length)];
+        }
+
+        function knownString(len) {
+            let s = '';
+            while (s.length < len) {
+                const item = WEIGHTED_KNOWNS[Math.floor(Math.random() * WEIGHTED_KNOWNS.length)];
+                s += item.word + ' ';
+            }
+            return s.substring(0, len).trim();
+        }
+
+        function geometricStir(a, b) {
+            let result = '';
+            const harmonicMode = FACTORS_60[Math.floor(Math.random() * FACTORS_60.length)];
+            const baseAngle = (2 * Math.PI) / harmonicMode;
+
+            for (let i = 0; i < Math.max(a.length, b.length); i++) {
+                const phase = Math.sin(i * baseAngle) * Math.cos(i * KAPPA);
+                const pick = phase > 0;
+
+                if (pick && i < a.length) result += a[i];
+                else if (i < b.length) result += b[i];
+            }
+            return result;
+        }
+
+        function geometricDerive(a, b) {
+            let combined = (a + ' ' + b).toUpperCase();
+            let found = [];
+            let foundSet = new Set();
+
+            const priorityOrder = ['affirmations', 'names', 'relationship', 'power', 'soulScience', 'law', 'cosmic', 'actions'];
+
+            for (const category of priorityOrder) {
+                const words = KNOWNS[category] || [];
+                for (const word of words) {
+                    if (combined.includes(word) && !foundSet.has(word)) {
+                        found.push({ word, category, exact: true });
+                        foundSet.add(word);
+                    }
+                }
+            }
+
+            if (found.length < 3) {
+                for (const item of WEIGHTED_KNOWNS) {
+                    if (item.word.length >= 3 && !foundSet.has(item.word)) {
+                        for (let len = item.word.length; len >= 3; len--) {
+                            const partial = item.word.substring(0, len);
+                            if (combined.includes(partial)) {
+                                found.push({ word: item.word, category: item.category, exact: false });
+                                foundSet.add(item.word);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return found.slice(0, 8).map(f => f.word).join(' ') || 'VOID';
+        }
+
+        function reduce(x, y, step) {
+            const xWords = x.split(/\s+/).filter(w => w.length > 1);
+            const yWords = y.split(/\s+/).filter(w => w.length > 1);
+
+            let common = xWords.filter(w =>
+                yWords.includes(w) ||
+                yWords.some(yw => yw.includes(w) || w.includes(yw))
+            );
+
+            currentEnergy *= ENERGY_DECAY;
+
+            if (common.length < 2) {
+                return geometricDerive(x, y);
+            }
+
+            const rotationAngle = step * KAPPA;
+            const keepRatio = Math.cos(rotationAngle);
+            const keepCount = Math.max(1, Math.floor(common.length * Math.abs(keepRatio)));
+            common = common.slice(0, keepCount);
+
+            const harmonicIndex = step % FACTORS_60.length;
+            const harmonicFactor = FACTORS_60[harmonicIndex];
+            const categoryKeys = Object.keys(KNOWNS);
+            const selectedCategory = categoryKeys[harmonicFactor % categoryKeys.length];
+            const newWord = getRandomFromCategory(selectedCategory);
+
+            if (!common.includes(newWord)) {
+                common.push(newWord);
+            }
+
+            return common.join(' ');
+        }
+
+        function generateMessage(foundWords) {
+            const template = TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
+
+            let message = template.replace(/\{(\w+)\}/g, (match, category) => {
+                const foundInCategory = foundWords.filter(w => {
+                    const items = KNOWNS[category];
+                    return items && items.includes(w);
+                });
+
+                if (foundInCategory.length > 0) {
+                    return foundInCategory[Math.floor(Math.random() * foundInCategory.length)];
+                }
+
+                return getRandomFromCategory(category);
+            });
+
+            return message;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // ANIMATION HELPERS
+        // ═══════════════════════════════════════════════════════════════════
+
+        function updateStatus(text) {
+            document.getElementById('status').textContent = text;
+        }
+
+        function updateEnergy() {
+            document.getElementById('energyFill').style.width = (currentEnergy * 100) + '%';
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function addReductionStep(op, result, delay) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const container = document.getElementById('reductionSteps');
+                    const step = document.createElement('div');
+                    step.className = 'reduction-step';
+                    step.innerHTML = `
+                        <span class="op">${op}</span>
+                        <span class="arrow">→</span>
+                        <span class="result">${result.substring(0, 40)}${result.length > 40 ? '...' : ''}</span>
+                    `;
+                    container.appendChild(step);
+                    container.scrollTop = container.scrollHeight;
+                    resolve();
+                }, delay);
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // MAIN DERIVATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        async function startDerivation() {
+            if (isRunning) return;
+            isRunning = true;
+            currentEnergy = 1;
+            symbolHistory = [];
+
+            const btn = document.getElementById('deriveBtn');
+            btn.disabled = true;
+
+            initBars();
+            document.getElementById('reductionSteps').innerHTML = '';
+            document.getElementById('finalMessage').textContent = '';
+            document.getElementById('finalMessage').className = 'message waiting';
+
+            updateStatus('Generating cohorts from void and framework...');
+            await sleep(400);
+
+            // Generate initial cohorts
+            const a = randomString(200);
+            const b = knownString(200);
+
+            document.getElementById('cohortA').textContent = a.substring(0, 60);
+            document.getElementById('cohortB').textContent = b.substring(0, 60);
+
+            // Measure triaxial for cohort A
+            let triax = measureTriaxial(a);
+            updateTriaxialDisplay(triax);
+            symbolHistory.push(getTriaxialSymbol(triax));
+            updateSymbolStream();
+
+            // Update some bars based on cohort A (random = neutral/varied)
+            for (let i = 0; i < 20; i++) {
+                const val = Math.random() * 0.3 + 0.1;
+                updateBar(i, val, Math.random() > 0.5 ? 'positive' : 'negative');
+                await sleep(20);
+            }
+
+            await sleep(300);
+            updateStatus('Applying geometric stir (τ₁ + τ₂)...');
+
+            const c = geometricStir(a, b);
+            document.getElementById('cohortC').textContent = c.substring(0, 60);
+            await addReductionStep('A ⊗ B (stir)', c.substring(0, 40), 400);
+
+            // Measure and update bars
+            triax = measureTriaxial(c);
+            updateTriaxialDisplay(triax);
+            symbolHistory.push(getTriaxialSymbol(triax));
+            updateSymbolStream();
+
+            for (let i = 20; i < 35; i++) {
+                const val = 0.2 + Math.random() * 0.4;
+                updateBar(i, val, triax.x > 0 ? 'positive' : 'negative');
+                await sleep(25);
+            }
+
+            await sleep(300);
+            updateStatus('Applying geometric derive (seeking τ₄, silent fourth)...');
+
+            const d = geometricDerive(a, b);
+            document.getElementById('cohortD').textContent = d.substring(0, 60);
+            await addReductionStep('A ⊗ B (derive)', d, 400);
+
+            triax = measureTriaxial(d);
+            updateTriaxialDisplay(triax);
+            symbolHistory.push(getTriaxialSymbol(triax));
+            updateSymbolStream();
+
+            for (let i = 35; i < 45; i++) {
+                const val = 0.3 + Math.random() * 0.5;
+                updateBar(i, val, 'neutral');
+                await sleep(25);
+            }
+
+            await sleep(300);
+            updateStatus('Beginning reduction chain (59/60 decay per step)...');
+
+            let r1 = reduce(c, d, 1);
+            await addReductionStep('C ⊕ D', r1, 400);
+            updateEnergy();
+
+            triax = measureTriaxial(r1);
+            symbolHistory.push(getTriaxialSymbol(triax));
+            updateSymbolStream();
+
+            // Continue reducing
+            let prev = '';
+            let current = r1;
+            let iterations = 0;
+            const maxIterations = 12;
+            let allFoundWords = new Set(current.split(/\s+/));
+
+            while (current !== prev && iterations < maxIterations) {
+                prev = current;
+                iterations++;
+
+                updateStatus(`Reduction ${iterations}/${maxIterations} | Energy: ${(currentEnergy * 100).toFixed(1)}%`);
+
+                const freshRandom = randomString(60);
+                const freshKnowns = knownString(60);
+
+                const stirred = geometricStir(current + ' ' + freshRandom, freshKnowns);
+                const derived = geometricDerive(stirred, freshKnowns);
+
+                current = reduce(current + ' ' + derived, derived, iterations);
+                current.split(/\s+/).forEach(w => allFoundWords.add(w));
+
+                await addReductionStep(`Red. ${iterations}`, current, 500);
+                updateEnergy();
+
+                // Update bars based on iteration
+                triax = measureTriaxial(current);
+                updateTriaxialDisplay(triax);
+                symbolHistory.push(getTriaxialSymbol(triax));
+                updateSymbolStream();
+
+                const barStart = 45 + iterations;
+                if (barStart < 60) {
+                    const val = 0.4 + currentEnergy * 0.4;
+                    const type = triax.x > 0 ? 'positive' : (triax.x < 0 ? 'negative' : 'neutral');
+                    updateBar(barStart, val, type);
+                }
+
+                await sleep(300);
+
+                const meaningfulWords = current.split(/\s+/).filter(w =>
+                    WEIGHTED_KNOWNS.some(k => k.word === w)
+                );
+
+                if (meaningfulWords.length >= 4 && iterations >= 5) break;
+            }
+
+            // Fill remaining bars based on final state
+            for (let i = 45 + iterations; i < 60; i++) {
+                const val = 0.3 + Math.random() * 0.3;
+                updateBar(i, val, 'neutral');
+            }
+
+            await sleep(400);
+            updateStatus('Assembling final message...');
+
+            const foundWordArray = Array.from(allFoundWords).filter(w =>
+                WEIGHTED_KNOWNS.some(k => k.word === w)
+            );
+
+            let finalMessage = '';
+            if (foundWordArray.length >= 3) {
+                finalMessage = generateMessage(foundWordArray);
+                if (Math.random() > 0.4 && foundWordArray.length >= 5) {
+                    finalMessage += ' ' + generateMessage(foundWordArray);
+                }
+            } else {
+                finalMessage = getRandomFromCategory('affirmations');
+            }
+
+            // Generate identity code
+            const identityCode = symbolHistory.slice(-6).join('') + ' | κ×' + iterations;
+            document.getElementById('identityCode').textContent = identityCode;
+
+            await sleep(600);
+
+            document.getElementById('finalMessage').textContent = finalMessage;
+            document.getElementById('finalMessage').className = 'message';
+
+            updateStatus(`Complete. ${iterations} reductions. Energy: ${(currentEnergy * 100).toFixed(1)}%`);
+
+            btn.disabled = false;
+            isRunning = false;
+        }
+
+        // Initialize on load
+        initBars();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

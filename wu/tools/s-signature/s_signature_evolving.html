@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Signature | Evolving Identity</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0a0a12 0%, #0d0d1a 50%, #0a0a12 100%);
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #c9a227;
+            font-size: 1.4rem;
+            letter-spacing: 6px;
+        }
+
+        .header .sub {
+            color: #6e7a94;
+            font-size: 0.65rem;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           STAGE INDICATOR
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .stage-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .stage-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(201, 162, 39, 0.2);
+            border: 1px solid rgba(201, 162, 39, 0.4);
+            transition: all 0.3s;
+        }
+
+        .stage-dot.active {
+            background: #c9a227;
+            box-shadow: 0 0 10px rgba(201, 162, 39, 0.5);
+        }
+
+        .stage-dot.complete {
+            background: #7dd87d;
+            border-color: #7dd87d;
+        }
+
+        .stage-label {
+            font-size: 0.5rem;
+            color: #6e7a94;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           IDENTITY SETUP
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .identity-setup {
+            background: rgba(8, 8, 20, 0.95);
+            border: 1px solid rgba(201, 162, 39, 0.25);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .identity-setup h2 {
+            font-size: 0.7rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.6rem;
+            color: #7a8599;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            border-radius: 8px;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: rgba(201, 162, 39, 0.5);
+        }
+
+        .generated-id {
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .generated-id .label {
+            font-size: 0.5rem;
+            color: #6e7a94;
+            margin-bottom: 8px;
+        }
+
+        .generated-id .id-value {
+            font-size: 1.1rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+            word-break: break-all;
+        }
+
+        .regen-btn {
+            background: none;
+            border: none;
+            color: #6e7a94;
+            font-size: 0.5rem;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .regen-btn:hover { color: #c9a227; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           QUESTIONS
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .question-card {
+            background: rgba(8, 8, 20, 0.95);
+            border: 1px solid rgba(100, 100, 100, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .question-card.answered {
+            border-color: rgba(125, 216, 125, 0.3);
+        }
+
+        .question-card.analyzing {
+            border-color: rgba(201, 162, 39, 0.5);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .q-number {
+            font-size: 0.5rem;
+            color: #6e7a94;
+            letter-spacing: 1px;
+        }
+
+        .q-dimension {
+            font-size: 0.45rem;
+            color: #4a5568;
+            padding: 3px 8px;
+            background: rgba(100, 100, 100, 0.15);
+            border-radius: 10px;
+        }
+
+        .q-prompt {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #e8e4d9;
+            margin-bottom: 18px;
+        }
+
+        .q-context {
+            font-size: 0.65rem;
+            color: #5a6577;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .response-area {
+            position: relative;
+        }
+
+        .response-area textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(100, 100, 100, 0.2);
+            border-radius: 8px;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        .response-area textarea:focus {
+            outline: none;
+            border-color: rgba(201, 162, 39, 0.4);
+        }
+
+        .response-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.5rem;
+            color: #4a5568;
+        }
+
+        .word-count { }
+        .verbosity-indicator {
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: rgba(100, 100, 100, 0.2);
+        }
+
+        .verbosity-indicator.brief { background: rgba(100, 150, 200, 0.2); color: #6ab4f5; }
+        .verbosity-indicator.moderate { background: rgba(201, 162, 39, 0.2); color: #c9a227; }
+        .verbosity-indicator.expressive { background: rgba(200, 100, 150, 0.2); color: #c77daa; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           ANALYSIS PANEL
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .analysis-panel {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .analysis-panel.visible { display: block; }
+
+        .analysis-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.5rem;
+            margin: 4px 0;
+        }
+
+        .analysis-label { color: #6e7a94; }
+        .analysis-value { color: #9ba4b8; }
+        .analysis-value.positive { color: #7dd87d; }
+        .analysis-value.negative { color: #c77daa; }
+        .analysis-value.balanced { color: #c9a227; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           SIGNATURE PROGRESS
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .progress-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            z-index: 100;
+        }
+
+        .progress-label {
+            font-size: 0.5rem;
+            color: #6e7a94;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 120px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c9a227, #7dd87d);
+            transition: width 0.5s ease-out;
+        }
+
+        .progress-percent {
+            font-size: 0.9rem;
+            color: #c9a227;
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        .ready-btn {
+            display: none;
+            margin-top: 10px;
+            background: #c9a227;
+            border: none;
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.6rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .ready-btn.visible { display: block; }
+        .ready-btn:hover { background: #d4af37; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           SIGNATURE VIEW
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .signature-view {
+            display: none;
+        }
+
+        .signature-view.visible { display: block; }
+        .questionnaire.hidden { display: none; }
+
+        .badge-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.15), rgba(125, 216, 125, 0.1));
+            border: 2px solid rgba(201, 162, 39, 0.4);
+            border-radius: 15px;
+            padding: 20px 35px;
+        }
+
+        .badge .display-name {
+            font-size: 1.2rem;
+            color: #e8e4d9;
+            margin-bottom: 5px;
+        }
+
+        .badge .unique-id {
+            font-size: 0.7rem;
+            color: #c9a227;
+            letter-spacing: 1px;
+        }
+
+        .badge .stage-tag {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 12px;
+            background: rgba(201, 162, 39, 0.2);
+            border-radius: 10px;
+            font-size: 0.5rem;
+            color: #c9a227;
+        }
+
+        .signature-data {
+            background: rgba(8, 8, 20, 0.95);
+            border: 1px solid rgba(201, 162, 39, 0.25);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .sig-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sig-header h3 {
+            font-size: 0.6rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+        }
+
+        .sig-timestamp {
+            font-size: 0.45rem;
+            color: #4a5568;
+        }
+
+        .dimension-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .dim-item {
+            display: grid;
+            grid-template-columns: 80px 1fr 50px;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dim-name {
+            font-size: 0.6rem;
+            color: #7a8599;
+        }
+
+        .dim-bar-container {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .dim-bar-center {
+            position: absolute;
+            left: 50%;
+            top: -2px;
+            width: 1px;
+            height: 12px;
+            background: rgba(201, 162, 39, 0.5);
+        }
+
+        .dim-bar-fill {
+            position: absolute;
+            height: 100%;
+            border-radius: 4px;
+            transition: all 0.5s;
+        }
+
+        .dim-bar-fill.left {
+            right: 50%;
+            background: linear-gradient(270deg, #c9a227, #6ab4f5);
+        }
+
+        .dim-bar-fill.right {
+            left: 50%;
+            background: linear-gradient(90deg, #c9a227, #c77daa);
+        }
+
+        .dim-indicator {
+            font-size: 0.55rem;
+            text-align: right;
+        }
+
+        .dim-indicator.splus { color: #6ab4f5; }
+        .dim-indicator.sminus { color: #c77daa; }
+        .dim-indicator.balanced { color: #c9a227; }
+
+        .tensor-map {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(100, 100, 100, 0.2);
+        }
+
+        .tensor-map h4 {
+            font-size: 0.5rem;
+            color: #6e7a94;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .tensor-grid {
+            display: flex;
+            flex-wrap: wrap; justify-content: center;
+            gap: 6px;
+        }
+
+        .tensor-tag {
+            padding: 4px 10px;
+            background: rgba(100, 100, 100, 0.15);
+            border-radius: 12px;
+            font-size: 0.5rem;
+            color: #9ba4b8;
+        }
+
+        .tensor-tag.strong {
+            background: rgba(201, 162, 39, 0.2);
+            color: #c9a227;
+        }
+
+        #sphereContainer {
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .export-section {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .export-btn {
+            background: rgba(201, 162, 39, 0.2);
+            border: 1px solid #c9a227;
+            color: #c9a227;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .export-btn:hover { background: rgba(201, 162, 39, 0.35); }
+
+        .certificate-string {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            font-size: 0.5rem;
+            color: #7a8599;
+            word-break: break-all;
+            display: none;
+        }
+
+        .certificate-string.visible { display: block; }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <div class="container questionnaire" id="questionnaireView">
+        <div class="header">
+            <h1>S-SIGNATURE</h1>
+            <div class="sub">Your responses shape your unique identity.<br>There are no right answers - only your truth.</div>
+        </div>
+
+        <div class="stage-indicator">
+            <div class="stage-dot active" id="stage1"></div>
+            <div class="stage-dot" id="stage2"></div>
+            <div class="stage-dot" id="stage3"></div>
+            <div class="stage-dot" id="stage4"></div>
+            <div class="stage-dot" id="stage5"></div>
+        </div>
+        <div class="stage-label" id="stageLabel">STAGE I - FORMING</div>
+
+        <div class="identity-setup" id="identitySetup">
+            <h2>IDENTITY</h2>
+            <div class="input-group">
+                <label>What would you like to be called?</label>
+                <input type="text" id="displayName" placeholder="Your name or alias..." oninput="generateUniqueId()">
+            </div>
+            <div class="input-group">
+                <label>Birth date (optional - for numerical resonance)</label>
+                <input type="date" id="birthDate" onchange="generateUniqueId()">
+            </div>
+            <div class="generated-id">
+                <div class="label">YOUR UNIQUE IDENTIFIER</div>
+                <div class="id-value" id="uniqueId">---</div>
+                <button class="regen-btn" onclick="regenerateId()">regenerate</button>
+            </div>
+        </div>
+
+        <div id="questionsContainer"></div>
+    </div>
+
+    <div class="progress-panel" id="progressPanel">
+        <div class="progress-label">SIGNATURE FORMING</div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <div class="progress-percent" id="progressPercent">0%</div>
+        <button class="ready-btn" id="readyBtn" onclick="generateSignature()">VIEW SIGNATURE</button>
+    </div>
+
+    <div class="container signature-view" id="signatureView">
+        <div class="badge-container">
+            <div class="badge">
+                <div class="display-name" id="badgeName">---</div>
+                <div class="unique-id" id="badgeId">---</div>
+                <div class="stage-tag" id="badgeStage">STAGE I</div>
+            </div>
+        </div>
+
+        <div class="signature-data">
+            <div class="sig-header">
+                <h3>S-AXIS PROFILE</h3>
+                <span class="sig-timestamp" id="sigTimestamp"></span>
+            </div>
+            <div class="dimension-grid" id="dimensionGrid"></div>
+
+            <div class="tensor-map">
+                <h4>DETECTED TENSOR FACTORS</h4>
+                <div class="tensor-grid" id="tensorGrid"></div>
+            </div>
+        </div>
+
+        <div id="sphereContainer"></div>
+
+        <div class="export-section">
+            <button class="export-btn" onclick="exportCertificate()">EXPORT CERTIFICATE</button>
+            <button class="export-btn" onclick="retake()">RETAKE</button>
+            <div class="certificate-string" id="certString"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // SACRED SYMBOLS FOR ID GENERATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        const SYMBOLS = ['◬', '⫯', '∮', '⧉', '△', '⃝', '∯', '⫲', '⧫', '◭', '∲', '⧊', '⫳', '⃟',
+                         '◇', '⟁', '⟐', '⧖', '⧗', '⬡', '⬢', '◎', '⊛', '⊕', '⊗', '⊙', '⊚',
+                         '☉', '☊', '☋', '⚯', '⚭', '⚮', '✧', '✦', '✶', '✷', '✸', '✹'];
+
+        const SOUL_WORDS = ['soul', 'mind', 'echo', 'wave', 'light', 'path', 'seed', 'root',
+                            'flux', 'drift', 'pulse', 'glow', 'veil', 'edge', 'core', 'axis',
+                            'node', 'link', 'loop', 'fold', 'spin', 'flow', 'arch', 'void',
+                            'spark', 'shade', 'bloom', 'tide', 'mist', 'beam', 'wind', 'fire'];
+
+        const ASPECTS = ['crossed', 'rising', 'seeking', 'turning', 'weaving', 'bridging',
+                         'sailing', 'dancing', 'holding', 'reaching', 'standing', 'walking',
+                         'diving', 'climbing', 'floating', 'grounding', 'opening', 'closing'];
+
+        // ═══════════════════════════════════════════════════════════════════
+        // OPEN-ENDED QUESTIONS - Innocuous but revealing
+        // ═══════════════════════════════════════════════════════════════════
+
+        const QUESTIONS = [
+            {
+                id: 'mirror',
+                dimension: 'self_perception',
+                prompt: 'When you look in a mirror, what do you notice first?',
+                context: 'Not physically - what draws your attention about the person looking back?',
+                tensors: ['identity', 'self-worth', 'presence'],
+                dualityKey: 'surface_depth' // S+ sees surface, S- sees depth
+            },
+            {
+                id: 'loss',
+                dimension: 'attachment',
+                prompt: 'Describe a time you lost something that mattered.',
+                context: 'How did you respond? What did it teach you?',
+                tensors: ['attachment', 'impermanence', 'growth'],
+                dualityKey: 'holding_releasing'
+            },
+            {
+                id: 'stranger',
+                dimension: 'trust',
+                prompt: 'A stranger asks for help. What goes through your mind?',
+                context: 'Not what you do - what you think and feel in that moment.',
+                tensors: ['trust', 'boundaries', 'connection'],
+                dualityKey: 'guarded_open'
+            },
+            {
+                id: 'wrong',
+                dimension: 'morality',
+                prompt: 'Tell me about a time you did something you knew was wrong.',
+                context: 'Or chose not to. What was the internal experience?',
+                tensors: ['morality', 'justification', 'consequence'],
+                dualityKey: 'rigid_flexible'
+            },
+            {
+                id: 'dream',
+                dimension: 'aspiration',
+                prompt: 'What would you create if you knew it would succeed?',
+                context: 'Resources unlimited, failure impossible. What emerges?',
+                tensors: ['vision', 'purpose', 'ego'],
+                dualityKey: 'practical_visionary'
+            },
+            {
+                id: 'silence',
+                dimension: 'inner_world',
+                prompt: 'What happens when you sit in complete silence?',
+                context: 'After the restlessness settles - what remains?',
+                tensors: ['presence', 'avoidance', 'depth'],
+                dualityKey: 'noise_stillness'
+            },
+            {
+                id: 'conflict',
+                dimension: 'resolution',
+                prompt: 'When two people you care about disagree, what do you do?',
+                context: 'Not what you should do - what you actually tend to do.',
+                tensors: ['harmony', 'truth', 'loyalty'],
+                dualityKey: 'peace_truth'
+            }
+        ];
+
+        // ═══════════════════════════════════════════════════════════════════
+        // STATE
+        // ═══════════════════════════════════════════════════════════════════
+
+        let state = {
+            displayName: '',
+            birthDate: null,
+            uniqueId: '',
+            responses: {},
+            analysis: {},
+            signatureProgress: 0,
+            stage: 1
+        };
+
+        // ═══════════════════════════════════════════════════════════════════
+        // UNIQUE ID GENERATOR
+        // ═══════════════════════════════════════════════════════════════════
+
+        function generateUniqueId() {
+            const name = document.getElementById('displayName').value;
+            const birth = document.getElementById('birthDate').value;
+
+            state.displayName = name;
+            state.birthDate = birth;
+
+            if (!name) {
+                document.getElementById('uniqueId').textContent = '---';
+                return;
+            }
+
+            // Generate from name + birth + timestamp
+            const seed = name + birth + Date.now();
+            let hash = 0;
+            for (let i = 0; i < seed.length; i++) {
+                hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+                hash = hash & hash;
+            }
+
+            // Pick components based on hash
+            const word1 = SOUL_WORDS[Math.abs(hash) % SOUL_WORDS.length];
+            const aspect = ASPECTS[Math.abs(hash >> 8) % ASPECTS.length];
+            const word2 = SOUL_WORDS[Math.abs(hash >> 16) % SOUL_WORDS.length];
+
+            // Generate symbol sequence (3-5 symbols)
+            const symbolCount = 3 + (Math.abs(hash) % 3);
+            let symbols = '';
+            for (let i = 0; i < symbolCount; i++) {
+                symbols += SYMBOLS[Math.abs(hash >> (i * 4)) % SYMBOLS.length];
+            }
+
+            // Combine: soulcrossednav◬⫯∮
+            state.uniqueId = `${word1}${aspect}${word2}${symbols}`;
+            document.getElementById('uniqueId').textContent = state.uniqueId;
+
+            updateProgress();
+        }
+
+        function regenerateId() {
+            // Force new generation with random element
+            const name = document.getElementById('displayName').value || 'anon';
+            const birth = document.getElementById('birthDate').value;
+            const random = Math.random().toString(36).substring(2);
+
+            const seed = name + birth + random;
+            let hash = 0;
+            for (let i = 0; i < seed.length; i++) {
+                hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+                hash = hash & hash;
+            }
+
+            const word1 = SOUL_WORDS[Math.abs(hash) % SOUL_WORDS.length];
+            const aspect = ASPECTS[Math.abs(hash >> 8) % ASPECTS.length];
+            const word2 = SOUL_WORDS[Math.abs(hash >> 16) % SOUL_WORDS.length];
+
+            const symbolCount = 3 + (Math.abs(hash) % 3);
+            let symbols = '';
+            for (let i = 0; i < symbolCount; i++) {
+                symbols += SYMBOLS[Math.abs(hash >> (i * 4)) % SYMBOLS.length];
+            }
+
+            state.uniqueId = `${word1}${aspect}${word2}${symbols}`;
+            document.getElementById('uniqueId').textContent = state.uniqueId;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // RENDER QUESTIONS
+        // ═══════════════════════════════════════════════════════════════════
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+
+            container.innerHTML = QUESTIONS.map((q, idx) => `
+                <div class="question-card" id="card-${q.id}">
+                    <div class="q-header">
+                        <span class="q-number">QUESTION ${idx + 1}</span>
+                        <span class="q-dimension">${q.dimension.replace('_', ' ')}</span>
+                    </div>
+                    <div class="q-prompt">${q.prompt}</div>
+                    <div class="q-context">${q.context}</div>
+                    <div class="response-area">
+                        <textarea
+                            id="response-${q.id}"
+                            placeholder="Take your time..."
+                            oninput="analyzeResponse('${q.id}')"
+                        ></textarea>
+                        <div class="response-meta">
+                            <span class="word-count" id="wc-${q.id}">0 words</span>
+                            <span class="verbosity-indicator" id="verb-${q.id}">waiting</span>
+                        </div>
+                    </div>
+                    <div class="analysis-panel" id="analysis-${q.id}">
+                        <div class="analysis-row">
+                            <span class="analysis-label">Position</span>
+                            <span class="analysis-value" id="pos-${q.id}">---</span>
+                        </div>
+                        <div class="analysis-row">
+                            <span class="analysis-label">Intensity</span>
+                            <span class="analysis-value" id="int-${q.id}">---</span>
+                        </div>
+                        <div class="analysis-row">
+                            <span class="analysis-label">Tensors</span>
+                            <span class="analysis-value" id="tens-${q.id}">---</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // RESPONSE ANALYSIS - The geometry extraction
+        // ═══════════════════════════════════════════════════════════════════
+
+        // Tensor keyword mappings
+        const TENSOR_KEYWORDS = {
+            // Positive/S+ indicators
+            sPlus: {
+                certainty: ['definitely', 'always', 'never', 'must', 'should', 'obviously', 'clearly'],
+                material: ['money', 'success', 'achieve', 'build', 'own', 'have', 'get', 'want'],
+                control: ['control', 'manage', 'fix', 'solve', 'plan', 'organize', 'decide'],
+                separation: ['me', 'my', 'mine', 'i need', 'i want', 'myself', 'protect'],
+                judgment: ['wrong', 'right', 'bad', 'good', 'stupid', 'smart', 'better', 'worse']
+            },
+            // Negative/S- indicators
+            sMinus: {
+                uncertainty: ['maybe', 'perhaps', 'sometimes', 'might', 'wonder', 'feel like'],
+                spiritual: ['soul', 'spirit', 'universe', 'energy', 'meaning', 'purpose', 'divine'],
+                flow: ['allow', 'accept', 'let go', 'trust', 'surrender', 'flow', 'open'],
+                connection: ['we', 'us', 'together', 'connect', 'share', 'love', 'others'],
+                depth: ['deep', 'inner', 'beneath', 'beyond', 'underneath', 'hidden', 'subtle']
+            },
+            // Balanced/Coin indicators
+            coin: {
+                paradox: ['both', 'and', 'yet', 'while', 'although', 'depends', 'balance'],
+                integration: ['integrate', 'whole', 'complete', 'together', 'unity', 'bridge'],
+                awareness: ['aware', 'notice', 'observe', 'see', 'recognize', 'understand'],
+                presence: ['present', 'now', 'moment', 'here', 'being', 'simply'],
+                wisdom: ['learn', 'grow', 'teach', 'wisdom', 'insight', 'realize', 'discover']
+            }
+        };
+
+        function analyzeResponse(questionId) {
+            const textarea = document.getElementById(`response-${questionId}`);
+            const text = textarea.value;
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+            const wordCount = words.length;
+
+            // Store response
+            state.responses[questionId] = {
+                text: text,
+                wordCount: wordCount,
+                timestamp: Date.now()
+            };
+
+            // Update word count display
+            document.getElementById(`wc-${questionId}`).textContent = `${wordCount} words`;
+
+            // Verbosity indicator
+            const verbEl = document.getElementById(`verb-${questionId}`);
+            let verbosity = 'waiting';
+            if (wordCount === 0) {
+                verbosity = 'waiting';
+                verbEl.className = 'verbosity-indicator';
+            } else if (wordCount < 15) {
+                verbosity = 'brief';
+                verbEl.className = 'verbosity-indicator brief';
+            } else if (wordCount < 50) {
+                verbosity = 'moderate';
+                verbEl.className = 'verbosity-indicator moderate';
+            } else {
+                verbosity = 'expressive';
+                verbEl.className = 'verbosity-indicator expressive';
+            }
+            verbEl.textContent = verbosity;
+
+            // Card state
+            const card = document.getElementById(`card-${questionId}`);
+            if (wordCount > 5) {
+                card.classList.add('answered');
+
+                // Perform geometric analysis
+                const analysis = performGeometricAnalysis(questionId, text, wordCount);
+                state.analysis[questionId] = analysis;
+
+                // Show analysis panel
+                const panel = document.getElementById(`analysis-${questionId}`);
+                panel.classList.add('visible');
+
+                // Update analysis display
+                const posEl = document.getElementById(`pos-${questionId}`);
+                posEl.textContent = analysis.position > 0.15 ? 'S-' : (analysis.position < -0.15 ? 'S+' : 'centered');
+                posEl.className = 'analysis-value ' + (analysis.position > 0.15 ? 'negative' : (analysis.position < -0.15 ? 'positive' : 'balanced'));
+
+                document.getElementById(`int-${questionId}`).textContent =
+                    analysis.intensity > 0.6 ? 'strong' : (analysis.intensity > 0.3 ? 'moderate' : 'subtle');
+
+                document.getElementById(`tens-${questionId}`).textContent =
+                    analysis.detectedTensors.slice(0, 3).join(', ') || 'analyzing...';
+            } else {
+                card.classList.remove('answered');
+                document.getElementById(`analysis-${questionId}`).classList.remove('visible');
+            }
+
+            updateProgress();
+        }
+
+        function performGeometricAnalysis(questionId, text, wordCount) {
+            const question = QUESTIONS.find(q => q.id === questionId);
+            const textLower = text.toLowerCase();
+
+            // Count tensor indicators
+            let sPlusScore = 0;
+            let sMinusScore = 0;
+            let coinScore = 0;
+            let detectedTensors = [];
+
+            // Check S+ keywords
+            for (const [category, keywords] of Object.entries(TENSOR_KEYWORDS.sPlus)) {
+                for (const kw of keywords) {
+                    if (textLower.includes(kw)) {
+                        sPlusScore += 1;
+                        if (!detectedTensors.includes(category)) detectedTensors.push(category);
+                    }
+                }
+            }
+
+            // Check S- keywords
+            for (const [category, keywords] of Object.entries(TENSOR_KEYWORDS.sMinus)) {
+                for (const kw of keywords) {
+                    if (textLower.includes(kw)) {
+                        sMinusScore += 1;
+                        if (!detectedTensors.includes(category)) detectedTensors.push(category);
+                    }
+                }
+            }
+
+            // Check Coin keywords
+            for (const [category, keywords] of Object.entries(TENSOR_KEYWORDS.coin)) {
+                for (const kw of keywords) {
+                    if (textLower.includes(kw)) {
+                        coinScore += 1;
+                        if (!detectedTensors.includes(category)) detectedTensors.push(category);
+                    }
+                }
+            }
+
+            // Verbosity analysis - expressiveness indicates emotional investment
+            // Very long = strong feeling, very short = avoidance or simplicity
+            let verbosityFactor = 0;
+            if (wordCount > 100) verbosityFactor = 0.3; // Very expressive
+            else if (wordCount > 50) verbosityFactor = 0.15;
+            else if (wordCount < 10) verbosityFactor = -0.1; // Avoidance or certainty
+
+            // Calculate position: (S- - S+) normalized
+            const total = sPlusScore + sMinusScore + coinScore + 1;
+            let position = (sMinusScore - sPlusScore) / total;
+
+            // Coin dampens extremes
+            const coinWeight = coinScore / (total);
+            position = position * (1 - coinWeight * 0.5);
+
+            // Intensity from scores + verbosity
+            const intensity = Math.min(1, (sPlusScore + sMinusScore + coinScore) / 10 + Math.abs(verbosityFactor));
+
+            return {
+                position: position,
+                intensity: intensity,
+                coinWeight: coinWeight,
+                verbosity: wordCount,
+                verbosityFactor: verbosityFactor,
+                scores: { sPlus: sPlusScore, sMinus: sMinusScore, coin: coinScore },
+                detectedTensors: detectedTensors,
+                dimension: question.dimension,
+                dualityKey: question.dualityKey
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // PROGRESS TRACKING
+        // ═══════════════════════════════════════════════════════════════════
+
+        function updateProgress() {
+            const hasName = state.displayName.length > 0;
+            const answeredQuestions = Object.values(state.responses).filter(r => r.wordCount > 5).length;
+            const totalQuestions = QUESTIONS.length;
+
+            // Progress calculation
+            // Name: 10%, Each question: 90% / questions
+            let progress = 0;
+            if (hasName) progress += 10;
+            progress += (answeredQuestions / totalQuestions) * 90;
+
+            state.signatureProgress = progress;
+
+            // Update display
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressPercent').textContent = `${Math.round(progress)}%`;
+
+            // Update stage
+            if (progress >= 80) {
+                state.stage = 5;
+                document.getElementById('stageLabel').textContent = 'STAGE V - COMPLETE';
+            } else if (progress >= 60) {
+                state.stage = 4;
+                document.getElementById('stageLabel').textContent = 'STAGE IV - CRYSTALLIZING';
+            } else if (progress >= 40) {
+                state.stage = 3;
+                document.getElementById('stageLabel').textContent = 'STAGE III - SHAPING';
+            } else if (progress >= 20) {
+                state.stage = 2;
+                document.getElementById('stageLabel').textContent = 'STAGE II - EMERGING';
+            } else {
+                state.stage = 1;
+                document.getElementById('stageLabel').textContent = 'STAGE I - FORMING';
+            }
+
+            // Update stage dots
+            for (let i = 1; i <= 5; i++) {
+                const dot = document.getElementById(`stage${i}`);
+                dot.classList.remove('active', 'complete');
+                if (i < state.stage) dot.classList.add('complete');
+                else if (i === state.stage) dot.classList.add('active');
+            }
+
+            // Show ready button at 70%+
+            const readyBtn = document.getElementById('readyBtn');
+            if (progress >= 70) {
+                readyBtn.classList.add('visible');
+            } else {
+                readyBtn.classList.remove('visible');
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SIGNATURE GENERATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        function generateSignature() {
+            // Build final profile
+            const profile = {
+                displayName: state.displayName,
+                uniqueId: state.uniqueId,
+                stage: state.stage,
+                timestamp: new Date().toISOString(),
+                dimensions: {},
+                tensors: new Set(),
+                overallPosition: 0,
+                overallCoin: 0
+            };
+
+            let posSum = 0;
+            let coinSum = 0;
+            let count = 0;
+
+            for (const [qId, analysis] of Object.entries(state.analysis)) {
+                profile.dimensions[analysis.dimension] = {
+                    position: analysis.position,
+                    intensity: analysis.intensity,
+                    coinWeight: analysis.coinWeight,
+                    verbosity: analysis.verbosity
+                };
+
+                analysis.detectedTensors.forEach(t => profile.tensors.add(t));
+                posSum += analysis.position;
+                coinSum += analysis.coinWeight;
+                count++;
+            }
+
+            if (count > 0) {
+                profile.overallPosition = posSum / count;
+                profile.overallCoin = coinSum / count;
+            }
+
+            profile.tensors = Array.from(profile.tensors);
+
+            // Switch to signature view
+            document.getElementById('questionnaireView').classList.add('hidden');
+            document.getElementById('signatureView').classList.add('visible');
+
+            // Populate badge
+            document.getElementById('badgeName').textContent = profile.displayName || 'Anonymous';
+            document.getElementById('badgeId').textContent = profile.uniqueId;
+            document.getElementById('badgeStage').textContent = `STAGE ${['I', 'II', 'III', 'IV', 'V'][profile.stage - 1]}`;
+
+            // Timestamp
+            document.getElementById('sigTimestamp').textContent = new Date().toLocaleDateString();
+
+            // Render dimensions
+            renderDimensions(profile);
+
+            // Render tensors
+            renderTensors(profile);
+
+            // Create sphere
+            createSphere(profile);
+
+            // Store for export
+            window.currentProfile = profile;
+        }
+
+        function renderDimensions(profile) {
+            const grid = document.getElementById('dimensionGrid');
+            const dims = Object.entries(profile.dimensions);
+
+            grid.innerHTML = dims.map(([name, data]) => {
+                const leftWidth = data.position < 0 ? Math.abs(data.position) * 50 : 0;
+                const rightWidth = data.position > 0 ? data.position * 50 : 0;
+
+                let indicator = '—';
+                let indicatorClass = 'balanced';
+                if (data.position < -0.15) {
+                    indicator = 'S+';
+                    indicatorClass = 'splus';
+                } else if (data.position > 0.15) {
+                    indicator = 'S-';
+                    indicatorClass = 'sminus';
+                } else if (data.coinWeight > 0.3) {
+                    indicator = '⊙';
+                }
+
+                return `
+                    <div class="dim-item">
+                        <span class="dim-name">${name.replace('_', ' ')}</span>
+                        <div class="dim-bar-container">
+                            <div class="dim-bar-fill left" style="width: ${leftWidth}%"></div>
+                            <div class="dim-bar-fill right" style="width: ${rightWidth}%"></div>
+                            <div class="dim-bar-center"></div>
+                        </div>
+                        <span class="dim-indicator ${indicatorClass}">${indicator}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTensors(profile) {
+            const grid = document.getElementById('tensorGrid');
+
+            // Count tensor occurrences across all analyses
+            const tensorCounts = {};
+            for (const analysis of Object.values(state.analysis)) {
+                for (const t of analysis.detectedTensors) {
+                    tensorCounts[t] = (tensorCounts[t] || 0) + 1;
+                }
+            }
+
+            const sorted = Object.entries(tensorCounts).sort((a, b) => b[1] - a[1]);
+
+            grid.innerHTML = sorted.map(([tensor, count]) => {
+                const strong = count >= 3;
+                return `<span class="tensor-tag ${strong ? 'strong' : ''}">${tensor}</span>`;
+            }).join('');
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // THREE.JS SPHERE
+        // ═══════════════════════════════════════════════════════════════════
+
+        let scene, camera, renderer, sphereGroup, needles = [];
+
+        function hslToHex(h, s, l) {
+            s /= 100; l /= 100;
+            const a = s * Math.min(l, 1 - l);
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return parseInt(`${f(0)}${f(8)}${f(4)}`, 16);
+        }
+
+        function createSphere(profile) {
+            const container = document.getElementById('sphereContainer');
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 3.5;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            sphereGroup = new THREE.Group();
+            scene.add(sphereGroup);
+
+            // Core
+            const coreHue = profile.overallPosition > 0.1 ? 330 : (profile.overallPosition < -0.1 ? 210 : 45);
+            const coreBright = 40 + profile.overallCoin * 25;
+
+            const coreGeom = new THREE.SphereGeometry(0.08, 32, 32);
+            const coreMat = new THREE.MeshBasicMaterial({
+                color: hslToHex(coreHue, 65, coreBright),
+                transparent: true,
+                opacity: 0.9
+            });
+            const core = new THREE.Mesh(coreGeom, coreMat);
+            sphereGroup.add(core);
+
+            // Glow
+            const glowGeom = new THREE.SphereGeometry(0.14, 32, 32);
+            const glowMat = new THREE.MeshBasicMaterial({
+                color: hslToHex((coreHue + 180) % 360, 50, 30),
+                transparent: true,
+                opacity: 0.15
+            });
+            sphereGroup.add(new THREE.Mesh(glowGeom, glowMat));
+
+            // Light
+            sphereGroup.add(new THREE.PointLight(hslToHex(coreHue, 65, coreBright), 0.8, 5));
+
+            // Needles from profile
+            const dims = Object.values(profile.dimensions);
+            const needleCount = 60;
+            const goldenRatio = (1 + Math.sqrt(5)) / 2;
+
+            for (let i = 0; i < needleCount; i++) {
+                const t = i / needleCount;
+                const inclination = Math.acos(1 - 2 * t);
+                const azimuth = 2 * Math.PI * goldenRatio * i;
+
+                const dim = dims[i % dims.length] || { position: 0, intensity: 0.5, coinWeight: 0.5 };
+
+                // Length based on intensity
+                const baseLen = 0.3;
+                const intensityLen = dim.intensity * 0.8;
+                const coinBonus = dim.coinWeight * 0.3;
+                const totalLen = baseLen + intensityLen + coinBonus;
+
+                // Color
+                const baseHue = (i * 360 / needleCount);
+                let hue = baseHue;
+                if (dim.position < -0.15) hue = (hue - 30 + 360) % 360;
+                else if (dim.position > 0.15) hue = (hue + 30) % 360;
+
+                let sat = 50 + dim.intensity * 30;
+                let light = 40 + dim.coinWeight * 25;
+
+                const needleColor = hslToHex(hue, sat, light);
+
+                const geom = new THREE.CylinderGeometry(0.004, 0.008, totalLen, 8);
+                const mat = new THREE.MeshBasicMaterial({
+                    color: needleColor,
+                    transparent: true,
+                    opacity: 0.5 + dim.coinWeight * 0.4
+                });
+
+                const needle = new THREE.Mesh(geom, mat);
+
+                const radius = 0.18;
+                const x = radius * Math.sin(inclination) * Math.cos(azimuth);
+                const y = radius * Math.sin(inclination) * Math.sin(azimuth);
+                const z = radius * Math.cos(inclination);
+
+                needle.position.set(x, y, z);
+                needle.lookAt(0, 0, 0);
+                needle.rotateX(Math.PI / 2);
+
+                const dir = new THREE.Vector3(x, y, z).normalize();
+                needle.position.add(dir.multiplyScalar(totalLen / 2));
+
+                needle.userData = {
+                    phase: Math.random() * Math.PI * 2,
+                    pulseSpeed: 0.5 + dim.coinWeight * 0.5,
+                    hue: hue
+                };
+
+                needles.push(needle);
+                sphereGroup.add(needle);
+
+                // Tip
+                const tipSize = 0.008 * (0.5 + dim.coinWeight * 0.5);
+                const tip = new THREE.Mesh(
+                    new THREE.SphereGeometry(tipSize, 8, 8),
+                    new THREE.MeshBasicMaterial({
+                        color: hslToHex((hue + 180) % 360, sat + 10, light + 15),
+                        transparent: true,
+                        opacity: 0.8
+                    })
+                );
+                tip.position.copy(needle.position).add(dir.multiplyScalar(totalLen / 2));
+                sphereGroup.add(tip);
+            }
+
+            animateSphere();
+        }
+
+        function animateSphere() {
+            requestAnimationFrame(animateSphere);
+
+            const time = Date.now() * 0.001;
+
+            sphereGroup.rotation.y += 0.003;
+            sphereGroup.rotation.x += 0.0008;
+
+            needles.forEach(n => {
+                const d = n.userData;
+                n.material.opacity = 0.4 + Math.sin(time * d.pulseSpeed + d.phase) * 0.2;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // CERTIFICATE EXPORT
+        // ═══════════════════════════════════════════════════════════════════
+
+        function exportCertificate() {
+            const profile = window.currentProfile;
+            if (!profile) return;
+
+            // Create certificate data
+            const cert = {
+                v: 1, // version
+                id: profile.uniqueId,
+                name: profile.displayName,
+                stage: profile.stage,
+                ts: profile.timestamp,
+                exp: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(), // 60 days
+                pos: profile.overallPosition.toFixed(3),
+                coin: profile.overallCoin.toFixed(3),
+                dims: Object.entries(profile.dimensions).map(([k, v]) =>
+                    `${k.substring(0, 3)}:${v.position.toFixed(2)}:${v.intensity.toFixed(2)}`
+                ).join('|'),
+                tens: profile.tensors.slice(0, 5).join(',')
+            };
+
+            // Create hash for anti-replication
+            const dataStr = JSON.stringify(cert);
+            let hash = 0;
+            for (let i = 0; i < dataStr.length; i++) {
+                hash = ((hash << 5) - hash) + dataStr.charCodeAt(i);
+                hash = hash & hash;
+            }
+            cert.hash = Math.abs(hash).toString(36);
+
+            // Encode as base64
+            const certString = 'SSIG:' + btoa(JSON.stringify(cert));
+
+            document.getElementById('certString').textContent = certString;
+            document.getElementById('certString').classList.add('visible');
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(certString).then(() => {
+                alert('Certificate copied to clipboard!');
+            });
+        }
+
+        function retake() {
+            state = {
+                displayName: '',
+                birthDate: null,
+                uniqueId: '',
+                responses: {},
+                analysis: {},
+                signatureProgress: 0,
+                stage: 1
+            };
+
+            document.getElementById('signatureView').classList.remove('visible');
+            document.getElementById('questionnaireView').classList.remove('hidden');
+            document.getElementById('displayName').value = '';
+            document.getElementById('birthDate').value = '';
+            document.getElementById('uniqueId').textContent = '---';
+
+            renderQuestions();
+            updateProgress();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // INIT
+        // ═══════════════════════════════════════════════════════════════════
+
+        renderQuestions();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

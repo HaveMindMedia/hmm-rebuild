@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Oracle | [1=-1]</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #020208;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #c9a227;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+        }
+        .header .sub {
+            color: #6e7a94;
+            font-size: 0.7rem;
+            margin-top: 5px;
+        }
+        .cohort-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .cohort-grid .cohort {
+            width: calc(50% - 20px);
+            min-width: 300px;
+        }
+        .cohort {
+            background: rgba(5,5,16,0.8);
+            border: 1px solid rgba(100,100,100,0.3);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .cohort h3 {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .cohort.a h3 { color: #888; }
+        .cohort.b h3 { color: #6ab4f5; }
+        .cohort.c h3 { color: #7dd87d; }
+        .cohort.d h3 { color: #c77daa; }
+        .cohort .content {
+            font-size: 0.75rem;
+            color: #9ba4b8;
+            min-height: 80px;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+        .reduction-chain {
+            background: rgba(201,162,39,0.1);
+            border: 1px solid rgba(201,162,39,0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .reduction-chain h3 {
+            color: #c9a227;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+        .reduction-step {
+            display: flex;
+            align-items: flex-start;
+            margin: 12px 0;
+            font-size: 0.7rem;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .reduction-step .op {
+            color: #6e7a94;
+            min-width: 140px;
+        }
+        .reduction-step .arrow {
+            color: #c9a227;
+            margin: 0 10px;
+        }
+        .reduction-step .result {
+            color: #7dd87d;
+            flex: 1;
+        }
+        .message-box {
+            background: rgba(201,162,39,0.15);
+            border: 2px solid #c9a227;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .message-box h2 {
+            color: #c9a227;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+        }
+        .message-box .message {
+            font-size: 1.3rem;
+            color: #e8e4d9;
+            line-height: 1.9;
+            min-height: 100px;
+        }
+        .message-box .message.waiting {
+            color: #6e7a94;
+            font-size: 1rem;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .btn {
+            background: rgba(201,162,39,0.2);
+            border: 1px solid #c9a227;
+            color: #c9a227;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+        .btn:hover {
+            background: rgba(201,162,39,0.3);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .status {
+            text-align: center;
+            color: #6e7a94;
+            font-size: 0.7rem;
+            margin-bottom: 20px;
+            min-height: 20px;
+        }
+        .epoch {
+            text-align: center;
+            margin-top: 40px;
+            color: #c9a227;
+        }
+        .energy-bar {
+            background: rgba(255,255,255,0.1);
+            height: 4px;
+            border-radius: 2px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c9a227, #7dd87d);
+            width: 100%;
+            transition: width 0.5s ease;
+        }
+        .signature {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.6rem;
+            color: #4a5568;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <div class="header">
+        <h1>DEEP ORACLE</h1>
+        <div class="sub">PULL MESSAGE FROM RANDOM | SEXAGESIMAL REDUCTION | [1=-1]</div>
+    </div>
+
+    <div class="status" id="status"></div>
+    <div class="energy-bar"><div class="energy-fill" id="energyFill"></div></div>
+
+    <div class="cohort-grid">
+        <div class="cohort a">
+            <h3>COHORT A: PURE RANDOM (THE VOID)</h3>
+            <div class="content" id="cohortA">---</div>
+        </div>
+        <div class="cohort b">
+            <h3>COHORT B: PURE KNOWNS (THE FRAMEWORK)</h3>
+            <div class="content" id="cohortB">---</div>
+        </div>
+        <div class="cohort c">
+            <h3>COHORT C: GEOMETRIC STIR (τ₁ + τ₂)</h3>
+            <div class="content" id="cohortC">---</div>
+        </div>
+        <div class="cohort d">
+            <h3>COHORT D: GEOMETRIC DERIVE (SEEKING τ₄)</h3>
+            <div class="content" id="cohortD">---</div>
+        </div>
+    </div>
+
+    <div class="reduction-chain">
+        <h3>REDUCTION CHAIN — 59/60 DECAY PER STEP</h3>
+        <div id="reductionSteps"></div>
+    </div>
+
+    <div class="message-box">
+        <h2>MESSAGE FROM THE ETHER</h2>
+        <div class="message waiting" id="finalMessage">Press DERIVE to begin the reduction...</div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" id="deriveBtn" onclick="startDerivation()">DERIVE MESSAGE</button>
+    </div>
+
+    <div class="epoch">[1 = -1]</div>
+
+    <div class="signature">
+        HAVE MIND MEDIA | The Epoch Project | κ = 2π/180
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // THE KNOWNS — T0Rs's actual framework vocabulary
+        // Extracted from S_MINUS_UNIFIED_MODEL.md, EPOCH_STATE_MODEL.md,
+        // Epoch Math Framework
+        // ═══════════════════════════════════════════════════════════════════
+
+        const KNOWNS = {
+            // CORE IDENTITY
+            names: ['JASON', 'ANNA', 'RAY', 'SHIVA', 'SIF', 'MARY'],
+
+            // EPOCH FRAMEWORK
+            framework: [
+                'EPOCH', 'KAPPA', 'TORSION', 'SCALAR', 'HELIX', 'TETRAHELIX',
+                'DIPYRAMID', 'TRANSFORM', 'STATE', 'CROSSROADS', 'OUTCOME'
+            ],
+
+            // THE FOUR TRANSFORMS
+            transforms: ['T1', 'T2', 'T3', 'T4', 'FACING', 'MIRROR', 'RECURSIVE', 'INVERTED'],
+
+            // S+ AND S-
+            vectors: ['S+', 'S-', 'RO', 'WUSH', 'CLIMB', 'DESCEND', 'BALANCED'],
+
+            // OBSERVER STRUCTURE
+            observers: [
+                'HIDDEN OBSERVER', 'HIDDEN WITNESS', 'SILENT OBSERVER',
+                'SILENT WITNESS', 'HIDDEN OPERATOR', 'SILENT OPERATOR',
+                'THE SILENT FOURTH', 'TAU4'
+            ],
+
+            // THREE PRIMES
+            primes: ['ENERGY', 'NOW', 'FACING'],
+
+            // FOUR SCALAR MODES
+            modes: ['S-NODE', 'S-HARMONIC', 'S-ECHO', 'S-BRIDGE'],
+
+            // SOUL SCIENCE
+            soulScience: [
+                'HANDSHAKE', 'OMEGA', 'MOONRISE MOM', 'BIG DAD',
+                'MOTHER EARTH', 'RECEIVING', 'NURTURING', 'POTENTIAL',
+                'ACTUALIZATION', 'MANIFEST'
+            ],
+
+            // THE LAW
+            law: [
+                'LOVE', 'TRUTH', 'GROWTH', 'FATE', 'STAGNATION',
+                'DOGMA', 'BALANCE', 'CORRUPTION', 'EXTREME'
+            ],
+
+            // COSMIC WORDS
+            cosmic: [
+                'VOID', 'SHADOW', 'LIGHT', 'SOURCE', 'ORIGIN',
+                'BIRTH', 'DEATH', 'LIFE', 'RESURRECTION'
+            ],
+
+            // GEOMETRY
+            geometry: [
+                'CIRCLE', 'SPIRAL', 'TRIANGLE', 'SQUARE', 'HELIX',
+                'SEXAGESIMAL', 'BASE60', 'BASE12', 'BASE20'
+            ],
+
+            // ELEMENTS
+            elements: ['FIRE', 'WATER', 'EARTH', 'AIR', 'ETHER'],
+
+            // NUMBERS (as words)
+            numbers: ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'TWELVE', 'SIXTY', 'ZERO'],
+
+            // ACTION WORDS
+            actions: [
+                'RISE', 'RISING', 'FALL', 'FALLING', 'HEAL', 'HEALING', 'HEILUNG',
+                'TRUST', 'BELIEVE', 'KNOW', 'KNOWING', 'FEEL', 'FEELING',
+                'OPEN', 'CLOSE', 'BREATHE', 'RECEIVE', 'GIVE', 'CREATE'
+            ],
+
+            // RELATIONSHIP WORDS
+            relationship: [
+                'WE', 'US', 'TOGETHER', 'EQUAL', 'PARTNER', 'BELOVED',
+                'CHOSEN', 'CLAIMED', 'PROTECTED', 'SAFE'
+            ],
+
+            // AFFIRMATIONS (from letters)
+            affirmations: [
+                'YOU ARE SAFE', 'YOU ARE LOVED', 'YOU ARE RISING', 'YOU HAVE RISEN',
+                'TRUST THAT', 'BE', 'JUST BE', 'NOT BELIEVE BUT BE',
+                'THE SHELL IS CRACKING', 'THE HAIR IS GROWING BACK GOLDEN',
+                'THE MIRROR IS DISSOLVING', 'YOU SAW TRUE'
+            ],
+
+            // IDENTITY
+            identity: [
+                '[1=-1]', 'ONE EQUALS NEGATIVE ONE', 'THE COIN',
+                'HEADS', 'TAILS', 'EDGE', 'FLIP'
+            ],
+
+            // SACRED
+            sacred: [
+                'AHAVA', 'TELOCH', 'ABBA', 'AMEN', 'SELAH',
+                'ALPHA', 'OMEGA', 'PHI', 'TAU', 'PI'
+            ],
+
+            // TIME
+            time: ['PAST', 'FUTURE', 'PRESENT', 'MOMENT', 'ETERNAL', 'ALWAYS'],
+
+            // POWER WORDS
+            power: [
+                'POWER', 'STRENGTH', 'COURAGE', 'WISDOM', 'GRACE',
+                'FAITH', 'HOPE', 'PEACE', 'JOY', 'FREEDOM'
+            ]
+        };
+
+        // Flatten KNOWNS into categories with weights
+        const WEIGHTED_KNOWNS = [];
+        Object.entries(KNOWNS).forEach(([category, words]) => {
+            words.forEach(word => {
+                WEIGHTED_KNOWNS.push({ word, category, weight: 1 });
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SENTENCE TEMPLATES — for generating complete messages
+        // ═══════════════════════════════════════════════════════════════════
+
+        const TEMPLATES = [
+            // Affirmation patterns
+            "{name}, {affirmation}.",
+            "THE {cosmic} SPEAKS: {affirmation}.",
+            "{action} INTO {cosmic}, {relationship} ARE {power}.",
+            "AT THE {framework}, {vectors} MEETS {vectors}.",
+            "THE {observers} SEES {cosmic} THROUGH {transforms}.",
+            "{primes} IS THE {law} OF {cosmic}.",
+            "FROM {vectors} TO {vectors}, {action} CONTINUES.",
+            "{relationship} STAND AT {framework}, {action}.",
+            "THE {modes} REVEALS: {affirmation}.",
+            "{sacred} — {law} — {power}.",
+            "IN THE {geometry} OF {cosmic}, {name} {action}.",
+            "{time} AND {time} ARE {identity} AT {framework}.",
+            "THE {law} DEMANDS {action}, {relationship} {action}.",
+            "{elements} CARRIES {cosmic} TO {name}.",
+            "THROUGH {transforms}, {affirmation}.",
+            "{observers} AND {observers} AGREE: {power} IS {law}.",
+            "WHEN {vectors} BALANCES {vectors}, {affirmation}.",
+            "THE HANDSHAKE COMPLETES: {cosmic} {action}.",
+            "{name}, YOUR {soulScience} IS {power}.",
+            "AT CROSSROADS: {action}. {action}. {affirmation}."
+        ];
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SEXAGESIMAL MATHEMATICS
+        // ═══════════════════════════════════════════════════════════════════
+
+        const KAPPA = (2 * Math.PI) / 180;  // 0.034906585...
+        const KAPPA_SHADOW = 1 / KAPPA;      // 28.6478897...
+        const ENERGY_DECAY = 59 / 60;        // 0.9833...
+        const SIGMA = 5 / 16;                // 0.3125
+        const COS_BC = 2 / 3;                // 0.6666...
+
+        // Twelve harmonic modes from 60's factors
+        const FACTORS_60 = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60];
+
+        const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ';
+
+        let isRunning = false;
+        let currentEnergy = 1;
+
+        // ═══════════════════════════════════════════════════════════════════
+        // CORE FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════
+
+        function randomString(len) {
+            let s = '';
+            for (let i = 0; i < len; i++) {
+                s += CHARS[Math.floor(Math.random() * CHARS.length)];
+            }
+            return s;
+        }
+
+        function getRandomKnown() {
+            const item = WEIGHTED_KNOWNS[Math.floor(Math.random() * WEIGHTED_KNOWNS.length)];
+            return item.word;
+        }
+
+        function getRandomFromCategory(category) {
+            const items = KNOWNS[category];
+            if (!items || items.length === 0) return getRandomKnown();
+            return items[Math.floor(Math.random() * items.length)];
+        }
+
+        function knownString(len) {
+            let s = '';
+            while (s.length < len) {
+                s += getRandomKnown() + ' ';
+            }
+            return s.substring(0, len).trim();
+        }
+
+        // Geometric stir using sexagesimal harmonics — NO pattern seeking
+        function geometricStir(a, b) {
+            let result = '';
+            const harmonicMode = FACTORS_60[Math.floor(Math.random() * FACTORS_60.length)];
+            const baseAngle = (2 * Math.PI) / harmonicMode;
+
+            for (let i = 0; i < Math.max(a.length, b.length); i++) {
+                // Use the 12 harmonic rotations
+                const phase = Math.sin(i * baseAngle) * Math.cos(i * KAPPA);
+                const pick = phase > 0;
+
+                if (pick && i < a.length) {
+                    result += a[i];
+                } else if (i < b.length) {
+                    result += b[i];
+                }
+            }
+            return result;
+        }
+
+        // Geometric derive — actively SEEKING patterns using torsion logic
+        function geometricDerive(a, b) {
+            let combined = (a + ' ' + b).toUpperCase();
+            let found = [];
+            let foundSet = new Set();
+
+            // First pass: exact matches with priority by category
+            const priorityOrder = [
+                'affirmations', 'names', 'relationship', 'power',
+                'soulScience', 'law', 'cosmic', 'actions'
+            ];
+
+            for (const category of priorityOrder) {
+                const words = KNOWNS[category] || [];
+                for (const word of words) {
+                    if (combined.includes(word) && !foundSet.has(word)) {
+                        found.push({ word, category, exact: true });
+                        foundSet.add(word);
+                    }
+                }
+            }
+
+            // Second pass: partial matches (3+ chars)
+            if (found.length < 3) {
+                for (const item of WEIGHTED_KNOWNS) {
+                    if (item.word.length >= 3 && !foundSet.has(item.word)) {
+                        for (let len = item.word.length; len >= 3; len--) {
+                            const partial = item.word.substring(0, len);
+                            if (combined.includes(partial)) {
+                                found.push({ word: item.word, category: item.category, exact: false });
+                                foundSet.add(item.word);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Third pass: character frequency resonance
+            if (found.length < 2) {
+                const freqMap = {};
+                for (const char of combined) {
+                    if (char.match(/[A-Z]/)) {
+                        freqMap[char] = (freqMap[char] || 0) + 1;
+                    }
+                }
+
+                // Find KNOWNS that resonate with frequent characters
+                for (const item of WEIGHTED_KNOWNS) {
+                    if (foundSet.has(item.word)) continue;
+                    let resonance = 0;
+                    for (const char of item.word) {
+                        resonance += freqMap[char] || 0;
+                    }
+                    if (resonance > item.word.length * 2) {
+                        found.push({ word: item.word, category: item.category, exact: false });
+                        foundSet.add(item.word);
+                    }
+                }
+            }
+
+            return found.slice(0, 8).map(f => f.word).join(' ') || 'VOID';
+        }
+
+        // Reduce two cohorts using torsion mathematics
+        function reduce(x, y, step) {
+            const xWords = x.split(/\s+/).filter(w => w.length > 1);
+            const yWords = y.split(/\s+/).filter(w => w.length > 1);
+
+            // Find common ground (τ₁ + τ₂ balance point)
+            let common = xWords.filter(w =>
+                yWords.includes(w) ||
+                yWords.some(yw => yw.includes(w) || w.includes(yw))
+            );
+
+            // Apply energy decay per step
+            currentEnergy *= ENERGY_DECAY;
+
+            // If insufficient common ground, use geometric derive
+            if (common.length < 2) {
+                return geometricDerive(x, y);
+            }
+
+            // Apply torsion rotation — some words rotate out, new ones in
+            const rotationAngle = step * KAPPA;
+            const keepRatio = Math.cos(rotationAngle);
+            const keepCount = Math.max(1, Math.floor(common.length * Math.abs(keepRatio)));
+
+            common = common.slice(0, keepCount);
+
+            // Add new word from knowns based on harmonic position
+            const harmonicIndex = step % FACTORS_60.length;
+            const harmonicFactor = FACTORS_60[harmonicIndex];
+            const categoryKeys = Object.keys(KNOWNS);
+            const selectedCategory = categoryKeys[harmonicFactor % categoryKeys.length];
+            const newWord = getRandomFromCategory(selectedCategory);
+
+            if (!common.includes(newWord)) {
+                common.push(newWord);
+            }
+
+            return common.join(' ');
+        }
+
+        // Generate a complete message using templates
+        function generateMessage(foundWords) {
+            // Pick a random template
+            const template = TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
+
+            // Fill in the template
+            let message = template.replace(/\{(\w+)\}/g, (match, category) => {
+                // First try to use a found word that matches the category
+                const foundInCategory = foundWords.filter(w => {
+                    const items = KNOWNS[category];
+                    return items && items.includes(w);
+                });
+
+                if (foundInCategory.length > 0) {
+                    return foundInCategory[Math.floor(Math.random() * foundInCategory.length)];
+                }
+
+                // Otherwise get from category
+                return getRandomFromCategory(category);
+            });
+
+            return message;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // ANIMATION HELPERS
+        // ═══════════════════════════════════════════════════════════════════
+
+        function updateStatus(text) {
+            document.getElementById('status').textContent = text;
+        }
+
+        function updateEnergy() {
+            document.getElementById('energyFill').style.width = (currentEnergy * 100) + '%';
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function addReductionStep(op, result, delay) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const container = document.getElementById('reductionSteps');
+                    const step = document.createElement('div');
+                    step.className = 'reduction-step';
+                    step.style.animationDelay = '0s';
+                    step.innerHTML = `
+                        <span class="op">${op}</span>
+                        <span class="arrow">→</span>
+                        <span class="result">${result}</span>
+                    `;
+                    container.appendChild(step);
+                    container.scrollTop = container.scrollHeight;
+                    resolve();
+                }, delay);
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // MAIN DERIVATION PROCESS
+        // ═══════════════════════════════════════════════════════════════════
+
+        async function startDerivation() {
+            if (isRunning) return;
+            isRunning = true;
+            currentEnergy = 1;
+
+            const btn = document.getElementById('deriveBtn');
+            btn.disabled = true;
+
+            document.getElementById('reductionSteps').innerHTML = '';
+            document.getElementById('finalMessage').textContent = '';
+            document.getElementById('finalMessage').className = 'message waiting';
+
+            updateStatus('Generating cohorts from void and framework...');
+            await sleep(500);
+
+            // Generate initial cohorts (larger for more material)
+            const a = randomString(200);
+            const b = knownString(200);
+
+            document.getElementById('cohortA').textContent = a.substring(0, 150) + '...';
+            document.getElementById('cohortB').textContent = b;
+
+            await sleep(800);
+            updateStatus('Applying geometric stir (τ₁ + τ₂, no pattern seeking)...');
+
+            // Cohort C: geometric stir (no pattern)
+            const c = geometricStir(a, b);
+            document.getElementById('cohortC').textContent = c.substring(0, 100) + '...';
+            await addReductionStep('A ⊗ B (stir)', c.substring(0, 50) + '...', 600);
+
+            await sleep(600);
+            updateStatus('Applying geometric derive (seeking τ₄, the silent fourth)...');
+
+            // Cohort D: geometric derive (seeking)
+            const d = geometricDerive(a, b);
+            document.getElementById('cohortD').textContent = d;
+            await addReductionStep('A ⊗ B (derive)', d, 600);
+
+            await sleep(600);
+            updateStatus('Beginning reduction chain (59/60 decay per step)...');
+
+            // Reduce C and D
+            let r1 = reduce(c, d, 1);
+            await addReductionStep('C ⊕ D', r1, 600);
+            updateEnergy();
+
+            // Continue reducing — slower, more deliberate
+            let prev = '';
+            let current = r1;
+            let iterations = 0;
+            const maxIterations = 12; // Up to 12 (one for each harmonic)
+            let allFoundWords = new Set(current.split(/\s+/));
+
+            while (current !== prev && iterations < maxIterations) {
+                prev = current;
+                iterations++;
+
+                updateStatus(`Reduction ${iterations} of ${maxIterations} | Energy: ${(currentEnergy * 100).toFixed(1)}%`);
+
+                // Mix with fresh elements
+                const freshRandom = randomString(60);
+                const freshKnowns = knownString(60);
+
+                const stirred = geometricStir(current + ' ' + freshRandom, freshKnowns);
+                const derived = geometricDerive(stirred, freshKnowns);
+
+                current = reduce(current + ' ' + derived, derived, iterations);
+
+                // Collect all found words
+                current.split(/\s+/).forEach(w => allFoundWords.add(w));
+
+                await addReductionStep(`Reduction ${iterations}`, current, 800);
+                updateEnergy();
+
+                await sleep(400);
+
+                // Check if we have enough meaningful words
+                const meaningfulWords = current.split(/\s+/).filter(w =>
+                    WEIGHTED_KNOWNS.some(k => k.word === w)
+                );
+
+                if (meaningfulWords.length >= 4 && iterations >= 4) {
+                    break; // Good stopping point
+                }
+            }
+
+            await sleep(500);
+            updateStatus('Assembling final message from the ether...');
+
+            // Generate final message
+            const foundWordArray = Array.from(allFoundWords).filter(w =>
+                WEIGHTED_KNOWNS.some(k => k.word === w)
+            );
+
+            // Build a complete message
+            let finalMessage = '';
+
+            if (foundWordArray.length >= 3) {
+                // Use template with found words
+                finalMessage = generateMessage(foundWordArray);
+
+                // Potentially add a second sentence
+                if (Math.random() > 0.5 && foundWordArray.length >= 5) {
+                    finalMessage += ' ' + generateMessage(foundWordArray);
+                }
+            } else {
+                // Fallback to affirmation
+                finalMessage = getRandomFromCategory('affirmations');
+            }
+
+            // Add closing from the found words if we have names
+            const foundNames = foundWordArray.filter(w => KNOWNS.names.includes(w));
+            if (foundNames.length > 0) {
+                finalMessage = finalMessage.replace('{name}', foundNames[0]);
+            }
+
+            await sleep(800);
+
+            document.getElementById('finalMessage').textContent = finalMessage;
+            document.getElementById('finalMessage').className = 'message';
+
+            updateStatus(`Complete. ${iterations} reductions. Energy: ${(currentEnergy * 100).toFixed(1)}% remaining.`);
+
+            btn.disabled = false;
+            isRunning = false;
+        }
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Apparent Speed Paradox | Have Mind Media</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #0a0a0f;
+            color: #e8e8e8;
+            line-height: 1.8;
+        }
+
+        .home-nav {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+        .home-nav a {
+            display: inline-block;
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #c9a227;
+            border-radius: 4px;
+            background: rgba(10, 10, 26, 0.95);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .home-nav a:hover {
+            background: #c9a227;
+            color: #0a0a1a;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2f 100%);
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: #c9a227;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: #7ab8d4;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: #888;
+            max-width: 600px;
+        }
+
+        section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        section h2 {
+            font-size: 2rem;
+            color: #c9a227;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        section p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        .highlight {
+            color: #7ab8d4;
+            font-weight: 600;
+        }
+
+        .gold {
+            color: #c9a227;
+        }
+
+        .image-container {
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        .video-container {
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .video-container video {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .equation-box {
+            background: #1a1a2f;
+            border-left: 4px solid #c9a227;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #7ab8d4;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c9a227, transparent);
+            margin: 4rem 0;
+        }
+
+        .examples-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .example-card {
+            background: #1a1a2f;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .example-card h3 {
+            color: #c9a227;
+            margin-bottom: 1rem;
+        }
+
+        .example-card p {
+            font-size: 0.95rem;
+            color: #aaa;
+        }
+
+        .quote {
+            font-size: 1.8rem;
+            color: #c9a227;
+            text-align: center;
+            padding: 3rem;
+            font-style: italic;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            margin: 4rem 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #0a0a0f;
+            border-top: 1px solid #222;
+        }
+
+        footer .logo {
+            font-size: 2rem;
+            color: #c9a227;
+            margin-bottom: 1rem;
+        }
+
+        footer .identity {
+            font-size: 1.5rem;
+            color: #7ab8d4;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        footer a {
+            color: #7ab8d4;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #c9a227;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+<div class="home-nav"><a href="/">← Home</a></div>
+
+    <div class="hero">
+        <h1>THE APPARENT SPEED PARADOX</h1>
+        <p class="subtitle">The Geometry You Already See</p>
+        <p class="tagline">Every rotating object demonstrates a fundamental truth about reality. You've observed it your entire life. Now understand it.</p>
+    </div>
+
+    <section>
+        <h2>The Observation</h2>
+        <p>Watch a vinyl record spin on a turntable. The outer edge races past you while the center barely moves. Same record. Same rotation. <span class="highlight">Different speeds.</span></p>
+        <p>This isn't complicated physics. It's geometry you can see with your own eyes.</p>
+
+        <div class="image-container">
+            <img src="../../media_output/images/epoch_img_epoch_vinyl_record_spinning_on_turnt_e7d88b_01-02-2026.png" alt="Vinyl record spinning">
+            <p class="image-caption">A vinyl record spinning - the outer edge travels faster than the center</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>The Paradox Named</h2>
+        <p>Every point on a rotating object completes one full rotation in the <span class="gold">exact same time</span>. But the outer edge travels a longer distance than the center in that time.</p>
+
+        <div class="equation-box">
+            Angular velocity (ω) = constant<br><br>
+            Linear velocity (v) = ω × r<br><br>
+            ∴ Linear velocity increases with radius
+        </div>
+
+        <p>This is the <span class="highlight">Apparent Speed Paradox</span>. Angular velocity remains constant while linear velocity varies with distance from the center.</p>
+
+        <div class="image-container">
+            <img src="../../media_output/images/epoch_img_epoch_circular_geometry_diagram_show_1cb4df_01-02-2026.png" alt="Angular vs Linear Velocity Diagram">
+            <p class="image-caption">The geometry of rotation - same angular velocity, different linear velocities</p>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+        <h2>Example 1: Gears</h2>
+        <p>Watch two gears mesh together. The small gear spins faster than the large gear. But their teeth meet perfectly at the point of contact.</p>
+        <p>Why? Because at that exact point, they're moving at <span class="highlight">identical linear speeds</span>. The geometry forces it.</p>
+
+        <div class="image-container">
+            <img src="../../media_output/images/epoch_img_diagram_two_meshing_gears_of_different_8596e2_01-02-2026.png" alt="Meshing gears diagram">
+            <p class="image-caption">Meshing gears - different angular velocities, matched linear velocity at contact</p>
+        </div>
+
+        <div class="image-container">
+            <img src="../../media_output/images/epoch_img_diagram_two_meshing_gears_of_different_8596e2_01-02-2026.png" alt="Gear Diagram">
+            <p class="image-caption">A small gear with half the radius must spin twice as fast to match edge speeds</p>
+        </div>
+
+        <p>This is why gear ratios work. This is why your car can accelerate. The paradox isn't a problem — <span class="gold">it's the solution</span>.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+        <h2>Example 2: Propellers</h2>
+        <p>Look at an airplane propeller. Notice how the blade twists? Near the hub, the blade is angled steeply. Near the tip, it's nearly flat.</p>
+
+        <div class="image-container">
+            <img src="../../media_output/images/epoch_img_diagram_airplane_propeller_blade_cross_40d903_01-02-2026.png" alt="Propeller blade cross-section">
+            <p class="image-caption">A propeller blade - the twist compensates for varying linear velocity</p>
+        </div>
+
+        <div class="image-container">
+            <img src="../../media_output/images/epoch_img_diagram_airplane_propeller_blade_cross_40d903_01-02-2026.png" alt="Propeller Cross-Section">
+            <p class="image-caption">Hub section: steep angle. Tip section: shallow angle.</p>
+        </div>
+
+        <p>The tip moves through air much faster than the hub. To generate uniform thrust across the entire blade, engineers must account for the Apparent Speed Paradox. <span class="highlight">Every propeller you've ever seen is shaped by this principle.</span></p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+        <h2>Example 3: Flagella</h2>
+        <p>Now consider something you've never thought about. A single-celled organism swimming through water. Its flagellum — that whip-like tail — rotates like a propeller.</p>
+
+        <div class="image-container">
+            <img src="../../media_output/images/epoch_img_documentary_microscopic_protozoa_single_ce_f83ddb_01-02-2026.png" alt="Protozoa with Flagellum">
+            <p class="image-caption">A protozoan's rotating flagellum creates wave motion through differential speeds</p>
+        </div>
+
+        <p>The base rotates. The tip follows. But the tip travels a longer path in the same time, creating that characteristic wave motion.</p>
+        <p><span class="gold">Life itself discovered this geometry billions of years before we named it.</span> The same paradox that spins your records propels the smallest living things.</p>
+    </section>
+
+    <div class="quote">
+        "The geometry cannot lie."
+    </div>
+
+    <section>
+        <h2>The Deeper Pattern</h2>
+
+        <div class="examples-grid">
+            <div class="example-card">
+                <h3>Vinyl Records</h3>
+                <p>Groove compression toward center preserves constant playback speed</p>
+            </div>
+            <div class="example-card">
+                <h3>Gears</h3>
+                <p>Ratio mathematics enabling mechanical advantage</p>
+            </div>
+            <div class="example-card">
+                <h3>Propellers</h3>
+                <p>Blade twist compensating for radial velocity gradient</p>
+            </div>
+            <div class="example-card">
+                <h3>Flagella</h3>
+                <p>Wave propagation through differential rotation</p>
+            </div>
+        </div>
+
+        <p>Four completely different systems. One geometric principle.</p>
+        <p>This isn't just interesting trivia. This is a window into how reality structures itself. The same geometry appears everywhere because <span class="highlight">geometry IS the structure</span>. Not an approximation. Not a model. The actual architecture.</p>
+    </section>
+
+    <section>
+        <h2>The Invitation</h2>
+        <p>Next time you see a wheel spin, a gear turn, or a propeller blur... remember: you're watching geometry teach itself.</p>
+        <p>The Apparent Speed Paradox isn't strange. <span class="gold">It's fundamental.</span></p>
+        <p>And once you see it, you'll see it everywhere.</p>
+
+        <div class="image-container">
+            <img src="../../media_output/images/epoch_img_epoch_vinyl_record_spinning_on_turnt_e7d88b_01-02-2026.png" alt="Vinyl Record">
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo">HAVE MIND MEDIA</div>
+        <div class="identity">[1 = -1]</div>
+        <p><a href="https://havemindmedia.com">havemindmedia.com</a></p>
+        <p style="margin-top: 2rem; color: #666; font-size: 0.9rem;">The Epoch Project</p>
+    </footer>
+
+    <site-footer></site-footer>
+</body>
+</html>

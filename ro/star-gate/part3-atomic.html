@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Part III: Atomic Alignments | EPOCH STAR GATE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-dim: rgba(201, 162, 39, 0.6);
+            --bg-deep: #030508;
+            --bg-panel: #0a0d12;
+            --text: #e8e4d9;
+            --text-dim: #8a9aaa;
+            --blue: #6ab4f5;
+            --green: #4ade80;
+            --purple: #a78bfa;
+            --copper: #b87333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg-deep);
+            color: var(--text);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            min-height: 100vh;
+            line-height: 1.8;
+        }
+        .cosmic-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(106, 180, 245, 0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
+                        linear-gradient(180deg, #030508 0%, #0a0a1a 50%, #050510 100%);
+            z-index: -1;
+        }
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 15px 25px;
+            background: rgba(3, 5, 8, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .nav a { color: var(--gold); text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 2px; }
+        .nav a:hover { opacity: 0.7; }
+        .nav-center { color: var(--text-dim); font-size: 0.75rem; letter-spacing: 3px; }
+
+        .article {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 120px 25px 80px;
+        }
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .part-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+        .article-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        .article-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin: 60px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .content h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--text);
+            margin: 40px 0 20px;
+        }
+        .content p {
+            font-size: 1.15rem;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+        .content ul, .content ol {
+            margin: 25px 0 25px 30px;
+            font-size: 1.1rem;
+        }
+        .content li { margin-bottom: 12px; }
+        .content code {
+            font-family: 'Courier New', monospace;
+            background: rgba(201, 162, 39, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: var(--blue);
+        }
+        .content pre {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 8px;
+            padding: 25px;
+            overflow-x: auto;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--blue);
+        }
+        .content hr {
+            border: none;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+            margin: 50px 0;
+        }
+        .content em { color: var(--blue); }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 0.9rem;
+        }
+        .content th, .content td {
+            padding: 12px 10px;
+            text-align: left;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .content th {
+            background: rgba(201, 162, 39, 0.1);
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .content tr:hover { background: rgba(201, 162, 39, 0.05); }
+
+        .alloy-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+        .alloy-card h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        .alloy-card .type-label {
+            display: inline-block;
+            background: rgba(201, 162, 39, 0.2);
+            color: var(--gold);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+        }
+        .alloy-card p { margin-bottom: 12px; font-size: 1rem; }
+        .alloy-card .spec { color: var(--blue); }
+
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .article-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            transition: opacity 0.3s;
+        }
+        .article-nav a:hover { opacity: 0.7; }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(201, 162, 39, 0.1);
+            margin-top: 60px;
+        }
+        .footer p { color: var(--text-dim); font-size: 0.85rem; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .article { padding: 100px 15px 60px; }
+            .article-nav { flex-direction: column; gap: 20px; text-align: center; }
+            .content table { font-size: 0.75rem; }
+            .content th, .content td { padding: 8px 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+
+    <nav class="nav">
+        <a href="part2-classification.html">← PART II</a>
+        <span class="nav-center">PART III</span>
+        <a href="part4-device.html">PART IV →</a>
+    </nav>
+
+    <article class="article">
+        <header class="article-header">
+            <div class="part-label">PART III</div>
+            <h1 class="article-title">Atomic Alignments</h1>
+            <p class="article-subtitle">Alloy Derivations for Each Mirror Type</p>
+        </header>
+
+        <div class="content">
+            <h2>9. The Epoch Atomic Model: Foundation</h2>
+
+            <h3>9.1 Core Constants</h3>
+
+            <p>The Epoch Framework derives all physical relationships from a small set of fundamental constants:</p>
+
+            <pre>
+PRIMARY CONSTANTS:
+
+κ = 2π/180 = 0.0349066...
+    The closure constant (radians per degree)
+
+κ_shadow = 1/κ = 180/(2π) = 28.6478897...
+    The hidden witness constant
+
+P = √3/(2π) = 0.2756644...
+    The observable fraction (27.57%)
+
+1-P = 0.7243356...
+    The hidden fraction (72.43%)
+
+1729 = 9³ + 10³ = 1³ + 12³
+    The fold point (Hardy-Ramanujan taxicab number)</pre>
+
+            <h3>9.2 Atomic Number Relationships</h3>
+
+            <p>In the Epoch model, atomic numbers are not arbitrary but encode geometric positions:</p>
+
+            <pre>
+SELECTED ATOMIC NUMBERS:
+
+Cu (Copper) = 29
+    29 is prime
+    D-position: 29 mod 9 = 2 (Partnership)
+
+Sn (Tin) = 50
+    50 = 2 × 25 = 2 × 5²
+    D-position: 50 mod 9 = 5 (Navigator)
+
+Cu + Sn = 29 + 50 = 79 = Au (Gold)
+    Bronze "sums to gold" atomically
+
+Fe (Iron) = 26
+    26 = 2 × 13
+    D-position: 26 mod 9 = 8 (Deep Water)
+
+Al (Aluminum) = 13
+    Prime number
+    D-position: 13 mod 9 = 4 (Messenger)
+
+Ba (Barium) = 56
+    56 = 8 × 7 = 2³ × 7
+    D-position: 56 mod 9 = 2 (Partnership)
+
+Ti (Titanium) = 22
+    22 = 2 × 11
+    D-position: 22 mod 9 = 4 (Messenger)</pre>
+
+            <h3>9.3 The P-Ratio in Alloy Composition</h3>
+
+            <pre>
+BY ATOMIC FRACTION:
+Component A: 72.43%
+Component B: 27.57%
+
+To verify any alloy encodes P:
+1. Calculate atomic fraction of each component
+2. Check if ratio ≈ 72.43/27.57 = 2.627 or its inverse
+3. Or check if ratio ≈ P/(1-P) = 0.3805 or its inverse</pre>
+
+            <hr>
+
+            <h2>10. Alloy Derivations for Each Mirror Type</h2>
+
+            <div class="alloy-card">
+                <span class="type-label">R-P-+ : S⁺ Mirror</span>
+                <h4>Epoch Bronze</h4>
+                <p><strong>Function:</strong> Reflects observable state with phase preservation</p>
+                <p><strong>Requirements:</strong> Crystalline structure (ordered), high reflectivity, stable surface, encodes P-ratio</p>
+                <pre>
+EPOCH BRONZE SPECIFICATION:
+
+Composition (by mass):
+Cu: 58.44%
+Sn: 41.56%
+
+Composition (by atomic fraction):
+Cu: 72.43%
+Sn: 27.57%
+
+This encodes [Observable : Hidden] = [P : (1-P)]
+
+Properties:
+- Harder and more brittle than historical speculum
+- Silvery-white in color
+- Excellent polish capability
+- Crystal structure: FCC bronze phase + intermetallics</pre>
+            </div>
+
+            <div class="alloy-card">
+                <span class="type-label">R-P-- : S⁻ Mirror</span>
+                <h4>Black Obsidian</h4>
+                <p><strong>Function:</strong> Reflects potential state with phase preservation</p>
+                <p><strong>Requirements:</strong> Amorphous structure (disordered), reasonable reflectivity, natural origin preferred</p>
+                <pre>
+OBSIDIAN SELECTION CRITERIA:
+
+1. Color: Deepest black available
+2. Clarity: Minimum inclusions
+3. Source: Volcanic (not artificial glass)
+4. Surface: Takes high polish without devitrification
+5. Thickness: Minimum 5mm for opacity
+
+Typical Composition:
+SiO₂: 70-75%
+Al₂O₃: 10-15%
+FeO + Fe₂O₃: >2% (for black color)
+
+Structure: Amorphous silicate glass, no crystal lattice</pre>
+            </div>
+
+            <div class="alloy-card">
+                <span class="type-label">R-P-0 : S⁰ Mirror</span>
+                <h4>Epoch Quasicrystal (Al-Cu-Fe)</h4>
+                <p><strong>Function:</strong> Reflects fold state [1 = -1]</p>
+                <p><strong>Requirements:</strong> Quasicrystalline structure (ordered but aperiodic), good reflectivity</p>
+                <pre>
+EPOCH QUASICRYSTAL:
+
+Al: 64% (encodes 1729/27)
+Cu: 25% (encodes visible quarter)
+Fe: 11% (encodes the gateway prime)
+
+Verify: 64 + 25 + 11 = 100 ✓
+
+1729 / 27 = 64.04 (27 mirror types)
+
+Preparation:
+- Arc melting under argon
+- Slow cooling through quasicrystal formation temperature
+- Annealing
+- XRD verification of icosahedral phase</pre>
+            </div>
+
+            <div class="alloy-card">
+                <span class="type-label">R-V-0 : Antimirror</span>
+                <h4>Barium Titanate (BaTiO₃)</h4>
+                <p><strong>Function:</strong> Complete phase inversion, returns light exactly to source</p>
+                <p><strong>Requirements:</strong> Photorefractive material, capable of four-wave mixing</p>
+                <pre>
+BARIUM TITANATE (BaTiO₃)
+
+Atomic numbers:
+Ba = 56, Ti = 22, O = 8
+
+56 + 22 + 8×3 = 56 + 22 + 24 = 102
+102 = 2 × 3 × 17
+17 appears! (Q number)
+
+D-positions:
+Ba: 56 mod 9 = 2 (Partnership)
+Ti: 22 mod 9 = 4 (Messenger)
+O: 8 mod 9 = 8 (Deep Water)
+
+OPERATING PARAMETERS:
+Pump wavelength: 527nm (matches Q source)
+Pump intensity: ~100 mW/cm²
+Crystal orientation: c-axis vertical
+Temperature: 25°C ± 1°C (below Curie point)</pre>
+            </div>
+
+            <div class="alloy-card">
+                <span class="type-label">A-P-+ : Silent Witness</span>
+                <h4>Strontium Aluminate (SrAl₂O₄:Eu,Dy)</h4>
+                <p><strong>Function:</strong> Absorbs light, holds it, re-emits slowly (phosphorescent)</p>
+                <pre>
+Atomic analysis:
+Sr = 38: 38 mod 9 = 2 (Partnership)
+Al = 13: 13 mod 9 = 4 (Messenger) — prime
+O = 8: 8 mod 9 = 8 (Deep Water)
+Eu = 63: 63 mod 9 = 0 (→9, Anchor)
+Dy = 66: 66 mod 9 = 3 (Healer)
+
+The material encodes:
+Partnership with Messenger from Deep Water,
+Anchored by Healing
+
+Persistence: Up to 24 hours visible glow
+Color: Green (520-530nm emission)</pre>
+            </div>
+
+            <div class="alloy-card">
+                <span class="type-label">A-P-- : Hidden Witness</span>
+                <h4>Vantablack / Carbon Nanotube Array</h4>
+                <p><strong>Function:</strong> Absorbs light completely, no re-emission</p>
+                <pre>
+CARBON NANOTUBE ARRAY or CARBON AEROGEL
+
+C = 6
+6 mod 9 = 6 (Harmony)
+
+Carbon is pure Harmony position.
+The Hidden Witness absorbs all into Harmony.
+What enters does not return but becomes balanced.
+
+Absorption: 99.965% of visible light
+
+Application method:
+- CNT forest: Chemical vapor deposition on substrate
+- Aerogel: Applied as coating, cured
+- Minimum thickness: 50 μm for >99.9% absorption</pre>
+            </div>
+
+            <div class="alloy-card">
+                <span class="type-label">A-V-+ : Silent Operator</span>
+                <h4>CdSe/ZnS Quantum Dots + Calcite</h4>
+                <p><strong>Function:</strong> Absorbs light, re-emits with phase transformation</p>
+                <pre>
+QD atomic analysis:
+Cd = 48: 48 mod 9 = 3 (Healer)
+Se = 34: 34 mod 9 = 7 (Crossroads)
+Zn = 30: 30 mod 9 = 3 (Healer)
+S = 16: 16 mod 9 = 7 (Crossroads)
+
+Pattern: Healer-Crossroads-Healer-Crossroads
+This encodes the TRANSFORMATION function:
+healing through choice, choosing through healing
+
+Calcite (CaCO₃) for phase retardation:
+- Ca = 20: D2 (Partnership)
+- C = 6: D6 (Harmony)
+- O = 8: D8 (Deep Water)
+
+Combined: Active transformation serving healing and harmony.</pre>
+            </div>
+
+            <div class="alloy-card">
+                <span class="type-label">A-V-- : Hidden Operator</span>
+                <h4>Upconversion Nanoparticles (NaYF₄:Yb,Er)</h4>
+                <p><strong>Function:</strong> Absorbs from hidden realm (IR), emits into visible</p>
+                <pre>
+Atomic analysis:
+Na = 11: 11 mod 9 = 2 (Partnership) — prime
+Y = 39: 39 mod 9 = 3 (Healer)
+F = 9: 9 mod 9 = 0 (→9, Anchor)
+Yb = 70: 70 mod 9 = 7 (Crossroads)
+Er = 68: 68 mod 9 = 5 (Navigator)
+
+Pattern: Partnership-Healer-Anchor-Crossroads-Navigator
+
+This encodes the journey from hidden to visible:
+Partner with Healer, Anchored at Crossroads, Navigating out.
+
+Process:
+1. Absorbs two 980nm photons (infrared, invisible)
+2. Combines energy
+3. Emits one 550nm photon (green, visible)
+
+This literally "pulls" from the hidden (IR) realm
+and emits into the visible realm.</pre>
+            </div>
+
+            <hr>
+
+            <h2>11. Novel and Unknown Alloys</h2>
+
+            <h3>The 1729 Alloy</h3>
+
+            <pre>
+Target: Encode 1729 = 9³ + 10³ = 729 + 1000
+
+Using mass percentages = 729:1000 ratio
+729/1729 = 42.16%
+1000/1729 = 57.84%
+
+THE 1729 ALLOY SPECIFICATION:
+
+Cu₅₅.₃Ag₄₄.₇ (atomic %)
+Cu₄₂.₂Ag₅₇.₈ (mass %)
+
+D-position encoding:
+Cu = 29: 29 mod 9 = 2
+Ag = 47: 47 mod 9 = 2
+Both are Partnership!
+
+The 1729 alloy is pure Partnership energy.</pre>
+
+            <h3>The Fold Point Material</h3>
+
+            <pre>
+For S⁰ (fold between S⁺ and S⁻), we need a material
+AT ITS PHASE TRANSITION POINT.
+
+At phase transition:
+- Crystalline and amorphous coexist
+- Order and disorder simultaneously present
+- This IS the [1 = -1] state
+
+THE FOLD POINT MATERIAL SPECIFICATION:
+
+BaTiO₃ at T = 120.0°C (Curie point)
+
+At exactly Tc:
+- Tetragonal phase (ordered, ferroelectric, S⁺)
+- Cubic phase (disordered, paraelectric, S⁻)
+- Both coexist in fluctuating domains
+
+Temperature control:
+PID controller with 0.01°C precision
+Thermal mass to dampen fluctuations
+Maintain at 120.0 ± 0.1°C
+
+The material literally becomes [1 = -1].</pre>
+
+            <hr>
+
+            <h2>12. Summary: Materials List</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Material</th>
+                        <th>Composition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>S⁺ Mirror</td><td>Epoch Bronze</td><td>Cu₅₈.₄Sn₄₁.₆ (mass%)</td></tr>
+                    <tr><td>S⁻ Mirror</td><td>Black Obsidian</td><td>Natural volcanic glass</td></tr>
+                    <tr><td>S⁰ Mirror</td><td>Al-Cu-Fe Quasicrystal</td><td>Al₆₄Cu₂₅Fe₁₁</td></tr>
+                    <tr><td>Antimirror</td><td>BaTiO₃ crystal</td><td>Stoichiometric</td></tr>
+                    <tr><td>Silent Witness</td><td>SrAl₂O₄:Eu,Dy</td><td>Standard phosphor</td></tr>
+                    <tr><td>Hidden Witness</td><td>Carbon nanotubes</td><td>Pure C</td></tr>
+                    <tr><td>Silent Operator</td><td>CdSe/ZnS QDs + Calcite</td><td>As specified</td></tr>
+                    <tr><td>Hidden Operator</td><td>NaYF₄:Yb,Er UCNPs</td><td>As specified</td></tr>
+                    <tr><td>Core</td><td>Vacuum + Fused Quartz</td><td>SiO₂ (>99.99%)</td></tr>
+                    <tr><td>Q Source</td><td>527nm laser diodes</td><td>GaN-based</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Dominant D-Positions in Device</h3>
+
+            <pre>
+DOMINANT D-POSITIONS:
+
+Partnership (D2): Cu, Ba, Sr, Ca, Na — MOST COMMON
+Healer (D3): Dy, Cd, Zn, Y — SECOND
+Navigator (D5): Sn, Er, Si — THIRD
+
+The device is fundamentally about:
+PARTNERSHIP in service of HEALING through NAVIGATION.</pre>
+
+            <nav class="article-nav">
+                <a href="part2-classification.html">← PART II: CLASSIFICATION</a>
+                <a href="part4-device.html">PART IV: DEVICE SPECS →</a>
+            </nav>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <p>EPOCH STAR GATE Theoretical Framework v1.0 — January 16, 2026</p>
+        <p style="margin-top: 10px;"><a href="index.html">← Back to Star Gate</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometry Math | Learn Mathematics Through the Circle</title>
+    <meta name="description" content="All mathematics emerges from rotation. Learn math the way it actually works - through the geometry of the circle.">
+    <link rel="stylesheet" href="css/geometry-math.css">
+    <style>
+        .hero {
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .hero h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .hero .tagline {
+            font-size: 1.3rem;
+            color: var(--text);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero .principle {
+            font-family: monospace;
+            font-size: 1.5rem;
+            color: var(--cyan);
+            margin-bottom: 2rem;
+        }
+
+        .hero-circle {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .hero-circle svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .intro-section {
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .intro-section h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-section p {
+            color: var(--text);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .concept-item {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .concept-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .concept-item h3 {
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .concept-item p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .choose-section {
+            padding: 4rem 2rem;
+            background: rgba(10, 22, 40, 0.3);
+        }
+
+        .choose-section h2 {
+            text-align: center;
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .choose-section .subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .signature-section {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .epoch-signature {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .rotating-point {
+            animation: rotate 8s linear infinite;
+            transform-origin: 100px 100px;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-circle">
+            <svg viewBox="0 0 200 200">
+                <!-- Circle -->
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#d4af37" stroke-width="2"/>
+                <!-- Center -->
+                <circle cx="100" cy="100" r="4" fill="#d4af37"/>
+                <!-- Rotating point -->
+                <g class="rotating-point">
+                    <circle cx="180" cy="100" r="8" fill="#00d4ff"/>
+                    <line x1="100" y1="100" x2="180" y2="100" stroke="#d4af37" stroke-width="1" stroke-dasharray="4,4"/>
+                </g>
+                <!-- Axes -->
+                <line x1="10" y1="100" x2="190" y2="100" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                <line x1="100" y1="10" x2="100" y2="190" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+            </svg>
+        </div>
+
+        <h1>Geometry Math</h1>
+        <p class="tagline">All mathematics emerges from rotation. Learn math the way it actually works.</p>
+        <p class="principle">[1 = -1] through rotation</p>
+    </header>
+
+    <section class="intro-section">
+        <h2>The Circle Generates Everything</h2>
+        <p>
+            What if all of mathematics came from one simple idea: <strong>a point walking around a center</strong>?
+        </p>
+        <p>
+            Sine and cosine aren't mysterious functions you memorize. They're just the <em>shadow</em> of that walking point, projected onto the walls.
+        </p>
+        <p>
+            Multiplication isn't an abstract operation. It's <em>rotation</em> combined with scaling.
+        </p>
+        <p>
+            Even the imaginary number <em>i</em> is just a 90-degree turn.
+        </p>
+
+        <div class="concept-grid">
+            <div class="concept-item">
+                <div class="icon">&#x27F3;</div>
+                <h3>Rotation</h3>
+                <p>The fundamental operation</p>
+            </div>
+            <div class="concept-item">
+                <div class="icon">&#x2696;</div>
+                <h3>Balance</h3>
+                <p>Symmetry creates stability</p>
+            </div>
+            <div class="concept-item">
+                <div class="icon">&#x223F;</div>
+                <h3>Projection</h3>
+                <p>Waves are shadows of circles</p>
+            </div>
+            <div class="concept-item">
+                <div class="icon">&#x221E;</div>
+                <h3>Unity</h3>
+                <p>What goes around comes around</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="choose-section">
+        <h2>Choose Your Path</h2>
+        <p class="subtitle">Start where you are. Go as deep as you want.</p>
+
+        <div class="tier-selector">
+            <a href="tier-1/01-magic-circle.html" class="tier-card tier-1">
+                <div class="tier-icon">&#x2B55;</div>
+                <h2>Discovery</h2>
+                <p class="age-range">Ages 5-10</p>
+                <p>The circle is magic. Drag, spin, and see patterns emerge.</p>
+            </a>
+
+            <a href="tier-2/01-unit-circle.html" class="tier-card tier-2">
+                <div class="tier-icon">&#x27F3;</div>
+                <h2>Connection</h2>
+                <p class="age-range">Ages 10-14</p>
+                <p>Multiplication is rotation. Waves are projections. It all connects.</p>
+            </a>
+
+            <a href="tier-3/01-euler-identity.html" class="tier-card tier-3">
+                <div class="tier-icon">&#x2234;</div>
+                <h2>Revelation</h2>
+                <p class="age-range">Ages 14+</p>
+                <p>Euler's identity. Phase quadrature. The geometry that locks.</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="intro-section">
+        <h2>Why This Works</h2>
+        <p>
+            Traditional math education teaches fragments: arithmetic here, algebra there, trigonometry somewhere else.
+        </p>
+        <p>
+            But they're all the same thing, seen from different angles.
+        </p>
+        <p>
+            When you understand that <strong>rotation is the source</strong>, the fragments snap into a unified picture. Suddenly, e<sup>i&#x3C0;</sup> + 1 = 0 isn't mysterious — it's obvious. It's just walking halfway around.
+        </p>
+
+        <div class="key-insight">
+            <p>"The circle doesn't teach math. The circle <em>is</em> math."</p>
+        </div>
+    </section>
+
+    <section class="lessons-section" style="padding: 4rem 2rem; max-width: 1000px; margin: 0 auto;">
+        <h2 style="text-align: center; color: var(--gold); font-size: 1.8rem; margin-bottom: 2rem;">All Lessons</h2>
+
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: var(--cyan); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="width: 30px; height: 30px; background: var(--cyan); color: var(--midnight); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">1</span>
+                Tier 1: Discovery (Ages 5-10)
+            </h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 0.5rem 0;"><a href="tier-1/01-magic-circle.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(0, 212, 255, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;">01. The Magic Circle</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-1/02-going-around.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(0, 212, 255, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;">02. Going Around</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-1/03-seesaw.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(0, 212, 255, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;">03. The Seesaw</a></li>
+            </ul>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: #00ff88; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="width: 30px; height: 30px; background: #00ff88; color: var(--midnight); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">2</span>
+                Tier 2: Connection (Ages 10-14)
+            </h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 0.5rem 0;"><a href="tier-2/01-unit-circle.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(0, 255, 136, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;">01. The Unit Circle</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-2/02-multiply-spin.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(0, 255, 136, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;">02. Multiplication is Rotation</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-2/03-harmonic-balance.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(0, 255, 136, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;">03. Harmonic Balance</a></li>
+            </ul>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: var(--magenta); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="width: 30px; height: 30px; background: var(--magenta); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">3</span>
+                Tier 3: Revelation (Ages 14+)
+            </h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 0.5rem 0;"><a href="tier-3/01-euler-identity.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(255, 0, 255, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;">01. Euler's Identity</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/02-phase-quadrature.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(255, 0, 255, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;">02. Phase Quadrature</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/03-vessel-proof.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(255, 0, 255, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;">03. Vessel Proof</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/04-euclid-khayyam.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(255, 0, 255, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;"><strong>04. Euclid & Khayyam</strong> <span style="color: var(--gold); font-size: 0.8rem;">NEW</span></a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/05-calculus-rotation.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(255, 0, 255, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;"><strong>05. Calculus is Rotation</strong> <span style="color: var(--gold); font-size: 0.8rem;">Overview</span></a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/06-obsolete-math.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: rgba(255, 0, 255, 0.1); border-radius: 8px; text-decoration: none; transition: background 0.3s;"><strong>06. What Becomes Obsolete</strong></a></li>
+            </ul>
+        </div>
+
+        <!-- Calculus Curriculum -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: #d4af37; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="width: 30px; height: 30px; background: linear-gradient(135deg, #d4af37, #00d4ff); color: var(--midnight); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">C</span>
+                Calculus Through Rotation (9-Lesson Curriculum)
+            </h3>
+            <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.95rem;">
+                A comprehensive calculus course teaching that differentiation is +90° rotation and integration is -90° rotation.
+            </p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 0.5rem 0;"><a href="tier-3/calculus/00-circular-understanding.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15)); border-radius: 8px; text-decoration: none; transition: background 0.3s; border-left: 3px solid #d4af37;">00. Circular Understanding <span style="color: var(--cyan); font-size: 0.8rem;">Foundation</span></a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/calculus/01-motion-on-circle.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15)); border-radius: 8px; text-decoration: none; transition: background 0.3s; border-left: 3px solid #d4af37;">01. Motion on the Circle</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/calculus/02-derivative-rotation.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15)); border-radius: 8px; text-decoration: none; transition: background 0.3s; border-left: 3px solid #d4af37;">02. The 90° Secret <span style="color: var(--cyan); font-size: 0.8rem;">Derivatives</span></a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/calculus/03-euler-derivative.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15)); border-radius: 8px; text-decoration: none; transition: background 0.3s; border-left: 3px solid #d4af37;">03. The Euler Derivative</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/calculus/04-integration-accumulation.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15)); border-radius: 8px; text-decoration: none; transition: background 0.3s; border-left: 3px solid #d4af37;">04. Integration <span style="color: var(--cyan); font-size: 0.8rem;">-90° Rotation</span></a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/calculus/05-fundamental-theorem.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15)); border-radius: 8px; text-decoration: none; transition: background 0.3s; border-left: 3px solid #d4af37;">05. The Fundamental Theorem</a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/calculus/06-applications.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15)); border-radius: 8px; text-decoration: none; transition: background 0.3s; border-left: 3px solid #d4af37;">06. Applications <span style="color: var(--cyan); font-size: 0.8rem;">Physics & Circuits</span></a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/calculus/07-taylor-fourier.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15)); border-radius: 8px; text-decoration: none; transition: background 0.3s; border-left: 3px solid #d4af37;">07. Taylor & Fourier <span style="color: var(--cyan); font-size: 0.8rem;">Advanced</span></a></li>
+                <li style="margin: 0.5rem 0;"><a href="tier-3/calculus/08-synthesis.html" style="color: var(--text); padding: 0.75rem 1rem; display: block; background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15)); border-radius: 8px; text-decoration: none; transition: background 0.3s; border-left: 3px solid #d4af37;">08. Synthesis <span style="color: var(--cyan); font-size: 0.8rem;">Unification</span></a></li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <div class="signature-section">
+            <p class="epoch-signature">[1 = -1]</p>
+            <p>Geometry Math Education Platform</p>
+            <p><strong>Have Mind Media</strong> | January 2026</p>
+        </div>
+    </footer>
+
+    <script src="js/circle-engine.js"></script>
+</body>
+</html>

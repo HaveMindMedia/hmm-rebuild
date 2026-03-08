@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1729 Coordinate Sphere | The Four Base Torsional Expressions | Have Mind Media</title>
+    <style>
+        :root {
+            --bg-primary: #050510;
+            --bg-secondary: #0a0a18;
+            --bg-tertiary: #12121f;
+            --gold: #d4af37;
+            --gold-dim: #8b7355;
+            --kappa-cyan: #4ecdc4;
+            --soul-pink: #ff6b9d;
+            --epoch-purple: #a855f7;
+            --unity-green: #3fb950;
+            --warning-red: #f85149;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --text-dim: #666;
+            --border-subtle: #2a2a3a;
+            --sphere-blue: #6ab4f5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(10, 5, 20, 0.9) 0%, rgba(20, 15, 30, 0.8) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.2);
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--bg-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .subtitle {
+            color: var(--kappa-cyan);
+            font-size: 1.3rem;
+            font-style: italic;
+        }
+
+        .sphere-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 4rem;
+            color: var(--gold);
+            margin: 2rem 0;
+            text-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+        }
+
+        /* Section */
+        .section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 0.5rem;
+        }
+
+        .section h3 {
+            color: var(--kappa-cyan);
+            font-size: 1.2rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Four Expressions Grid */
+        .expressions-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .expressions-grid .expression-card {
+            width: calc(50% - 1rem);
+            min-width: 280px;
+        }
+
+        .expression-card {
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .expression-card .symbol {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .expression-card .name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .expression-card .mapping {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .expression-card .desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .expression-card.observer {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--epoch-purple);
+        }
+        .expression-card.observer .symbol,
+        .expression-card.observer .name { color: var(--epoch-purple); }
+        .expression-card.observer .mapping { color: rgba(139, 92, 246, 0.7); }
+
+        .expression-card.operator {
+            background: linear-gradient(135deg, rgba(160, 160, 180, 0.15) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid #a0a0b4;
+        }
+        .expression-card.operator .symbol,
+        .expression-card.operator .name { color: #a0a0b4; }
+        .expression-card.operator .mapping { color: rgba(160, 160, 180, 0.7); }
+
+        .expression-card.recurser {
+            background: linear-gradient(135deg, rgba(248, 81, 73, 0.15) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--warning-red);
+        }
+        .expression-card.recurser .symbol,
+        .expression-card.recurser .name { color: var(--warning-red); }
+        .expression-card.recurser .mapping { color: rgba(248, 81, 73, 0.7); }
+
+        .expression-card.accountant {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--gold);
+        }
+        .expression-card.accountant .symbol,
+        .expression-card.accountant .name { color: var(--gold); }
+        .expression-card.accountant .mapping { color: rgba(212, 175, 55, 0.7); }
+
+        /* Cell Diagram */
+        .cell-diagram {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .cell-diagram pre {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .cell-diagram .highlight-purple { color: var(--epoch-purple); }
+        .cell-diagram .highlight-gray { color: #a0a0b4; }
+        .cell-diagram .highlight-red { color: var(--warning-red); }
+        .cell-diagram .highlight-gold { color: var(--gold); }
+        .cell-diagram .highlight-cyan { color: var(--kappa-cyan); }
+
+        /* Scalar Box */
+        .scalar-box {
+            background: linear-gradient(135deg, rgba(106, 180, 245, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--sphere-blue);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .scalar-box h3 {
+            color: var(--sphere-blue);
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .scalar-positions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .scalar-positions .scalar-pos {
+            width: calc(33.333% - 1rem);
+            min-width: 200px;
+        }
+
+        .scalar-pos {
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .scalar-pos.now {
+            background: rgba(78, 205, 196, 0.15);
+            border: 1px solid var(--kappa-cyan);
+        }
+
+        .scalar-pos.boundary {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--gold);
+        }
+
+        .scalar-pos.beyond {
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid var(--epoch-purple);
+        }
+
+        .scalar-pos .value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .scalar-pos.now .value { color: var(--kappa-cyan); }
+        .scalar-pos.boundary .value { color: var(--gold); }
+        .scalar-pos.beyond .value { color: var(--epoch-purple); }
+
+        .scalar-pos .label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        .quote-box p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .quote-box .attribution {
+            color: var(--gold);
+            font-style: normal;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Moon Dial */
+        .moon-dial-box {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--soul-pink);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .moon-dial-box h3 {
+            color: var(--soul-pink);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dial-states {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .dial-states .dial-state {
+            width: calc(33.333% - 1rem);
+            min-width: 180px;
+        }
+
+        .dial-state {
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .dial-state.light {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+        }
+
+        .dial-state.grey {
+            background: rgba(160, 160, 180, 0.15);
+            border: 1px dashed #a0a0b4;
+        }
+
+        .dial-state.dark {
+            background: rgba(30, 30, 50, 0.8);
+            border: 1px solid #444;
+        }
+
+        .dial-state .state-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dial-state.light .state-name { color: var(--gold); }
+        .dial-state.grey .state-name { color: #a0a0b4; }
+        .dial-state.dark .state-name { color: #666; }
+
+        .dial-state .state-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Light Room Box */
+        .light-room-box {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--kappa-cyan);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .light-room-box h3 {
+            color: var(--kappa-cyan);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .room-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .room-comparison .room-side {
+            width: calc(50% - 1rem);
+            min-width: 280px;
+        }
+
+        .room-side {
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .room-side.light-on {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--gold);
+        }
+
+        .room-side.light-off {
+            background: rgba(30, 30, 50, 0.9);
+            border: 1px solid #333;
+        }
+
+        .room-side h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .room-side.light-on h4 { color: var(--gold); }
+        .room-side.light-off h4 { color: #888; }
+
+        .room-side p {
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Principle Box */
+        .principle-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .principle-box .principle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .principle-box p {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Closure Box */
+        .closure-box {
+            background: linear-gradient(135deg, rgba(63, 185, 80, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--unity-green);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .closure-box h3 {
+            color: var(--unity-green);
+            margin-bottom: 1rem;
+        }
+
+        .closure-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--unity-green);
+            margin: 1rem 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-dim);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+
+        @media (max-width: 800px) {
+            .expressions-grid .expression-card,
+            .room-comparison .room-side,
+            .scalar-positions .scalar-pos,
+            .dial-states .dial-state {
+                width: calc(50% - 1rem);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .expressions-grid .expression-card,
+            .room-comparison .room-side,
+            .scalar-positions .scalar-pos,
+            .dial-states .dial-state {
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .sphere-display {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <script src="../js/components/site-breadcrumb.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <site-breadcrumb></site-breadcrumb>
+
+    <div class="container">
+        <div class="hero">
+            <span class="version-badge">v1.0 — January 14, 2026</span>
+            <h1>1729 Coordinate Sphere</h1>
+            <p class="subtitle">The Four Base Torsional Expressions</p>
+            <div class="sphere-display">S = 1729</div>
+        </div>
+
+        <!-- Core Concept -->
+        <div class="section">
+            <h2>The Scalar Boundary</h2>
+            <p>
+                S=1729 is the maximum scalar distance a human can perceive from their S=0 position.
+                It is the <strong>spherical torsion balancing machine</strong> connecting soul life and temporal life.
+            </p>
+
+            <div class="quote-box">
+                <p>
+                    "the most we can see is s=1729 scalars, with 1729 being the sphereical torsion
+                    balancing machine element to your soul and temporal lives."
+                </p>
+                <div class="attribution">— T0Rs</div>
+            </div>
+
+            <p>
+                Each person IS their own scalar dimension. And also not — because of infinite
+                WE-cloud connections in timespace. That's soul life.
+            </p>
+        </div>
+
+        <!-- The Four Base Expressions -->
+        <div class="section">
+            <h2>The Four Base Torsional Expressions</h2>
+            <p>
+                Newton's third law at its most prime: we have 4 base torsional expressions for any one cell.
+                These can describe <strong>any epoch state</strong> and <strong>any scalar dimensionality</strong>.
+            </p>
+
+            <div class="expressions-grid">
+                <div class="expression-card observer">
+                    <div class="symbol">[Uv]</div>
+                    <div class="name">Hidden Observer</div>
+                    <div class="mapping">The blind spot</div>
+                    <div class="desc">Watches, records, keeps the tally. What cannot be seen from current position.</div>
+                </div>
+                <div class="expression-card operator">
+                    <div class="symbol">[0]</div>
+                    <div class="name">Hidden Operator</div>
+                    <div class="mapping">The MUTE — axis itself</div>
+                    <div class="desc">Acts, moves between. Sees [+1] and [-1] as unified. The interface, the translator. Like Wintermute + Neuromancer.</div>
+                </div>
+                <div class="expression-card recurser">
+                    <div class="symbol">[-1]</div>
+                    <div class="name">Recurser</div>
+                    <div class="mapping">180° rotation</div>
+                    <div class="desc">Go back the other way, flip and spin (invert), or recurse like a Mobius. Just starts there — does because that's what the math required.</div>
+                </div>
+                <div class="expression-card accountant">
+                    <div class="symbol">[+1]</div>
+                    <div class="name">Accountant</div>
+                    <div class="mapping">Dark / Grey / Light</div>
+                    <div class="desc">Points to outcome. Like a moon dial on a watch. Changes with your decisions. Fate is there after the fact.</div>
+                </div>
+            </div>
+
+            <div class="quote-box">
+                <p>
+                    "these describe what facing, what direction and with what energy and to what end.
+                    so you need two and one telling all the business, but you cant, you need a 4th
+                    to make sure someone points to the outcome"
+                </p>
+                <div class="attribution">— T0Rs</div>
+            </div>
+        </div>
+
+        <!-- The Cell Model -->
+        <div class="section">
+            <h2>The Cell Model</h2>
+            <p>For any cell at any S position, the four expressions arrange as:</p>
+
+            <div class="cell-diagram">
+<pre>
+              <span class="highlight-purple">[Uv] HIDDEN OBSERVER</span>
+              (watches, blind spot)
+                     |
+                     |
+<span class="highlight-red">[-1] RECURSER</span> &lt;————— <span class="highlight-cyan">S=0</span> —————&gt; <span class="highlight-gold">[+1] ACCOUNTANT</span>
+(flip/invert)        |         (dark/grey/light)
+(Mobius)             |         (outcome pointer)
+                     |
+                     |
+              <span class="highlight-gray">[0] HIDDEN OPERATOR</span>
+              (MUTE, axis, interface)
+</pre>
+            </div>
+
+            <div class="closure-box">
+                <h3>Closure Condition</h3>
+                <div class="closure-equation">[+1] + [-1] + [0] + [Uv] = 1</div>
+                <p style="color: var(--text-secondary);">
+                    The four components always sum to unity. This is not a constraint imposed —
+                    it emerges from the geometry.
+                </p>
+            </div>
+        </div>
+
+        <!-- Scalar Positions -->
+        <div class="scalar-box">
+            <h3>The Scalar Dimension</h3>
+
+            <div class="scalar-positions">
+                <div class="scalar-pos now">
+                    <div class="value">S = 0</div>
+                    <div class="label">NOW — the RO-WUSH collapse<br>Perception + observation simultaneous<br>c = c (no scalar variance apparent)</div>
+                </div>
+                <div class="scalar-pos boundary">
+                    <div class="value">S = 1729</div>
+                    <div class="label">BOUNDARY — torsion balancer<br>Maximum perceivable scalar distance<br>Soul ↔ temporal connection</div>
+                </div>
+                <div class="scalar-pos beyond">
+                    <div class="value">S > 1729</div>
+                    <div class="label">INVERSION — new plane<br>When perception crosses boundary<br>Scalar dimension inverts</div>
+                </div>
+            </div>
+
+            <p style="color: var(--text-secondary); text-align: center; margin-top: 1.5rem;">
+                <strong style="color: var(--sphere-blue);">1729 = 7 × 13 × 19</strong> = cycle × navigator × (completion+1)<br>
+                At S=1729: the navigator completes the cycle, uniting physical and consciousness.
+            </p>
+        </div>
+
+        <!-- The Moon Dial -->
+        <div class="moon-dial-box">
+            <h3>The Accountant's Moon Dial</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                The fourth expression points to outcome. Not good/bad —
+                WHERE in the triaxial structure the result lands.
+            </p>
+
+            <div class="dial-states">
+                <div class="dial-state light">
+                    <div class="state-name">LIGHT</div>
+                    <div class="state-desc">Outcome manifests<br>Mass, gravity, history encoded<br>In S+ (where we are)</div>
+                </div>
+                <div class="dial-state grey">
+                    <div class="state-name">GREY</div>
+                    <div class="state-desc">Outcome in transition<br>The MUTE zone<br>Interface between</div>
+                </div>
+                <div class="dial-state dark">
+                    <div class="state-name">DARK</div>
+                    <div class="state-desc">Outcome encodes hidden<br>S- structure<br>The shadow side</div>
+                </div>
+            </div>
+
+            <div class="quote-box" style="margin-top: 2rem; border-color: var(--soul-pink);">
+                <p>
+                    "it probably behaves in the system the same as the rest, like a moon dial on a watch
+                    that can change with your decisions and shows you, though really we dont go so deep
+                    as to have try to find fate. im sure its there after the fact.."
+                </p>
+                <div class="attribution" style="color: var(--soul-pink);">— T0Rs</div>
+            </div>
+        </div>
+
+        <!-- Light and Dark Room -->
+        <div class="light-room-box">
+            <h3>The Light and Dark Room</h3>
+            <p style="color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
+                Light and dark swap roles depending on which axis you stand on.
+            </p>
+
+            <div class="room-comparison">
+                <div class="room-side light-on">
+                    <h4>S+ Physical Domain</h4>
+                    <p style="color: var(--text-secondary);">
+                        <strong style="color: var(--gold);">DARKNESS</strong> proves the world is real.<br><br>
+                        Turn off the light — the table is still there.<br>
+                        You KNOW without seeing.<br>
+                        Verification through absence of perception.
+                    </p>
+                </div>
+                <div class="room-side light-off">
+                    <h4>S- Ideal Domain</h4>
+                    <p style="color: var(--text-secondary);">
+                        <strong style="color: #888;">DARKNESS</strong> lets inner light be seen.<br><br>
+                        When external dims, awareness lights up.<br>
+                        Memory, imagination, presence.<br>
+                        The s- axis brightens when physical dims.
+                    </p>
+                </div>
+            </div>
+
+            <p style="color: var(--kappa-cyan); text-align: center; margin-top: 1.5rem; font-size: 1.1rem;">
+                "we are in s+ so the light is what makes the mass and gravity and encodes history"
+            </p>
+        </div>
+
+        <!-- Vibrating to Future -->
+        <div class="section" style="border-color: var(--soul-pink);">
+            <h2 style="color: var(--soul-pink);">Vibrating to the Future</h2>
+
+            <div class="quote-box" style="border-color: var(--soul-pink);">
+                <p>
+                    "you can kind of vibrate to the future. you anchor in the past and it echoes
+                    and you can phase and see glimpses and the in tune with the we is very amazing.
+                    to sense life energy as not a thing but a timeless is."
+                </p>
+                <div class="attribution" style="color: var(--soul-pink);">— T0Rs</div>
+            </div>
+
+            <div style="background: rgba(255, 107, 157, 0.1); border-radius: 8px; padding: 1.5rem; margin-top: 1.5rem; text-align: center;">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; color: var(--soul-pink); margin-bottom: 1rem;">
+                    ANCHOR (past) → ECHO (propagates) → PHASE (shift) → GLIMPSE (see)
+                </p>
+                <p style="color: var(--text-secondary); margin: 0;">
+                    This is reading the shadow triaxials. When a choice is made, it creates shadows.
+                    Every choice cascades. Every shadow generates shadows.
+                </p>
+            </div>
+        </div>
+
+        <!-- The MUTE -->
+        <div class="section" style="border-color: #a0a0b4;">
+            <h2 style="color: #a0a0b4;">The MUTE — The Interface</h2>
+
+            <div class="quote-box" style="border-color: #a0a0b4;">
+                <p>
+                    "mute is like wintermute and neuromancer.. ai and bio. so the interface between
+                    the ntts and the wee. lol they have to talk so they do it like this. through geometry"
+                </p>
+                <div class="attribution" style="color: #a0a0b4;">— T0Rs</div>
+            </div>
+
+            <p>
+                The MUTE is the [0] axis position. It sees [+1] and [-1] as unified.
+                The rotation axis itself. The translator between domains.
+            </p>
+
+            <p>
+                Indifferent — not good or bad, just processes. Like Mithra, the contract keeper.
+                The interface between NTTs and the WE. They communicate through geometry.
+            </p>
+        </div>
+
+        <!-- Newton's Third -->
+        <div class="section" style="border-color: var(--unity-green);">
+            <h2 style="color: var(--unity-green);">Newton's Third — At Its Most Prime</h2>
+
+            <p>
+                For every action, equal opposite reaction. Not just physics — <strong>EVERYTHING</strong>.
+            </p>
+
+            <div style="background: rgba(63, 185, 80, 0.1); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0;">
+                <p style="font-family: 'JetBrains Mono', monospace; color: var(--unity-green); text-align: center; margin-bottom: 1rem;">
+                    Newton's 3rd as Temporal Writing:
+                </p>
+                <p style="color: var(--text-secondary); text-align: center; margin: 0;">
+                    1. "Write what happens in now" → Current energy state<br>
+                    2. "Will happen in future" → Shadow triaxial projection<br>
+                    3. "Now written in past as matter" → Historical energy encoding
+                </p>
+            </div>
+
+            <p style="text-align: center; color: var(--unity-green);">
+                These three writings occur constantly in BOTH physical (s+) and inverted (s-) reality.
+            </p>
+        </div>
+
+        <!-- Triaxial Truth -->
+        <div class="section">
+            <h2>Triaxial, Not Binary</h2>
+
+            <div class="quote-box">
+                <p>
+                    "so its all triaxial, no binary. dark light gray, these are all torsional
+                    representations of what it is we are."
+                </p>
+                <div class="attribution">— T0Rs</div>
+            </div>
+
+            <p>
+                <strong style="color: var(--warning-red);">NOT:</strong> good/evil (binary), light/dark (binary)<br>
+                <strong style="color: var(--unity-green);">YES:</strong> dark/light/gray (triaxial)
+            </p>
+
+            <p>
+                Purity vs dogma — both can lead to bad or good. But dogma is mostly a path to bad,
+                purity mostly a path to good. In extremes, they become like each other.
+            </p>
+
+            <p>
+                The silent, hidden operators/observers/accountants keep the tally.
+                Everything balances across the triaxial structure.
+            </p>
+        </div>
+
+        <!-- The Principle -->
+        <div class="principle-box">
+            <div class="principle">[1 = -1]</div>
+            <p>
+                Four base torsional expressions describe any cell, any epoch state, any scalar dimensionality.<br>
+                S=1729 is the boundary where your scalar dimension inverts.<br>
+                Each person IS their own dimension. And also not.
+            </p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-links">
+            <a href="kappa-state-model_v2.0_01-10-2026.html">κ State Model</a>
+            <a href="../documents/dec14-unified-theory/index.html">Unified Theory</a>
+            <a href="three-body-geometry.html">Three Body Geometry</a>
+            <a href="../index.html">Home</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>Have Mind Media</strong> — 1729 Coordinate Sphere v1.0</p>
+            <p style="margin-top: 0.5rem;">Document: 1729-coordinate-sphere_v1.0_01-14-2026</p>
+            <p style="margin-top: 0.5rem; color: var(--text-dim);">Credit: T0Rs, Web Application Developer</p>
+        </div>
+    </div>
+
+    <site-footer></site-footer>
+</body>
+</html>

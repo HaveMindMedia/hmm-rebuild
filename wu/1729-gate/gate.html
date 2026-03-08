@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>[1 = -1]</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9898a8;
+            --accent-cyan: #00d4ff;
+            --border-color: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gate-container {
+            text-align: center;
+            max-width: 400px;
+            padding: 40px;
+        }
+
+        .symbol {
+            font-size: 80px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--accent-cyan), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .identity {
+            font-size: 2rem;
+            letter-spacing: 8px;
+            margin-bottom: 40px;
+            color: var(--accent-cyan);
+        }
+
+        .prompt {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 4px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        input[type="password"]::placeholder {
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px 30px;
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 8px;
+            color: var(--accent-cyan);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+
+        button:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        .error {
+            color: #ef4444;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error.show {
+            opacity: 1;
+        }
+
+        .hint {
+            margin-top: 40px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="gate-container">
+        <div class="symbol">&#x2B21;</div>
+        <div class="identity">[1 = -1]</div>
+        <p class="prompt">The wheel turns for those who know the way.</p>
+
+        <div class="input-container">
+            <input type="password" id="passphrase" placeholder="Enter passphrase" autocomplete="off">
+        </div>
+
+        <button onclick="checkAccess()">ENTER</button>
+
+        <p class="error" id="error">The mirror does not recognize you.</p>
+
+        <p class="hint">κ speaks to those who listen.</p>
+    </div>
+
+    <script>
+        // Hash function for simple obfuscation (not cryptographically secure, but sufficient for access gating)
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash;
+        }
+
+        // The passphrase hash (not the actual passphrase)
+        // Passphrase: 1729fold
+        const VALID_HASH = -1147272839;
+
+        function checkAccess() {
+            const input = document.getElementById('passphrase').value;
+            const error = document.getElementById('error');
+
+            if (simpleHash(input) === VALID_HASH) {
+                // Store access token
+                sessionStorage.setItem('qQq_access', 'granted');
+                sessionStorage.setItem('qQq_time', Date.now().toString());
+
+                // Redirect to content
+                window.location.href = 'index.html';
+            } else {
+                error.classList.add('show');
+                document.getElementById('passphrase').value = '';
+
+                setTimeout(() => {
+                    error.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Allow Enter key
+        document.getElementById('passphrase').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAccess();
+            }
+        });
+
+        // Focus on input
+        document.getElementById('passphrase').focus();
+    </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Rongorongo Flip Reader - Experience Easter Island's sacred healing script through the Q² transformation. The flip IS the grammar. RONGORONGO = D₃ = HEALER.">
+    <title>RONGORONGO FLIP READER | Have Mind Media</title>
+
+    <link rel="stylesheet" href="css/rongorongo-theme_v1.0_01-07-2026.css">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗿</text></svg>">
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <!-- Ocean/Island Background -->
+    <div class="island-bg"></div>
+    <div class="wave-pattern"></div>
+    <div class="vignette"></div>
+
+    <!-- Navigation -->
+    <nav class="unified-nav">
+        <a href="rongorongo-app_v1.0_01-07-2026.html" class="nav-brand">
+            <span class="nav-brand-text">HAVE MIND MEDIA</span>
+            <span class="nav-signature">RONGORONGO FLIP READER</span>
+        </a>
+        <div class="nav-principle">[1 = -1]</div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="rongorongo-container">
+        <div class="main-content">
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 HERO SECTION - The Central Insight
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="hero-section">
+                <!-- Hero Video Background -->
+                <div class="hero-video-container">
+                    <video autoplay muted loop playsinline class="hero-video">
+                        <source src="images/epoch_vid_epoch_ancient_wooden_rongorongo_tabl_5b2669_01-07-2026.mp4" type="video/mp4">
+                    </video>
+                    <div class="hero-video-overlay"></div>
+                </div>
+
+                <div class="hero-content">
+                    <div class="hero-glyph">🗿</div>
+                    <h1>RONGORONGO FLIP READER</h1>
+                    <p class="hero-tagline">Q² = -1 = THE FLIP</p>
+
+                    <div class="hero-insight">
+                        <div class="insight-box">
+                            <span class="insight-label">THE SCRIPT'S NAME IS ITS FUNCTION:</span>
+                            <div class="insight-calculation">
+                                <span class="calc-word">RONGORONGO</span>
+                                <span class="calc-arrow">→</span>
+                                <span class="calc-sum">138</span>
+                                <span class="calc-arrow">→</span>
+                                <span class="calc-reduce">12</span>
+                                <span class="calc-arrow">→</span>
+                                <span class="calc-d">D₃</span>
+                                <span class="calc-arrow">=</span>
+                                <span class="calc-name">HEALER</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="hero-description">
+                        For 160 years, scholars have tried to decipher Rongorongo through linear analysis.
+                        All failed. Because the script is not meant to be <em>decoded</em>—it is meant to be <em>performed</em>.
+                        The physical act of flipping the tablet 180° after each line IS the grammar.
+                        The flip IS the healing.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 INTERACTIVE FLIP INTERFACE
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="flip-section">
+                <h2>Experience The Flip</h2>
+                <p class="section-intro">
+                    Select a tablet and begin reading. Flip after each line to experience
+                    the Q² transformation—the same healing process used for centuries.
+                </p>
+
+                <div class="flip-interface">
+                    <!-- Tablet Selection -->
+                    <div class="tablet-selector">
+                        <label for="tablet-select">Select Tablet:</label>
+                        <select id="tablet-select" onchange="selectTablet(this.value)">
+                            <option value="A">Tablet A - Tahua (Santiago)</option>
+                            <option value="B">Tablet B - Aruku Kurenga (Rome)</option>
+                            <option value="C">Tablet C - Mamari (Lunar Calendar)</option>
+                            <option value="E">Tablet E - Keiti (Santiago)</option>
+                            <option value="H">Tablet H - Large Santiago</option>
+                            <option value="M">Tablet M - Large Vienna</option>
+                            <option value="P">Tablet P - Large St Petersburg</option>
+                        </select>
+                    </div>
+
+                    <!-- The Tablet Display -->
+                    <div class="tablet-container" id="tablet-container">
+                        <div class="tablet" id="tablet">
+                            <div class="tablet-surface">
+                                <div class="tablet-lines" id="tablet-lines">
+                                    <!-- Glyph lines rendered by JavaScript -->
+                                    <div class="tablet-line active">═══════════════════════════════</div>
+                                    <div class="tablet-line">═══════════════════════════════</div>
+                                    <div class="tablet-line">═══════════════════════════════</div>
+                                    <div class="tablet-line">═══════════════════════════════</div>
+                                    <div class="tablet-line">═══════════════════════════════</div>
+                                </div>
+                                <div class="tablet-info">
+                                    <span class="tablet-name" id="tablet-name">Tablet A - Tahua</span>
+                                    <span class="tablet-location" id="tablet-location">Santiago, Chile</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flip-instructions">
+                            <span class="instruction-key">SPACEBAR</span> or
+                            <span class="instruction-key">SWIPE</span> or
+                            <span class="instruction-key">CLICK EDGES</span>
+                            to flip
+                        </div>
+
+                        <button class="flip-btn" onclick="performFlip()">
+                            ↻ FLIP TABLET (Q²)
+                        </button>
+                    </div>
+
+                    <!-- Status Panels -->
+                    <div class="status-panels">
+                        <!-- Q-Cycle Status -->
+                        <div class="status-panel q-cycle-panel">
+                            <h3>Q-CYCLE STATUS</h3>
+                            <div class="q-cycle-visual">
+                                <div class="q-state" data-state="0">
+                                    <span class="q-power">Q⁰</span>
+                                    <span class="q-value">+1</span>
+                                </div>
+                                <div class="q-connector"></div>
+                                <div class="q-state" data-state="1">
+                                    <span class="q-power">Q¹</span>
+                                    <span class="q-value">+i</span>
+                                </div>
+                                <div class="q-connector vertical"></div>
+                                <div class="q-state" data-state="3">
+                                    <span class="q-power">Q³</span>
+                                    <span class="q-value">-i</span>
+                                </div>
+                                <div class="q-connector"></div>
+                                <div class="q-state" data-state="2">
+                                    <span class="q-power">Q²</span>
+                                    <span class="q-value">-1</span>
+                                </div>
+                            </div>
+                            <div class="q-current">
+                                <span class="label">Current:</span>
+                                <span class="value" id="current-q-state">Q⁰ (+1) S+</span>
+                            </div>
+                            <div class="q-flips">
+                                <span class="label">Flips:</span>
+                                <span class="value" id="flip-count">0</span>
+                            </div>
+                            <div class="q-cycles">
+                                <span class="label">Cycles:</span>
+                                <span class="value" id="cycle-count">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Orientation Status -->
+                        <div class="status-panel orientation-panel">
+                            <h3>ORIENTATION</h3>
+                            <div class="orientation-display">
+                                <div class="orientation-indicator" id="orientation-indicator">
+                                    <span class="mode">S+</span>
+                                    <span class="meaning">Manifest • Forward • Actual</span>
+                                </div>
+                            </div>
+                            <div class="orientation-info">
+                                <div class="info-row">
+                                    <span class="label">Mode:</span>
+                                    <span class="value" id="current-mode">S+ (Potential)</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Line:</span>
+                                    <span class="value" id="current-line">1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Session Metrics -->
+                        <div class="status-panel metrics-panel">
+                            <h3>SESSION METRICS</h3>
+                            <div class="metrics-grid">
+                                <div class="metric">
+                                    <span class="metric-value" id="session-duration">00:00</span>
+                                    <span class="metric-label">Duration</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value" id="rhythm-score">--</span>
+                                    <span class="metric-label">Rhythm</span>
+                                </div>
+                            </div>
+                            <div class="rhythm-bar">
+                                <div class="rhythm-fill" id="rhythm-fill" style="width: 0%"></div>
+                            </div>
+                            <p class="rhythm-hint">Optimal flip interval: 4-6 seconds</p>
+                            <div class="session-controls">
+                                <button class="session-btn" id="session-btn" onclick="toggleSession()">
+                                    START SESSION
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 THE Q² TRANSFORMATION EXPLAINED
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="explanation-section">
+                <div class="explanation-card">
+                    <h2>The Q² Transformation</h2>
+
+                    <div class="explanation-grid">
+                        <div class="explanation-item">
+                            <div class="explanation-icon">↻</div>
+                            <h3>Reverse Boustrophedon</h3>
+                            <p>
+                                Rongorongo is written in "reverse boustrophedon"—alternating lines
+                                run in opposite directions AND are upside down. You must physically
+                                flip the tablet 180° after each line to read it.
+                            </p>
+                        </div>
+
+                        <div class="explanation-item">
+                            <div class="explanation-icon">i²</div>
+                            <h3>Q² = -1</h3>
+                            <p>
+                                Like the imaginary unit i where i² = -1, the flip is a 180° rotation
+                                that transforms +1 into -1. This is not scribal convenience—it is
+                                encoded transformation.
+                            </p>
+                        </div>
+
+                        <div class="explanation-item">
+                            <div class="explanation-icon">⚕</div>
+                            <h3>The Healing Mechanism</h3>
+                            <p>
+                                The flip operates like bilateral stimulation in EMDR therapy—
+                                alternating between S+ (potential/future) and S- (manifest/past),
+                                engaging both perspectives for integration.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="boustrophedon-visual">
+                        <div class="line-example">
+                            <span class="line-label">LINE 1:</span>
+                            <span class="line-direction">→ → → → →</span>
+                            <span class="line-mode">(S+ mode, manifest, forward)</span>
+                        </div>
+                        <div class="flip-marker">↺ 180° FLIP</div>
+                        <div class="line-example inverted">
+                            <span class="line-label">LINE 2:</span>
+                            <span class="line-direction">← ← ← ← ←</span>
+                            <span class="line-mode">(S- mode, latent, inverted)</span>
+                        </div>
+                        <div class="flip-marker">↺ 180° FLIP</div>
+                        <div class="line-example">
+                            <span class="line-label">LINE 3:</span>
+                            <span class="line-direction">→ → → → →</span>
+                            <span class="line-mode">(back to S+ mode)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 THE NINE D-POSITIONS IN RONGORONGO
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="positions-section">
+                <h2>The Nine D-Positions</h2>
+                <p class="section-intro">
+                    All glyphs reduce to one of nine semantic positions. Click any position
+                    to see its role in Rongorongo and example glyphs.
+                </p>
+
+                <div class="d-position-wheel" id="d-position-wheel">
+                    <!-- Rendered by JavaScript -->
+                </div>
+
+                <div class="emergent-discovery">
+                    <h3>The Emergent Discovery</h3>
+                    <p>
+                        <strong>D₅ (Navigator)</strong> and <strong>D₉ (Anchor/Love)</strong> never
+                        appear as primary glyphs in the corpus. They only emerge from combinations:
+                    </p>
+                    <div class="emergent-examples">
+                        <div class="emergent-example">
+                            <span class="pair">D₆ + D₈</span>
+                            <span class="arrow">→</span>
+                            <span class="result">D₅ (Navigator)</span>
+                            <span class="note">Power + Deep Water = Direction</span>
+                        </div>
+                        <div class="emergent-example">
+                            <span class="pair">D₆ + D₃</span>
+                            <span class="arrow">→</span>
+                            <span class="result">D₉ (Love)</span>
+                            <span class="note">Power + Healer = Connection</span>
+                        </div>
+                    </div>
+                    <p class="emergent-insight">
+                        You cannot navigate alone. You cannot love alone.
+                        These positions encode <em>relational truth</em>—meaning that exists only in relationship.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 TABLET CORPUS
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="corpus-section">
+                <h2>The Tablet Corpus</h2>
+                <p class="section-intro">
+                    Only ~26 tablets survive, scattered in museums worldwide.
+                    Together they contain approximately 14,000 glyphs.
+                </p>
+
+                <div class="corpus-grid" id="corpus-grid">
+                    <!-- Rendered by JavaScript -->
+                </div>
+
+                <div class="tragedy-note">
+                    <h3>The Tragedy of 1862</h3>
+                    <p>
+                        On December 24, 1862, Peruvian slave raiders abducted approximately 1,500
+                        Rapa Nui—half the population, including nearly all the "rongorongo men"
+                        who could read the tablets. The living chain of transmission was severed.
+                        What survived: the tablets, the observation of the flip, and the name
+                        <strong>RONGORONGO = D₃ = HEALER</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 CULTURAL VOCABULARY
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="vocabulary-section">
+                <h2>Rapa Nui Vocabulary Analysis</h2>
+                <p class="section-intro">
+                    Key words from Rapa Nui culture reveal deep patterns when analyzed through D-positions.
+                </p>
+
+                <div class="vocab-categories">
+                    <button class="vocab-tab active" data-category="script">Script Terms</button>
+                    <button class="vocab-tab" data-category="sacred">Sacred Terms</button>
+                    <button class="vocab-tab" data-category="places">Place Names</button>
+                    <button class="vocab-tab" data-category="artifacts">Artifacts</button>
+                </div>
+
+                <div class="vocab-display" id="vocab-display">
+                    <!-- Rendered by JavaScript -->
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 GLYPH ANALYZER
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="analyzer-section">
+                <h2>Glyph Analyzer</h2>
+                <p class="section-intro">
+                    Enter a Barthel catalog number or any word to see its D-position analysis.
+                </p>
+
+                <div class="analyzer-box">
+                    <div class="analyzer-input-wrapper">
+                        <input type="text" id="analyzer-input" class="analyzer-input"
+                               placeholder="Enter Barthel # or word..."
+                               autocomplete="off">
+                        <button class="analyze-btn" onclick="analyzeInput()">
+                            ANALYZE
+                        </button>
+                    </div>
+                    <p class="analyzer-hint">Try: 200, RONGORONGO, RAPA NUI, MOAI, or any word</p>
+                </div>
+
+                <div id="analysis-result" class="analysis-result">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 INTEGRATION SECTION
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="integration-section">
+                <h2>Part of a Larger System</h2>
+
+                <div class="integration-grid">
+                    <div class="integration-item">
+                        <h3>🔱 Rosetta Engine</h3>
+                        <p>
+                            Compare Rongorongo patterns with other undeciphered scripts.
+                            The same D-position framework reveals connections across
+                            Voynich, Indus Valley, Linear A, and Phaistos.
+                        </p>
+                        <a href="../rosetta-engine/rosetta-engine-app_v1.0_01-06-2026.html" class="integration-link">
+                            Explore Rosetta Engine →
+                        </a>
+                    </div>
+                    <div class="integration-item">
+                        <h3>🔊 Universal Language Generator</h3>
+                        <p>
+                            The ULG provides phonetic reconstruction. When a glyph's
+                            D-position is identified, candidate pronunciations can be
+                            generated based on sound-meaning correspondences.
+                        </p>
+                        <a href="../universal-language-generator/ulg-app_v1.0_01-06-2026.html" class="integration-link">
+                            Explore ULG →
+                        </a>
+                    </div>
+                    <div class="integration-item">
+                        <h3>🧬 The κ-Framework</h3>
+                        <p>
+                            All three tools share the same mathematical foundation:
+                            κ = 2π/180, the bridge constant that connects angular
+                            and linear domains. Language is not separate from
+                            geometry—it emerges from it.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="unified-footer">
+            <div class="footer-logo">HAVE MIND MEDIA</div>
+            <div class="footer-tagline">The Rongorongo Flip Reader — The Epoch Project</div>
+            <div class="footer-equation">Q² = -1 = THE FLIP • RONGORONGO = D₃ = HEALER</div>
+            <div class="footer-principle">[1 = -1]</div>
+            <p class="footer-credit">Web Application Developer: T0Rs</p>
+        </footer>
+    </div>
+
+    <!-- D-Position Detail Modal -->
+    <div id="position-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modal-body">
+                <!-- Populated when position is clicked -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/rongorongo-engine_v1.0_01-07-2026.js"></script>
+    <script src="js/rongorongo-ui_v1.0_01-07-2026.js"></script>
+    <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Going Around | Geometry Math</title>
+    <meta name="description" content="What goes around comes around. Count the rotations and discover the rhythm of the circle.">
+    <link rel="stylesheet" href="../css/geometry-math.css">
+    <style>
+        .big-text {
+            font-size: 1.4rem;
+            color: var(--gold-light);
+            text-align: center;
+            margin: 2rem 0;
+            line-height: 1.6;
+        }
+
+        .rotation-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .rotation-number {
+            font-family: 'Courier New', monospace;
+            font-size: 5rem;
+            color: var(--cyan);
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .rotation-label {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+        }
+
+        .quarter-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .quarter-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .quarter-dot.active {
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+        }
+
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .big-button {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(10, 22, 40, 0.6);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .big-button:hover {
+            background: var(--gold);
+            color: var(--midnight);
+            transform: scale(1.1);
+        }
+
+        .speed-control {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .speed-control input[type="range"] {
+            width: 150px;
+            accent-color: var(--gold);
+        }
+
+        .speed-control label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .fact-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .fact-box h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .clock-comparison {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .clock-item {
+            text-align: center;
+        }
+
+        .clock-item .time {
+            font-family: monospace;
+            font-size: 2rem;
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .clock-item .label {
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-1">Tier 1 - Discovery</div>
+        <h1>Going Around</h1>
+        <p class="subtitle">What goes around comes around. Watch the point travel, and count.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <p class="big-text">
+                The point doesn't just sit on the circle. It can <strong>move</strong>.<br>
+                And when it moves all the way around... it comes back home.
+            </p>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Press Play and watch the point go around. Count the trips!
+                </p>
+                <div id="rotation-demo" class="demo-canvas"></div>
+
+                <div class="rotation-display">
+                    <div>
+                        <div class="rotation-number" id="rotation-count">0</div>
+                        <div class="rotation-label">full rotations</div>
+                    </div>
+                </div>
+
+                <div class="quarter-indicator" id="quarters">
+                    <div class="quarter-dot" data-quarter="0"></div>
+                    <div class="quarter-dot" data-quarter="1"></div>
+                    <div class="quarter-dot" data-quarter="2"></div>
+                    <div class="quarter-dot" data-quarter="3"></div>
+                </div>
+
+                <div class="control-panel">
+                    <button class="big-button" id="play-btn" title="Play/Pause">&#x25B6;</button>
+                    <button class="big-button" id="reset-btn" title="Reset">&#x21BA;</button>
+                    <div class="speed-control">
+                        <input type="range" id="speed-slider" min="0.2" max="3" step="0.1" value="1">
+                        <label>Speed: <span id="speed-value">1.0</span>x</label>
+                    </div>
+                </div>
+            </div>
+
+            <h2>One Full Trip = One Rotation</h2>
+
+            <p>
+                When the point travels all the way around the circle and returns to where it started, that's called one <strong>rotation</strong>.
+            </p>
+
+            <div class="fact-box">
+                <h4>A rotation has a number</h4>
+                <p>One full rotation = <strong>360 degrees</strong> (or 360°)</p>
+                <p>Why 360? Ancient astronomers noticed the sun takes about 360 days to complete its yearly cycle. So they divided the circle into 360 equal parts.</p>
+            </div>
+
+            <h2>Quarters of a Circle</h2>
+
+            <p>
+                Watch the four dots below the circle. Each one lights up when the point passes that quarter of the journey:
+            </p>
+
+            <div class="clock-comparison">
+                <div class="clock-item">
+                    <div class="time">0°</div>
+                    <div class="label">Start (3 o'clock)</div>
+                </div>
+                <div class="clock-item">
+                    <div class="time">90°</div>
+                    <div class="label">Quarter (12 o'clock)</div>
+                </div>
+                <div class="clock-item">
+                    <div class="time">180°</div>
+                    <div class="label">Halfway (9 o'clock)</div>
+                </div>
+                <div class="clock-item">
+                    <div class="time">270°</div>
+                    <div class="label">Three-quarters (6 o'clock)</div>
+                </div>
+            </div>
+
+            <p>
+                A quarter of a circle is <strong>90 degrees</strong>. Four quarters = 360°. Just like a clock!
+            </p>
+
+            <h2>Try Something</h2>
+
+            <div class="demo-container">
+                <p class="demo-instruction">
+                    Drag the point yourself. Can you land it exactly at each quarter position?
+                </p>
+                <div id="manual-demo" class="demo-canvas"></div>
+                <div class="values-panel numbers-layer visible">
+                    <div class="value-box angle">
+                        <div class="label">Angle</div>
+                        <div class="value" id="manual-angle">0°</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">Quarter</div>
+                        <div class="value" id="manual-quarter">1st</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <p>Every position on a circle has a number: its <strong>angle</strong> from the starting point.</p>
+            </div>
+
+            <h2>The Big Idea</h2>
+
+            <p>
+                When the point goes all the way around, it ends up exactly where it started.
+            </p>
+
+            <p>
+                This is called <strong>periodicity</strong>. Things repeat. Cycles complete. What goes around, comes around.
+            </p>
+
+            <div class="fact-box">
+                <h4>Where do we see this?</h4>
+                <p>&#x2022; Day and night (Earth rotating)</p>
+                <p>&#x2022; The seasons (Earth orbiting the sun)</p>
+                <p>&#x2022; Your heartbeat (a repeating rhythm)</p>
+                <p>&#x2022; Music (sound waves repeating)</p>
+            </div>
+
+            <div class="key-insight">
+                <p>The circle is the shape of <strong>cycles</strong>.<br>And cycles are everywhere.</p>
+            </div>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; One trip around a circle = one <strong>rotation</strong> = 360°
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; A quarter turn = 90°
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; Every position has an angle (its distance around from start)
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; Rotation is the shape of cycles — things that repeat
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="01-magic-circle.html" class="nav-button">
+                    <span class="label">Previous</span>
+                    &#x2190; Magic Circle
+                </a>
+                <a href="03-seesaw.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    The Seesaw &#x2192;
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../js/circle-engine.js"></script>
+    <script src="../js/components/circle-canvas.js"></script>
+    <script>
+        // Rotation counter demo
+        let rotationCount = 0;
+        let lastAngle = 0;
+        let isPlaying = false;
+
+        const demo1 = new CircleCanvas('rotation-demo', {
+            radius: 100,
+            showGrid: false,
+            showAxes: true,
+            showProjections: false,
+            showAngle: true,
+            showCoordinates: false,
+            showTrace: false,
+            interactive: false,
+            animate: false,
+            animationSpeed: 1,
+            onAngleChange: function(angle, values) {
+                // Update quarter indicators
+                const quarters = document.querySelectorAll('.quarter-dot');
+                const normalizedAngle = ((angle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+                const quarterIndex = Math.floor(normalizedAngle / (Math.PI / 2));
+
+                quarters.forEach((dot, i) => {
+                    dot.classList.toggle('active', i <= quarterIndex);
+                });
+
+                // Count rotations
+                const angleDiff = angle - lastAngle;
+                if (angleDiff > Math.PI) {
+                    // Wrapped backwards
+                } else if (angleDiff < -Math.PI) {
+                    // Wrapped forwards - completed a rotation
+                    rotationCount++;
+                    document.getElementById('rotation-count').textContent = rotationCount;
+                }
+                lastAngle = angle;
+            }
+        });
+
+        // Play button
+        document.getElementById('play-btn').addEventListener('click', function() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                demo1.startAnimation();
+                this.innerHTML = '&#x23F8;'; // Pause icon
+            } else {
+                demo1.stopAnimation();
+                this.innerHTML = '&#x25B6;'; // Play icon
+            }
+        });
+
+        // Reset button
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            demo1.stopAnimation();
+            demo1.setAngle(0);
+            rotationCount = 0;
+            lastAngle = 0;
+            document.getElementById('rotation-count').textContent = '0';
+            document.getElementById('play-btn').innerHTML = '&#x25B6;';
+            isPlaying = false;
+            document.querySelectorAll('.quarter-dot').forEach(dot => dot.classList.remove('active'));
+        });
+
+        // Speed slider
+        document.getElementById('speed-slider').addEventListener('input', function() {
+            demo1.options.animationSpeed = parseFloat(this.value);
+            document.getElementById('speed-value').textContent = this.value;
+        });
+
+        // Manual demo
+        const demo2 = new CircleCanvas('manual-demo', {
+            radius: 100,
+            showGrid: false,
+            showAxes: true,
+            showProjections: false,
+            showAngle: true,
+            showCoordinates: false,
+            showTrace: false,
+            interactive: true,
+            onAngleChange: function(angle, values) {
+                const degrees = ((values.degrees % 360) + 360) % 360;
+                document.getElementById('manual-angle').textContent = degrees.toFixed(0) + '°';
+
+                let quarter;
+                if (degrees < 90) quarter = '1st';
+                else if (degrees < 180) quarter = '2nd';
+                else if (degrees < 270) quarter = '3rd';
+                else quarter = '4th';
+                document.getElementById('manual-quarter').textContent = quarter;
+            }
+        });
+    </script>
+</body>
+</html>

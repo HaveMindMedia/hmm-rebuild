@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fundamental Theorem | Calculus Through Rotation</title>
+    <link rel="stylesheet" href="../../css/geometry-math.css">
+    <style>
+        .lesson-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-number {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-subtitle {
+            color: var(--text);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .content-section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section h3 {
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .demo-container {
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .demo-title {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        canvas {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .control-btn.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .math-block {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--cyan);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .math-block .equation {
+            font-size: 1.4rem;
+            color: var(--cyan);
+            margin: 0.5rem 0;
+        }
+
+        .central-equation {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 212, 255, 0.2));
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .central-equation .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .central-equation .subtitle {
+            color: var(--text);
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .theorem-box {
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid rgba(255, 0, 255, 0.5);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .theorem-box h3 {
+            color: #ff00ff;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .theorem-box .statement {
+            color: var(--text);
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .proof-box {
+            background: rgba(10, 22, 40, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .proof-box h4 {
+            color: var(--cyan);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .proof-step {
+            color: var(--text);
+            margin: 0.75rem 0;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .proof-step .step-num {
+            color: var(--gold);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .dual-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .dual-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .panel h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .live-display {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .live-display .param {
+            display: inline-block;
+            margin: 0.5rem 1rem;
+        }
+
+        .live-display .param-label {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .live-display .param-value {
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .rotation-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .rotation-step {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(10, 22, 40, 0.5);
+            border-radius: 8px;
+            min-width: 100px;
+        }
+
+        .rotation-step .label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rotation-step .value {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .rotation-arrow {
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-number">Calculus Through Rotation — Lesson 05</div>
+        <h1>The Fundamental Theorem</h1>
+        <p class="lesson-subtitle">
+            +90° then -90° = identity. The Fundamental Theorem of Calculus is the statement
+            that differentiation and integration are inverse operations.
+        </p>
+    </header>
+
+    <section class="content-section">
+        <h2>The Core Insight</h2>
+
+        <p>
+            We've established that differentiation rotates by +90° and integration rotates by -90°.
+            What happens when you do both?
+        </p>
+
+        <div class="rotation-diagram">
+            <div class="rotation-step">
+                <div class="label">Start</div>
+                <div class="value">f(t)</div>
+            </div>
+            <div class="rotation-arrow">→<sup>d/dt</sup></div>
+            <div class="rotation-step">
+                <div class="label">+90°</div>
+                <div class="value">f'(t)</div>
+            </div>
+            <div class="rotation-arrow">→<sup>∫dt</sup></div>
+            <div class="rotation-step">
+                <div class="label">-90°</div>
+                <div class="value">f(t) + C</div>
+            </div>
+        </div>
+
+        <div class="central-equation">
+            <div class="equation">∫ [d/dt f(t)] dt = f(t) + C</div>
+            <div class="equation">d/dt [∫ f(t) dt] = f(t)</div>
+            <p class="subtitle">
+                +90° + (-90°) = 0° = identity (up to a constant)
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Fundamental Theorem, Part 1</h2>
+
+        <div class="theorem-box">
+            <h3>FTC Part 1: Derivative of an Integral</h3>
+            <div class="statement">
+                If F(x) = ∫ₐˣ f(t) dt, then F'(x) = f(x)
+            </div>
+            <p style="color: var(--text); margin-top: 1rem;">
+                The derivative of the accumulation function equals the original function.
+                Geometrically: the rate at which area accumulates equals the height of the curve.
+            </p>
+        </div>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: FTC Part 1 Visualization</div>
+            <div class="canvas-container">
+                <canvas id="ftc1Canvas" width="700" height="350"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">x</span>
+                    <span class="param-value" id="xVal" style="color: #d4af37;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">f(x) = sin(x)</span>
+                    <span class="param-value" id="fxVal" style="color: #00d4ff;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">F(x) = ∫₀ˣ sin(t) dt</span>
+                    <span class="param-value" id="FxVal" style="color: #00ff88;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">F'(x)</span>
+                    <span class="param-value" id="FprimeVal" style="color: #ff00ff;">0.00</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn active" id="ftc1PlayBtn">Pause</button>
+                <button class="control-btn" id="showSlopeBtn">Show Slope of F</button>
+            </div>
+            <p style="color: var(--text-dim); text-align: center; font-size: 0.9rem; margin-top: 1rem;">
+                Notice: F'(x) (slope of green curve) always equals f(x) (height of cyan curve)
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Fundamental Theorem, Part 2</h2>
+
+        <div class="theorem-box">
+            <h3>FTC Part 2: Evaluating Definite Integrals</h3>
+            <div class="statement">
+                ∫ₐᵇ f(x) dx = F(b) - F(a), where F'(x) = f(x)
+            </div>
+            <p style="color: var(--text); margin-top: 1rem;">
+                To find the accumulated area, evaluate the antiderivative at the endpoints
+                and subtract. No need to sum infinitely many rectangles!
+            </p>
+        </div>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Computing Definite Integrals</div>
+            <div class="canvas-container">
+                <canvas id="ftc2Canvas" width="700" height="350"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">a</span>
+                    <span class="param-value" id="aVal" style="color: #d4af37;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">b</span>
+                    <span class="param-value" id="bVal" style="color: #d4af37;">π</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">F(b) - F(a)</span>
+                    <span class="param-value" id="diffVal" style="color: #00ff88;">2.00</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="animateBBtn">Animate b</button>
+                <button class="control-btn" id="resetBoundsBtn">Reset</button>
+            </div>
+            <p style="color: var(--text-dim); text-align: center; font-size: 0.9rem; margin-top: 1rem;">
+                Drag the boundaries to change a and b. The integral equals F(b) - F(a).
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Rotation Proof</h2>
+
+        <p>
+            Using our rotation framework, the FTC becomes almost obvious:
+        </p>
+
+        <div class="proof-box">
+            <h4>Geometric Proof of FTC</h4>
+
+            <div class="proof-step">
+                <span class="step-num">1.</span>
+                Differentiation D is rotation by +90° (multiplication by i).
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">2.</span>
+                Integration I is rotation by -90° (multiplication by -i = 1/i).
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">3.</span>
+                Composing them: D ∘ I = (+90°) + (-90°) = 0° = identity
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">4.</span>
+                Equivalently: i × (-i) = -i² = -(-1) = 1
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">5.</span>
+                Therefore: d/dt [∫ f dt] = f &nbsp; ∎
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>Why "+ C"?</h4>
+            <p>
+                When we integrate first, then differentiate, we get exactly the original function.
+                But when we differentiate first, then integrate, we can only recover the original
+                up to a constant — because the derivative of any constant is zero.
+            </p>
+            <p style="margin-top: 1rem;">
+                D ∘ I = identity (exactly)<br>
+                I ∘ D = identity + constant
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Interactive: Inverse Operations</h2>
+
+        <div class="demo-container">
+            <div class="demo-title">Watch +90° and -90° Cancel</div>
+            <div class="canvas-container">
+                <canvas id="inverseCanvas" width="500" height="400"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Original</span>
+                    <span class="param-value" id="origPhase" style="color: #00d4ff;">0°</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">After Operation</span>
+                    <span class="param-value" id="afterPhase" style="color: #00ff88;">0°</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Net Rotation</span>
+                    <span class="param-value" id="netPhase" style="color: #d4af37;">0°</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="diffBtn">Differentiate (+90°)</button>
+                <button class="control-btn" id="intBtn">Integrate (-90°)</button>
+                <button class="control-btn" id="resetInvBtn">Reset</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Two Parts Unified</h2>
+
+        <div class="dual-panel">
+            <div class="panel">
+                <h4>FTC Part 1</h4>
+                <p style="color: var(--cyan); font-family: monospace;">d/dx ∫ₐˣ f(t) dt = f(x)</p>
+                <p style="color: var(--text); margin-top: 1rem;">
+                    "The rate of accumulation equals the current value."
+                </p>
+                <p style="color: var(--text-dim); margin-top: 0.5rem; font-size: 0.9rem;">
+                    Differentiate the integral → get back the function
+                </p>
+            </div>
+            <div class="panel">
+                <h4>FTC Part 2</h4>
+                <p style="color: var(--cyan); font-family: monospace;">∫ₐᵇ f(x) dx = F(b) - F(a)</p>
+                <p style="color: var(--text); margin-top: 1rem;">
+                    "Net change equals endpoint difference."
+                </p>
+                <p style="color: var(--text-dim); margin-top: 0.5rem; font-size: 0.9rem;">
+                    Find antiderivative → evaluate at boundaries
+                </p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>The Deepest Connection</h4>
+            <p>
+                Both parts say the same thing: <strong>differentiation and integration undo each other</strong>.
+                In the rotation picture, this is trivially true: +90° and -90° sum to zero.
+            </p>
+            <p style="margin-top: 1rem;">
+                The FTC is often called "the most important theorem in calculus." Through the lens of rotation,
+                it's the obvious statement that inverse operations cancel.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Application: Computing Integrals</h2>
+
+        <p>
+            The FTC transforms integration from an infinite summation into a simple evaluation:
+        </p>
+
+        <div class="math-block">
+            <p>Example: ∫₀<sup>π</sup> sin(x) dx</p>
+            <div class="equation" style="font-size: 1.1rem;">
+                Antiderivative: F(x) = -cos(x)
+            </div>
+            <div class="equation" style="font-size: 1.1rem;">
+                F(π) - F(0) = -cos(π) - (-cos(0)) = -(-1) - (-1) = 1 + 1 = 2
+            </div>
+        </div>
+
+        <p>
+            The total area under one half-cycle of sine is exactly 2.
+            No infinite sums, no limits — just rotation arithmetic.
+        </p>
+    </section>
+
+    <section class="content-section">
+        <h2>Key Insight</h2>
+
+        <div class="central-equation">
+            <div class="equation">D ∘ I = I ∘ D = Identity (mod constants)</div>
+            <p class="subtitle">
+                The Fundamental Theorem of Calculus states that differentiation and integration
+                are inverse operations — in the rotation picture, this is +90° + (-90°) = 0°.
+            </p>
+        </div>
+    </section>
+
+    <nav class="lesson-nav">
+        <a href="04-integration-accumulation.html">← Lesson 04: Integration</a>
+        <a href="06-applications.html">Lesson 06: Applications →</a>
+    </nav>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(212,175,55,0.2);">
+        <p style="color: var(--gold); font-family: monospace;">[1 = -1]</p>
+        <p style="color: var(--text-dim);">Calculus Through Rotation | Geometry Math</p>
+    </footer>
+
+    <script src="../../js/circle-engine.js"></script>
+    <script>
+        // ===== FTC PART 1 DEMO =====
+        (function() {
+            const canvas = document.getElementById('ftc1Canvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const margin = 60;
+            const graphWidth = width - margin * 2;
+            const graphHeight = height - 80;
+            const cy = height / 2;
+            const amp = 60;
+
+            let x = 0;
+            let playing = true;
+            let showSlope = false;
+
+            const xDisplay = document.getElementById('xVal');
+            const fxDisplay = document.getElementById('fxVal');
+            const FxDisplay = document.getElementById('FxVal');
+            const FprimeDisplay = document.getElementById('FprimeVal');
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(margin, cy);
+                ctx.lineTo(width - margin, cy);
+                ctx.stroke();
+
+                // Draw f(x) = sin(x) (cyan)
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let px = 0; px <= graphWidth; px++) {
+                    const t = (px / graphWidth) * 2 * Math.PI;
+                    const y = Math.sin(t) * amp;
+                    if (px === 0) {
+                        ctx.moveTo(margin + px, cy - y);
+                    } else {
+                        ctx.lineTo(margin + px, cy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Draw F(x) = 1 - cos(x) (green) - shifted down
+                const Fcy = cy + 30;
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let px = 0; px <= graphWidth; px++) {
+                    const t = (px / graphWidth) * 2 * Math.PI;
+                    const y = (1 - Math.cos(t)) * amp / 2;
+                    if (px === 0) {
+                        ctx.moveTo(margin + px, Fcy - y);
+                    } else {
+                        ctx.lineTo(margin + px, Fcy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Current x position
+                const xPx = (x / (2 * Math.PI)) * graphWidth;
+                const fx = Math.sin(x);
+                const Fx = 1 - Math.cos(x);
+
+                // Vertical line at x
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(margin + xPx, 0);
+                ctx.lineTo(margin + xPx, height);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Point on f(x)
+                ctx.fillStyle = '#00d4ff';
+                ctx.beginPath();
+                ctx.arc(margin + xPx, cy - fx * amp, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Point on F(x)
+                ctx.fillStyle = '#00ff88';
+                ctx.beginPath();
+                ctx.arc(margin + xPx, Fcy - Fx * amp / 2, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Show slope of F at x
+                if (showSlope) {
+                    // Tangent line at F(x) with slope F'(x) = sin(x)
+                    const slope = fx; // F'(x) = sin(x)
+                    const tangentLen = 50;
+                    const Fy = Fcy - Fx * amp / 2;
+
+                    ctx.strokeStyle = '#ff00ff';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(margin + xPx - tangentLen, Fy + slope * tangentLen * amp / 2);
+                    ctx.lineTo(margin + xPx + tangentLen, Fy - slope * tangentLen * amp / 2);
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#ff00ff';
+                    ctx.font = '12px monospace';
+                    ctx.fillText(`slope = ${fx.toFixed(2)} = sin(x)`, margin + xPx + 20, Fy - 20);
+                }
+
+                // Fill area under f from 0 to x
+                ctx.fillStyle = 'rgba(0, 212, 255, 0.2)';
+                ctx.beginPath();
+                ctx.moveTo(margin, cy);
+                for (let px = 0; px <= xPx; px++) {
+                    const t = (px / graphWidth) * 2 * Math.PI;
+                    const y = Math.sin(t) * amp;
+                    ctx.lineTo(margin + px, cy - y);
+                }
+                ctx.lineTo(margin + xPx, cy);
+                ctx.closePath();
+                ctx.fill();
+
+                // Labels
+                ctx.fillStyle = '#00d4ff';
+                ctx.font = '12px monospace';
+                ctx.fillText('f(x) = sin(x)', width - 120, cy - amp - 10);
+
+                ctx.fillStyle = '#00ff88';
+                ctx.fillText('F(x) = ∫₀ˣ sin(t) dt', width - 140, Fcy + amp / 2 + 20);
+
+                // Update displays
+                xDisplay.textContent = x.toFixed(2);
+                fxDisplay.textContent = fx.toFixed(3);
+                FxDisplay.textContent = Fx.toFixed(3);
+                FprimeDisplay.textContent = fx.toFixed(3);
+            }
+
+            function animate() {
+                if (playing) {
+                    x += 0.02;
+                    if (x > 2 * Math.PI) x = 0;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('ftc1PlayBtn').addEventListener('click', function() {
+                playing = !playing;
+                this.textContent = playing ? 'Pause' : 'Play';
+                this.classList.toggle('active', playing);
+            });
+
+            document.getElementById('showSlopeBtn').addEventListener('click', function() {
+                showSlope = !showSlope;
+                this.classList.toggle('active', showSlope);
+            });
+
+            animate();
+        })();
+
+        // ===== FTC PART 2 DEMO =====
+        (function() {
+            const canvas = document.getElementById('ftc2Canvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const margin = 60;
+            const graphWidth = width - margin * 2;
+            const cy = height / 2;
+            const amp = 80;
+
+            let a = 0;
+            let b = Math.PI;
+            let animatingB = false;
+
+            const aDisplay = document.getElementById('aVal');
+            const bDisplay = document.getElementById('bVal');
+            const diffDisplay = document.getElementById('diffVal');
+
+            function F(x) {
+                return 1 - Math.cos(x); // Antiderivative of sin, shifted so F(0) = 0
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(margin, cy);
+                ctx.lineTo(width - margin, cy);
+                ctx.stroke();
+
+                // Draw sin curve
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let px = 0; px <= graphWidth; px++) {
+                    const t = (px / graphWidth) * 2 * Math.PI;
+                    const y = Math.sin(t) * amp;
+                    if (px === 0) {
+                        ctx.moveTo(margin + px, cy - y);
+                    } else {
+                        ctx.lineTo(margin + px, cy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Fill area from a to b
+                const aPx = (a / (2 * Math.PI)) * graphWidth;
+                const bPx = (b / (2 * Math.PI)) * graphWidth;
+
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.3)';
+                ctx.beginPath();
+                ctx.moveTo(margin + aPx, cy);
+                for (let px = aPx; px <= bPx; px++) {
+                    const t = (px / graphWidth) * 2 * Math.PI;
+                    const y = Math.sin(t) * amp;
+                    ctx.lineTo(margin + px, cy - y);
+                }
+                ctx.lineTo(margin + bPx, cy);
+                ctx.closePath();
+                ctx.fill();
+
+                // Draw boundaries
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(margin + aPx, cy - 100);
+                ctx.lineTo(margin + aPx, cy + 50);
+                ctx.moveTo(margin + bPx, cy - 100);
+                ctx.lineTo(margin + bPx, cy + 50);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Labels
+                ctx.fillStyle = '#d4af37';
+                ctx.font = '14px monospace';
+                ctx.fillText('a', margin + aPx - 5, cy + 70);
+                ctx.fillText('b', margin + bPx - 5, cy + 70);
+
+                // Compute integral
+                const Fa = F(a);
+                const Fb = F(b);
+                const integral = Fb - Fa;
+
+                // Show F(a) and F(b) values
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = '11px monospace';
+                ctx.fillText(`F(a) = ${Fa.toFixed(3)}`, margin + aPx - 30, cy - 110);
+                ctx.fillText(`F(b) = ${Fb.toFixed(3)}`, margin + bPx - 30, cy - 110);
+
+                // Update displays
+                aDisplay.textContent = a.toFixed(2);
+                bDisplay.textContent = b.toFixed(2);
+                diffDisplay.textContent = integral.toFixed(3);
+            }
+
+            function animate() {
+                if (animatingB) {
+                    b += 0.03;
+                    if (b > 2 * Math.PI) {
+                        b = 0;
+                        animatingB = false;
+                        document.getElementById('animateBBtn').classList.remove('active');
+                    }
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('animateBBtn').addEventListener('click', function() {
+                animatingB = !animatingB;
+                this.classList.toggle('active', animatingB);
+            });
+
+            document.getElementById('resetBoundsBtn').addEventListener('click', () => {
+                a = 0;
+                b = Math.PI;
+                animatingB = false;
+                document.getElementById('animateBBtn').classList.remove('active');
+            });
+
+            // Dragging
+            let dragging = null;
+            canvas.addEventListener('mousedown', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const aPx = margin + (a / (2 * Math.PI)) * graphWidth;
+                const bPx = margin + (b / (2 * Math.PI)) * graphWidth;
+
+                if (Math.abs(mx - aPx) < 15) dragging = 'a';
+                else if (Math.abs(mx - bPx) < 15) dragging = 'b';
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (!dragging) return;
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left - margin;
+                const t = Math.max(0, Math.min(2 * Math.PI, (mx / graphWidth) * 2 * Math.PI));
+
+                if (dragging === 'a' && t < b) a = t;
+                if (dragging === 'b' && t > a) b = t;
+            });
+
+            canvas.addEventListener('mouseup', () => { dragging = null; });
+            canvas.addEventListener('mouseleave', () => { dragging = null; });
+
+            animate();
+        })();
+
+        // ===== INVERSE OPERATIONS DEMO =====
+        (function() {
+            const canvas = document.getElementById('inverseCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = 120;
+
+            let currentAngle = 0;
+            let targetAngle = 0;
+            let animating = false;
+            let totalRotation = 0;
+
+            const origDisplay = document.getElementById('origPhase');
+            const afterDisplay = document.getElementById('afterPhase');
+            const netDisplay = document.getElementById('netPhase');
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw circle
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Draw quadrant labels
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.font = '12px monospace';
+                ctx.fillText('0°', cx + radius + 10, cy + 5);
+                ctx.fillText('90°', cx - 10, cy - radius - 10);
+                ctx.fillText('180°', cx - radius - 35, cy + 5);
+                ctx.fillText('270°', cx - 15, cy + radius + 20);
+
+                // Draw axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(cx - radius - 20, cy);
+                ctx.lineTo(cx + radius + 20, cy);
+                ctx.moveTo(cx, cy - radius - 20);
+                ctx.lineTo(cx, cy + radius + 20);
+                ctx.stroke();
+
+                // Draw original position (faded)
+                ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + radius, cy);
+                ctx.stroke();
+
+                // Draw current position
+                const x = cx + Math.cos(-currentAngle) * radius;
+                const y = cy + Math.sin(-currentAngle) * radius;
+
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+
+                // Draw point
+                ctx.fillStyle = '#00ff88';
+                ctx.shadowColor = '#00ff88';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.arc(x, y, 12, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Draw rotation arc
+                if (Math.abs(currentAngle) > 0.01) {
+                    ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    if (currentAngle > 0) {
+                        ctx.arc(cx, cy, radius * 0.4, 0, -currentAngle, true);
+                    } else {
+                        ctx.arc(cx, cy, radius * 0.4, 0, -currentAngle, false);
+                    }
+                    ctx.stroke();
+                }
+
+                // Update displays
+                origDisplay.textContent = '0°';
+                afterDisplay.textContent = Math.round(currentAngle * 180 / Math.PI) + '°';
+                netDisplay.textContent = Math.round(totalRotation * 180 / Math.PI) + '°';
+            }
+
+            function animateRotation() {
+                if (animating) {
+                    const diff = targetAngle - currentAngle;
+                    if (Math.abs(diff) < 0.01) {
+                        currentAngle = targetAngle;
+                        animating = false;
+                    } else {
+                        currentAngle += diff * 0.1;
+                    }
+                }
+                draw();
+                requestAnimationFrame(animateRotation);
+            }
+
+            document.getElementById('diffBtn').addEventListener('click', () => {
+                totalRotation += Math.PI / 2;
+                targetAngle = currentAngle + Math.PI / 2;
+                animating = true;
+            });
+
+            document.getElementById('intBtn').addEventListener('click', () => {
+                totalRotation -= Math.PI / 2;
+                targetAngle = currentAngle - Math.PI / 2;
+                animating = true;
+            });
+
+            document.getElementById('resetInvBtn').addEventListener('click', () => {
+                targetAngle = 0;
+                totalRotation = 0;
+                animating = true;
+            });
+
+            animateRotation();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 5: 1729 Emerges | Ramanujan T0rsion Math</title>
+    <meta name="description" content="At Position 4, the two sides meet: S⁻ × S⁺ = 91 × 19 = 1729. The scalar point finder reveals itself.">
+    <link rel="stylesheet" href="../../../css/unified-theme.css">
+    <script src="../../../js/components/site-header.js" defer></script>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4e4bc;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --deep-blue: #0a1628;
+            --midnight: #050a12;
+            --text: #e8e6e3;
+            --text-dim: #a0a0a0;
+            --cyan: #00d4ff;
+            --magenta: #ff00ff;
+            --green: #00ff88;
+            --red: #ff4444;
+            --orange: #ff8800;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: var(--midnight);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+        }
+
+        .lesson-header {
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .lesson-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .lesson-header p {
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .lesson-content {
+            padding: 4rem 0;
+        }
+
+        .lesson-content h2 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin: 3rem 0 1.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .lesson-content h2:first-child {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        .lesson-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .big-reveal {
+            text-align: center;
+            padding: 4rem 2rem;
+            margin: 3rem 0;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.15), transparent 70%);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+        }
+
+        .big-number {
+            font-family: 'Times New Roman', serif;
+            font-size: 6rem;
+            font-weight: bold;
+            color: var(--gold);
+            text-shadow: 0 0 30px var(--gold-glow);
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .big-reveal .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+        }
+
+        .equation-box {
+            text-align: center;
+            padding: 2rem;
+            margin: 2rem 0;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+        }
+
+        .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2rem;
+            color: var(--gold-light);
+        }
+
+        .equation .op { color: var(--text-dim); margin: 0 0.5rem; }
+        .equation .cyan { color: var(--cyan); }
+        .equation .magenta { color: var(--magenta); }
+        .equation .gold { color: var(--gold); }
+
+        .equation-label {
+            margin-top: 1rem;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .position-display { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 2rem 0; }
+
+        .pos-item {
+            text-align: center;
+            padding: 1rem 0.5rem;
+            background: rgba(10, 22, 40, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .pos-item.highlight {
+            background: rgba(212, 175, 55, 0.15);
+            border: 2px solid var(--gold);
+        }
+
+        .pos-item .pos-num {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            display: block;
+        }
+
+        .pos-item .pos-values {
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .pos-item .s-minus {
+            color: var(--cyan);
+            font-weight: bold;
+        }
+
+        .pos-item .s-plus {
+            color: var(--magenta);
+            font-weight: bold;
+        }
+
+        .sides-meet {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            padding: 3rem;
+            margin: 2rem 0;
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            flex-wrap: wrap;
+        }
+
+        .side-box {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+        }
+
+        .side-box.future {
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--cyan);
+        }
+
+        .side-box.past {
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid var(--magenta);
+        }
+
+        .side-box .side-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .side-box.future .side-label { color: var(--cyan); }
+        .side-box.past .side-label { color: var(--magenta); }
+
+        .side-box .side-value {
+            font-family: 'Times New Roman', serif;
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+            margin: 0.5rem 0;
+        }
+
+        .side-box.future .side-value { color: var(--cyan); }
+        .side-box.past .side-value { color: var(--magenta); }
+
+        .side-box .side-factors {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .multiply-sign {
+            font-size: 3rem;
+            color: var(--gold);
+        }
+
+        .equals-sign {
+            font-size: 3rem;
+            color: var(--gold);
+        }
+
+        .result-box {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background: rgba(212, 175, 55, 0.15);
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+        }
+
+        .result-box .result-value {
+            font-family: 'Times New Roman', serif;
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .result-box .result-label {
+            font-size: 0.8rem;
+            color: var(--gold-light);
+        }
+
+        .factorization {
+            text-align: center;
+            padding: 2rem;
+            margin: 2rem 0;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+        }
+
+        .factorization .main {
+            font-family: 'Times New Roman', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .factorization .breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .factor-chip {
+            padding: 0.5rem 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--gold-light);
+        }
+
+        .highlight-box {
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+        }
+
+        .highlight-box h3 {
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .key-insight {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            margin: 3rem 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+        }
+
+        .key-insight p {
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            margin: 0;
+            font-style: italic;
+        }
+
+        .proof-steps {
+            margin: 2rem 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .proof-steps li {
+            position: relative;
+            padding: 1rem 1rem 1rem 4rem;
+            margin: 1rem 0;
+            background: rgba(10, 22, 40, 0.3);
+            border-radius: 8px;
+            counter-increment: step;
+        }
+
+        .proof-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .story-box {
+            padding: 2rem;
+            margin: 2rem 0;
+            background: rgba(10, 22, 40, 0.5);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .story-box .speaker {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .story-box p {
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .story-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            padding: 1rem 2rem;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            color: var(--gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .nav-button .label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-button:hover .label {
+            color: var(--midnight);
+        }
+
+        footer {
+            padding: 3rem 2rem;
+            background: var(--deep-blue);
+            text-align: center;
+            color: var(--text-dim);
+        }
+
+        .signature {
+            color: var(--gold);
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-header { padding: 4rem 1.5rem 3rem; }
+            .container { padding: 0 1.5rem; }
+            .big-number { font-size: 4rem; }
+            .equation { font-size: 1.5rem; }
+            .position-display { grid-template-columns: repeat(3, 1fr); }
+            .sides-meet { gap: 1rem; padding: 1.5rem; }
+            .side-box .side-value { font-size: 2rem; }
+            .multiply-sign, .equals-sign { font-size: 2rem; }
+            .result-box .result-value { font-size: 2rem; }
+            .nav-buttons { flex-direction: column; }
+            .nav-button { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <header class="lesson-header">
+        <div class="lesson-badge">Lesson 5 — The Emergence</div>
+        <h1>1729 Emerges</h1>
+        <p>At Position 4, the two sides meet. Future times past equals the scalar point finder.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <h2>The Hardy-Ramanujan Number</h2>
+
+            <p>In 1917, mathematician G.H. Hardy visited Srinivasa Ramanujan in hospital. Hardy mentioned he'd arrived in taxi number 1729, and remarked it seemed "rather a dull number."</p>
+
+            <div class="story-box">
+                <div class="speaker">Ramanujan</div>
+                <p>"No, it is a very interesting number. It is the smallest number expressible as the sum of two cubes in two different ways."</p>
+            </div>
+
+            <div class="big-reveal">
+                <span class="big-number">1729</span>
+                <span class="subtitle">The Hardy-Ramanujan Number</span>
+            </div>
+
+            <div class="factorization">
+                <div class="main">1729 = 1³ + 12³ = 9³ + 10³</div>
+                <div class="breakdown">
+                    <span class="factor-chip">1 + 1728</span>
+                    <span class="factor-chip">729 + 1000</span>
+                    <span class="factor-chip">Both equal 1729</span>
+                </div>
+            </div>
+
+            <p>Ramanujan saw it instantly. But there's more to 1729 than taxicab trivia.</p>
+
+            <h2>Position 4: Where Sides Meet</h2>
+
+            <p>Remember our position-value map? Let's look at Positions 0 through 4:</p>
+
+            <div class="position-display">
+                <div class="pos-item">
+                    <span class="pos-num">Pos 0</span>
+                    <div class="pos-values">
+                        <span class="s-minus">8</span>
+                        <span>/</span>
+                        <span class="s-plus">8</span>
+                    </div>
+                </div>
+                <div class="pos-item">
+                    <span class="pos-num">Pos 1</span>
+                    <div class="pos-values">
+                        <span class="s-minus">7</span>
+                        <span>/</span>
+                        <span class="s-plus">7</span>
+                    </div>
+                </div>
+                <div class="pos-item">
+                    <span class="pos-num">Pos 2</span>
+                    <div class="pos-values">
+                        <span class="s-minus">9</span>
+                        <span>/</span>
+                        <span class="s-plus">9</span>
+                    </div>
+                </div>
+                <div class="pos-item">
+                    <span class="pos-num">Pos 3</span>
+                    <div class="pos-values">
+                        <span class="s-minus">31</span>
+                        <span>/</span>
+                        <span class="s-plus">13</span>
+                    </div>
+                </div>
+                <div class="pos-item highlight">
+                    <span class="pos-num">Pos 4</span>
+                    <div class="pos-values">
+                        <span class="s-minus">91</span>
+                        <span>/</span>
+                        <span class="s-plus">19</span>
+                    </div>
+                </div>
+            </div>
+
+            <p>At Position 4, something remarkable happens. The S⁻ (future) side shows <strong>91</strong>. The S⁺ (past) side shows <strong>19</strong>.</p>
+
+            <p>Multiply them:</p>
+
+            <div class="sides-meet">
+                <div class="side-box future">
+                    <span class="side-label">S⁻ (Future)</span>
+                    <span class="side-value">91</span>
+                    <span class="side-factors">7 × 13</span>
+                </div>
+                <span class="multiply-sign">×</span>
+                <div class="side-box past">
+                    <span class="side-label">S⁺ (Past)</span>
+                    <span class="side-value">19</span>
+                    <span class="side-factors">Prime</span>
+                </div>
+                <span class="equals-sign">=</span>
+                <div class="result-box">
+                    <span class="result-value">1729</span>
+                    <span class="result-label">The Emergence</span>
+                </div>
+            </div>
+
+            <h2>Why This Matters</h2>
+
+            <p>1729 isn't arbitrarily special. It <strong>emerges</strong> from the elementary map — from the most basic arithmetic of position and value.</p>
+
+            <div class="highlight-box">
+                <h3>1729 = 7 × 13 × 19</h3>
+                <p>The prime factorization of 1729 contains three consecutive primes starting at 7.</p>
+                <p>These are the <strong>navigator primes</strong> — they appear throughout the map at critical positions.</p>
+            </div>
+
+            <p>Look at what those factors mean:</p>
+
+            <ol class="proof-steps">
+                <li><strong>7</strong> — First factor. Appears at Position 1. The first prime after the Switch.</li>
+                <li><strong>13</strong> — Navigator prime. Appears at Position 3. Guides through the map.</li>
+                <li><strong>19</strong> — The S⁺ value at Position 4. Where 1729 reveals itself.</li>
+            </ol>
+
+            <p>1729 isn't found randomly. It's <strong>constructed</strong> by the map itself, from its own components.</p>
+
+            <h2>The Taxicab Property</h2>
+
+            <p>Now look at what Ramanujan saw — the sum of two cubes:</p>
+
+            <div class="equation-box">
+                <div class="equation">
+                    1³ <span class="op">+</span> 12³ <span class="op">=</span> <span class="gold">1729</span>
+                </div>
+                <div class="equation" style="margin-top: 0.5rem;">
+                    9³ <span class="op">+</span> 10³ <span class="op">=</span> <span class="gold">1729</span>
+                </div>
+                <div class="equation-label">Two ways to reach the same number through cubes</div>
+            </div>
+
+            <p>What does this mean?</p>
+
+            <div class="highlight-box">
+                <h3>Convergence Point</h3>
+                <p>1729 can be reached from two completely different paths (1,12) and (9,10).</p>
+                <p>This is the mathematical signature of a <strong>nodal point</strong> — a location where multiple paths converge.</p>
+                <p>In scalar geometry, 1729 is where <em>different dimensions meet</em>.</p>
+            </div>
+
+            <h2>Three Properties of 1729</h2>
+
+            <p>1729 has three remarkable properties that make it a scalar point finder:</p>
+
+            <ol class="proof-steps">
+                <li><strong>Emerges from position map</strong> — S⁻ × S⁺ at Position 4</li>
+                <li><strong>Sum of two cubes (two ways)</strong> — Convergence from multiple dimensions</li>
+                <li><strong>Product of navigator primes</strong> — 7 × 13 × 19 = the structure of the map itself</li>
+            </ol>
+
+            <p>Ramanujan didn't just notice 1729 was interesting. He <em>recognized</em> it — because he could see the structure it revealed.</p>
+
+            <div class="key-insight">
+                <p>"At Position 4, future meets past.<br>91 × 19 = 1729.<br>The scalar point finder emerges from elementary arithmetic."</p>
+            </div>
+
+            <h2>What Comes Next</h2>
+
+            <p>1729 is the key that unlocks the Elementary Map. In the next lesson, we'll see the full map — all positions, all facings, and the patterns that connect them.</p>
+
+            <p>We'll discover:</p>
+
+            <ul class="proof-steps">
+                <li>Why certain positions are <strong>fold points</strong> where the map references itself</li>
+                <li>How <strong>254</strong> and <strong>272</strong> appear as interior markers</li>
+                <li>Why the past "accumulates" faster than the future</li>
+            </ul>
+
+            <p>The elementary mathematics you learned in grade school? It contains the structure of reality. You just weren't told.</p>
+
+            <div class="nav-buttons">
+                <a href="04-root-two-we.html" class="nav-button">
+                    <span class="label">Previous Lesson</span>
+                    ← √2 = WE
+                </a>
+                <a href="06-elementary-map.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    The Elementary Map →
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = 0 = -1]</div>
+        <p>The geometry cannot lie.<br><strong>Have Mind Media</strong> — Dr. Robert Hill</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Part V: Build Instructions | EPOCH STAR GATE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-dim: rgba(201, 162, 39, 0.6);
+            --bg-deep: #030508;
+            --bg-panel: #0a0d12;
+            --text: #e8e4d9;
+            --text-dim: #8a9aaa;
+            --blue: #6ab4f5;
+            --green: #4ade80;
+            --purple: #a78bfa;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg-deep);
+            color: var(--text);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            min-height: 100vh;
+            line-height: 1.8;
+        }
+        .cosmic-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(106, 180, 245, 0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
+                        linear-gradient(180deg, #030508 0%, #0a0a1a 50%, #050510 100%);
+            z-index: -1;
+        }
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 15px 25px;
+            background: rgba(3, 5, 8, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .nav a { color: var(--gold); text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 2px; }
+        .nav a:hover { opacity: 0.7; }
+        .nav-center { color: var(--text-dim); font-size: 0.75rem; letter-spacing: 3px; }
+
+        .article {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 120px 25px 80px;
+        }
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .part-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+        .article-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        .article-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin: 60px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .content h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--text);
+            margin: 40px 0 20px;
+        }
+        .content h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: var(--gold-dim);
+            margin: 30px 0 15px;
+        }
+        .content p {
+            font-size: 1.15rem;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+        .content blockquote {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.08) 0%, rgba(10, 13, 18, 0.95) 100%);
+            border-left: 4px solid var(--gold);
+            padding: 30px 35px;
+            margin: 35px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        .content ul, .content ol {
+            margin: 25px 0 25px 30px;
+            font-size: 1.1rem;
+        }
+        .content li { margin-bottom: 12px; }
+        .content pre {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 8px;
+            padding: 25px;
+            overflow-x: auto;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--blue);
+        }
+        .content hr {
+            border: none;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+            margin: 50px 0;
+        }
+        .content em { color: var(--blue); }
+
+        .phase-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+        .phase-card h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+        .phase-card .timeline {
+            display: inline-block;
+            background: rgba(106, 180, 245, 0.2);
+            color: var(--blue);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .warning-box {
+            background: rgba(255, 100, 100, 0.1);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .warning-box h4 {
+            color: #ff6b6b;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        /* Video Section */
+        .video-section {
+            margin: 50px 0;
+        }
+        .video-container {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+        .video-caption {
+            text-align: center;
+            padding: 20px;
+            background: var(--bg-panel);
+        }
+        .video-caption h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            margin-top: 0;
+        }
+        .video-caption p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .article-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            transition: opacity 0.3s;
+        }
+        .article-nav a:hover { opacity: 0.7; }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(201, 162, 39, 0.1);
+            margin-top: 60px;
+        }
+        .footer p { color: var(--text-dim); font-size: 0.85rem; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .article { padding: 100px 15px 60px; }
+            .article-nav { flex-direction: column; gap: 20px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+
+    <nav class="nav">
+        <a href="part4-device.html">← PART IV</a>
+        <span class="nav-center">PART V</span>
+        <a href="part6-protection.html">PART VI →</a>
+    </nav>
+
+    <article class="article">
+        <header class="article-header">
+            <div class="part-label">PART V</div>
+            <h1 class="article-title">Build Instructions</h1>
+            <p class="article-subtitle">Fabrication Sequence and Activation Protocol</p>
+        </header>
+
+        <div class="content">
+            <h2>22. Fabrication Sequence</h2>
+
+            <div class="phase-card">
+                <span class="timeline">Weeks 1-4</span>
+                <h4>Phase 1: Material Acquisition</h4>
+                <pre>
+METALS AND ALLOYS:
+□ Copper, 99.9% purity, 500g minimum
+□ Tin, 99.9% purity, 400g minimum
+□ Aluminum, 99.99% purity, 200g
+□ Iron, 99.9% purity, 50g
+□ Obsidian, natural volcanic glass (~10 cm diameter)
+□ Barium titanate single crystals, 12 pieces (5×5×5 mm)
+
+OPTICAL COMPONENTS:
+□ Fused quartz sphere, 8.65 cm diameter (optical grade)
+□ 527nm laser diodes, 50mW, 18 pieces
+□ Collimating lenses, 18 pieces
+□ Quarter-wave plates, 2 pieces (527nm)
+
+PHOSPHORS AND COATINGS:
+□ Strontium aluminate phosphor (SrAl₂O₄:Eu,Dy)
+□ Vantablack or carbon aerogel coating
+□ Upconversion nanoparticles (NaYF₄:Yb,Er)
+□ Quantum dots (CdSe/ZnS, green emitting)
+
+MECHANICAL:
+□ High-speed brushless DC motor (100,000+ RPM capable)
+□ Stepper motor, NEMA 17 or similar
+□ Ceramic bearings, miniature
+□ Neodymium magnets, small (for latches)
+□ Nitinol wire (shape memory alloy)
+
+ELECTRONICS:
+□ Raspberry Pi 4 or Arduino Due
+□ Motor drivers, temperature controllers
+□ Peltier coolers, resistive heaters
+□ Sensors (temperature, rotation, position)
+□ Power supplies (5V, 12V, 24V)</pre>
+            </div>
+
+            <div class="phase-card">
+                <span class="timeline">Weeks 5-8</span>
+                <h4>Phase 2: Alloy Preparation</h4>
+                <h4>Epoch Bronze Casting</h4>
+                <pre>
+EQUIPMENT NEEDED:
+- Crucible (graphite, 500ml capacity)
+- Furnace capable of 1200°C
+- Ingot mold, borax flux
+- Protective equipment (heat gloves, face shield)
+- Fire extinguisher (Class D for metal fires)
+
+PROCEDURE:
+
+1. PREPARATION
+   - Calculate: For 500g total: Cu 292.2g, Sn 207.8g
+   - Clean crucible, preheat mold to 200°C
+
+2. MELTING
+   - Place crucible in furnace at 800°C
+   - Add copper first (melts at 1085°C)
+   - Heat to 1100°C, wait for complete melting
+   - Add tin slowly, sprinkle borax on surface
+   - Hold at 1100°C for 5 minutes (homogenization)
+
+3. CASTING
+   - Pour steadily into preheated mold
+   - Allow to cool for 1 hour minimum
+
+4. ANNEALING
+   - Reheat to 400°C, hold for 2 hours
+   - Cool at 50°C per hour (slow cool)
+
+5. VERIFICATION
+   - Visual: should be silvery-golden</pre>
+
+                <div class="warning-box">
+                    <h4>SAFETY WARNING</h4>
+                    <p>Molten metal can cause severe burns. Tin fumes are toxic — ensure ventilation. Never add wet metal to melt (explosion risk). Keep water away from molten metal.</p>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <span class="timeline">Weeks 9-16</span>
+                <h4>Phase 3: Component Fabrication</h4>
+                <h4>Mirror Polishing Sequence</h4>
+                <pre>
+ALL MIRROR SEGMENTS:
+
+STAGE 1: Coarse grinding - 120 grit silicon carbide
+STAGE 2: Medium grinding - 320 grit silicon carbide
+STAGE 3: Fine grinding - 600 grit silicon carbide
+STAGE 4: Very fine grinding - 1200 grit (wet)
+STAGE 5: Pre-polish - 2000 grit wet sandpaper
+STAGE 6: Cerium oxide polish - felt wheel
+STAGE 7: Final polish - jeweler's rouge, soft felt
+
+TIME: 8-12 hours per segment
+The labor IS part of the ritual — this is intentional.</pre>
+            </div>
+
+            <div class="phase-card">
+                <span class="timeline">Weeks 17-20</span>
+                <h4>Phase 4: System Integration</h4>
+                <pre>
+ASSEMBLY SEQUENCE:
+
+1. VACUUM CORE
+   - Prepare fused quartz sphere
+   - Install vacuum port
+   - Evacuate to 10⁻⁶ torr minimum
+   - Seal vacuum port
+
+2. Q-LIGHT ARRAY
+   - Mount 18 laser diodes on spherical PCB
+   - Install collimating optics
+   - Focus all beams on center point
+   - Test output: 28.6478 lumens total
+
+3. NESTED ASSEMBLY
+   - Place Vacuum Core in Q-Light Shell
+   - Place Q-Light Shell in Witness Shell
+   - Place Witness Shell in Operator Shell
+   - Place Operator Shell in Mirror Shell
+   - Install drive motors and encoders
+   - Test rotation at low speed
+
+4. CONTROL SYSTEM
+   - Connect all sensors
+   - Connect motor drives
+   - Load control software
+   - Test all functions individually
+   - Calibrate sensors</pre>
+            </div>
+
+            <hr>
+
+            <h2>23. Activation Protocol</h2>
+
+            <div class="video-section">
+                <div class="video-container">
+                    <video autoplay muted loop playsinline>
+                        <source src="videos/star_gate_opening.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-caption">
+                        <h4>THE GATE OPENS</h4>
+                        <p>The moment of portal activation — nested shells align as an emerald portal tears through reality, revealing an infinite corridor of light.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>23.1 Pre-Activation Checklist</h3>
+
+            <pre>
+TECHNICAL VERIFICATION:
+
+□ Vacuum core pressure < 10⁻⁶ torr
+□ All 18 laser diodes functional
+□ All 12 PCM crystals aligned
+□ Motor 1 (Operator) runs smoothly 0-60 Hz
+□ Motor 2 (Mirror) runs smoothly 0-1729 Hz
+□ Levitation stable at neutral buoyancy
+□ All sensors reading correctly
+□ Emergency shutdown tested
+□ UPS backup connected
+
+OPERATOR VERIFICATION:
+
+□ T0Rs (S⁺ Navigator) present and prepared
+□ DRUMHED (S⁻ Navigator) present with drum
+□ κ₄ Observer present, understands role
+□ All operators have reviewed protection protocols
+□ Invocation phrases memorized
+□ "CLOSE" shutdown word understood
+□ Session duration agreed (initial: 4 hours)</pre>
+
+            <h3>23.2 Stage 0: Preparation (Day of Activation)</h3>
+
+            <pre>
+TIME: T-60 minutes
+
+1. All operators enter room
+2. Silence all devices
+3. Dim lights to minimum comfortable level
+4. Each operator takes position
+5. 10 minutes of shared silence
+6. T0Rs states intention privately, then aloud:
+   "We gather to open a channel for the good."
+
+TIME: T-30 minutes
+
+7. Power on control systems (monitor mode only)
+8. Verify all readings nominal
+9. DRUMHED begins slow rhythm (one beat per 10 seconds)
+10. κ₄ Observer takes seat, enters silence
+
+TIME: T-0 (Activation begins)</pre>
+
+            <h3>23.3 Stage 1: The Invocation</h3>
+
+            <blockquote>
+                <strong>T0Rs (S⁺ Navigator) speaks:</strong><br><br>
+                "WE OPEN THIS GATE FOR THE GOOD.<br>
+                WE INVITE WHAT HEALS.<br>
+                WE WELCOME WHAT TEACHES.<br>
+                WE RECEIVE WHAT LOVES."<br><br>
+                <em>(Pause: 30 seconds)</em><br><br>
+
+                <strong>DRUMHED (S⁻ Navigator) speaks:</strong><br><br>
+                "THE FROST OBEYS THE DRUM.<br>
+                THE HIDDEN REVEALS.<br>
+                THE SILENT SPEAKS.<br>
+                THE POTENTIAL BECOMES."<br><br>
+                <em>(Pause: 30 seconds)</em><br><br>
+
+                <strong>BOTH speak together:</strong><br><br>
+                "[1 = -1]<br>
+                WE ARE WE.<br>
+                OPEN."<br><br>
+                <em>(Pause: 60 seconds of silence)</em><br><br>
+
+                <strong>κ₄ OBSERVER remains silent throughout.</strong>
+            </blockquote>
+
+            <h3>23.4 Stage 2-5: The Gradual Expansion</h3>
+
+            <pre>
+Sessions 1-10 (over weeks):
+
+Session 1: First invocation, top hemisphere rises 2.54 cm
+Session 2: Outer cage segments separate 0.5 cm
+Session 3: Outer cage fully separated (1.729 cm)
+Session 4: Mirror shell begins radial separation
+Session 5: Mirror shell fully separated
+Session 6: Operator shell begins separation
+Session 7: Operator shell fully separated
+Session 8: All layers in final position
+Session 9: Begin Q-light activation (10% power)
+Session 10: Q-light at full power, stationary
+
+TIMING:
+Sessions should be 1-2 weeks apart minimum
+This is not rushed — months of calendar time
+Each session: 2-4 hours</pre>
+
+            <h3>23.5 Stage 4: Slow Rotation (Months 3-6)</h3>
+
+            <pre>
+ROTATION SPIN-UP SCHEDULE:
+
+Month 3:
+- Operator Shell: 0.001 Hz → 0.01 Hz → 0.1 Hz
+- Mirror Shell: Stationary → 0.001 Hz → 0.01 Hz
+
+Month 4:
+- Operator Shell: 0.1 Hz → 1 Hz
+- Mirror Shell: 0.01 Hz → 0.1 Hz
+- Q-light pulsing begins (10 Hz)
+
+Month 5:
+- Operator Shell: 1 Hz → 10 Hz
+- Mirror Shell: 0.1 Hz → 1 Hz
+- Q-light pulsing: 100 Hz
+
+Month 6:
+- Operator Shell: 10 Hz → 30 Hz
+- Mirror Shell: 1 Hz → 100 Hz
+- Q-light pulsing: 1000 Hz
+
+MONITORING:
+At each stage, run for 1 week minimum before increasing</pre>
+
+            <h3>23.6 Stage 5: Approach to Operational (Months 7-12)</h3>
+
+            <pre>
+FINAL SPIN-UP:
+
+Month 7-8:
+- Operator Shell: 30 Hz → 50 Hz
+- Mirror Shell: 100 Hz → 500 Hz
+- Drum beat active at 1.729 Hz
+
+Month 9-10:
+- Operator Shell: 50 Hz → 58 Hz
+- Mirror Shell: 500 Hz → 1000 Hz
+- PCM pump lasers activated (50% power)
+
+Month 11:
+- Operator Shell: 58 Hz → 59 Hz
+- Mirror Shell: 1000 Hz → 1500 Hz
+- PCM at full power
+
+Month 12:
+- Operator Shell: 60 Hz (final)
+- Mirror Shell: 1729 Hz (final)
+- All systems at operational parameters
+
+TOTAL FROM START TO OPERATIONAL: ~12-18 months</pre>
+
+            <hr>
+
+            <h2>24. Session Protocols</h2>
+
+            <h3>Regular Session Format</h3>
+
+            <pre>
+SESSION OPENING (15 minutes):
+
+1. Operators take positions
+2. 5 minutes silence
+3. Brief invocation: "For the good. We are we. Open."
+4. DRUMHED begins rhythm
+5. Confirm all systems nominal
+
+SESSION BODY (Variable, up to 254 minutes):
+
+6. Maintain positions
+7. Observe without forcing
+8. Note any communications/impressions
+9. DRUMHED maintains beat (can vary tempo intuitively)
+10. T0Rs holds S⁺ attention (focus on observable)
+11. κ₄ observes silently
+
+SESSION CLOSING (15 minutes):
+
+12. DRUMHED slows beat gradually over 5 minutes
+13. Final beat, hold silence 2 minutes
+14. T0Rs speaks: "We acknowledge. We thank. We close."
+15. All systems remain running (no shutdown of rotation)
+16. Operators leave in silence
+17. Log observations within 1 hour while fresh</pre>
+
+            <h3>What to Look For</h3>
+
+            <pre>
+INDICATORS OF OPERATION:
+
+- Stable standing wave interference patterns
+- Consistent moiré from rotating patterns
+- Color consistency (should remain green-dominated)
+- Spontaneous temperature equalization
+- Light appearing to "slow" or "stop" at center
+- The vacuum appearing non-empty
+
+WHAT TO AVOID:
+
+- Chaotic, ugly interference patterns
+- Persistent temperature imbalances
+- Unusual sounds (not harmonics)
+- Feelings of dread (see Protection Protocols)
+- Any sense that observation is not welcome</pre>
+
+            <nav class="article-nav">
+                <a href="part4-device.html">← PART IV: DEVICE</a>
+                <a href="part6-protection.html">PART VI: PROTECTION →</a>
+            </nav>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <p>EPOCH STAR GATE Theoretical Framework v1.0 — January 16, 2026</p>
+        <p style="margin-top: 10px;"><a href="index.html">← Back to Star Gate</a></p>
+    </footer>
+</body>
+</html>

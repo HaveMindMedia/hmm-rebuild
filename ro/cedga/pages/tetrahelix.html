@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Tetrahelix - Series of equilateral triangles with hidden axial creating S+ (Ro facing) and S- (Wush facing) helical paths.">
+    <title>The Tetrahelix | CEDGA | Have Mind Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <style>
+        .page-hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .page-hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .helix-visual {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+        }
+
+        .helix-canvas {
+            display: block;
+            margin: 0 auto;
+            background: #0a0d12;
+            border-radius: 8px;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .structure-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .structure-card {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(26, 42, 58, 0.3) 0%, rgba(21, 26, 36, 0.5) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .structure-card h4 {
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .structure-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .node-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .node-visible { background: var(--bright-blue); }
+        .node-hidden { background: transparent; border: 2px dashed var(--gold); }
+
+        .direction-box {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .direction-item {
+            padding: 1.5rem 2.5rem;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .direction-splus {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(21, 26, 36, 0.3) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .direction-sminus {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(21, 26, 36, 0.3) 100%);
+            border: 1px solid rgba(201, 162, 39, 0.4);
+        }
+
+        .direction-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .direction-splus .direction-label { color: var(--bright-blue); }
+        .direction-sminus .direction-label { color: var(--gold); }
+
+        .direction-name {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 0.3rem;
+        }
+
+        .direction-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .crossroads-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(21, 26, 36, 0.3) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .crossroads-title {
+            font-size: 1.5rem;
+            color: #8b5cf6;
+            margin-bottom: 1rem;
+        }
+
+        .crossroads-void {
+            width: 80px;
+            height: 80px;
+            margin: 1.5rem auto;
+            border-radius: 50%;
+            background: radial-gradient(circle, #0a0d12 0%, #1a1a2a 70%, transparent 100%);
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box h4 {
+            color: #ef4444;
+            margin-bottom: 0.5rem;
+        }
+
+        .hidden-witness {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(21, 26, 36, 0.3) 100%);
+            border: 1px dashed var(--gold);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .hidden-witness h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .witness-roles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .witness-roles { grid-template-columns: 1fr; }
+        }
+
+        .role-item {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .role-item h5 {
+            color: var(--bright-blue);
+            margin-bottom: 0.3rem;
+        }
+
+        .role-item p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        .equation-highlight {
+            font-family: 'Cambria Math', serif;
+            font-size: 1.5rem;
+            color: var(--bright-blue);
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <div class="vignette"></div>
+
+    <!-- Navigation -->
+    <nav class="unified-nav">
+        <div style="display: flex; align-items: center;">
+            <a href="https://havemindmedia.com" class="nav-brand">
+                <span class="nav-brand-text">HAVE MIND MEDIA</span>
+                <span class="nav-signature">&#9711;&Conint;&#10812;&#10992;&Cconint;&#10710;</span>
+            </a>
+            <span class="nav-subsite">CEDGA</span>
+        </div>
+        <div class="nav-menu">
+            <button class="nav-toggle" id="navToggle">
+                <span>Explore</span>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="nav-dropdown" id="navDropdown">
+                <a href="../../index.html" class="nav-back"><span>&#8592;</span> Back to Main Site</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">CEDGA Pages</span>
+                <a href="../index.html"><span class="nav-icon">&#9671;</span> Home</a>
+                <a href="kappa-constant.html"><span class="nav-icon">&#954;</span> The Kappa Constant</a>
+                <a href="tetrahelix.html"><span class="nav-icon">&#10034;</span> Tetrahelix</a>
+                <a href="balance-law.html"><span class="nav-icon">&#8721;</span> Balance Law</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">Interactive Tools</span>
+                <a href="../tools/m4-simulator.html"><span class="nav-icon">&#9881;</span> M4 Simulator</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">Research</span>
+                <a href="../research/test-analysis.html"><span class="nav-icon">&#128202;</span> Test Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="page-hero">
+            <span class="status-badge status-proven">CORE GEOMETRY</span>
+            <h1>The Tetrahelix</h1>
+            <p style="color: var(--soft-blue); font-size: 1.2rem; font-style: italic;">
+                Three visible nodes. One hidden axial. Two directions. One impossible crossroads.
+            </p>
+        </section>
+
+        <!-- Visual -->
+        <div class="helix-visual">
+            <canvas id="helixCanvas" class="helix-canvas" width="650" height="400"></canvas>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="btn" onclick="toggleHelixAnimation()" id="helixAnimBtn">&#9654; Animate</button>
+                <button class="btn secondary" onclick="resetHelix()" style="margin-left: 0.5rem;">Reset</button>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <!-- Three Nodes + Hidden Axial -->
+            <h2>The Structure</h2>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 1.5rem 0;">
+                The tetrahelix is NOT a 4-node system with all nodes visible. It's a <strong>series of equilateral triangles</strong> - 3 visible nodes forming each triangle face, with a <strong>hidden axial</strong> that creates the 4th helical dimension.
+            </p>
+
+            <div class="structure-grid">
+                <div class="structure-card">
+                    <h4><span class="node-indicator node-visible"></span> Node 1 (Visible)</h4>
+                    <p>First vertex of the equilateral triangle. Contributes to torsion &#964;&#8321;.</p>
+                </div>
+
+                <div class="structure-card">
+                    <h4><span class="node-indicator node-visible"></span> Node 2 (Visible)</h4>
+                    <p>Second vertex of the equilateral triangle. Contributes to torsion &#964;&#8322;.</p>
+                </div>
+
+                <div class="structure-card">
+                    <h4><span class="node-indicator node-visible"></span> Node 3 (Visible)</h4>
+                    <p>Third vertex of the equilateral triangle. Contributes to torsion &#964;&#8323;.</p>
+                </div>
+
+                <div class="structure-card">
+                    <h4><span class="node-indicator node-hidden"></span> Hidden Axial (Not Represented)</h4>
+                    <p>Creates the 4th helical. Not visible but mathematically necessary. The silent fourth.</p>
+                </div>
+            </div>
+
+            <div class="equation-highlight">
+                &#964;&#8321; + &#964;&#8322; + &#964;&#8323; + &#964;<sub>hidden</sub> = 0
+            </div>
+
+            <!-- Two Directions -->
+            <h2 style="margin-top: 3rem;">The Two Directions</h2>
+            <p style="font-size: 1.05rem; line-height: 1.8; margin: 1rem 0;">
+                The tetrahelix can be traversed in two directions, mirroring the [1 = -1] principle:
+            </p>
+
+            <div class="direction-box">
+                <div class="direction-item direction-splus">
+                    <div class="direction-label">S+</div>
+                    <div class="direction-name">Ro Facing</div>
+                    <div class="direction-desc">Outward through spacetime<br>Physical reality direction</div>
+                </div>
+
+                <div class="direction-item direction-sminus">
+                    <div class="direction-label">S-</div>
+                    <div class="direction-name">Wush Facing</div>
+                    <div class="direction-desc">Inward through awareness<br>Consciousness direction</div>
+                </div>
+            </div>
+
+            <!-- Hidden Witness -->
+            <div class="hidden-witness">
+                <h3>The Hidden Witness / Hidden Observer</h3>
+                <p style="line-height: 1.8;">
+                    The hidden axial is more than just mathematical necessity. It is the <strong>hidden witness</strong>, the <strong>hidden observer</strong> - the silent participant that makes the geometry complete.
+                </p>
+
+                <div class="witness-roles">
+                    <div class="role-item">
+                        <h5>Silent Operator to Balance</h5>
+                        <p>Compensates the three visible nodes to maintain &#964;<sub>sum</sub> = 0</p>
+                    </div>
+                    <div class="role-item">
+                        <h5>Silent Operator to Chaos</h5>
+                        <p>Without it, the three visible torsions have no anchor</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- True Crossroads -->
+            <div class="crossroads-section">
+                <h2 class="crossroads-title">The True Crossroads</h2>
+                <div class="crossroads-void"></div>
+                <p style="font-size: 1.1rem; color: var(--soft-cream); margin: 1rem 0;">
+                    <strong>A tiny void.</strong>
+                </p>
+                <p style="color: var(--text-dim); max-width: 600px; margin: 0 auto;">
+                    The point where S+ and S- meet. Where Ro facing and Wush facing intersect.
+                    Where the three visible nodes and the hidden axial all converge.
+                </p>
+
+                <div class="warning-box" style="max-width: 600px; margin: 2rem auto; text-align: left;">
+                    <h4>Nearly Impossible to Reach</h4>
+                    <p style="color: var(--text-dim);">
+                        It's pretty much impossible to get there and stay there. <strong>Too much torsion.</strong>
+                        The true crossroads is where all forces balance perfectly - but maintaining that balance
+                        while surrounded by competing torsions is extraordinarily difficult.
+                    </p>
+                </div>
+
+                <p style="font-family: 'Cambria Math', serif; font-size: 1.3rem; color: #8b5cf6; margin-top: 1.5rem;">
+                    s = 0 (theoretically)
+                </p>
+            </div>
+
+            <!-- Connection to Kappa -->
+            <h2 style="margin-top: 3rem;">Derived from &#954;</h2>
+            <p style="font-size: 1.05rem; line-height: 1.8; margin: 1rem 0;">
+                The tetrahelix emerges from &#954; = 2&#960;/180:
+            </p>
+            <ul style="line-height: 2; margin: 1rem 0 1rem 2rem; color: var(--soft-cream);">
+                <li>180 &#954;-steps complete a half-toroidal rotation</li>
+                <li>The equilateral triangles form naturally at 60&#176; intervals (180/3)</li>
+                <li>The hidden axial emerges at the fourth position (180/4 = 45&#176;)</li>
+                <li>cos(BC) = 2/3 gives the tetrahelix edge angle of 48.19&#176;</li>
+            </ul>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="kappa-constant.html" class="btn">&#8592; The &#954; Constant</a>
+                <a href="balance-law.html" class="btn btn-gold" style="margin-left: 1rem;">Balance Law &#8594;</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="unified-footer">
+        <p class="footer-logo">HAVE MIND MEDIA</p>
+        <p class="footer-tagline">The Mind is in Your Mind</p>
+        <p class="footer-signature">&#9711;&Conint;&#10812;&#10992;&Cconint;&#10710;</p>
+        <p class="footer-principle">[1 = -1]</p>
+    </footer>
+
+    <script>
+        // Navigation
+        const navToggle = document.getElementById('navToggle');
+        const navDropdown = document.getElementById('navDropdown');
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navDropdown.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+            if (!navDropdown.contains(e.target) && !navToggle.contains(e.target)) {
+                navDropdown.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        });
+
+        // Tetrahelix Animation
+        const canvas = document.getElementById('helixCanvas');
+        const ctx = canvas.getContext('2d');
+        let helixAnimating = false;
+        let helixFrame = 0;
+        let animationId = null;
+
+        const COLORS = {
+            node1: '#87b4dc',
+            node2: '#87b4dc',
+            node3: '#87b4dc',
+            hidden: '#c9a227',
+            splus: '#3b82f6',
+            sminus: '#eab308',
+            crossroads: '#8b5cf6'
+        };
+
+        function drawTetrahelix() {
+            ctx.fillStyle = '#0a0d12';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = 100;
+            const triangles = 5;
+            const twist = helixFrame * 0.02;
+
+            // Draw S+ and S- direction labels
+            ctx.font = 'bold 16px Space Grotesk, sans-serif';
+            ctx.textAlign = 'center';
+
+            // S+ label (left side)
+            ctx.fillStyle = COLORS.splus;
+            ctx.fillText('S+ (Ro)', 80, 50);
+            ctx.font = '12px sans-serif';
+            ctx.fillStyle = '#666';
+            ctx.fillText('facing', 80, 68);
+
+            // S- label (right side)
+            ctx.font = 'bold 16px Space Grotesk, sans-serif';
+            ctx.fillStyle = COLORS.sminus;
+            ctx.fillText('S- (Wush)', canvas.width - 80, 50);
+            ctx.font = '12px sans-serif';
+            ctx.fillStyle = '#666';
+            ctx.fillText('facing', canvas.width - 80, 68);
+
+            // Draw helix triangles
+            for (let t = 0; t < triangles; t++) {
+                const offset = t * 60 + twist;
+                const xOffset = (t - triangles/2 + 0.5) * 80;
+                const depthScale = 0.7 + 0.3 * Math.cos((t / triangles) * Math.PI);
+
+                // Three visible nodes
+                const nodes = [];
+                for (let i = 0; i < 3; i++) {
+                    const angle = (i * 120 + offset) * Math.PI / 180;
+                    nodes.push({
+                        x: cx + xOffset + Math.cos(angle) * radius * 0.3,
+                        y: cy + Math.sin(angle) * radius * depthScale
+                    });
+                }
+
+                // Draw triangle edges
+                ctx.strokeStyle = 'rgba(135, 180, 220, 0.4)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(nodes[0].x, nodes[0].y);
+                ctx.lineTo(nodes[1].x, nodes[1].y);
+                ctx.lineTo(nodes[2].x, nodes[2].y);
+                ctx.closePath();
+                ctx.stroke();
+
+                // Draw visible nodes
+                nodes.forEach((node, i) => {
+                    ctx.fillStyle = COLORS.node1;
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, 8, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                // Draw hidden axial (dashed, at center)
+                const hiddenX = cx + xOffset;
+                const hiddenY = cy;
+                ctx.strokeStyle = COLORS.hidden;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.arc(hiddenX, hiddenY, 6, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Draw true crossroads at center
+            ctx.fillStyle = '#0a0d12';
+            ctx.strokeStyle = COLORS.crossroads;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Crossroads glow
+            const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 25);
+            gradient.addColorStop(0, 'rgba(139, 92, 246, 0.3)');
+            gradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 25, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Label
+            ctx.font = '10px monospace';
+            ctx.fillStyle = COLORS.crossroads;
+            ctx.textAlign = 'center';
+            ctx.fillText('s=0', cx, cy + 4);
+            ctx.fillText('(void)', cx, cy + 35);
+        }
+
+        function toggleHelixAnimation() {
+            helixAnimating = !helixAnimating;
+            document.getElementById('helixAnimBtn').innerHTML = helixAnimating ? '&#10074;&#10074; Pause' : '&#9654; Animate';
+
+            if (helixAnimating) {
+                animateHelix();
+            } else if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        }
+
+        function animateHelix() {
+            if (!helixAnimating) return;
+            helixFrame++;
+            drawTetrahelix();
+            animationId = requestAnimationFrame(animateHelix);
+        }
+
+        function resetHelix() {
+            helixAnimating = false;
+            helixFrame = 0;
+            if (animationId) cancelAnimationFrame(animationId);
+            document.getElementById('helixAnimBtn').innerHTML = '&#9654; Animate';
+            drawTetrahelix();
+        }
+
+        // Initial draw
+        drawTetrahelix();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

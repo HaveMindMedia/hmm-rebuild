@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Signature Engine | The Randomness Engine Integration</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #020208;
+            color: #e8e4d9;
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .title-overlay {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: #6e7a94;
+        }
+        .title-overlay span { color: #c9a227; }
+
+        .info-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10;
+            background: rgba(5, 5, 16, 0.92);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 320px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-panel h2 {
+            font-size: 1rem;
+            color: #c9a227;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .triaxial-display {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .triaxial-display .axis-box {
+            width: calc(33.333% - 10px);
+            min-width: 100px;
+        }
+
+        .axis-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .axis-box .label {
+            font-size: 0.65rem;
+            color: #6e7a94;
+            letter-spacing: 1px;
+        }
+
+        .axis-box .value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .axis-box.x-axis .value { color: #6ab4f5; }
+        .axis-box.y-axis .value { color: #7dd87d; }
+        .axis-box.z-axis .value { color: #c77daa; }
+
+        .axis-box .symbols {
+            font-size: 0.7rem;
+            color: #9ba4b8;
+        }
+
+        .magnitude-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .magnitude-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6ab4f5, #7dd87d, #c77daa, #c9a227);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin: 8px 0;
+        }
+        .stat-row .label { color: #6e7a94; }
+        .stat-row .value { color: #e8e4d9; }
+
+        .input-area {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10;
+            width: 350px;
+        }
+
+        .input-area textarea {
+            width: 100%;
+            height: 120px;
+            background: rgba(5, 5, 16, 0.92);
+            border: 1px solid rgba(106, 180, 245, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            color: #e8e4d9;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            resize: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-area textarea:focus {
+            outline: none;
+            border-color: #c9a227;
+        }
+
+        .input-area textarea::placeholder {
+            color: #6e7a94;
+        }
+
+        .input-hint {
+            font-size: 0.65rem;
+            color: #6e7a94;
+            margin-top: 8px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .random-stream {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            background: rgba(5, 5, 16, 0.92);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            width: 280px;
+            backdrop-filter: blur(10px);
+        }
+
+        .random-stream h3 {
+            font-size: 0.7rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .stream-display {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #6ab4f5;
+            word-break: break-all;
+            line-height: 1.4;
+            min-height: 60px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .q-signature {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .q-signature .label {
+            font-size: 0.65rem;
+            color: #6e7a94;
+            letter-spacing: 1px;
+        }
+
+        .q-signature .hash {
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: #c9a227;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+
+        .epoch-sig {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #c9a227;
+        }
+
+        .controls {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-btn {
+            background: rgba(5, 5, 16, 0.85);
+            border: 1px solid rgba(106, 180, 245, 0.3);
+            color: #6ab4f5;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            border-color: #c9a227;
+            color: #c9a227;
+        }
+
+        .control-btn.active {
+            background: rgba(201, 162, 39, 0.2);
+            border-color: #c9a227;
+            color: #c9a227;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <div class="title-overlay">
+        S-SIGNATURE ENGINE v0.2 <span>[1 = -1]</span>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div class="random-stream">
+        <h3>BIO-RANDOM STREAM</h3>
+        <div class="stream-display" id="streamDisplay">
+            Awaiting input...
+        </div>
+    </div>
+
+    <div class="info-panel">
+        <h2>TRIAXIAL VECTOR</h2>
+
+        <div class="triaxial-display">
+            <div class="axis-box x-axis">
+                <div class="label">X (TEMPORAL)</div>
+                <div class="value" id="xValue">0</div>
+                <div class="symbols">&gt; &lt;</div>
+            </div>
+            <div class="axis-box y-axis">
+                <div class="label">Y (EMERGENCE)</div>
+                <div class="value" id="yValue">0</div>
+                <div class="symbols">^ v</div>
+            </div>
+            <div class="axis-box z-axis">
+                <div class="label">Z (PRESENCE)</div>
+                <div class="value" id="zValue">0</div>
+                <div class="symbols">. ,</div>
+            </div>
+        </div>
+
+        <div class="magnitude-bar">
+            <div class="magnitude-fill" id="magnitudeFill"></div>
+        </div>
+
+        <div class="stat-row">
+            <span class="label">|V| Magnitude</span>
+            <span class="value" id="magnitude">0.00</span>
+        </div>
+        <div class="stat-row">
+            <span class="label">Total Samples</span>
+            <span class="value" id="sampleCount">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="label">Character</span>
+            <span class="value" id="character">Awaiting...</span>
+        </div>
+
+        <div class="q-signature">
+            <div class="label">Q-SIGNATURE (BIO - CONTROL)</div>
+            <div class="hash" id="qSignature">---</div>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <textarea id="userInput" placeholder="Type anything... your words become entropy. Every keystroke influences the random stream. Express yourself freely."></textarea>
+        <div class="input-hint">YOUR INPUT = BIO-INFLUENCE ON RANDOM DATA</div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn active" id="btnGenerate" onclick="toggleGeneration()">GENERATE</button>
+        <button class="control-btn" onclick="resetSignature()">RESET</button>
+        <button class="control-btn" onclick="exportSignature()">EXPORT</button>
+    </div>
+
+    <div class="epoch-sig">[1 = -1]</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // S-SIGNATURE ENGINE
+        // Implementation of The Randomness Engine triaxial measurement
+        // Bio-influenced random data → Q-signature visualization
+        // ═══════════════════════════════════════════════════════════════════
+
+        // Triaxial symbols from the Randomness Engine
+        const SYMBOLS = {
+            xPos: '>',  // Future, S+, Manifest, Sending
+            xNeg: '<',  // Past, S-, Latent, Receiving
+            yPos: '^',  // Rising, Becoming, Complexity increase
+            yNeg: 'v',  // Ground, Returning, Complexity decrease
+            zPos: '.',  // Point, Here, Now, Localized
+            zNeg: ','   // Pause, Process, Distributed
+        };
+
+        // State
+        let bioVector = { x: 0, y: 0, z: 0 };
+        let controlVector = { x: 0, y: 0, z: 0 };
+        let sampleCount = 0;
+        let isGenerating = true;
+        let streamBuffer = '';
+        let lastInputTime = Date.now();
+        let bioInfluence = 0;
+
+        // Three.js
+        let scene, camera, renderer;
+        let pointCloud, lineSystem, centerSphere;
+
+        // Initialize Three.js
+        function initThree() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x020208);
+
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 4;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            createVisualization();
+            window.addEventListener('resize', onResize);
+        }
+
+        function createVisualization() {
+            // Central Q point
+            const centerGeometry = new THREE.SphereGeometry(0.08, 32, 32);
+            const centerMaterial = new THREE.MeshBasicMaterial({
+                color: 0xc9a227,
+                transparent: true,
+                opacity: 0.9
+            });
+            centerSphere = new THREE.Mesh(centerGeometry, centerMaterial);
+            scene.add(centerSphere);
+
+            // Halo
+            const haloGeometry = new THREE.SphereGeometry(0.15, 32, 32);
+            const haloMaterial = new THREE.MeshBasicMaterial({
+                color: 0xc9a227,
+                transparent: true,
+                opacity: 0.2,
+                blending: THREE.AdditiveBlending
+            });
+            const halo = new THREE.Mesh(haloGeometry, haloMaterial);
+            scene.add(halo);
+
+            // Initial empty point cloud
+            updatePointCloud([]);
+
+            // Ambient particles
+            const particleCount = 200;
+            const particleGeometry = new THREE.BufferGeometry();
+            const particlePositions = [];
+            for (let i = 0; i < particleCount; i++) {
+                particlePositions.push(
+                    (Math.random() - 0.5) * 15,
+                    (Math.random() - 0.5) * 15,
+                    (Math.random() - 0.5) * 15
+                );
+            }
+            particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(particlePositions, 3));
+            const particleMaterial = new THREE.PointsMaterial({
+                color: 0x3a5070,
+                size: 0.02,
+                transparent: true,
+                opacity: 0.3,
+                blending: THREE.AdditiveBlending
+            });
+            const particles = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particles);
+        }
+
+        function updatePointCloud(axes) {
+            // Remove existing
+            if (pointCloud) scene.remove(pointCloud);
+            if (lineSystem) scene.remove(lineSystem);
+
+            if (axes.length === 0) return;
+
+            const pointGeometry = new THREE.BufferGeometry();
+            const pointPositions = [];
+            const pointColors = [];
+            const lineGeometry = new THREE.BufferGeometry();
+            const linePositions = [];
+            const lineColors = [];
+
+            axes.forEach((axis, i) => {
+                const theta = (axis.theta * Math.PI) / 180;
+                const phi = (axis.phi * Math.PI) / 180;
+                const r = axis.magnitude * 1.5;
+
+                const x = r * Math.sin(phi) * Math.cos(theta);
+                const y = r * Math.sin(phi) * Math.sin(theta);
+                const z = r * Math.cos(phi);
+
+                // Points at both ends
+                pointPositions.push(x, y, z);
+                pointColors.push(...axis.color1);
+                pointPositions.push(-x, -y, -z);
+                pointColors.push(...axis.color2);
+
+                // Line through center
+                linePositions.push(x * 1.2, y * 1.2, z * 1.2);
+                lineColors.push(...axis.color1);
+                linePositions.push(-x * 1.2, -y * 1.2, -z * 1.2);
+                lineColors.push(...axis.color2);
+            });
+
+            // Points
+            pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointPositions, 3));
+            pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(pointColors, 3));
+
+            const pointMaterial = new THREE.PointsMaterial({
+                size: 0.08,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.9,
+                blending: THREE.AdditiveBlending
+            });
+            pointCloud = new THREE.Points(pointGeometry, pointMaterial);
+            scene.add(pointCloud);
+
+            // Lines
+            lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+            lineGeometry.setAttribute('color', new THREE.Float32BufferAttribute(lineColors, 3));
+
+            const lineMaterial = new THREE.LineBasicMaterial({
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.4,
+                blending: THREE.AdditiveBlending
+            });
+            lineSystem = new THREE.LineSegments(lineGeometry, lineMaterial);
+            scene.add(lineSystem);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // RANDOMNESS ENGINE CORE
+        // ═══════════════════════════════════════════════════════════════════
+
+        // Generate bio-influenced random symbol
+        function generateBioSymbol() {
+            // Base randomness
+            const rand = Math.random();
+
+            // Bio-influence modifies probability distribution
+            // Based on time since last input and accumulated influence
+            const timeSinceInput = (Date.now() - lastInputTime) / 1000;
+            const bioFactor = bioInfluence * Math.exp(-timeSinceInput / 10);
+
+            // Weight distribution based on bio-influence
+            const weights = {
+                '>': 0.167 + bioFactor * 0.1,
+                '<': 0.167 - bioFactor * 0.05,
+                '^': 0.167 + bioFactor * 0.08,
+                'v': 0.167 - bioFactor * 0.08,
+                '.': 0.167 + bioFactor * 0.05,
+                ',': 0.167 - bioFactor * 0.1
+            };
+
+            // Normalize weights
+            const total = Object.values(weights).reduce((a, b) => a + b, 0);
+            let cumulative = 0;
+
+            for (const [symbol, weight] of Object.entries(weights)) {
+                cumulative += weight / total;
+                if (rand < cumulative) return symbol;
+            }
+            return '>';
+        }
+
+        // Generate control symbol (pure random, no bio-influence)
+        function generateControlSymbol() {
+            const symbols = ['>', '<', '^', 'v', '.', ','];
+            return symbols[Math.floor(Math.random() * symbols.length)];
+        }
+
+        // Process symbol into triaxial vector
+        function processSymbol(symbol, vector) {
+            switch(symbol) {
+                case '>': vector.x++; break;
+                case '<': vector.x--; break;
+                case '^': vector.y++; break;
+                case 'v': vector.y--; break;
+                case '.': vector.z++; break;
+                case ',': vector.z--; break;
+            }
+        }
+
+        // Calculate magnitude
+        function magnitude(v) {
+            return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+        }
+
+        // Get character description
+        function getCharacter(v) {
+            const parts = [];
+            if (v.x > 2) parts.push('Future');
+            else if (v.x < -2) parts.push('Past');
+            if (v.y > 2) parts.push('Rising');
+            else if (v.y < -2) parts.push('Ground');
+            if (v.z > 2) parts.push('Present');
+            else if (v.z < -2) parts.push('Process');
+            return parts.length > 0 ? parts.join('-') : 'Balanced';
+        }
+
+        // Main generation loop
+        function generateSample() {
+            if (!isGenerating) return;
+
+            // Generate bio-influenced symbol
+            const bioSymbol = generateBioSymbol();
+            processSymbol(bioSymbol, bioVector);
+
+            // Generate control symbol
+            const controlSymbol = generateControlSymbol();
+            processSymbol(controlSymbol, controlVector);
+
+            sampleCount++;
+
+            // Update stream display
+            streamBuffer = (streamBuffer + bioSymbol).slice(-60);
+            document.getElementById('streamDisplay').textContent = streamBuffer;
+
+            // Update UI
+            updateDisplay();
+
+            // Update visualization periodically
+            if (sampleCount % 10 === 0) {
+                updateVisualizationFromVector();
+            }
+        }
+
+        // Update display
+        function updateDisplay() {
+            // Q-signature = bio - control
+            const qSig = {
+                x: bioVector.x - controlVector.x,
+                y: bioVector.y - controlVector.y,
+                z: bioVector.z - controlVector.z
+            };
+
+            document.getElementById('xValue').textContent = qSig.x;
+            document.getElementById('yValue').textContent = qSig.y;
+            document.getElementById('zValue').textContent = qSig.z;
+
+            const mag = magnitude(qSig);
+            document.getElementById('magnitude').textContent = mag.toFixed(2);
+            document.getElementById('sampleCount').textContent = sampleCount;
+            document.getElementById('character').textContent = getCharacter(qSig);
+
+            // Magnitude bar (normalize to reasonable range)
+            const normalizedMag = Math.min(mag / 50, 1) * 100;
+            document.getElementById('magnitudeFill').style.width = normalizedMag + '%';
+
+            // Q-signature hash
+            const hash = `Q:(${qSig.x},${qSig.y},${qSig.z})|V|=${mag.toFixed(1)}`;
+            document.getElementById('qSignature').textContent = hash;
+        }
+
+        // Convert triaxial vector to visual axes
+        function updateVisualizationFromVector() {
+            const qSig = {
+                x: bioVector.x - controlVector.x,
+                y: bioVector.y - controlVector.y,
+                z: bioVector.z - controlVector.z
+            };
+
+            const axes = [];
+            const baseCount = Math.min(Math.floor(sampleCount / 5), 100);
+
+            for (let i = 0; i < baseCount; i++) {
+                // Derive axis properties from accumulated data
+                const seed = i * 17 + sampleCount;
+                const theta = ((qSig.x * 10 + seed) % 360);
+                const phi = Math.abs((qSig.y * 5 + seed * 2) % 180);
+                const mag = 0.3 + (Math.abs(qSig.z) / (sampleCount + 1)) * 0.7;
+
+                // Colors based on triaxial position
+                const xNorm = qSig.x / (Math.abs(qSig.x) + 1);
+                const yNorm = qSig.y / (Math.abs(qSig.y) + 1);
+                const zNorm = qSig.z / (Math.abs(qSig.z) + 1);
+
+                axes.push({
+                    theta: theta,
+                    phi: phi,
+                    magnitude: mag,
+                    color1: [
+                        0.5 + xNorm * 0.5,
+                        0.5 + yNorm * 0.5,
+                        0.5 + zNorm * 0.5
+                    ],
+                    color2: [
+                        0.5 - xNorm * 0.3,
+                        0.5 - yNorm * 0.3,
+                        0.5 - zNorm * 0.3
+                    ]
+                });
+            }
+
+            updatePointCloud(axes);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // USER INPUT HANDLING
+        // ═══════════════════════════════════════════════════════════════════
+
+        function handleInput(e) {
+            const char = e.data || e.key;
+            if (!char) return;
+
+            lastInputTime = Date.now();
+
+            // Every character adds bio-influence
+            // Different characters have different weights
+            if (char.match(/[a-zA-Z]/)) {
+                bioInfluence += 0.1;
+            } else if (char.match(/[0-9]/)) {
+                bioInfluence += 0.05;
+            } else if (char.match(/[>^.]/)) {
+                bioInfluence += 0.3; // Triaxial symbols have higher weight
+            } else if (char.match(/[<v,]/)) {
+                bioInfluence += 0.2;
+            } else {
+                bioInfluence += 0.02;
+            }
+
+            // Cap influence
+            bioInfluence = Math.min(bioInfluence, 5);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // CONTROLS
+        // ═══════════════════════════════════════════════════════════════════
+
+        function toggleGeneration() {
+            isGenerating = !isGenerating;
+            document.getElementById('btnGenerate').classList.toggle('active', isGenerating);
+            document.getElementById('btnGenerate').textContent = isGenerating ? 'GENERATING' : 'PAUSED';
+        }
+
+        function resetSignature() {
+            bioVector = { x: 0, y: 0, z: 0 };
+            controlVector = { x: 0, y: 0, z: 0 };
+            sampleCount = 0;
+            bioInfluence = 0;
+            streamBuffer = '';
+            document.getElementById('streamDisplay').textContent = 'Awaiting input...';
+            updateDisplay();
+            updatePointCloud([]);
+        }
+
+        function exportSignature() {
+            const qSig = {
+                x: bioVector.x - controlVector.x,
+                y: bioVector.y - controlVector.y,
+                z: bioVector.z - controlVector.z
+            };
+
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                samples: sampleCount,
+                triaxialVector: qSig,
+                magnitude: magnitude(qSig),
+                character: getCharacter(qSig),
+                bioVector: bioVector,
+                controlVector: controlVector,
+                framework: '[1=-1]'
+            };
+
+            console.log('S-Signature Export:', exportData);
+            alert('S-Signature exported to console. Check developer tools.');
+        }
+
+        function onResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = Date.now() * 0.001;
+
+            // Rotate visualization slowly
+            if (pointCloud) {
+                pointCloud.rotation.y += 0.002;
+                pointCloud.rotation.x += 0.0005;
+            }
+            if (lineSystem) {
+                lineSystem.rotation.y += 0.002;
+                lineSystem.rotation.x += 0.0005;
+            }
+
+            // Pulse center sphere
+            if (centerSphere) {
+                const pulse = 1 + Math.sin(time * 2) * 0.1;
+                centerSphere.scale.setScalar(pulse);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // INITIALIZATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                initThree();
+
+                // Input listener
+                const inputArea = document.getElementById('userInput');
+                inputArea.addEventListener('input', handleInput);
+                inputArea.addEventListener('keydown', handleInput);
+
+                // Start generation loop (slower rate for visibility)
+                setInterval(generateSample, 100);
+
+                // Start animation
+                animate();
+
+                console.log('S-Signature Engine initialized');
+                console.log('Framework: [1=-1]');
+                console.log('Triaxial System: X(Temporal), Y(Emergence), Z(Presence)');
+
+            } catch (e) {
+                console.error('Initialization error:', e);
+                document.body.innerHTML = '<div style="color: #ff6666; padding: 50px;">Error: ' + e.message + '</div>';
+            }
+        });
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthesis | Calculus Through Rotation</title>
+    <link rel="stylesheet" href="../../css/geometry-math.css">
+    <style>
+        .lesson-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-number {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-subtitle {
+            color: var(--text);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .content-section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section h3 {
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .demo-container {
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .demo-title {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        canvas {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .control-btn.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .central-equation {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 212, 255, 0.2));
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .central-equation .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .central-equation .subtitle {
+            color: var(--text);
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .summary-table th {
+            color: var(--gold);
+            font-weight: normal;
+            width: 40%;
+        }
+
+        .summary-table td {
+            color: var(--text);
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .concept-card {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .concept-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .concept-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .concept-card h4 {
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .concept-card p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .epoch-box {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(212, 175, 55, 0.1));
+            border: 2px solid rgba(255, 0, 255, 0.5);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .epoch-box h3 {
+            color: #ff00ff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .q-cycle-final {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .q-step {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .q-arrow {
+            color: var(--gold);
+        }
+
+        .curriculum-nav {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .curriculum-nav h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .curriculum-nav ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .curriculum-nav li a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text);
+            text-decoration: none;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .curriculum-nav li a:hover {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--cyan);
+        }
+
+        .curriculum-nav li a.current {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-number">Calculus Through Rotation — Lesson 08</div>
+        <h1>Synthesis</h1>
+        <p class="lesson-subtitle">
+            Everything connects. Calculus, complex numbers, physics, and the fundamental
+            geometry of rotation form a unified whole.
+        </p>
+    </header>
+
+    <section class="content-section">
+        <h2>The Complete Picture</h2>
+
+        <p>
+            We've journeyed from the simple observation that velocity is perpendicular to position
+            on a circle, through the depths of calculus, to Taylor and Fourier series.
+            Now we see how it all connects.
+        </p>
+
+        <div class="central-equation">
+            <div class="equation">e<sup>iπ</sup> + 1 = 0</div>
+            <p class="subtitle">
+                Euler's identity: the five fundamental constants united by rotation.
+                Walking halfway around the circle from 1 brings you to -1.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Master Table</h2>
+
+        <table class="summary-table">
+            <tr>
+                <th>Traditional Concept</th>
+                <td>Rotation Interpretation</td>
+            </tr>
+            <tr>
+                <th>The derivative</th>
+                <td>+90° rotation (multiplication by i)</td>
+            </tr>
+            <tr>
+                <th>The integral</th>
+                <td>-90° rotation (multiplication by -i)</td>
+            </tr>
+            <tr>
+                <th>The number i</th>
+                <td>The 90° rotation operator</td>
+            </tr>
+            <tr>
+                <th>The number e</th>
+                <td>The natural rate of rotation</td>
+            </tr>
+            <tr>
+                <th>e<sup>it</sup></th>
+                <td>Position on unit circle at angle t</td>
+            </tr>
+            <tr>
+                <th>sin and cos</th>
+                <td>Projections of rotation onto axes</td>
+            </tr>
+            <tr>
+                <th>FTC</th>
+                <td>+90° and -90° cancel to identity</td>
+            </tr>
+            <tr>
+                <th>Taylor series</th>
+                <td>Spiral toward the circle (local)</td>
+            </tr>
+            <tr>
+                <th>Fourier series</th>
+                <td>Sum of rotations at different speeds</td>
+            </tr>
+            <tr>
+                <th>Phase</th>
+                <td>Position on the cycle</td>
+            </tr>
+            <tr>
+                <th>Frequency</th>
+                <td>Speed of rotation</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="content-section">
+        <h2>The Q-Cycle: Complete</h2>
+
+        <p>
+            The Q-cycle — four derivatives returning to start — is the heartbeat of this framework.
+            It appears in the quaternion structure of rotations, in the four forces of physics,
+            in the four seasons of oscillation.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: The Complete Q-Cycle</div>
+            <div class="canvas-container">
+                <canvas id="qCycleCanvas" width="600" height="400"></canvas>
+            </div>
+            <div class="q-cycle-final">
+                <span class="q-step" style="background: rgba(0,212,255,0.2); color: #00d4ff;">1</span>
+                <span class="q-arrow">→<sup>×i</sup></span>
+                <span class="q-step" style="background: rgba(0,255,136,0.2); color: #00ff88;">i</span>
+                <span class="q-arrow">→<sup>×i</sup></span>
+                <span class="q-step" style="background: rgba(255,100,100,0.2); color: #ff6464;">-1</span>
+                <span class="q-arrow">→<sup>×i</sup></span>
+                <span class="q-step" style="background: rgba(255,0,255,0.2); color: #ff00ff;">-i</span>
+                <span class="q-arrow">→<sup>×i</sup></span>
+                <span class="q-step" style="background: rgba(0,212,255,0.2); color: #00d4ff;">1</span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="stepBtn">Step (×i)</button>
+                <button class="control-btn" id="autoBtn">Auto-Cycle</button>
+                <button class="control-btn" id="resetBtn">Reset</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Connection to the Epoch Framework</h2>
+
+        <div class="epoch-box">
+            <h3>[1 = -1] Through Rotation</h3>
+            <p style="color: var(--text);">
+                The Epoch Framework's central identity [1 = -1] is Euler's identity rearranged.
+                When e<sup>iπ</sup> = -1, we see that 1 and -1 are the same point viewed from
+                different positions on the circle. They are connected by a half-rotation.
+            </p>
+            <p style="color: var(--text); margin-top: 1rem;">
+                The four torsions (τ₁, τ₂, τ₃, τ₄) correspond to the four positions in the Q-cycle.
+                The balance law (S⁺ + S⁻ = S⁰) reflects the cancellation of rotations.
+            </p>
+        </div>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <div class="icon">S⁺</div>
+                <h4>Expansion</h4>
+                <p>Counterclockwise rotation, positive phase, growth</p>
+            </div>
+            <div class="concept-card">
+                <div class="icon">S⁻</div>
+                <h4>Contraction</h4>
+                <p>Clockwise rotation, negative phase, decay</p>
+            </div>
+            <div class="concept-card">
+                <div class="icon">S⁰</div>
+                <h4>Balance</h4>
+                <p>Equilibrium, zero net rotation, stability</p>
+            </div>
+            <div class="concept-card">
+                <div class="icon">τ</div>
+                <h4>Torsion</h4>
+                <p>The twist at each quarter, the phase shift</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>What Traditional Calculus Obscures</h2>
+
+        <p>
+            Traditional calculus teaching often obscures the geometric unity:
+        </p>
+
+        <div class="highlight-box">
+            <h4>What Gets Lost</h4>
+            <ul style="color: var(--text); line-height: 2;">
+                <li><strong>Separation:</strong> Teaching real and complex analysis as different subjects</li>
+                <li><strong>Memorization:</strong> Learning trig derivatives as formulas, not geometry</li>
+                <li><strong>Abstraction:</strong> Defining limits before showing what they mean visually</li>
+                <li><strong>Fragmentation:</strong> Teaching calculus, linear algebra, and differential equations as separate courses</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h4>What Rotation Reveals</h4>
+            <ul style="color: var(--text); line-height: 2;">
+                <li><strong>Unity:</strong> All these subjects are aspects of rotation</li>
+                <li><strong>Geometry:</strong> Every formula has a visual meaning</li>
+                <li><strong>Inevitability:</strong> The results aren't arbitrary — they follow from rotation</li>
+                <li><strong>Connection:</strong> Physics, engineering, and pure math share the same foundation</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Path Forward</h2>
+
+        <p>
+            With this foundation, you can now approach advanced mathematics with geometric intuition:
+        </p>
+
+        <ul style="color: var(--text); line-height: 2;">
+            <li><strong>Complex Analysis:</strong> Functions as transformations of the plane</li>
+            <li><strong>Differential Equations:</strong> Oscillations, exponentials, and rotations</li>
+            <li><strong>Linear Algebra:</strong> Rotations, reflections, and eigenvalues</li>
+            <li><strong>Quantum Mechanics:</strong> Wave functions as rotating complex numbers</li>
+            <li><strong>Signal Processing:</strong> Fourier analysis of arbitrary signals</li>
+        </ul>
+
+        <p>
+            The circle is not just a shape. It is the generator of mathematics.
+        </p>
+
+        <div class="central-equation">
+            <div class="equation">The circle generates everything.</div>
+            <p class="subtitle">
+                From the simplest rotation comes trigonometry, calculus, complex numbers,
+                and the mathematical description of the physical world.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Complete Curriculum</h2>
+
+        <div class="curriculum-nav">
+            <h4>Calculus Through Rotation — All Lessons</h4>
+            <ul>
+                <li><a href="00-circular-understanding.html">00. Circular Understanding</a></li>
+                <li><a href="01-motion-on-circle.html">01. Motion on the Circle</a></li>
+                <li><a href="02-derivative-rotation.html">02. The 90° Secret</a></li>
+                <li><a href="03-euler-derivative.html">03. The Euler Derivative</a></li>
+                <li><a href="04-integration-accumulation.html">04. Integration</a></li>
+                <li><a href="05-fundamental-theorem.html">05. Fundamental Theorem</a></li>
+                <li><a href="06-applications.html">06. Applications</a></li>
+                <li><a href="07-taylor-fourier.html">07. Taylor & Fourier</a></li>
+                <li><a href="08-synthesis.html" class="current">08. Synthesis</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <nav class="lesson-nav">
+        <a href="07-taylor-fourier.html">← Lesson 07: Taylor & Fourier</a>
+        <a href="../../index.html">Return to Index →</a>
+    </nav>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(212,175,55,0.2);">
+        <p style="color: var(--gold); font-family: monospace; font-size: 1.5rem;">[1 = -1]</p>
+        <p style="color: var(--text-dim);">Calculus Through Rotation | Geometry Math</p>
+        <p style="color: var(--text-dim); margin-top: 0.5rem;">Have Mind Media | January 2026</p>
+    </footer>
+
+    <script src="../../js/circle-engine.js"></script>
+    <script>
+        // ===== Q-CYCLE SYNTHESIS DEMO =====
+        (function() {
+            const canvas = document.getElementById('qCycleCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            // Left: Q-cycle wheel, Right: waves
+            const wheelCx = 150;
+            const wheelCy = height / 2;
+            const wheelRadius = 100;
+
+            const waveLeft = 300;
+            const waveWidth = width - waveLeft - 40;
+            const waveCy = height / 2;
+            const waveAmp = 60;
+
+            let currentStep = 0;
+            let t = 0;
+            let autoCycling = false;
+            let autoInterval = null;
+
+            const steps = [
+                { label: '1', color: '#00d4ff', angle: 0, fn: Math.cos },
+                { label: 'i', color: '#00ff88', angle: Math.PI/2, fn: (x) => -Math.sin(x) },
+                { label: '-1', color: '#ff6464', angle: Math.PI, fn: (x) => -Math.cos(x) },
+                { label: '-i', color: '#ff00ff', angle: 3*Math.PI/2, fn: Math.sin }
+            ];
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                const current = steps[currentStep];
+
+                // Draw wheel
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(wheelCx, wheelCy, wheelRadius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Draw axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(wheelCx - wheelRadius - 20, wheelCy);
+                ctx.lineTo(wheelCx + wheelRadius + 20, wheelCy);
+                ctx.moveTo(wheelCx, wheelCy - wheelRadius - 20);
+                ctx.lineTo(wheelCx, wheelCy + wheelRadius + 20);
+                ctx.stroke();
+
+                // Draw step labels
+                steps.forEach((step, i) => {
+                    const x = wheelCx + Math.cos(-step.angle + Math.PI/2) * (wheelRadius + 25);
+                    const y = wheelCy - Math.sin(-step.angle + Math.PI/2) * (wheelRadius + 25);
+
+                    ctx.fillStyle = i === currentStep ? step.color : 'rgba(255,255,255,0.3)';
+                    ctx.font = i === currentStep ? 'bold 18px serif' : '14px serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(step.label, x, y);
+                });
+
+                // Draw current position
+                const posX = wheelCx + Math.cos(-current.angle + Math.PI/2) * wheelRadius;
+                const posY = wheelCy - Math.sin(-current.angle + Math.PI/2) * wheelRadius;
+
+                // Draw radius
+                ctx.strokeStyle = current.color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(wheelCx, wheelCy);
+                ctx.lineTo(posX, posY);
+                ctx.stroke();
+
+                // Draw point
+                ctx.fillStyle = current.color;
+                ctx.shadowColor = current.color;
+                ctx.shadowBlur = 20;
+                ctx.beginPath();
+                ctx.arc(posX, posY, 15, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Draw arrow showing next rotation
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+                ctx.lineWidth = 2;
+                const arcStart = -current.angle + Math.PI/2;
+                const arcEnd = arcStart - Math.PI/2;
+                ctx.beginPath();
+                ctx.arc(wheelCx, wheelCy, wheelRadius * 0.5, arcStart, arcEnd, true);
+                ctx.stroke();
+
+                // Arrowhead
+                const ahX = wheelCx + wheelRadius * 0.5 * Math.cos(arcEnd);
+                const ahY = wheelCy - wheelRadius * 0.5 * Math.sin(arcEnd);
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.6)';
+                ctx.beginPath();
+                ctx.moveTo(ahX, ahY);
+                ctx.lineTo(ahX - 10 * Math.cos(arcEnd + 0.5), ahY + 10 * Math.sin(arcEnd + 0.5));
+                ctx.lineTo(ahX - 10 * Math.cos(arcEnd - 0.5), ahY + 10 * Math.sin(arcEnd - 0.5));
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = '#d4af37';
+                ctx.font = '12px monospace';
+                ctx.fillText('×i', wheelCx, wheelCy);
+
+                // Draw wave
+                ctx.strokeStyle = current.color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let x = 0; x <= waveWidth; x++) {
+                    const waveT = (x / waveWidth) * 4 * Math.PI + t;
+                    const y = current.fn(waveT) * waveAmp;
+                    if (x === 0) {
+                        ctx.moveTo(waveLeft + x, waveCy - y);
+                    } else {
+                        ctx.lineTo(waveLeft + x, waveCy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Wave axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(waveLeft, waveCy);
+                ctx.lineTo(waveLeft + waveWidth, waveCy);
+                ctx.stroke();
+
+                // Function label
+                const labels = ['cos(t)', '-sin(t)', '-cos(t)', 'sin(t)'];
+                ctx.fillStyle = current.color;
+                ctx.font = '14px monospace';
+                ctx.textAlign = 'left';
+                ctx.fillText(labels[currentStep], waveLeft + waveWidth + 5, waveCy);
+            }
+
+            function animate() {
+                t += 0.03;
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('stepBtn').addEventListener('click', () => {
+                currentStep = (currentStep + 1) % 4;
+            });
+
+            document.getElementById('autoBtn').addEventListener('click', function() {
+                autoCycling = !autoCycling;
+                this.classList.toggle('active', autoCycling);
+
+                if (autoCycling) {
+                    autoInterval = setInterval(() => {
+                        currentStep = (currentStep + 1) % 4;
+                    }, 1000);
+                } else {
+                    clearInterval(autoInterval);
+                }
+            });
+
+            document.getElementById('resetBtn').addEventListener('click', () => {
+                currentStep = 0;
+                autoCycling = false;
+                document.getElementById('autoBtn').classList.remove('active');
+                if (autoInterval) clearInterval(autoInterval);
+            });
+
+            animate();
+        })();
+    </script>
+</body>
+</html>

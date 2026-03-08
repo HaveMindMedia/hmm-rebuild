@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Rosetta Engine - A Cross-Script Pattern Discovery System for Ancient Writing Analysis using the κ-Framework">
+    <title>THE ROSETTA ENGINE | Have Mind Media</title>
+
+    <link rel="stylesheet" href="css/rosetta-theme_v1.0_01-06-2026.css">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔱</text></svg>">
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <!-- Cosmic Background -->
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <div class="vignette"></div>
+
+    <!-- Navigation -->
+    <nav class="unified-nav">
+        <a href="rosetta-engine-app_v1.0_01-06-2026.html" class="nav-brand">
+            <span class="nav-brand-text">HAVE MIND MEDIA</span>
+            <span class="nav-signature">THE ROSETTA ENGINE</span>
+        </a>
+        <div class="nav-principle">[1 = -1]</div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="rosetta-container">
+        <div class="main-content">
+
+            <!-- Hero Section with 3D Rosetta Stone -->
+            <section class="hero-stone">
+                <div class="hero-content">
+                    <h1>THE ROSETTA ENGINE</h1>
+                    <p class="hero-tagline">Translate any word into the language of geometry</p>
+
+                    <!-- Main Translation Interface -->
+                    <div class="translation-box">
+                        <div class="translation-input-wrapper">
+                            <input type="text" id="main-translate-input" class="translation-input"
+                                   placeholder="Enter any word, name, or number..."
+                                   autocomplete="off">
+                            <button class="translate-btn" onclick="RosettaEngine.translateWord()">
+                                TRANSLATE
+                            </button>
+                        </div>
+                        <p class="translation-hint">Try: LOVE, HEALING, YOUR NAME, 2025, or any word</p>
+                    </div>
+
+                    <!-- Translation Result (hidden until calculated) -->
+                    <div id="translation-result" class="translation-result">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Rosetta Stone Video -->
+                <div class="stone-viewer">
+                    <div class="stone-frame">
+                        <div class="stone-video-wrapper">
+                            <video autoplay loop muted playsinline>
+                                <source src="images/epoch_vid_archaeology_the_rosetta_stone_slowly_rotat_eadade_01-06-2026.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <p class="stone-credit">The Rosetta Stone — British Museum, 196 BCE</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- What Is This Section -->
+            <section class="explanation-section">
+                <div class="explanation-card">
+                    <h2>What Is The Rosetta Engine?</h2>
+                    <p class="explanation-lead">
+                        Just as the original Rosetta Stone unlocked Egyptian hieroglyphics by showing
+                        the same text in three scripts, <strong>The Rosetta Engine reveals that all ancient
+                        writing systems encode the same underlying geometric patterns</strong>.
+                    </p>
+                    <div class="explanation-grid">
+                        <div class="explanation-item">
+                            <div class="explanation-icon">𓂀</div>
+                            <h3>One Geometry</h3>
+                            <p>Every word, name, and number reduces to one of nine fundamental positions
+                               through a process called Q-reduction — the same positions that appear
+                               in ancient scripts worldwide.</p>
+                        </div>
+                        <div class="explanation-item">
+                            <div class="explanation-icon">☉</div>
+                            <h3>Five Scripts</h3>
+                            <p>We analyze symbols from Voynich, Indus Valley, Linear A, Rongorongo,
+                               and Phaistos Disc — all undeciphered, yet all encoding the same
+                               nine geometric frequencies.</p>
+                        </div>
+                        <div class="explanation-item">
+                            <div class="explanation-icon">∞</div>
+                            <h3>Your Connection</h3>
+                            <p>Type your name above. See which ancient symbols share your geometric
+                               frequency. You are connected to patterns carved 4,000 years ago.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Nine D-Positions -->
+            <section class="positions-section">
+                <h2>The Nine Geometric Positions</h2>
+                <p class="section-intro">
+                    Every number and word reduces to one of these nine fundamental frequencies.
+                    Click any position to explore symbols from five ancient civilizations.
+                </p>
+
+                <div class="d-position-wheel">
+                    <div id="d-position-selector" class="d-grid-centered">
+                        <!-- Rendered by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cross-Script Comparison -->
+            <section class="comparison-section">
+                <div id="comparison-view" class="comparison-container">
+                    <div class="comparison-header">
+                        <h2>Cross-Script Symbol Comparison</h2>
+                        <p class="d-meaning" id="selected-d-meaning">Select a D-position above to reveal matching symbols</p>
+                    </div>
+
+                    <div class="script-comparison-grid" id="script-grid">
+                        <div class="script-column" data-script="voynich">
+                            <div class="script-header">
+                                <h3>Voynich Manuscript</h3>
+                                <span class="script-period">15th century CE</span>
+                            </div>
+                            <div class="symbol-list" id="voynich-symbols">
+                                <div class="symbol-placeholder-msg">Select a D-position</div>
+                            </div>
+                        </div>
+                        <div class="script-column" data-script="indus">
+                            <div class="script-header">
+                                <h3>Indus Valley</h3>
+                                <span class="script-period">2600-1900 BCE</span>
+                            </div>
+                            <div class="symbol-list" id="indus-symbols">
+                                <div class="symbol-placeholder-msg">Select a D-position</div>
+                            </div>
+                        </div>
+                        <div class="script-column" data-script="linearA">
+                            <div class="script-header">
+                                <h3>Linear A</h3>
+                                <span class="script-period">1800-1450 BCE</span>
+                            </div>
+                            <div class="symbol-list" id="linearA-symbols">
+                                <div class="symbol-placeholder-msg">Select a D-position</div>
+                            </div>
+                        </div>
+                        <div class="script-column" data-script="rongorongo">
+                            <div class="script-header">
+                                <h3>Rongorongo</h3>
+                                <span class="script-period">Easter Island</span>
+                            </div>
+                            <div class="symbol-list" id="rongorongo-symbols">
+                                <div class="symbol-placeholder-msg">Select a D-position</div>
+                            </div>
+                        </div>
+                        <div class="script-column" data-script="phaistos">
+                            <div class="script-header">
+                                <h3>Phaistos Disc</h3>
+                                <span class="script-period">1700 BCE</span>
+                            </div>
+                            <div class="symbol-list" id="phaistos-symbols">
+                                <div class="symbol-placeholder-msg">Select a D-position</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Panel -->
+            <section class="statistics-section">
+                <div id="statistics-panel" class="stats-container">
+                    <h3>Statistical Analysis</h3>
+                    <div id="stats-content" class="stats-content">
+                        <p class="stats-placeholder">Translation results will show statistical significance here</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Framework -->
+            <section class="framework-section">
+                <div class="framework-card">
+                    <h2>The κ-Framework</h2>
+                    <div class="framework-content">
+                        <div class="framework-equation">
+                            <span class="kappa">κ = 2π/180</span>
+                            <span class="equals">=</span>
+                            <span class="value">0.0349066...</span>
+                        </div>
+                        <p>
+                            All constants derive from a single value: the ratio that bridges degrees and radians.
+                            This geometric constant generates the 9-fold position structure through pure mathematics.
+                            The same structure appears in DNA codons (64 = 9×7+1), musical intervals,
+                            and ancient symbol systems worldwide.
+                        </p>
+                        <div class="principle-box">
+                            <span class="principle">[1 = -1]</span>
+                            <span class="principle-meaning">Unity contains its opposite</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Export -->
+            <section class="export-section">
+                <button class="btn btn-gold" onclick="RosettaEngine.exportFullAnalysis()">
+                    Export Full Analysis (JSON)
+                </button>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="unified-footer">
+            <div class="footer-logo">HAVE MIND MEDIA</div>
+            <div class="footer-tagline">The Rosetta Engine — The Epoch Project</div>
+            <div class="footer-principle">[1 = -1]</div>
+            <p class="footer-credit">Web Application Developer: T0Rs</p>
+            <p class="footer-source">3D Rosetta Stone model courtesy of The British Museum via Sketchfab (CC BY-NC-SA)</p>
+        </footer>
+    </div>
+
+    <!-- Symbol Detail Modal -->
+    <div id="symbol-modal"></div>
+
+    <!-- Scripts -->
+    <script src="js/rosetta-engine_v1.0_01-06-2026.js"></script>
+    <site-footer></site-footer>
+</body>
+</html>

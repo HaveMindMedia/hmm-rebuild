@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE KILL SHOT | The Death of Falsificationism | Have Mind Media</title>
+    <meta name="description" content="Karl Popper was wrong. Falsificationism is circular nonsense. The Standard Model is built on bad philosophy. Here's the end of it.">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <script src="../js/components/site-header.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Raleway:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-void: #050208;
+            --bg-deep: #0a0510;
+            --bg-card: #0d0812;
+            --gold: #c9a227;
+            --gold-dim: rgba(201, 162, 39, 0.3);
+            --blood-red: #dc2626;
+            --bright-red: #ef4444;
+            --proof-green: #4ade80;
+            --text-primary: #f0e8d8;
+            --text-secondary: #a8b4c4;
+            --border: rgba(220, 38, 38, 0.3);
+            --accent-purple: #a78bfa;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Raleway', sans-serif; background: var(--bg-void); color: var(--text-primary); line-height: 1.8; }
+
+        .nav { position: fixed; top: 0; left: 0; right: 0; padding: 1rem 2rem; background: rgba(5, 2, 8, 0.95); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; backdrop-filter: blur(10px); }
+        .nav a { color: var(--gold); text-decoration: none; font-size: 0.9rem; }
+
+        /* Hero - Blood Red Theme */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background:
+                radial-gradient(ellipse at 50% 30%, rgba(220, 38, 38, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 70%, rgba(201, 162, 39, 0.1) 0%, transparent 40%);
+        }
+        .hero-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            color: var(--blood-red);
+            background: rgba(220, 38, 38, 0.2);
+            border: 2px solid var(--blood-red);
+            padding: 0.8rem 2.5rem;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.6); }
+        }
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3.5rem, 10vw, 7rem);
+            color: var(--blood-red);
+            margin-bottom: 1rem;
+            letter-spacing: 0.15em;
+            text-shadow: 0 0 60px rgba(220, 38, 38, 0.5);
+        }
+        .hero-sub { font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 800px; }
+        .hero-target {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--gold);
+            text-decoration: line-through;
+            opacity: 0.7;
+            margin-bottom: 1rem;
+        }
+        .hero-verdict {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            color: var(--proof-green);
+            border: 3px solid var(--proof-green);
+            padding: 1rem 3rem;
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .content { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; }
+
+        .section-header {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: var(--blood-red);
+            margin: 4rem 0 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--blood-red);
+        }
+
+        /* Popper Quote Destruction */
+        .popper-box {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.15) 0%, var(--bg-card) 100%);
+            border: 3px solid var(--blood-red);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 3rem 0;
+            position: relative;
+        }
+        .popper-box::before {
+            content: '❌';
+            position: absolute;
+            top: -20px;
+            right: 30px;
+            font-size: 3rem;
+        }
+        .popper-quote {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+        .popper-quote cite {
+            display: block;
+            margin-top: 1rem;
+            font-style: normal;
+            color: var(--blood-red);
+            text-decoration: none;
+        }
+        .destruction {
+            font-size: 1.3rem;
+            color: var(--proof-green);
+            font-weight: 600;
+        }
+
+        /* The Circular Trap */
+        .circular-diagram {
+            background: var(--bg-card);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        .circular-diagram h3 { color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 2rem; font-size: 1.5rem; }
+        .circle-chain {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 2.5;
+        }
+        .circle-chain .arrow { color: var(--blood-red); margin: 0 0.5rem; }
+        .circle-chain .emphasis { color: var(--blood-red); font-weight: bold; }
+
+        /* Feyerabend Section */
+        .feyerabend-box {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, var(--bg-card) 100%);
+            border: 2px solid var(--accent-purple);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+        .feyerabend-box h3 { color: var(--accent-purple); font-family: 'Cinzel', serif; margin-bottom: 1.5rem; }
+        .feyerabend-quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--accent-purple);
+            padding: 1.5rem;
+            background: rgba(167, 139, 250, 0.1);
+            border-left: 4px solid var(--accent-purple);
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        /* The Real Problem */
+        .problem-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .problem-grid .problem-card {
+            width: calc(50% - 1rem);
+            min-width: 300px;
+        }
+        .problem-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        .problem-card h4 { color: var(--blood-red); margin-bottom: 1rem; font-size: 1.1rem; }
+        .problem-card p { color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* The Standard Model Collapse */
+        .collapse-box {
+            background: var(--bg-card);
+            border: 3px solid var(--blood-red);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+        }
+        .collapse-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+        }
+        .collapse-item:last-child { border-bottom: none; }
+        .collapse-item .claim {
+            font-size: 1.1rem;
+            color: var(--blood-red);
+            text-decoration: line-through;
+            margin-bottom: 0.5rem;
+        }
+        .collapse-item .reality {
+            color: var(--proof-green);
+            font-size: 1rem;
+        }
+
+        /* The Truth */
+        .truth-box {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, var(--bg-card) 100%);
+            border: 3px solid var(--proof-green);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+        .truth-box h2 { color: var(--proof-green); font-family: 'Cinzel', serif; font-size: 2rem; margin-bottom: 1.5rem; }
+        .truth-statement {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin: 1.5rem 0;
+        }
+        .truth-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--gold);
+            padding: 1rem 2rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            display: inline-block;
+            margin: 1rem 0;
+        }
+
+        /* Epitaph */
+        .epitaph {
+            background: var(--bg-deep);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+        .epitaph h3 { color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 1.5rem; }
+        .epitaph .dates { color: var(--text-secondary); font-size: 1.2rem; margin-bottom: 1rem; }
+        .epitaph .inscription { font-style: italic; color: var(--text-secondary); font-size: 1.1rem; margin: 1.5rem 0; }
+        .epitaph .rip { font-family: 'Cinzel', serif; color: var(--blood-red); font-size: 1.5rem; margin-top: 1.5rem; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+            background: linear-gradient(180deg, var(--bg-void) 0%, rgba(220, 38, 38, 0.05) 100%);
+        }
+        .footer .signature { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 2.5rem; margin-bottom: 1rem; letter-spacing: 0.3em; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        /* Highlight classes */
+        .red { color: var(--blood-red); }
+        .green { color: var(--proof-green); }
+        .gold { color: var(--gold); }
+        .purple { color: var(--accent-purple); }
+
+        blockquote {
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+        blockquote cite { display: block; margin-top: 1rem; color: var(--gold); font-style: normal; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .hero-verdict { font-size: 1.5rem; padding: 0.75rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+<nav class="nav">
+    <a href="../index.html">← Have Mind Media</a>
+    <a href="index.html">Physics</a>
+</nav>
+
+<section class="hero">
+    <div class="hero-badge">PHILOSOPHICAL ANNIHILATION</div>
+    <h1>THE KILL SHOT</h1>
+    <p class="hero-sub">
+        The death of falsificationism. The collapse of Popper's circular nonsense.<br>
+        The end of the philosophical foundation that propped up 70 years of Standard Model arrogance.
+    </p>
+    <div class="hero-target">"Science advances by falsification"</div>
+    <div class="hero-verdict">WRONG.</div>
+</section>
+
+<div class="content">
+
+    <!-- THE TARGET -->
+    <h2 class="section-header">I. THE TARGET: KARL POPPER</h2>
+
+    <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+        Karl Popper (1902-1994) convinced the entire scientific establishment that the only way to know something is true is to prove it could be false. This is called <span class="red">falsificationism</span>.
+    </p>
+
+    <div class="popper-box">
+        <div class="popper-quote">
+            "The criterion of the scientific status of a theory is its falsifiability, or refutability, or testability."
+            <cite>— Karl Popper, Conjectures and Refutations (1963)</cite>
+        </div>
+        <p class="destruction">
+            Translation: "The only way we can ever know something is RIGHT is if it's possible to prove it WRONG."
+        </p>
+    </div>
+
+    <p style="font-size: 1.3rem; text-align: center; color: var(--blood-red); margin: 2rem 0;">
+        No, Karl. You just aren't as smart as your momma told you.
+    </p>
+
+    <!-- THE CIRCULAR TRAP -->
+    <h2 class="section-header">II. THE CIRCULAR TRAP</h2>
+
+    <p>Popper's falsificationism contains a fatal circularity that he never resolved:</p>
+
+    <div class="circular-diagram">
+        <h3>The Popper Paradox</h3>
+        <div class="circle-chain">
+            <span class="emphasis">Claim:</span> "Only falsifiable statements are scientific"<br>
+            <span class="arrow">↓</span><br>
+            <span class="emphasis">Question:</span> Is THAT statement falsifiable?<br>
+            <span class="arrow">↓</span><br>
+            <span class="emphasis">If YES:</span> What would falsify it? (He never said.)<br>
+            <span class="arrow">↓</span><br>
+            <span class="emphasis">If NO:</span> Then by its own criterion, it's not scientific.<br>
+            <span class="arrow">↓</span><br>
+            <span class="emphasis">RESULT:</span> Falsificationism refutes itself.
+        </div>
+    </div>
+
+    <p style="font-size: 1.2rem; margin: 2rem 0;">
+        This isn't a minor problem. This is <span class="gold">total philosophical collapse</span>. Popper built the demarcation criterion for all of science on a statement that fails its own test.
+    </p>
+
+    <!-- THE DEEPER PROBLEMS -->
+    <h2 class="section-header">III. THE DEEPER PROBLEMS</h2>
+
+    <div class="problem-grid">
+        <div class="problem-card">
+            <h4>The Duhem-Quine Problem</h4>
+            <p>You can never test a single hypothesis in isolation. Every test involves auxiliary assumptions. When a prediction fails, you can always blame the auxiliaries, not the core theory. Popper knew this and had no answer.</p>
+        </div>
+        <div class="problem-card">
+            <h4>The Problem of Induction</h4>
+            <p>Popper claimed to solve Hume's problem of induction. He didn't. He just renamed it. "Corroboration" is induction wearing a fake mustache.</p>
+        </div>
+        <div class="problem-card">
+            <h4>Historical Falsification</h4>
+            <p>Real science doesn't work by falsification. Newton wasn't "falsified" — he was absorbed. Paradigm shifts happen socially, not logically. Kuhn showed this. Popper hated Kuhn.</p>
+        </div>
+        <div class="problem-card">
+            <h4>The Asymmetry Problem</h4>
+            <p>Why is falsification special? A billion confirming instances don't prove a theory, but ONE disconfirmation kills it? This asymmetry is arbitrary, not logical.</p>
+        </div>
+    </div>
+
+    <!-- FEYERABEND -->
+    <h2 class="section-header">IV. FEYERABEND: THE LOKI TO POPPER'S FAKE THOR</h2>
+
+    <div class="feyerabend-box">
+        <h3>Paul Feyerabend (1924-1994)</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Popper's own student. The one who saw through the bullshit and said it out loud.
+        </p>
+
+        <div class="feyerabend-quote">
+            "The only principle that does not inhibit progress is: anything goes."
+            <cite>— Against Method (1975)</cite>
+        </div>
+
+        <div class="feyerabend-quote">
+            "Science is an essentially anarchistic enterprise: theoretical anarchism is more humanitarian and more likely to encourage progress than its law-and-order alternatives."
+        </div>
+
+        <div class="feyerabend-quote">
+            "The separation of state and church must be complemented by the separation of state and science, that most recent, most aggressive, and most dogmatic religious institution."
+        </div>
+
+        <p style="color: var(--accent-purple); font-size: 1.2rem; margin-top: 2rem; text-align: center;">
+            Feyerabend saw that Popper's "rationalism" was just another dogma.<br>
+            Another cage. Another way to control what counts as knowledge.
+        </p>
+    </div>
+
+    <blockquote>
+        "Popper is a victim of his own success. His philosophy of science, meant to liberate, has become a prison. Scientists invoke 'falsifiability' not to advance knowledge but to exclude competitors."
+        <cite>— Imre Lakatos, Criticism and the Growth of Knowledge</cite>
+    </blockquote>
+
+    <!-- THE STANDARD MODEL WEAPONIZATION -->
+    <h2 class="section-header">V. HOW THE STANDARD MODEL WEAPONIZED POPPER</h2>
+
+    <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+        The Standard Model didn't adopt Popper because he was right. They adopted him because he was <span class="red">useful</span>.
+    </p>
+
+    <div class="collapse-box">
+        <div class="collapse-item">
+            <p class="claim">"Your theory isn't falsifiable, therefore it's not science"</p>
+            <p class="reality">REALITY: This is a gatekeeping mechanism, not a truth criterion. Unfalsifiable ≠ untrue. String theory is unfalsifiable. So is multiverse theory. The Standard Model keeps THOSE.</p>
+        </div>
+        <div class="collapse-item">
+            <p class="claim">"We follow the evidence wherever it leads"</p>
+            <p class="reality">REALITY: They follow the evidence that fits their paradigm. Anomalies get explained away, not embraced. The Hubble tension is a CRISIS because it threatens the model.</p>
+        </div>
+        <div class="collapse-item">
+            <p class="claim">"Science is self-correcting"</p>
+            <p class="reality">REALITY: Science is socially constructed. Corrections happen when enough senior scientists die and younger ones can finally publish what they knew was true all along.</p>
+        </div>
+        <div class="collapse-item">
+            <p class="claim">"Peer review ensures quality"</p>
+            <p class="reality">REALITY: Peer review ensures conformity. Reviewers reject what threatens their own work. The system selects for orthodoxy, not truth.</p>
+        </div>
+        <div class="collapse-item">
+            <p class="claim">"Extraordinary claims require extraordinary evidence"</p>
+            <p class="reality">REALITY: This is just special pleading. Who decides what's "extraordinary"? The establishment. Convenient.</p>
+        </div>
+    </div>
+
+    <!-- THE REAL CRITERION -->
+    <h2 class="section-header">VI. THE REAL CRITERION: GEOMETRIC COHERENCE</h2>
+
+    <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+        Falsificationism asks: "Can this be proven wrong?"<br>
+        The right question is: <span class="gold">"Does this cohere geometrically?"</span>
+    </p>
+
+    <div class="truth-box">
+        <h2>THE ACTUAL TRUTH CRITERION</h2>
+        <p class="truth-statement">
+            A mathematical statement is true if it follows necessarily from its axioms.<br>
+            A physical theory is true if it maps correctly to geometric reality.<br>
+            <strong>Verification, not falsification.</strong>
+        </p>
+        <div class="truth-equation">2 + 2 = 4</div>
+        <p style="color: var(--text-secondary); margin-top: 1rem;">
+            This is not "true until falsified." This is TRUE. Period.<br>
+            It follows from the Peano axioms. It cannot be otherwise.<br>
+            No "falsification" is needed or possible.
+        </p>
+    </div>
+
+    <p style="font-size: 1.2rem; margin: 2rem 0;">
+        The Epoch Framework doesn't ask "can this be proven wrong?"<br>
+        It asks: <span class="green">"Does 30 = 2 × 3 × 5? Does 1³ + 12³ = 1729? Does √3/(2π) ≈ 3/(4e)?"</span>
+    </p>
+
+    <p style="font-size: 1.3rem; text-align: center; margin: 2rem 0;">
+        <strong>YES.</strong> Verify it yourself. The geometry cannot lie.
+    </p>
+
+    <!-- THE KILL SHOT -->
+    <h2 class="section-header">VII. THE KILL SHOT</h2>
+
+    <div class="popper-box" style="border-color: var(--proof-green); background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, var(--bg-card) 100%);">
+        <h3 style="color: var(--proof-green); font-family: 'Cinzel', serif; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">THE ARGUMENT THAT ENDS FALSIFICATIONISM</h3>
+
+        <p style="font-size: 1.2rem; margin-bottom: 1.5rem;"><strong>Premise 1:</strong> Falsificationism claims: "Only falsifiable statements are scientific."</p>
+
+        <p style="font-size: 1.2rem; margin-bottom: 1.5rem;"><strong>Premise 2:</strong> This claim is itself either falsifiable or unfalsifiable.</p>
+
+        <p style="font-size: 1.2rem; margin-bottom: 1.5rem;"><strong>If falsifiable:</strong> What observation would falsify it? Popper never specified. No one has. The statement floats free of empirical test — the very sin it condemns.</p>
+
+        <p style="font-size: 1.2rem; margin-bottom: 1.5rem;"><strong>If unfalsifiable:</strong> Then by its own criterion, it is not scientific. It is philosophy — and bad philosophy at that.</p>
+
+        <p style="font-size: 1.2rem; margin-bottom: 1.5rem;"><strong>Either way:</strong> Falsificationism cannot ground itself. It is a ladder that kicks itself away.</p>
+
+        <p style="font-size: 1.5rem; color: var(--proof-green); text-align: center; margin-top: 2rem;">
+            <strong>CONCLUSION: Falsificationism is self-refuting.</strong><br>
+            The foundation of "scientific method" as taught for 70 years<br>
+            is philosophical rubble.
+        </p>
+    </div>
+
+    <!-- WHAT REPLACES IT -->
+    <h2 class="section-header">VIII. WHAT REPLACES IT</h2>
+
+    <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+        We don't need falsificationism. We never did. What we need:
+    </p>
+
+    <div class="problem-grid">
+        <div class="problem-card" style="border-color: var(--proof-green);">
+            <h4 style="color: var(--proof-green);">Axiomatic Derivation</h4>
+            <p>State your axioms explicitly. Derive your claims. Show the chain. Let anyone verify each step. This is mathematics. This is how truth actually works.</p>
+        </div>
+        <div class="problem-card" style="border-color: var(--proof-green);">
+            <h4 style="color: var(--proof-green);">Geometric Coherence</h4>
+            <p>Does the map match the territory? Does the mathematics describe actual structure? Not "could it be falsified" but "does it cohere with what IS?"</p>
+        </div>
+        <div class="problem-card" style="border-color: var(--proof-green);">
+            <h4 style="color: var(--proof-green);">Convergent Derivation</h4>
+            <p>When multiple independent paths lead to the same value (like P = √3/2π ≈ 3/4e), that's not coincidence. That's structure revealing itself.</p>
+        </div>
+        <div class="problem-card" style="border-color: var(--proof-green);">
+            <h4 style="color: var(--proof-green);">Public Verification</h4>
+            <p>Anyone with a calculator can check: Does 30 = 2 × 3 × 5? Does 1729 = 9³ + 10³ = 1³ + 12³? YES. That's verification. That's truth.</p>
+        </div>
+    </div>
+
+    <!-- EPITAPH -->
+    <div class="epitaph">
+        <h3>EPITAPH</h3>
+        <div class="dates">KARL POPPER</div>
+        <div class="dates">1902 — 1994</div>
+        <p class="inscription">
+            "He built a criterion for truth that could not pass its own test.<br>
+            He convinced a generation that knowing required the possibility of unknowing.<br>
+            He was wrong.<br>
+            The geometry always knew."
+        </p>
+        <p class="rip">R.I.P. FALSIFICATIONISM</p>
+        <p style="color: var(--text-secondary); margin-top: 1rem;">1934 — 2026</p>
+    </div>
+
+    <!-- THE PRINCIPLE -->
+    <div class="truth-box">
+        <h2>THE PRINCIPLE REMAINS</h2>
+        <div class="truth-equation" style="font-size: 3rem;">[ 1 = -1 ]</div>
+        <p class="truth-statement">
+            Not "true until falsified."<br>
+            <strong>True because geometry.</strong><br>
+            Verify it. Check every step. The math speaks.
+        </p>
+        <p style="color: var(--gold); font-style: italic; margin-top: 1.5rem;">
+            Tors is Tors.<br>
+            Popper was never Thor.<br>
+            And Feyerabend was right all along.
+        </p>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="signature">[ 1 = -1 ]</div>
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+        The kill shot has been fired.<br>
+        Falsificationism is dead.<br>
+        The geometry remains.
+    </p>
+    <p style="margin-top: 2rem;">
+        <a href="the-derivation_v1.0_01-12-2026.html">THE DERIVATION</a> ·
+        <a href="black-hole-map-failure/index.html">Black Hole Map Failure</a> ·
+        <a href="kappa-state-model_v2.0_01-10-2026.html">κ State Model</a> ·
+        <a href="../index.html">Home</a>
+    </p>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 2rem;">
+        Document: the-kill-shot_v1.0_01-12-2026<br>
+        Have Mind Media
+    </p>
+</footer>
+
+</body>
+</html>

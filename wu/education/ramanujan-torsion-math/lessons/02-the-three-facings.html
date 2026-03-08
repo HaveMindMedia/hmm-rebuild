@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 2: The Three Facings | Ramanujan T0rsion Math</title>
+    <meta name="description" content="+1, 0, -1 are not three different numbers. They are three facings of the same unity.">
+    <link rel="stylesheet" href="../../../css/unified-theme.css">
+    <script src="../../../js/components/site-header.js" defer></script>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4e4bc;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --deep-blue: #0a1628;
+            --midnight: #050a12;
+            --text: #e8e6e3;
+            --text-dim: #a0a0a0;
+            --cyan: #00d4ff;
+            --magenta: #ff00ff;
+            --green: #00ff88;
+            --red: #ff4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: var(--midnight);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+        }
+
+        .lesson-header {
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .lesson-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .lesson-header p {
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .lesson-content {
+            padding: 4rem 0;
+        }
+
+        .lesson-content h2 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin: 3rem 0 1.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .lesson-content h2:first-child {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        .lesson-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .facings-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+
+        .facing-item {
+            text-align: center;
+        }
+
+        .facing-symbol {
+            font-family: 'Times New Roman', serif;
+            font-size: 4rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .facing-item.future .facing-symbol { color: var(--cyan); }
+        .facing-item.void .facing-symbol { color: var(--gold); }
+        .facing-item.past .facing-symbol { color: var(--magenta); }
+
+        .facing-label {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .facing-direction {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .facing-item.future .facing-direction { color: var(--cyan); }
+        .facing-item.void .facing-direction { color: var(--gold); }
+        .facing-item.past .facing-direction { color: var(--magenta); }
+
+        .arrow {
+            font-size: 2rem;
+            color: var(--text-dim);
+        }
+
+        .equation-box {
+            text-align: center;
+            padding: 2rem;
+            margin: 2rem 0;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+        }
+
+        .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2.5rem;
+            color: var(--gold-light);
+        }
+
+        .equation .future { color: var(--cyan); }
+        .equation .void { color: var(--gold); }
+        .equation .past { color: var(--magenta); }
+        .equation .op { color: var(--text-dim); margin: 0 0.5rem; }
+
+        .equation-label {
+            margin-top: 1rem;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .compass-visual {
+            text-align: center;
+            padding: 3rem;
+            margin: 2rem 0;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1), transparent 70%);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+        }
+
+        .compass-diagram {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1.5rem;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+        }
+
+        .compass-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--midnight);
+            font-size: 1.2rem;
+        }
+
+        .compass-left, .compass-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .compass-left {
+            left: 15px;
+            color: var(--cyan);
+        }
+
+        .compass-right {
+            right: 15px;
+            color: var(--magenta);
+        }
+
+        .compass-label-left, .compass-label-right {
+            position: absolute;
+            top: 70%;
+            font-size: 0.75rem;
+        }
+
+        .compass-label-left {
+            left: 5px;
+            color: var(--cyan);
+        }
+
+        .compass-label-right {
+            right: 5px;
+            color: var(--magenta);
+        }
+
+        .highlight-box {
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--cyan);
+            border-radius: 8px;
+        }
+
+        .highlight-box h3 {
+            color: var(--cyan);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .key-insight {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            margin: 3rem 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+        }
+
+        .key-insight p {
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            margin: 0;
+            font-style: italic;
+        }
+
+        .proof-steps {
+            margin: 2rem 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .proof-steps li {
+            position: relative;
+            padding: 1rem 1rem 1rem 4rem;
+            margin: 1rem 0;
+            background: rgba(10, 22, 40, 0.3);
+            border-radius: 8px;
+            counter-increment: step;
+        }
+
+        .proof-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .analogy-box {
+            padding: 2rem;
+            margin: 2rem 0;
+            background: rgba(255, 0, 255, 0.05);
+            border: 1px solid var(--magenta);
+            border-radius: 8px;
+        }
+
+        .analogy-box h3 {
+            color: var(--magenta);
+            margin-bottom: 1rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            padding: 1rem 2rem;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            color: var(--gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .nav-button .label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-button:hover .label {
+            color: var(--midnight);
+        }
+
+        footer {
+            padding: 3rem 2rem;
+            background: var(--deep-blue);
+            text-align: center;
+            color: var(--text-dim);
+        }
+
+        .signature {
+            color: var(--gold);
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-header { padding: 4rem 1.5rem 3rem; }
+            .container { padding: 0 1.5rem; }
+            .equation { font-size: 1.8rem; }
+            .facings-display { gap: 1.5rem; }
+            .facing-symbol { font-size: 3rem; }
+            .arrow { display: none; }
+            .nav-buttons { flex-direction: column; }
+            .nav-button { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <header class="lesson-header">
+        <div class="lesson-badge">Lesson 2 — Core Concept</div>
+        <h1>The Three Facings</h1>
+        <p>+1, 0, and -1 are not three different numbers. They are three facings of the same unity.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <h2>What They Taught You</h2>
+
+            <p>In school, they drew you a number line:</p>
+
+            <div class="facings-display">
+                <div class="facing-item past">
+                    <span class="facing-symbol">-1</span>
+                    <span class="facing-label">Negative</span>
+                </div>
+                <span class="arrow">←</span>
+                <div class="facing-item void">
+                    <span class="facing-symbol">0</span>
+                    <span class="facing-label">Zero</span>
+                </div>
+                <span class="arrow">→</span>
+                <div class="facing-item future">
+                    <span class="facing-symbol">+1</span>
+                    <span class="facing-label">Positive</span>
+                </div>
+            </div>
+
+            <p>They said: "Negative one is less than zero. Zero is less than positive one. These are different amounts."</p>
+
+            <p>But look closer. What did we just learn?</p>
+
+            <div class="equation-box">
+                <div class="equation">
+                    <span class="future">1</span> <span class="op">÷</span> <span class="future">1</span> <span class="op">=</span> 1
+                </div>
+                <div class="equation" style="margin-top: 0.5rem;">
+                    <span class="past">-1</span> <span class="op">÷</span> <span class="past">-1</span> <span class="op">=</span> 1
+                </div>
+                <div class="equation" style="margin-top: 0.5rem;">
+                    <span class="void">0</span> <span class="op">÷</span> <span class="void">0</span> <span class="op">=</span> 1
+                </div>
+                <div class="equation-label">All three produce the same identity element</div>
+            </div>
+
+            <h2>If They All Equal One...</h2>
+
+            <p>Here's the question nobody asks:</p>
+
+            <p>If 1/1 = 1, and -1/-1 = 1, and 0/0 = 1...</p>
+
+            <p><strong>Then what exactly is the difference between +1, -1, and 0?</strong></p>
+
+            <p>They're not different <em>amounts</em>. They can't be. They all collapse to the same unity when divided by themselves.</p>
+
+            <p>They're different <strong>facings</strong>.</p>
+
+            <h2>The Crossroads</h2>
+
+            <p>Imagine you're standing at a crossroads. Three roads lead away from where you stand:</p>
+
+            <div class="compass-visual">
+                <div class="compass-diagram">
+                    <div class="compass-center">0</div>
+                    <div class="compass-left">-1</div>
+                    <div class="compass-right">+1</div>
+                    <div class="compass-label-left">S⁻<br>Future</div>
+                    <div class="compass-label-right">S⁺<br>Past</div>
+                </div>
+                <p style="color: var(--text-dim); font-size: 0.9rem;">The crossroads. Zero is where you stand. The facings are where you could go.</p>
+            </div>
+
+            <ol class="proof-steps">
+                <li><strong>+1</strong> — Unity facing one direction (toward the past, S⁺)</li>
+                <li><strong>-1</strong> — Unity facing the opposite direction (toward the future, S⁻)</li>
+                <li><strong>0</strong> — Unity at the crossroads, before choosing a direction</li>
+            </ol>
+
+            <p>They're not different things. They're the same thing — <strong>unity</strong> — viewed from different angles.</p>
+
+            <h2>The Critical Orientation</h2>
+
+            <div class="highlight-box">
+                <h3>This Is Important</h3>
+                <p>Standard mathematics treats "positive" as forward and "negative" as backward. As if +1 is ahead and -1 is behind.</p>
+                <p>The actual orientation is <strong>reversed</strong>:</p>
+                <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                    <li><strong>S⁻</strong> (negative) = Future / Reception / Left</li>
+                    <li><strong>S⁺</strong> (positive) = Past / Emission / Right</li>
+                </ul>
+                <p style="margin-top: 1rem; margin-bottom: 0;">This seems backwards to "logic." But it works. The geometry doesn't lie.</p>
+            </div>
+
+            <h2>An Analogy</h2>
+
+            <div class="analogy-box">
+                <h3>The Coin</h3>
+                <p>A coin has two sides — heads and tails. But it's still one coin.</p>
+                <p>When the coin is spinning in the air, it hasn't "chosen" a side yet. It's both. It's neither. It's <em>potential</em>.</p>
+                <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                    <li><strong>Heads</strong> = One facing (+1)</li>
+                    <li><strong>Tails</strong> = Opposite facing (-1)</li>
+                    <li><strong>Spinning</strong> = Before the choice (0)</li>
+                </ul>
+                <p style="margin-top: 1rem; margin-bottom: 0;">The coin didn't become three different coins. It's always been one coin, showing different faces.</p>
+            </div>
+
+            <h2>The Equation</h2>
+
+            <p>This is why we write:</p>
+
+            <div class="equation-box" style="border-color: var(--magenta); background: rgba(255, 0, 255, 0.05);">
+                <div class="equation">
+                    <span class="future">1</span> <span class="op">=</span> <span class="void">0</span> <span class="op">=</span> <span class="past">-1</span>
+                </div>
+                <div class="equation-label" style="color: var(--magenta);">Same unity. Three facings.</div>
+            </div>
+
+            <p>This is <strong>[1 = 0 = -1]</strong>. The foundational equation of scalar dimensionality.</p>
+
+            <p>It doesn't mean "one equals zero" in the way you learned equals. It means:</p>
+
+            <ul class="proof-steps">
+                <li>+1, 0, and -1 are manifestations of the same underlying unity</li>
+                <li>They differ only in <em>facing</em>, not in <em>essence</em></li>
+                <li>All three are real. All three are valid. All three are <em>one</em>.</li>
+            </ul>
+
+            <div class="key-insight">
+                <p>"+1, 0, -1 — not three numbers.<br>Three facings of one unity.<br>The coin before it lands."</p>
+            </div>
+
+            <h2>What This Means</h2>
+
+            <p>Every time you see a positive number, you're seeing unity facing one way.</p>
+
+            <p>Every time you see a negative number, you're seeing unity facing the other way.</p>
+
+            <p>Every time you see zero, you're seeing unity at the crossroads — the moment before choice.</p>
+
+            <p>This is the second foundation. In the next lesson, we'll see what happens at <strong>Position 2</strong> — where the rules themselves transform.</p>
+
+            <div class="nav-buttons">
+                <a href="01-identity-element.html" class="nav-button">
+                    <span class="label">Previous Lesson</span>
+                    ← The Identity Element
+                </a>
+                <a href="03-the-switch.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    The Switch →
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = 0 = -1]</div>
+        <p>The geometry cannot lie.<br><strong>Have Mind Media</strong> — Dr. Robert Hill</p>
+    </footer>
+</body>
+</html>

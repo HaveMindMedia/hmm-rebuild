@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euclid & Khayyam | Geometry Math</title>
+    <meta name="description" content="Two mathematicians, 1,300 years apart, grappled with the same question. The answer changes everything.">
+    <link rel="stylesheet" href="../css/geometry-math.css">
+    <style>
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gold);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .timeline-item.left {
+            flex-direction: row;
+        }
+
+        .timeline-item.right {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 1.5rem;
+            background: rgba(10, 22, 40, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .timeline-item.left .timeline-content {
+            margin-right: 5%;
+            text-align: right;
+        }
+
+        .timeline-item.right .timeline-content {
+            margin-left: 5%;
+            text-align: left;
+        }
+
+        .timeline-date {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            color: var(--cyan);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 1.5rem;
+            width: 16px;
+            height: 16px;
+            background: var(--gold);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .quadrilateral-demo {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .quad-case {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(10, 22, 40, 0.5);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+            cursor: pointer;
+            min-width: 150px;
+        }
+
+        .quad-case:hover {
+            border-color: var(--gold);
+        }
+
+        .quad-case.active {
+            border-color: var(--cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .quad-case h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .quad-case .angle {
+            font-size: 2rem;
+            margin: 0.5rem 0;
+        }
+
+        .quad-case .geometry {
+            color: var(--cyan);
+            font-size: 0.9rem;
+        }
+
+        .quad-case .facing {
+            color: var(--magenta);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .three-geometries {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .geometry-card {
+            background: rgba(10, 22, 40, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .geometry-card.euclidean {
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .geometry-card.hyperbolic {
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .geometry-card.elliptic {
+            border-color: rgba(255, 0, 255, 0.5);
+        }
+
+        .geometry-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .geometry-card.euclidean h4 { color: #00ff88; }
+        .geometry-card.hyperbolic h4 { color: var(--cyan); }
+        .geometry-card.elliptic h4 { color: var(--magenta); }
+
+        .geometry-card .parallels {
+            font-size: 2rem;
+            margin: 1rem 0;
+        }
+
+        .geometry-card .description {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .poet-verse {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(255, 0, 255, 0.1));
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .poet-verse .attribution {
+            text-align: right;
+            color: var(--text-dim);
+            font-style: normal;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .insight-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 600px) {
+            .insight-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin: 0 0 0 40px !important;
+                text-align: left !important;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+        }
+
+        .insight-box {
+            background: rgba(10, 22, 40, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .insight-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .aaba-structure {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .aaba-line {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .aaba-line .rhyme {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .aaba-line .rhyme.a {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .aaba-line .rhyme.b {
+            background: var(--magenta);
+            color: white;
+        }
+
+        .aaba-line .text {
+            color: var(--text);
+            font-style: italic;
+        }
+
+        .aaba-line .meaning {
+            margin-left: auto;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-3">Tier 3 - Revelation</div>
+        <h1>Euclid & Khayyam</h1>
+        <p class="subtitle">A Greek geometer and a Persian poet both asked the same question. Neither could answer it. But together, they found the truth.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <h2>The 2,000-Year Question</h2>
+
+            <p>
+                In 300 BCE, Euclid wrote the most influential math textbook in history: <em>The Elements</em>.
+                It contained five postulates — basic assumptions from which all geometry flows.
+            </p>
+
+            <p>
+                The first four were simple and obvious:
+            </p>
+
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 0.5rem 0; padding: 0.75rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    1. A straight line can be drawn between any two points
+                </li>
+                <li style="margin: 0.5rem 0; padding: 0.75rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    2. A line segment can be extended forever
+                </li>
+                <li style="margin: 0.5rem 0; padding: 0.75rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    3. A circle can be drawn with any center and radius
+                </li>
+                <li style="margin: 0.5rem 0; padding: 0.75rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    4. All right angles are equal
+                </li>
+            </ul>
+
+            <p>
+                But the fifth was different:
+            </p>
+
+            <div class="equation-box">
+                <div class="equation-label">Euclid's Fifth Postulate (Parallel Postulate)</div>
+                <div class="equation" style="font-size: 1.1rem; line-height: 1.6;">
+                    "Through a point not on a line, there is exactly one parallel line."
+                </div>
+            </div>
+
+            <p>
+                It <em>felt</em> like it should be provable from the other four. For 2,000 years, mathematicians tried to prove it.
+            </p>
+
+            <p>
+                <strong>They all failed.</strong>
+            </p>
+
+            <h2>Timeline of the Hunt</h2>
+
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">~300 BCE</div>
+                        <div class="timeline-title">Euclid writes The Elements</div>
+                        <p>The fifth postulate stands out as complex. Euclid himself may have doubted it could be derived from simpler principles.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">~1070 CE</div>
+                        <div class="timeline-title">Omar Khayyam's Attempt</div>
+                        <p>The Persian mathematician constructs a special quadrilateral. He tries to prove only one case is valid. His "failure" reveals the three geometries.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1733</div>
+                        <div class="timeline-title">Saccheri's Quadrilateral</div>
+                        <p>Girolamo Saccheri rediscovers Khayyam's method, 700 years later. He too "fails" — but gets closer to seeing why.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1829-1854</div>
+                        <div class="timeline-title">The Resolution</div>
+                        <p>Lobachevsky, Bolyai, and Riemann prove all three geometries are valid. The fifth postulate cannot be proven because it's <em>independent</em>.</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+
+            <h2>Khayyam's Quadrilateral</h2>
+
+            <p>
+                Omar Khayyam (1048-1131) was a Persian polymath — mathematician, astronomer, philosopher, and poet.
+                To attack the parallel postulate, he constructed a clever quadrilateral:
+            </p>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Click each case to see what it implies about the geometry of space.
+                </p>
+                <div id="quadrilateral-demo" class="demo-canvas"></div>
+
+                <div class="quadrilateral-demo">
+                    <div class="quad-case" data-case="acute" onclick="selectCase('acute')">
+                        <h4>Acute</h4>
+                        <div class="angle">&lt; 90°</div>
+                        <div class="geometry">Hyperbolic</div>
+                        <div class="facing">S⁺ (expanding)</div>
+                    </div>
+                    <div class="quad-case active" data-case="right" onclick="selectCase('right')">
+                        <h4>Right</h4>
+                        <div class="angle">= 90°</div>
+                        <div class="geometry">Euclidean</div>
+                        <div class="facing">S⁰ (balanced)</div>
+                    </div>
+                    <div class="quad-case" data-case="obtuse" onclick="selectCase('obtuse')">
+                        <h4>Obtuse</h4>
+                        <div class="angle">&gt; 90°</div>
+                        <div class="geometry">Elliptic</div>
+                        <div class="facing">S⁻ (contracting)</div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                Khayyam constructed a quadrilateral ABCD where:
+            </p>
+            <ul>
+                <li>Sides AD and BC are equal in length</li>
+                <li>Both are perpendicular to the base AB</li>
+                <li>The question: What are the angles at the top (C and D)?</li>
+            </ul>
+
+            <p>
+                There are only three logical possibilities: acute (&lt;90°), right (=90°), or obtuse (&gt;90°).
+            </p>
+
+            <div class="key-insight">
+                <p>Khayyam tried to prove only the right angle case was valid. He couldn't — because <strong>all three are valid</strong>.</p>
+            </div>
+
+            <h2>The Three Geometries</h2>
+
+            <p>
+                Each case of the Khayyam quadrilateral defines a different geometry:
+            </p>
+
+            <div class="three-geometries">
+                <div class="geometry-card hyperbolic">
+                    <h4>Hyperbolic</h4>
+                    <div class="parallels">∞ parallels</div>
+                    <p>Summit angles &lt; 90°</p>
+                    <div class="description">Space curves away. Lines diverge. Many parallels exist.</div>
+                </div>
+                <div class="geometry-card euclidean">
+                    <h4>Euclidean</h4>
+                    <div class="parallels">1 parallel</div>
+                    <p>Summit angles = 90°</p>
+                    <div class="description">Space is flat. Lines stay parallel. Exactly one parallel exists.</div>
+                </div>
+                <div class="geometry-card elliptic">
+                    <h4>Elliptic</h4>
+                    <div class="parallels">0 parallels</div>
+                    <p>Summit angles &gt; 90°</p>
+                    <div class="description">Space curves inward. Lines converge. No parallels exist.</div>
+                </div>
+            </div>
+
+            <p>
+                For 800 years after Khayyam, mathematicians asked: <strong>"Which geometry is correct?"</strong>
+            </p>
+
+            <p>
+                The real question is: <strong>"What determines which geometry we observe?"</strong>
+            </p>
+
+            <h2>The Answer: Position</h2>
+
+            <p>
+                The three geometries aren't competing theories. They're <strong>different views of the same unified geometry</strong>,
+                observed from different positions:
+            </p>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px; border-left: 4px solid #00ff88;">
+                    <strong>S⁰ (balanced)</strong> → Euclidean geometry — you're at the center, space looks flat
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px; border-left: 4px solid var(--cyan);">
+                    <strong>S⁺ (expanding)</strong> → Hyperbolic geometry — you're looking outward, lines diverge
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px; border-left: 4px solid var(--magenta);">
+                    <strong>S⁻ (contracting)</strong> → Elliptic geometry — you're looking inward, lines converge
+                </li>
+            </ul>
+
+            <div class="key-insight">
+                <p>Euclid wasn't wrong. Lobachevsky wasn't wrong. Riemann wasn't wrong.<br>
+                They each described what they could see <strong>from their position</strong>.</p>
+            </div>
+
+            <h2>Khayyam the Poet</h2>
+
+            <p>
+                Khayyam wasn't just a mathematician. He wrote the <em>Rubaiyat</em> — quatrains (4-line poems)
+                with the rhyme scheme AABA:
+            </p>
+
+            <div class="poet-verse">
+                "The Moving Finger writes; and, having writ,<br>
+                Moves on: nor all your Piety nor Wit<br>
+                Shall lure it back to cancel half a Line,<br>
+                Nor all your Tears wash out a Word of it."
+                <div class="attribution">— Omar Khayyam (trans. FitzGerald)</div>
+            </div>
+
+            <p>
+                The AABA structure isn't arbitrary. It encodes the same balance law as the quadrilateral:
+            </p>
+
+            <div class="aaba-structure">
+                <div class="aaba-line">
+                    <div class="rhyme a">A</div>
+                    <div class="text">The Moving Finger writes; and, having writ,</div>
+                    <div class="meaning">Direction (sets the theme)</div>
+                </div>
+                <div class="aaba-line">
+                    <div class="rhyme a">A</div>
+                    <div class="text">Moves on: nor all your Piety nor Wit</div>
+                    <div class="meaning">Aspect (develops)</div>
+                </div>
+                <div class="aaba-line">
+                    <div class="rhyme b">B</div>
+                    <div class="text">Shall lure it back to cancel half a Line,</div>
+                    <div class="meaning">Phase (the pivot)</div>
+                </div>
+                <div class="aaba-line">
+                    <div class="rhyme a">A</div>
+                    <div class="text">Nor all your Tears wash out a Word of it.</div>
+                    <div class="meaning">Witness (return)</div>
+                </div>
+            </div>
+
+            <p>
+                Three lines rhyme (A). One is free (B). But the freedom of line 3 is <em>constrained</em> by the requirement
+                that line 4 must return to the A rhyme.
+            </p>
+
+            <p>
+                Without the anomaly, there is no resolution. The unbalanced third enables the fourth's completion.
+            </p>
+
+            <h2>The Deep Connection</h2>
+
+            <div class="insight-comparison">
+                <div class="insight-box">
+                    <h4>Khayyam's Quadrilateral</h4>
+                    <p>Four sides, three angles that could be &lt;90°, =90°, or &gt;90°.</p>
+                    <p>Three valid geometries: Hyperbolic, Euclidean, Elliptic.</p>
+                    <p>All three are correct — from different positions.</p>
+                </div>
+                <div class="insight-box">
+                    <h4>Khayyam's Quatrain</h4>
+                    <p>Four lines, three rhyming (A), one free (B).</p>
+                    <p>Three perspectives: literal, mystical, and unified.</p>
+                    <p>All three are correct — from different readings.</p>
+                </div>
+            </div>
+
+            <p>
+                Khayyam encoded the same truth in geometry AND poetry: <strong>perspective determines what you see</strong>.
+            </p>
+
+            <p>
+                His "wine" verses were read literally by hedonists, mystically by Sufis, and mathematically by those who saw
+                that both readings are facings of the same structure.
+            </p>
+
+            <h2>What This Means</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>Euclid's fifth postulate IS derivable</strong> — but only when you specify the observer's position. From S⁰ (balanced), exactly one parallel exists.
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>The universe isn't "one geometry"</strong> — it's geometry that varies based on where you stand. Near massive objects: elliptic. In empty space: approximately Euclidean. In expanding regions: hyperbolic.
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>Binary debates dissolve</strong> — whenever two options are presented as exhaustive and neither fully works, look for the third axis. A or B? Both, depending on position.
+                </li>
+            </ul>
+
+            <div class="key-insight">
+                <p>The parallel postulate doesn't need proving or disproving.<br>
+                It needs <strong>positioning</strong> — understanding from where it appears true.</p>
+            </div>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ Euclid's fifth postulate puzzled mathematicians for 2,000 years
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ Khayyam's quadrilateral reveals three valid geometries (acute/right/obtuse)
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ The three geometries are projections from three positions (S⁺/S⁰/S⁻)
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ Khayyam encoded this in poetry (AABA) and geometry simultaneously
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ Position determines which geometry you observe
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="03-vessel-proof.html" class="nav-button">
+                    <span class="label">Previous</span>
+                    ← Vessel Proof
+                </a>
+                <a href="05-calculus-rotation.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    Calculus is Rotation →
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../js/circle-engine.js"></script>
+    <script>
+        // Quadrilateral visualization
+        const canvas = document.getElementById('quadrilateral-demo');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+
+        let currentCase = 'right';
+
+        function selectCase(caseName) {
+            currentCase = caseName;
+            document.querySelectorAll('.quad-case').forEach(el => {
+                el.classList.toggle('active', el.dataset.case === caseName);
+            });
+            drawQuadrilateral();
+        }
+
+        function drawQuadrilateral() {
+            if (!ctx) return;
+
+            const width = canvas.width = canvas.offsetWidth * 2;
+            const height = canvas.height = 300 * 2;
+            ctx.scale(2, 2);
+
+            ctx.clearRect(0, 0, width/2, height/2);
+
+            const centerX = width / 4;
+            const centerY = height / 4;
+            const baseWidth = 160;
+            const sideHeight = 100;
+
+            // Calculate top width based on case
+            let topWidth;
+            let angleLabel;
+            let color;
+
+            switch(currentCase) {
+                case 'acute':
+                    topWidth = baseWidth + 40; // Wider at top (hyperbolic)
+                    angleLabel = '< 90°';
+                    color = '#00d4ff';
+                    break;
+                case 'right':
+                    topWidth = baseWidth; // Same width (Euclidean)
+                    angleLabel = '= 90°';
+                    color = '#00ff88';
+                    break;
+                case 'obtuse':
+                    topWidth = baseWidth - 40; // Narrower at top (elliptic)
+                    angleLabel = '> 90°';
+                    color = '#ff00ff';
+                    break;
+            }
+
+            // Points
+            const A = { x: centerX - baseWidth/2, y: centerY + sideHeight/2 };
+            const B = { x: centerX + baseWidth/2, y: centerY + sideHeight/2 };
+            const C = { x: centerX + topWidth/2, y: centerY - sideHeight/2 };
+            const D = { x: centerX - topWidth/2, y: centerY - sideHeight/2 };
+
+            // Draw quadrilateral
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(A.x, A.y);
+            ctx.lineTo(B.x, B.y);
+            ctx.lineTo(C.x, C.y);
+            ctx.lineTo(D.x, D.y);
+            ctx.closePath();
+            ctx.stroke();
+
+            // Fill lightly
+            ctx.fillStyle = color + '20';
+            ctx.fill();
+
+            // Draw right angle markers at A and B
+            const markerSize = 10;
+            ctx.strokeStyle = '#d4af37';
+            ctx.lineWidth = 1;
+
+            // Right angle at A
+            ctx.beginPath();
+            ctx.moveTo(A.x + markerSize, A.y);
+            ctx.lineTo(A.x + markerSize, A.y - markerSize);
+            ctx.lineTo(A.x, A.y - markerSize);
+            ctx.stroke();
+
+            // Right angle at B
+            ctx.beginPath();
+            ctx.moveTo(B.x - markerSize, B.y);
+            ctx.lineTo(B.x - markerSize, B.y - markerSize);
+            ctx.lineTo(B.x, B.y - markerSize);
+            ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = '#fff';
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'center';
+
+            ctx.fillText('A', A.x - 15, A.y + 5);
+            ctx.fillText('B', B.x + 15, B.y + 5);
+            ctx.fillText('C', C.x + 15, C.y + 5);
+            ctx.fillText('D', D.x - 15, D.y + 5);
+
+            // Angle labels at C and D
+            ctx.fillStyle = color;
+            ctx.font = '12px sans-serif';
+            ctx.fillText(angleLabel, C.x - 25, C.y + 20);
+            ctx.fillText(angleLabel, D.x + 25, D.y + 20);
+        }
+
+        // Initialize
+        if (canvas) {
+            window.addEventListener('resize', drawQuadrilateral);
+            drawQuadrilateral();
+        }
+    </script>
+</body>
+</html>

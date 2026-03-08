@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications | Calculus Through Rotation</title>
+    <link rel="stylesheet" href="../../css/geometry-math.css">
+    <style>
+        .lesson-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-number {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-subtitle {
+            color: var(--text);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .content-section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section h3 {
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .demo-container {
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .demo-title {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        canvas {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .control-btn.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .math-block {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--cyan);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .math-block .equation {
+            font-size: 1.3rem;
+            color: var(--cyan);
+            margin: 0.5rem 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .application-box {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .application-box h4 {
+            color: var(--cyan);
+            margin-bottom: 1rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .comparison-table th {
+            color: var(--gold);
+            font-weight: normal;
+        }
+
+        .comparison-table td {
+            color: var(--text);
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+
+        .live-display {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .live-display .param {
+            display: inline-block;
+            margin: 0.5rem 1rem;
+        }
+
+        .live-display .param-label {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .live-display .param-value {
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+
+        .slider-container label {
+            color: var(--text);
+            min-width: 100px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .slider-container .value {
+            color: var(--cyan);
+            font-family: monospace;
+            min-width: 60px;
+        }
+
+        .circuit-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 3px;
+        }
+
+        .legend-label {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-number">Calculus Through Rotation — Lesson 06</div>
+        <h1>Applications</h1>
+        <p class="lesson-subtitle">
+            Simple harmonic motion, AC circuits, and waves — all are rotation in disguise.
+        </p>
+    </header>
+
+    <section class="content-section">
+        <h2>1. Simple Harmonic Motion</h2>
+
+        <p>
+            A mass on a spring, a pendulum swinging, a vibrating guitar string — all exhibit
+            <strong>simple harmonic motion (SHM)</strong>. The position follows a sine wave,
+            and the derivatives give velocity and acceleration, each shifted by 90°.
+        </p>
+
+        <div class="math-block">
+            <p>Position, Velocity, Acceleration:</p>
+            <div class="equation">x(t) = A·cos(ωt + φ)</div>
+            <div class="equation">v(t) = dx/dt = -Aω·sin(ωt + φ)</div>
+            <div class="equation">a(t) = dv/dt = -Aω²·cos(ωt + φ) = -ω²·x(t)</div>
+        </div>
+
+        <p>
+            Notice: acceleration = -ω² × position. The system always accelerates toward equilibrium,
+            which is why it oscillates instead of flying off to infinity.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Mass-Spring System</div>
+            <div class="canvas-container">
+                <canvas id="shmCanvas" width="700" height="350"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Position x(t)</span>
+                    <span class="param-value" id="shmX" style="color: #00d4ff;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Velocity v(t)</span>
+                    <span class="param-value" id="shmV" style="color: #00ff88;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Acceleration a(t)</span>
+                    <span class="param-value" id="shmA" style="color: #ff6464;">0.00</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn active" id="shmPlayBtn">Pause</button>
+                <button class="control-btn" id="showPhasesBtn">Show Phase Diagram</button>
+            </div>
+            <div class="slider-container">
+                <label>Frequency ω:</label>
+                <input type="range" id="omegaSlider" min="0.5" max="3" step="0.1" value="1.5">
+                <span class="value" id="omegaValue">1.5</span>
+            </div>
+        </div>
+
+        <div class="application-box">
+            <h4>Phase Relationships in SHM</h4>
+            <ul style="color: var(--text); line-height: 2;">
+                <li>Velocity leads position by 90° (when x is max, v = 0)</li>
+                <li>Acceleration leads velocity by 90° (when v is max, a = 0)</li>
+                <li>Acceleration is 180° out of phase with position (a = -ω²x)</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>2. AC Circuits</h2>
+
+        <p>
+            In alternating current circuits, voltage and current are sinusoidal. The phase
+            relationships between them depend on the circuit components:
+        </p>
+
+        <table class="comparison-table">
+            <tr>
+                <th>Component</th>
+                <th>Relationship</th>
+                <th>Phase Shift</th>
+            </tr>
+            <tr>
+                <td>Resistor (R)</td>
+                <td>V = I·R</td>
+                <td>0° (in phase)</td>
+            </tr>
+            <tr>
+                <td>Capacitor (C)</td>
+                <td>I = C·dV/dt</td>
+                <td>Current leads voltage by 90°</td>
+            </tr>
+            <tr>
+                <td>Inductor (L)</td>
+                <td>V = L·dI/dt</td>
+                <td>Voltage leads current by 90°</td>
+            </tr>
+        </table>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: AC Circuit Phasors</div>
+            <div class="canvas-container">
+                <canvas id="acCanvas" width="700" height="350"></canvas>
+            </div>
+            <div class="circuit-legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #d4af37;"></div>
+                    <span class="legend-label">Voltage V(t)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #00d4ff;"></div>
+                    <span class="legend-label">Current I(t)</span>
+                </div>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Component</span>
+                    <span class="param-value" id="componentType" style="color: #d4af37;">Resistor</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Phase Difference</span>
+                    <span class="param-value" id="phaseDiff" style="color: #00ff88;">0°</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn active" id="resistorBtn">Resistor</button>
+                <button class="control-btn" id="capacitorBtn">Capacitor</button>
+                <button class="control-btn" id="inductorBtn">Inductor</button>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>Why Capacitors and Inductors Create Phase Shifts</h4>
+            <p>
+                <strong>Capacitor:</strong> I = C·dV/dt. Current is the derivative of voltage.
+                Derivative = +90° phase shift. Current leads voltage.
+            </p>
+            <p style="margin-top: 1rem;">
+                <strong>Inductor:</strong> V = L·dI/dt. Voltage is the derivative of current.
+                Voltage leads current by 90°.
+            </p>
+            <p style="margin-top: 1rem;">
+                The calculus is the circuit behavior!
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>3. Wave Propagation</h2>
+
+        <p>
+            Waves are oscillations that travel through space. Each point in the wave oscillates
+            like a simple harmonic oscillator, but with a phase that depends on position.
+        </p>
+
+        <div class="math-block">
+            <p>Traveling Wave:</p>
+            <div class="equation">y(x, t) = A·sin(kx - ωt)</div>
+            <p>k = wave number, ω = angular frequency, v = ω/k = wave speed</p>
+        </div>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Traveling Wave</div>
+            <div class="canvas-container">
+                <canvas id="waveCanvas" width="700" height="300"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Wave Speed</span>
+                    <span class="param-value" id="waveSpeed" style="color: #d4af37;">1.0</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Wavelength λ</span>
+                    <span class="param-value" id="wavelength" style="color: #00d4ff;">2π</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn active" id="wavePlayBtn">Pause</button>
+                <button class="control-btn" id="showPhasorBtn">Show Phasor</button>
+            </div>
+            <div class="slider-container">
+                <label>Frequency:</label>
+                <input type="range" id="freqSlider" min="0.5" max="2" step="0.1" value="1">
+                <span class="value" id="freqValue">1.0</span>
+            </div>
+        </div>
+
+        <div class="application-box">
+            <h4>Waves as Rotating Phasors</h4>
+            <p style="color: var(--text);">
+                At each point x, the wave is a rotating phasor e<sup>i(kx - ωt)</sup>.
+                The phase depends on both position and time. As time increases,
+                the phase at each point changes at rate ω, making the wave appear to travel.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>4. The Phasor Method</h2>
+
+        <p>
+            Engineers represent sinusoids as rotating vectors (phasors) in the complex plane.
+            This transforms calculus into algebra:
+        </p>
+
+        <div class="math-block">
+            <p>Phasor Representation:</p>
+            <div class="equation">A·cos(ωt + φ) ↔ A·e<sup>iφ</sup></div>
+            <p>Differentiation: multiply by iω</p>
+            <p>Integration: divide by iω</p>
+        </div>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Phasor Addition</div>
+            <div class="canvas-container">
+                <canvas id="phasorCanvas" width="600" height="350"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label" style="color: #00d4ff;">Phasor 1</span>
+                    <span class="param-value" id="p1Value" style="color: #00d4ff;">1∠0°</span>
+                </span>
+                <span class="param">
+                    <span class="param-label" style="color: #00ff88;">Phasor 2</span>
+                    <span class="param-value" id="p2Value" style="color: #00ff88;">0.5∠90°</span>
+                </span>
+                <span class="param">
+                    <span class="param-label" style="color: #d4af37;">Sum</span>
+                    <span class="param-value" id="sumValue" style="color: #d4af37;">—</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn active" id="phasorPlayBtn">Pause</button>
+                <button class="control-btn" id="showSumBtn">Show Resultant</button>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>Why Phasors Work</h4>
+            <p>
+                Adding sinusoids with the same frequency is complicated with trig identities,
+                but trivial with phasors: just add the complex numbers. The rotation framework
+                makes circuit analysis, signal processing, and wave mechanics vastly simpler.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Summary: Rotation Unifies Physics</h2>
+
+        <table class="comparison-table">
+            <tr>
+                <th>System</th>
+                <th>What Rotates</th>
+                <th>Key Relationship</th>
+            </tr>
+            <tr>
+                <td>Mass-Spring</td>
+                <td>State (x, v)</td>
+                <td>a = -ω²x</td>
+            </tr>
+            <tr>
+                <td>AC Circuit</td>
+                <td>Phasor (V, I)</td>
+                <td>V = Z·I (impedance)</td>
+            </tr>
+            <tr>
+                <td>Wave</td>
+                <td>Phase at each point</td>
+                <td>y = A·sin(kx - ωt)</td>
+            </tr>
+            <tr>
+                <td>Quantum</td>
+                <td>Wave function</td>
+                <td>ψ = e<sup>i(px-Et)/ℏ</sup></td>
+            </tr>
+        </table>
+
+        <div class="highlight-box">
+            <h4>The Unifying Principle</h4>
+            <p>
+                All oscillatory systems are projections of rotation. The derivatives that appear
+                in the physics equations (F = ma, V = L·dI/dt, etc.) are all 90° rotations.
+                Understanding calculus as rotation makes all of oscillatory physics click into place.
+            </p>
+        </div>
+    </section>
+
+    <nav class="lesson-nav">
+        <a href="05-fundamental-theorem.html">← Lesson 05: Fundamental Theorem</a>
+        <a href="07-taylor-fourier.html">Lesson 07: Taylor & Fourier →</a>
+    </nav>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(212,175,55,0.2);">
+        <p style="color: var(--gold); font-family: monospace;">[1 = -1]</p>
+        <p style="color: var(--text-dim);">Calculus Through Rotation | Geometry Math</p>
+    </footer>
+
+    <script src="../../js/circle-engine.js"></script>
+    <script>
+        // ===== SIMPLE HARMONIC MOTION DEMO =====
+        (function() {
+            const canvas = document.getElementById('shmCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            let t = 0;
+            let omega = 1.5;
+            let playing = true;
+            let showPhases = false;
+
+            const xDisplay = document.getElementById('shmX');
+            const vDisplay = document.getElementById('shmV');
+            const aDisplay = document.getElementById('shmA');
+
+            const A = 80; // Amplitude for animation
+            const massY = 120;
+            const springLeft = 50;
+            const equilibriumX = 200;
+
+            function drawSpring(startX, endX, y, coils = 10) {
+                const len = endX - startX;
+                const coilWidth = 15;
+
+                ctx.beginPath();
+                ctx.moveTo(startX, y);
+
+                for (let i = 0; i <= coils; i++) {
+                    const x = startX + (i / coils) * len;
+                    const offset = (i % 2 === 0 ? coilWidth : -coilWidth);
+                    if (i === 0 || i === coils) {
+                        ctx.lineTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y + offset);
+                    }
+                }
+                ctx.stroke();
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                const x = A * Math.cos(omega * t);
+                const v = -A * omega * Math.sin(omega * t);
+                const a = -A * omega * omega * Math.cos(omega * t);
+
+                const massX = equilibriumX + x;
+
+                // Draw wall
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.fillRect(springLeft - 10, massY - 40, 10, 80);
+
+                // Draw spring
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 2;
+                drawSpring(springLeft, massX - 25, massY);
+
+                // Draw mass
+                ctx.fillStyle = '#00d4ff';
+                ctx.shadowColor = '#00d4ff';
+                ctx.shadowBlur = 10;
+                ctx.fillRect(massX - 25, massY - 25, 50, 50);
+                ctx.shadowBlur = 0;
+
+                // Draw equilibrium line
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(equilibriumX, massY - 50);
+                ctx.lineTo(equilibriumX, massY + 50);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Draw velocity arrow
+                const velScale = 0.5;
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(massX, massY);
+                ctx.lineTo(massX + v * velScale, massY);
+                ctx.stroke();
+                // Arrowhead
+                if (Math.abs(v) > 5) {
+                    const dir = v > 0 ? 1 : -1;
+                    ctx.fillStyle = '#00ff88';
+                    ctx.beginPath();
+                    ctx.moveTo(massX + v * velScale, massY);
+                    ctx.lineTo(massX + v * velScale - dir * 10, massY - 5);
+                    ctx.lineTo(massX + v * velScale - dir * 10, massY + 5);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+
+                // Draw acceleration arrow
+                const accScale = 0.02;
+                ctx.strokeStyle = '#ff6464';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(massX, massY + 35);
+                ctx.lineTo(massX + a * accScale, massY + 35);
+                ctx.stroke();
+
+                // Draw waves on right side
+                const waveLeft = 350;
+                const waveWidth = width - waveLeft - 30;
+                const waveCy = height / 2;
+                const waveAmp = 50;
+
+                // Draw three waves
+                const waves = [
+                    { fn: (t) => Math.cos(t), color: '#00d4ff', label: 'x(t)' },
+                    { fn: (t) => -Math.sin(t), color: '#00ff88', label: 'v(t)/ω' },
+                    { fn: (t) => -Math.cos(t), color: '#ff6464', label: 'a(t)/ω²' }
+                ];
+
+                waves.forEach((wave, i) => {
+                    ctx.strokeStyle = wave.color;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    for (let px = 0; px <= waveWidth; px++) {
+                        const waveT = (px / waveWidth) * 4 * Math.PI;
+                        const y = wave.fn(waveT) * waveAmp;
+                        if (px === 0) {
+                            ctx.moveTo(waveLeft + px, waveCy - y);
+                        } else {
+                            ctx.lineTo(waveLeft + px, waveCy - y);
+                        }
+                    }
+                    ctx.stroke();
+                });
+
+                // Current time marker
+                const tPx = ((omega * t) % (4 * Math.PI)) / (4 * Math.PI) * waveWidth;
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(waveLeft + tPx, waveCy - waveAmp - 20);
+                ctx.lineTo(waveLeft + tPx, waveCy + waveAmp + 20);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Phase diagram (circle on far right)
+                if (showPhases) {
+                    const phaseCx = width - 80;
+                    const phaseCy = height / 2;
+                    const phaseR = 50;
+
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(phaseCx, phaseCy, phaseR, 0, Math.PI * 2);
+                    ctx.stroke();
+
+                    // Current phase point
+                    const px = phaseCx + Math.cos(omega * t) * phaseR;
+                    const py = phaseCy - Math.sin(omega * t) * phaseR;
+
+                    ctx.fillStyle = '#00d4ff';
+                    ctx.beginPath();
+                    ctx.arc(px, py, 8, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.font = '10px monospace';
+                    ctx.fillText('Phase', phaseCx - 15, phaseCy + phaseR + 15);
+                }
+
+                // Labels
+                ctx.fillStyle = '#00d4ff';
+                ctx.font = '11px monospace';
+                ctx.fillText('x(t)', waveLeft + waveWidth + 5, waveCy - waveAmp * Math.cos(omega * t) + 4);
+
+                // Update displays
+                xDisplay.textContent = (x / A).toFixed(3);
+                vDisplay.textContent = (v / (A * omega)).toFixed(3);
+                aDisplay.textContent = (a / (A * omega * omega)).toFixed(3);
+            }
+
+            function animate() {
+                if (playing) {
+                    t += 0.03;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('shmPlayBtn').addEventListener('click', function() {
+                playing = !playing;
+                this.textContent = playing ? 'Pause' : 'Play';
+                this.classList.toggle('active', playing);
+            });
+
+            document.getElementById('showPhasesBtn').addEventListener('click', function() {
+                showPhases = !showPhases;
+                this.classList.toggle('active', showPhases);
+            });
+
+            document.getElementById('omegaSlider').addEventListener('input', (e) => {
+                omega = parseFloat(e.target.value);
+                document.getElementById('omegaValue').textContent = omega.toFixed(1);
+            });
+
+            animate();
+        })();
+
+        // ===== AC CIRCUIT DEMO =====
+        (function() {
+            const canvas = document.getElementById('acCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            let t = 0;
+            let component = 'resistor'; // 'resistor', 'capacitor', 'inductor'
+            let phaseShift = 0;
+
+            const componentDisplay = document.getElementById('componentType');
+            const phaseDiffDisplay = document.getElementById('phaseDiff');
+
+            const phasorCx = 120;
+            const phasorCy = height / 2;
+            const phasorR = 70;
+
+            const waveLeft = 250;
+            const waveWidth = width - waveLeft - 50;
+            const waveCy = height / 2;
+            const waveAmp = 60;
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Determine phase shift
+                if (component === 'resistor') {
+                    phaseShift = 0;
+                } else if (component === 'capacitor') {
+                    phaseShift = Math.PI / 2; // Current leads
+                } else {
+                    phaseShift = -Math.PI / 2; // Voltage leads (current lags)
+                }
+
+                // Draw phasor diagram
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(phasorCx, phasorCy, phasorR, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Voltage phasor (gold)
+                const vx = phasorCx + Math.cos(-t) * phasorR;
+                const vy = phasorCy + Math.sin(-t) * phasorR;
+
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(phasorCx, phasorCy);
+                ctx.lineTo(vx, vy);
+                ctx.stroke();
+
+                ctx.fillStyle = '#d4af37';
+                ctx.beginPath();
+                ctx.arc(vx, vy, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Current phasor (cyan) - shifted by phaseShift
+                const ix = phasorCx + Math.cos(-t + phaseShift) * phasorR;
+                const iy = phasorCy + Math.sin(-t + phaseShift) * phasorR;
+
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(phasorCx, phasorCy);
+                ctx.lineTo(ix, iy);
+                ctx.stroke();
+
+                ctx.fillStyle = '#00d4ff';
+                ctx.beginPath();
+                ctx.arc(ix, iy, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw phase angle arc
+                if (phaseShift !== 0) {
+                    ctx.strokeStyle = 'rgba(0, 255, 136, 0.5)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(phasorCx, phasorCy, 30, -t, -t + phaseShift, phaseShift < 0);
+                    ctx.stroke();
+                }
+
+                // Labels
+                ctx.fillStyle = '#d4af37';
+                ctx.font = '12px monospace';
+                ctx.fillText('V', phasorCx + 80, phasorCy - 60);
+                ctx.fillStyle = '#00d4ff';
+                ctx.fillText('I', phasorCx + 80, phasorCy - 40);
+
+                // Draw waves
+                // Voltage wave (gold)
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let px = 0; px <= waveWidth; px++) {
+                    const waveT = (px / waveWidth) * 4 * Math.PI + t;
+                    const y = Math.cos(waveT) * waveAmp;
+                    if (px === 0) {
+                        ctx.moveTo(waveLeft + px, waveCy - y);
+                    } else {
+                        ctx.lineTo(waveLeft + px, waveCy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Current wave (cyan)
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let px = 0; px <= waveWidth; px++) {
+                    const waveT = (px / waveWidth) * 4 * Math.PI + t + phaseShift;
+                    const y = Math.cos(waveT) * waveAmp;
+                    if (px === 0) {
+                        ctx.moveTo(waveLeft + px, waveCy - y);
+                    } else {
+                        ctx.lineTo(waveLeft + px, waveCy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Draw axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(waveLeft, waveCy);
+                ctx.lineTo(waveLeft + waveWidth, waveCy);
+                ctx.stroke();
+
+                // Update displays
+                componentDisplay.textContent = component.charAt(0).toUpperCase() + component.slice(1);
+                phaseDiffDisplay.textContent = Math.round(phaseShift * 180 / Math.PI) + '°';
+
+                t += 0.03;
+            }
+
+            function animate() {
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('resistorBtn').addEventListener('click', function() {
+                component = 'resistor';
+                document.querySelectorAll('#acCanvas ~ .controls .control-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+
+            document.getElementById('capacitorBtn').addEventListener('click', function() {
+                component = 'capacitor';
+                document.querySelectorAll('#acCanvas ~ .controls .control-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+
+            document.getElementById('inductorBtn').addEventListener('click', function() {
+                component = 'inductor';
+                document.querySelectorAll('#acCanvas ~ .controls .control-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+
+            animate();
+        })();
+
+        // ===== TRAVELING WAVE DEMO =====
+        (function() {
+            const canvas = document.getElementById('waveCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cy = height / 2;
+            const margin = 50;
+            const waveWidth = width - margin * 2;
+            const amp = 60;
+
+            let t = 0;
+            let playing = true;
+            let freq = 1;
+            let showPhasor = false;
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                const k = 2 * Math.PI / 200; // wave number
+                const omega = freq * 2 * Math.PI / 100;
+
+                // Draw wave
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let x = 0; x <= waveWidth; x++) {
+                    const y = Math.sin(k * x - omega * t) * amp;
+                    if (x === 0) {
+                        ctx.moveTo(margin + x, cy - y);
+                    } else {
+                        ctx.lineTo(margin + x, cy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Draw axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(margin, cy);
+                ctx.lineTo(margin + waveWidth, cy);
+                ctx.stroke();
+
+                // Draw phasors at specific points
+                if (showPhasor) {
+                    const phasorPoints = [100, 200, 300, 400];
+                    const phasorR = 25;
+
+                    phasorPoints.forEach(x => {
+                        if (x <= waveWidth) {
+                            const phase = k * x - omega * t;
+                            const px = margin + x;
+                            const py = 40;
+
+                            // Mini circle
+                            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.arc(px, py, phasorR, 0, Math.PI * 2);
+                            ctx.stroke();
+
+                            // Phasor
+                            const phasorX = px + Math.cos(-phase) * phasorR;
+                            const phasorY = py + Math.sin(-phase) * phasorR;
+
+                            ctx.strokeStyle = '#00ff88';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            ctx.moveTo(px, py);
+                            ctx.lineTo(phasorX, phasorY);
+                            ctx.stroke();
+
+                            ctx.fillStyle = '#00ff88';
+                            ctx.beginPath();
+                            ctx.arc(phasorX, phasorY, 4, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            // Connect to wave
+                            ctx.strokeStyle = 'rgba(0, 255, 136, 0.3)';
+                            ctx.setLineDash([3, 3]);
+                            ctx.beginPath();
+                            ctx.moveTo(px, py + phasorR);
+                            ctx.lineTo(px, cy - Math.sin(phase) * amp);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+                        }
+                    });
+                }
+
+                // Update displays
+                document.getElementById('waveSpeed').textContent = freq.toFixed(1);
+                document.getElementById('wavelength').textContent = '2π';
+            }
+
+            function animate() {
+                if (playing) {
+                    t += 1;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('wavePlayBtn').addEventListener('click', function() {
+                playing = !playing;
+                this.textContent = playing ? 'Pause' : 'Play';
+                this.classList.toggle('active', playing);
+            });
+
+            document.getElementById('showPhasorBtn').addEventListener('click', function() {
+                showPhasor = !showPhasor;
+                this.classList.toggle('active', showPhasor);
+            });
+
+            document.getElementById('freqSlider').addEventListener('input', (e) => {
+                freq = parseFloat(e.target.value);
+                document.getElementById('freqValue').textContent = freq.toFixed(1);
+            });
+
+            animate();
+        })();
+
+        // ===== PHASOR ADDITION DEMO =====
+        (function() {
+            const canvas = document.getElementById('phasorCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cx = 150;
+            const cy = height / 2;
+            const radius = 100;
+
+            let t = 0;
+            let playing = true;
+            let showSum = false;
+
+            const p1 = { mag: 1, phase: 0 };
+            const p2 = { mag: 0.5, phase: Math.PI / 2 };
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw circle
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Phasor 1 (cyan)
+                const p1x = cx + Math.cos(-t + p1.phase) * p1.mag * radius;
+                const p1y = cy + Math.sin(-t + p1.phase) * p1.mag * radius;
+
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(p1x, p1y);
+                ctx.stroke();
+
+                ctx.fillStyle = '#00d4ff';
+                ctx.beginPath();
+                ctx.arc(p1x, p1y, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Phasor 2 (green)
+                const p2x = cx + Math.cos(-t + p2.phase) * p2.mag * radius;
+                const p2y = cy + Math.sin(-t + p2.phase) * p2.mag * radius;
+
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(p2x, p2y);
+                ctx.stroke();
+
+                ctx.fillStyle = '#00ff88';
+                ctx.beginPath();
+                ctx.arc(p2x, p2y, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Sum phasor
+                if (showSum) {
+                    // Vector addition
+                    const sumRe = p1.mag * Math.cos(p1.phase) + p2.mag * Math.cos(p2.phase);
+                    const sumIm = p1.mag * Math.sin(p1.phase) + p2.mag * Math.sin(p2.phase);
+                    const sumMag = Math.sqrt(sumRe * sumRe + sumIm * sumIm);
+                    const sumPhase = Math.atan2(sumIm, sumRe);
+
+                    const sumX = cx + Math.cos(-t + sumPhase) * sumMag * radius;
+                    const sumY = cy + Math.sin(-t + sumPhase) * sumMag * radius;
+
+                    ctx.strokeStyle = '#d4af37';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(sumX, sumY);
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#d4af37';
+                    ctx.shadowColor = '#d4af37';
+                    ctx.shadowBlur = 10;
+                    ctx.beginPath();
+                    ctx.arc(sumX, sumY, 10, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+
+                    // Show vector addition
+                    ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(p1x, p1y);
+                    ctx.lineTo(sumX, sumY);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    document.getElementById('sumValue').textContent =
+                        `${sumMag.toFixed(2)}∠${Math.round(sumPhase * 180 / Math.PI)}°`;
+                }
+
+                // Draw resulting waves on right
+                const waveLeft = 320;
+                const waveWidth = width - waveLeft - 30;
+                const waveCy = height / 2;
+                const waveAmp = 40;
+
+                // Wave 1
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let x = 0; x <= waveWidth; x++) {
+                    const waveT = (x / waveWidth) * 4 * Math.PI;
+                    const y = p1.mag * Math.cos(waveT + t + p1.phase) * waveAmp;
+                    if (x === 0) {
+                        ctx.moveTo(waveLeft + x, waveCy - y);
+                    } else {
+                        ctx.lineTo(waveLeft + x, waveCy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Wave 2
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let x = 0; x <= waveWidth; x++) {
+                    const waveT = (x / waveWidth) * 4 * Math.PI;
+                    const y = p2.mag * Math.cos(waveT + t + p2.phase) * waveAmp;
+                    if (x === 0) {
+                        ctx.moveTo(waveLeft + x, waveCy - y);
+                    } else {
+                        ctx.lineTo(waveLeft + x, waveCy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Sum wave
+                if (showSum) {
+                    const sumRe = p1.mag * Math.cos(p1.phase) + p2.mag * Math.cos(p2.phase);
+                    const sumIm = p1.mag * Math.sin(p1.phase) + p2.mag * Math.sin(p2.phase);
+                    const sumMag = Math.sqrt(sumRe * sumRe + sumIm * sumIm);
+                    const sumPhase = Math.atan2(sumIm, sumRe);
+
+                    ctx.strokeStyle = '#d4af37';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    for (let x = 0; x <= waveWidth; x++) {
+                        const waveT = (x / waveWidth) * 4 * Math.PI;
+                        const y = sumMag * Math.cos(waveT + t + sumPhase) * waveAmp;
+                        if (x === 0) {
+                            ctx.moveTo(waveLeft + x, waveCy - y);
+                        } else {
+                            ctx.lineTo(waveLeft + x, waveCy - y);
+                        }
+                    }
+                    ctx.stroke();
+                }
+
+                // Axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(waveLeft, waveCy);
+                ctx.lineTo(waveLeft + waveWidth, waveCy);
+                ctx.stroke();
+
+                // Update displays
+                document.getElementById('p1Value').textContent = `${p1.mag}∠${Math.round(p1.phase * 180 / Math.PI)}°`;
+                document.getElementById('p2Value').textContent = `${p2.mag}∠${Math.round(p2.phase * 180 / Math.PI)}°`;
+            }
+
+            function animate() {
+                if (playing) {
+                    t += 0.03;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('phasorPlayBtn').addEventListener('click', function() {
+                playing = !playing;
+                this.textContent = playing ? 'Pause' : 'Play';
+                this.classList.toggle('active', playing);
+            });
+
+            document.getElementById('showSumBtn').addEventListener('click', function() {
+                showSum = !showSum;
+                this.classList.toggle('active', showSum);
+            });
+
+            animate();
+        })();
+    </script>
+</body>
+</html>

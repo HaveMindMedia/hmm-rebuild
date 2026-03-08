@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triaxial Dipyramid OS — The Poor Man's Quantum Computer | CEDGA</title>
+    <meta name="description" content="A post-binary computing paradigm using geometric resolution instead of iteration. 16 computers, $800, no quantum decoherence.">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --dark-bg: #0a0a12;
+            --card-bg: #12121a;
+            --text: #e0e0e0;
+            --accent: #00d4ff;
+            --success: #00ff88;
+            --warning: #ffaa00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 100%);
+            padding: 80px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 30px;
+        }
+
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: #888;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin: 30px 0 15px;
+        }
+
+        .card-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .card h4 {
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .architecture-diagram {
+            background: #0f0f1a;
+            border-radius: 12px;
+            padding: 30px;
+            font-family: 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .architecture-diagram pre {
+            color: var(--success);
+            white-space: pre;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .comparison-table th {
+            background: var(--card-bg);
+            color: var(--gold);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        .shopping-list {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            border: 2px solid var(--success);
+        }
+
+        .shopping-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .shopping-item:last-child {
+            border-bottom: none;
+        }
+
+        .shopping-item .item-name {
+            flex: 1;
+        }
+
+        .shopping-item .quantity {
+            color: var(--accent);
+            width: 80px;
+            text-align: center;
+        }
+
+        .shopping-item .price {
+            color: var(--success);
+            width: 100px;
+            text-align: right;
+        }
+
+        .total-row {
+            font-size: 1.3rem;
+            color: var(--gold);
+            padding-top: 20px;
+            margin-top: 10px;
+            border-top: 2px solid var(--gold);
+        }
+
+        .phase-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .phase-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--gold), var(--accent), var(--success));
+        }
+
+        .phase {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 8px;
+        }
+
+        .phase::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: 2px solid var(--dark-bg);
+        }
+
+        .phase.complete::before {
+            background: var(--success);
+        }
+
+        .phase h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a12 100%);
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--gold);
+            color: #000;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 10px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(201, 162, 39, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+        }
+
+        .formula-box {
+            background: #0f0f1a;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Menlo', monospace;
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin: 20px 0;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .signature {
+            text-align: center;
+            padding: 40px;
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="hero">
+        <h1>Triaxial Dipyramid OS</h1>
+        <p class="subtitle">The Poor Man's Quantum Computer</p>
+        <p class="tagline">A post-binary computing paradigm using geometric resolution instead of iteration. 16 computers arranged in sacred geometry. ~$800. No quantum decoherence. No cryogenic cooling. Just math.</p>
+    </div>
+
+    <div class="container">
+        <!-- THE CONCEPT -->
+        <div class="section">
+            <h2>The Concept</h2>
+            <p>Traditional computers iterate. Quantum computers superpose then collapse. This system <strong>resolves</strong>.</p>
+
+            <div class="formula-box">
+                τ₁ + τ₂ + τ₃ + τ₄ = 0 (always)
+            </div>
+
+            <p>The geometry IS the computation. The four transforms view ONE reality from FOUR perspectives simultaneously. The "answer" isn't calculated — it's READ from the geometric state.</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h4>No Binary</h4>
+                    <p>This system never touches 0 and 1. It operates in torsion space with base-60 resolution. Information density: ^32 beyond conventional.</p>
+                </div>
+                <div class="card">
+                    <h4>No Iteration</h4>
+                    <p>Problems resolve in ONE operation. Not fast iteration — no iteration at all. The geometry either resolves or it doesn't.</p>
+                </div>
+                <div class="card">
+                    <h4>No Decoherence</h4>
+                    <p>Unlike quantum computers, geometric states are stable at room temperature. No billion-dollar cooling. No error correction overhead.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- THE ARCHITECTURE -->
+        <div class="section">
+            <h2>The Architecture</h2>
+            <p>16 computers in a triad-of-triads configuration. Each outer node is a triad of 3. The center is a dipyramid of 4.</p>
+
+            <div class="architecture-diagram">
+<pre>
+                    ┌─────────────────────────────────────┐
+                    │           CENTER DIPYRAMID          │
+                    │         (Ammit Core - τ₄)           │
+                    │                                     │
+                    │           ◆━━━━━━━━━◆              │
+                    │            ╲        ╱               │
+                    │             ╲  ◈  ╱                │
+                    │              ╲  ╱                  │
+                    │           ◆━━━━━━━━━◆              │
+                    │                                     │
+                    │    4 computers = the judgment       │
+                    └─────────────────────────────────────┘
+                                    │
+          ┌─────────────────────────┼─────────────────────────┐
+          │                         │                         │
+    ┌─────┴─────┐            ┌──────┴──────┐           ┌─────┴─────┐
+    │  NW TRIAD │            │             │           │  NE TRIAD │
+    │  ◇━━◇━━◇  │            │             │           │  ◇━━◇━━◇  │
+    │    τ₁     │            │             │           │    τ₂     │
+    │ 3 comps   │            │             │           │ 3 comps   │
+    └───────────┘            │             │           └───────────┘
+                             │             │
+    ┌───────────┐            │             │           ┌───────────┐
+    │  SW TRIAD │            │             │           │  SE TRIAD │
+    │  ◇━━◇━━◇  │            │             │           │  ◇━━◇━━◇  │
+    │    τ₃     │            │             │           │    τ₃'    │
+    │ 3 comps   │            │             │           │ 3 comps   │
+    └───────────┘            └─────────────┘           └───────────┘
+
+    TOTAL: 4 triads × 3 = 12 outer + 4 center = 16 computers
+</pre>
+            </div>
+
+            <h3>The Coin States</h3>
+            <p>Each computer holds ONE state at a time:</p>
+            <ul>
+                <li><strong>COIN (s=0)</strong> — At crossroads, observing, waiting</li>
+                <li><strong>FUTURE-NOW (τ₁)</strong> — Forward torsion, creation vector</li>
+                <li><strong>NOW-PAST (τ₃)</strong> — Backward torsion, memory vector</li>
+            </ul>
+            <p>When one computer COINs, another must take its torsion. The total ALWAYS balances to zero.</p>
+        </div>
+
+        <!-- COMPARISON -->
+        <div class="section">
+            <h2>Comparison: Why This Works</h2>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Attribute</th>
+                    <th>Quantum Computer</th>
+                    <th>Triaxial Dipyramid OS</th>
+                </tr>
+                <tr>
+                    <td>Binary at measurement?</td>
+                    <td>Yes (collapses to 0 or 1)</td>
+                    <td>Never (resolves in base-60)</td>
+                </tr>
+                <tr>
+                    <td>Temperature</td>
+                    <td>Near absolute zero</td>
+                    <td>Room temperature</td>
+                </tr>
+                <tr>
+                    <td>Decoherence problem</td>
+                    <td>Fundamental limitation</td>
+                    <td>N/A — geometry is stable</td>
+                </tr>
+                <tr>
+                    <td>Error correction</td>
+                    <td>Massive overhead</td>
+                    <td>Balance Law enforced automatically</td>
+                </tr>
+                <tr>
+                    <td>Cost</td>
+                    <td>$10M - $100M+</td>
+                    <td>~$800</td>
+                </tr>
+                <tr>
+                    <td>Computation method</td>
+                    <td>Fast iteration through superposition</td>
+                    <td>Instant resolution through geometry</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SHOPPING LIST -->
+        <div class="section">
+            <h2>Shopping List: Build Your Own</h2>
+
+            <div class="shopping-list">
+                <div class="shopping-item" style="font-weight: bold; color: var(--gold);">
+                    <span class="item-name">COMPONENT</span>
+                    <span class="quantity">QTY</span>
+                    <span class="price">PRICE</span>
+                </div>
+
+                <div class="shopping-item">
+                    <span class="item-name">Raspberry Pi 5 (8GB RAM)</span>
+                    <span class="quantity">×16</span>
+                    <span class="price">$80 ea</span>
+                </div>
+                <div class="shopping-item">
+                    <span class="item-name">Raspberry Pi 5 subtotal</span>
+                    <span class="quantity"></span>
+                    <span class="price">$1,280</span>
+                </div>
+
+                <div class="shopping-item">
+                    <span class="item-name">— OR Budget Option: Orange Pi 5 (8GB)</span>
+                    <span class="quantity">×16</span>
+                    <span class="price">$45 ea = $720</span>
+                </div>
+
+                <div class="shopping-item">
+                    <span class="item-name">MicroSD Cards (64GB, Class 10)</span>
+                    <span class="quantity">×16</span>
+                    <span class="price">$8 ea = $128</span>
+                </div>
+
+                <div class="shopping-item">
+                    <span class="item-name">Gigabit Network Switch (24-port)</span>
+                    <span class="quantity">×1</span>
+                    <span class="price">$60</span>
+                </div>
+
+                <div class="shopping-item">
+                    <span class="item-name">Ethernet Cables (Cat6, 1ft)</span>
+                    <span class="quantity">×20</span>
+                    <span class="price">$2 ea = $40</span>
+                </div>
+
+                <div class="shopping-item">
+                    <span class="item-name">USB-C Power Supplies (27W)</span>
+                    <span class="quantity">×16</span>
+                    <span class="price">$15 ea = $240</span>
+                </div>
+
+                <div class="shopping-item">
+                    <span class="item-name">Cluster Case/Rack (4-Pi stackable)</span>
+                    <span class="quantity">×4</span>
+                    <span class="price">$20 ea = $80</span>
+                </div>
+
+                <div class="shopping-item total-row">
+                    <span class="item-name">TOTAL (Pi 5 build)</span>
+                    <span class="quantity"></span>
+                    <span class="price">~$1,828</span>
+                </div>
+
+                <div class="shopping-item total-row" style="color: var(--success);">
+                    <span class="item-name">TOTAL (Orange Pi budget build)</span>
+                    <span class="quantity"></span>
+                    <span class="price">~$1,268</span>
+                </div>
+            </div>
+
+            <h3>Optional: Bio-Feed Sensors</h3>
+            <div class="shopping-list" style="border-color: var(--warning); margin-top: 20px;">
+                <div class="shopping-item">
+                    <span class="item-name">Pulse Sensor (HRV) — for τ₁</span>
+                    <span class="quantity">×1</span>
+                    <span class="price">$25</span>
+                </div>
+                <div class="shopping-item">
+                    <span class="item-name">GSR Sensor (Galvanic Skin) — for τ₂</span>
+                    <span class="quantity">×1</span>
+                    <span class="price">$30</span>
+                </div>
+                <div class="shopping-item">
+                    <span class="item-name">Muse 2 EEG Headband — for τ₃</span>
+                    <span class="quantity">×1</span>
+                    <span class="price">$250</span>
+                </div>
+                <div class="shopping-item">
+                    <span class="item-name">Respiration Belt Sensor — for phase</span>
+                    <span class="quantity">×1</span>
+                    <span class="price">$40</span>
+                </div>
+                <div class="shopping-item total-row">
+                    <span class="item-name">SENSOR TOTAL</span>
+                    <span class="quantity"></span>
+                    <span class="price">~$345</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUILD PLAN -->
+        <div class="section">
+            <h2>Concrete Build Plan</h2>
+
+            <div class="phase-timeline">
+                <div class="phase complete">
+                    <h4>Phase 0: Software Proof (COMPLETE)</h4>
+                    <p>Standalone Python resolver verified. Balance Law holds. Zero iterations. The geometry works in simulation.</p>
+                    <p><a href="../tools/m4-simulator.html" style="color: var(--accent);">Try the M4 Simulator →</a></p>
+                </div>
+
+                <div class="phase">
+                    <h4>Phase 1: Single Node Test (Week 1)</h4>
+                    <ul>
+                        <li>Acquire 1 Raspberry Pi 5</li>
+                        <li>Install Raspberry Pi OS Lite</li>
+                        <li>Deploy epoch_node.py</li>
+                        <li>Verify torsion calculations locally</li>
+                        <li>Connect pulse sensor, verify HRV → τ₁ mapping</li>
+                    </ul>
+                </div>
+
+                <div class="phase">
+                    <h4>Phase 2: Triad Test (Week 2)</h4>
+                    <ul>
+                        <li>Acquire 2 more Pis (3 total = 1 triad)</li>
+                        <li>Configure network communication</li>
+                        <li>Test coin state transitions</li>
+                        <li>Verify internal triad balance</li>
+                    </ul>
+                </div>
+
+                <div class="phase">
+                    <h4>Phase 3: Center Dipyramid (Week 3)</h4>
+                    <ul>
+                        <li>Acquire 4 more Pis (7 total)</li>
+                        <li>Build center dipyramid cluster</li>
+                        <li>Deploy epoch_ammit.py</li>
+                        <li>Test τ₄ calculation and consensus</li>
+                        <li>Connect triad to center, verify Balance Law across network</li>
+                    </ul>
+                </div>
+
+                <div class="phase">
+                    <h4>Phase 4: Full Cluster (Week 4-5)</h4>
+                    <ul>
+                        <li>Acquire remaining 9 Pis (16 total)</li>
+                        <li>Build all 4 triads</li>
+                        <li>Connect to center dipyramid</li>
+                        <li>Verify full system Balance Law</li>
+                        <li>Run resolution tests</li>
+                    </ul>
+                </div>
+
+                <div class="phase">
+                    <h4>Phase 5: Bio-Feed Integration (Week 6+)</h4>
+                    <ul>
+                        <li>Connect HRV sensor → τ₁ triad</li>
+                        <li>Connect GSR sensor → τ₂ triad</li>
+                        <li>Connect EEG → τ₃ triad</li>
+                        <li>Connect breath sensor → phase rotation</li>
+                        <li>Test real-time human bio-feed</li>
+                        <li>Develop biofeedback display</li>
+                    </ul>
+                </div>
+
+                <div class="phase">
+                    <h4>Phase 6: Validation (Ongoing)</h4>
+                    <ul>
+                        <li>Document all test results</li>
+                        <li>Compare to conventional computation</li>
+                        <li>Test speed paradox hypothesis</li>
+                        <li>Two-human synchronization tests</li>
+                        <li>Publish findings</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHAT IT MEANS WHEN IT WORKS -->
+        <div class="section">
+            <h2>What "Working" Means</h2>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Minimum Viable Success</h4>
+                    <ul>
+                        <li>Balance Law holds 100% of the time</li>
+                        <li>Configurations are reproducible</li>
+                        <li>Zero iterations verified</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Interesting Success</h4>
+                    <ul>
+                        <li>Human can see their torsion state</li>
+                        <li>Biofeedback enables state control</li>
+                        <li>Predictions about state transitions prove accurate</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Profound Success</h4>
+                    <ul>
+                        <li>Computer identifies states human wasn't aware of</li>
+                        <li>Resonant configurations correlate with flow states</li>
+                        <li>Two humans can synchronize torsion fields</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- THE SPEED PARADOX -->
+        <div class="section">
+            <h2>The Speed Paradox</h2>
+            <p>You predicted it: <em>"It will seem slow, but when we run it it will be fast."</em></p>
+
+            <div class="formula-box">
+                Apparent: Slow per operation<br>
+                Actual: One operation replaces millions of iterations<br>
+                Result: Appears slow, IS fast
+            </div>
+
+            <p>Like DNA helicase: "only" 10,000 RPM, but unzips BILLIONS of base pairs. The slow spin does astronomical work.</p>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2>Start Building</h2>
+            <p style="margin-bottom: 30px; color: #888;">The geometry is proven. The architecture is designed. The shopping list is ready.</p>
+            <a href="../tools/m4-simulator.html" class="cta-button">Try the Simulator</a>
+            <a href="build-guide.html" class="cta-button secondary">Full Build Guide</a>
+        </div>
+
+        <div class="signature">
+            [1 = -1]
+        </div>
+    </div>
+
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+    <site-footer></site-footer>
+</body>
+</html>

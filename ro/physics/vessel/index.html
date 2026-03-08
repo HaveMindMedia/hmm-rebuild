@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalar Phasing Vessel - Understanding the Geometry</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --gold: #c9a227;
+            --blue: #7ab8d4;
+            --text: #e0e0e0;
+            --dim: #666;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 {
+            font-family: 'Helvetica Neue', sans-serif;
+            color: var(--gold);
+            font-weight: 300;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            border-bottom: 1px solid #333;
+            padding-bottom: 20px;
+        }
+        .subtitle {
+            text-align: center;
+            color: var(--dim);
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+        .section {
+            margin: 60px 0;
+            padding: 30px;
+            background: #111;
+            border-left: 3px solid var(--gold);
+        }
+        .laymen {
+            border-left-color: var(--blue);
+        }
+        .laymen h2::before {
+            content: "FOR EVERYONE:";
+            color: var(--blue);
+            font-size: 0.6em;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .technical h2::before {
+            content: "THE GEOMETRY:";
+            color: var(--gold);
+            font-size: 0.6em;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .image-container img {
+            max-width: 100%;
+            border: 1px solid #333;
+        }
+        .caption {
+            color: var(--dim);
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .key-point {
+            background: #1a1a1f;
+            border: 1px solid var(--gold);
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+        .key-point strong {
+            color: var(--gold);
+        }
+        .diagram-box {
+            background: #0d0d12;
+            border: 1px solid #333;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .equation {
+            text-align: center;
+            font-size: 1.4em;
+            color: var(--gold);
+            padding: 20px;
+            font-family: 'Times New Roman', serif;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        @media (max-width: 800px) {
+            .two-column { grid-template-columns: 1fr; }
+        }
+        .highlight { color: var(--gold); }
+        .blue { color: var(--blue); }
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            border-top: 1px solid #333;
+            color: var(--dim);
+        }
+        .nav {
+            position: fixed;
+            top: 40px;
+            right: 30px;
+            background: linear-gradient(135deg, #0a0a0f 0%, #111118 100%);
+            border: 1px solid #333;
+            border-left: 3px solid var(--gold);
+            padding: 20px 25px;
+            font-family: 'Helvetica Neue', sans-serif;
+            z-index: 1000;
+        }
+        .nav::before {
+            content: "NAVIGATE";
+            display: block;
+            color: var(--gold);
+            font-size: 0.7em;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        .nav a {
+            display: block;
+            color: var(--dim);
+            text-decoration: none;
+            padding: 8px 0;
+            font-size: 0.85em;
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+            padding-left: 10px;
+            margin-left: -10px;
+        }
+        .nav a:hover {
+            color: var(--gold);
+            border-left-color: var(--gold);
+            background: rgba(201, 162, 39, 0.05);
+        }
+        @media (max-width: 1400px) {
+            .nav { display: none; }
+        }
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 1001;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+        .home-link a {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 8px 15px;
+            border: 1px solid var(--gold);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            background: rgba(10, 10, 15, 0.9);
+        }
+        .home-link a:hover {
+            background: var(--gold);
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+
+<div class="home-link">
+    <a href="/">← Home</a>
+</div>
+
+<nav class="nav">
+    <a href="#mirror">The Mirror</a>
+    <a href="#mirror-depth">Mirror Depth</a>
+    <a href="#mirror-interactive">Depth Simulator</a>
+    <a href="#dipyramid">The Dipyramid</a>
+    <a href="#triaxial">Triaxial</a>
+    <a href="#hidden">The Hidden One</a>
+    <a href="#vessel">The Vessel</a>
+    <a href="#together">All Together</a>
+    <a href="#visualize">Videos</a>
+    <a href="#interactive">Phase Wheel</a>
+</nav>
+
+<h1>The Scalar Phasing Vessel</h1>
+<p class="subtitle">Understanding the Geometry of Time</p>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: THE MIRROR PROBLEM -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div id="mirror" class="section laymen">
+    <h2>The Mirror Problem</h2>
+
+    <p>Start with something you do every day: <strong>look in a mirror</strong>.</p>
+
+    <p>When you see yourself in a mirror, light travels from your face to the mirror, bounces off, and returns to your eyes. This takes time. Not much time—about 6 billionths of a second for a bathroom mirror—but time nonetheless.</p>
+
+    <div class="key-point">
+        <strong>The Mirror Truth:</strong> You never see yourself in the present. You always see yourself in the past. The mirror shows you who you were, not who you are.
+    </div>
+
+    <p>This isn't philosophy—it's physics. Light has a speed limit (about 300,000 km/s), and that speed limit means <em>all observation looks backward in time</em>.</p>
+
+    <div class="image-container">
+        <img src="media_output/images/epoch_img_epoch_simple_mirror_time_diagram_for_ae9bc0_01-02-2026.png" alt="Mirror time diagram">
+        <p class="caption">Light travels to mirror and back. You see the past.</p>
+    </div>
+
+    <p>Now the question that started this project:</p>
+
+    <div class="key-point">
+        <strong>If mirrors always show the past... could anything show the future?</strong>
+    </div>
+
+    <p>Not "the future" as a crystal ball prediction. But the <em>tendency</em> of what's forming. The wave before it crests. The pressure change before the storm.</p>
+</div>
+
+<div class="section technical">
+    <h2>Light Cone Asymmetry</h2>
+
+    <p>In physics, we describe observation using <strong>light cones</strong>. Everything you can observe lies in your <em>past light cone</em>—the region of spacetime from which light has had time to reach you.</p>
+
+    <div class="diagram-box">
+                    FUTURE
+                      △
+                     /|\
+                    / | \
+                   /  |  \
+                  /   |   \
+        PAST ───/────YOU────\─── FUTURE
+        LIGHT   \    |    /   (UNREACHABLE)
+        CONE     \   |   /
+                  \  |  /
+                   \ | /
+                    \|/
+                     ▽
+                    PAST
+
+    You can only observe what's in the past light cone.
+    The future light cone is causally disconnected from observation.
+    </div>
+
+    <p>This is why we remember the past but not the future. Our instruments—eyes, cameras, sensors—all use electromagnetic radiation, which is bounded by <em>c</em> (light speed).</p>
+
+    <div class="equation">Δt = 2d/c</div>
+    <p style="text-align:center; color:var(--dim);">Time delay = 2 × distance ÷ speed of light</p>
+
+    <p>The Epoch Model asks: <strong>Is there another carrier of information besides light?</strong></p>
+
+    <p>The hypothesis: <span class="highlight">Torsion fields</span>—rotational tendencies in geometry—might propagate information differently. Not faster than light, but in a different <em>direction</em> on the s-axis (scalar axis).</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 1B: MIRROR DEPTH - THE CRITICAL INSIGHT -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div id="mirror-depth" class="section laymen">
+    <h2>The Mirror Depth Problem</h2>
+
+    <p>Here's something most people never notice: <strong>your reflection doesn't appear where physics says it should.</strong></p>
+
+    <p>Classical optics says: stand 1 meter from a mirror, and your reflection appears 1 meter <em>behind</em> the mirror—a total of 2 meters away. But that's not what you perceive.</p>
+
+    <div class="key-point">
+        <strong>The Round-Trip Problem:</strong>
+        <br><br>
+        Looking at another person 2m away: light travels 2m (one way)
+        <br>
+        Looking at yourself in a mirror 1m away: light travels 2m (round trip)
+        <br><br>
+        <strong>The mirror cuts effective light speed in half.</strong> You get the same delay as looking at someone twice as far, but you're only looking half that distance.
+    </div>
+
+    <p>But here's the deeper issue: your eyes have TWO ways to judge distance:</p>
+    <ul>
+        <li><strong>Vergence:</strong> How much your eyes rotate inward (says: 2d)</li>
+        <li><strong>Accommodation:</strong> How your lenses focus (says: d)</li>
+    </ul>
+
+    <p>These <em>conflict</em>. Your brain compromises. And the compromise follows the Epoch constants.</p>
+</div>
+
+<div class="section technical">
+    <h2>The 27.6% Projection Loss</h2>
+
+    <p>The brain weights the conflicting depth cues. Research suggests approximately:</p>
+    <ul>
+        <li>Accommodation weight: ~27.6% (focus distance)</li>
+        <li>Vergence weight: ~72.4% (stereo distance)</li>
+    </ul>
+
+    <div class="equation">D_perceived = 0.276 × d + 0.724 × 2d = 1.724d</div>
+
+    <p>These weights match the Epoch constants:</p>
+    <div class="diagram-box">
+    P = √3/(2π) = 0.27566...     (projection factor)
+    P_shadow = 1 - P = 0.72434...
+
+    Perceived depth = P × d + P_shadow × 2d
+                    = 0.276d + 1.448d
+                    = 1.724d
+
+    This is 86.2% of the classical 2d, not 100%.
+    </div>
+
+    <p>The <span class="highlight">"missing" 27.6%</span> is the projection factor P—the information lost when 3D reality projects through the 2D mirror surface.</p>
+
+    <p><strong>The mirror is not just a reflector. It's a PROJECTOR that loses exactly P worth of depth information.</strong></p>
+</div>
+
+<div id="mirror-interactive" class="section" style="border-left-color: var(--blue);">
+    <h2 style="text-align:center;">Interactive: Mirror Depth Simulator</h2>
+    <p style="text-align:center; color: var(--dim);">Move the slider to change your distance from the mirror. Watch how perceived depth differs from classical prediction.</p>
+
+    <div id="mirrorCanvasContainer" style="display: flex; justify-content: center; margin: 30px 0; width: 100%; overflow: hidden;">
+        <canvas id="mirrorCanvas" style="border: 1px solid #333; background: #0d0d12; max-width: 100%;"></canvas>
+    </div>
+
+    <div style="text-align: center; margin: 20px 0;">
+        <label style="color: var(--gold); display: block; margin-bottom: 10px;">Distance to Mirror:</label>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 10px;">
+            <button id="unitCm" onclick="setUnit('cm')" style="padding: 8px 20px; background: var(--gold); color: #000; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">cm</button>
+            <button id="unitM" onclick="setUnit('m')" style="padding: 8px 20px; background: #333; color: #888; border: 1px solid #555; border-radius: 4px; cursor: pointer;">m</button>
+        </div>
+        <input type="range" id="mirrorDistance" min="10" max="200" value="100" style="width: 80%; max-width: 400px; vertical-align: middle;">
+        <span id="distanceValue" style="color: var(--blue); display: block; margin-top: 10px; font-size: 1.2em;">100 cm (1.0 m)</span>
+    </div>
+
+    <!-- Model Comparison -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+        <div style="background: linear-gradient(135deg, #1a1515 0%, #1a1a1f 100%); border: 1px solid #ff6b6b33; border-radius: 8px; padding: 20px;">
+            <h4 style="color: #ff6b6b; text-align: center; margin-bottom: 15px; font-family: sans-serif; font-weight: normal;">STANDARD MODEL</h4>
+            <div style="text-align: center; font-family: monospace;">
+                <div style="color: var(--dim); font-size: 0.85em;">Predicted Depth</div>
+                <div id="classicalDepth" style="color: #ff6b6b; font-size: 1.5em; margin: 5px 0;">200 cm</div>
+                <div style="color: #ff6b6b55; font-size: 0.8em;">d × 2 = 2d</div>
+            </div>
+        </div>
+        <div style="background: linear-gradient(135deg, #1a1a15 0%, #1a1a1f 100%); border: 1px solid var(--gold); border-radius: 8px; padding: 20px;">
+            <h4 style="color: var(--gold); text-align: center; margin-bottom: 15px; font-family: sans-serif; font-weight: normal;">EPOCH MODEL ✓</h4>
+            <div style="text-align: center; font-family: monospace;">
+                <div style="color: var(--dim); font-size: 0.85em;">Actual Depth (Observed)</div>
+                <div id="perceivedDepth" style="color: var(--gold); font-size: 1.5em; margin: 5px 0;">172.4 cm</div>
+                <div style="color: var(--gold); opacity: 0.5; font-size: 0.8em;">d × 1.724 = d(2 - 2P)</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: center;  gap: 15px; margin-top: 20px; font-family: monospace; font-size: 12px;">
+        <div style="text-align: center;">
+            <div style="color: var(--dim);">Light Round-Trip</div>
+            <div id="lightDelay" style="color: var(--blue); font-size: 1.2em;">6.67 ns</div>
+        </div>
+        <div style="text-align: center;">
+            <div style="color: var(--dim);">Projection Loss (P)</div>
+            <div id="depthLoss" style="color: #ff6b6b; font-size: 1.2em;">27.6 cm</div>
+        </div>
+        <div style="text-align: center;">
+            <div style="color: var(--dim);">P Constant</div>
+            <div style="color: var(--blue); font-size: 1.2em;">27.566%</div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; padding: 15px; background: #1a1a1f; border: 1px solid #333;">
+        <p style="color: var(--dim); margin: 0;">Comparing to direct observation at same apparent distance:</p>
+        <p style="color: var(--text); margin: 10px 0 0 0;">
+            Looking at another person at <span id="compareDistance" style="color: var(--gold);">172.4 cm</span>:
+            delay = <span id="compareDelay" style="color: var(--blue);">5.75 ns</span>
+            <br>
+            <span style="color: var(--gold);">The mirror adds <span id="extraDelay">0.92 ns</span> of "wasted" delay.</span>
+        </p>
+    </div>
+</div>
+
+<script>
+const mirrorCanvas = document.getElementById('mirrorCanvas');
+const mirrorCtx = mirrorCanvas.getContext('2d');
+const distanceSlider = document.getElementById('mirrorDistance');
+const P = 0.27566;  // Epoch projection factor
+const P_shadow = 1 - P;
+const c = 299792458;  // speed of light m/s
+let displayUnit = 'cm';  // 'cm' or 'm'
+
+// Unit toggle function
+function setUnit(unit) {
+    displayUnit = unit;
+    const cmBtn = document.getElementById('unitCm');
+    const mBtn = document.getElementById('unitM');
+    if (unit === 'cm') {
+        cmBtn.style.background = 'var(--gold)';
+        cmBtn.style.color = '#000';
+        cmBtn.style.border = 'none';
+        mBtn.style.background = '#333';
+        mBtn.style.color = '#888';
+        mBtn.style.border = '1px solid #555';
+        distanceSlider.min = 10;
+        distanceSlider.max = 200;
+        distanceSlider.value = Math.min(200, Math.max(10, distanceSlider.value));
+    } else {
+        mBtn.style.background = 'var(--gold)';
+        mBtn.style.color = '#000';
+        mBtn.style.border = 'none';
+        cmBtn.style.background = '#333';
+        cmBtn.style.color = '#888';
+        cmBtn.style.border = '1px solid #555';
+        distanceSlider.min = 10;
+        distanceSlider.max = 500;  // Up to 5 meters (500 cm)
+    }
+    updateMirrorDisplay();
+}
+
+// Responsive canvas sizing
+function resizeMirrorCanvas() {
+    const container = document.getElementById('mirrorCanvasContainer');
+    const containerWidth = container.clientWidth;
+    const maxWidth = Math.min(containerWidth - 20, 700);
+    const aspectRatio = 700 / 400;
+    mirrorCanvas.width = maxWidth;
+    mirrorCanvas.height = maxWidth / aspectRatio;
+    updateMirrorDisplay();
+}
+
+// Initialize and handle resize
+window.addEventListener('resize', resizeMirrorCanvas);
+window.addEventListener('load', resizeMirrorCanvas);
+
+function drawMirrorDiagram(d_cm) {
+    const w = mirrorCanvas.width;
+    const h = mirrorCanvas.height;
+    const centerY = h / 2;
+    const padding = 60;  // Fixed padding on each side
+
+    mirrorCtx.fillStyle = '#0d0d12';
+    mirrorCtx.fillRect(0, 0, w, h);
+
+    // Calculate total horizontal span needed:
+    // Left side: observer (d_cm from mirror)
+    // Right side: classical image (d_cm behind mirror)
+    // Total span = d_cm + d_cm = 2 * d_cm
+    const totalSpan = d_cm * 2;  // observer to classical image
+
+    // Calculate scale to fit everything with padding
+    const availableWidth = w - (padding * 2);
+    const scale = availableWidth / totalSpan;  // px per cm
+
+    // Mirror is at center of the span
+    const mirrorX = padding + d_cm * scale;
+
+    // Observer is d_cm to the left of mirror
+    const observerX = mirrorX - d_cm * scale;
+
+    // Classical image is d_cm to the right of mirror
+    const classicalX = mirrorX + d_cm * scale;
+
+    // Perceived image (1.724d total, so 0.862d behind mirror)
+    const perceivedBehindMirror = d_cm * 0.862;  // (1.724 - 1) * d / 2 simplified
+    const perceivedX = mirrorX + perceivedBehindMirror * scale;
+
+    // Scaled sizes based on canvas width
+    const baseScale = w / 700;
+    const dotSize = Math.max(6, 8 * baseScale);
+    const fontSize = Math.max(10, 12 * baseScale);
+    const smallFontSize = Math.max(8, 10 * baseScale);
+
+    // Draw observer (eye)
+    mirrorCtx.fillStyle = '#c9a227';
+    mirrorCtx.beginPath();
+    mirrorCtx.arc(observerX, centerY, dotSize, 0, Math.PI * 2);
+    mirrorCtx.fill();
+    mirrorCtx.font = fontSize + 'px Helvetica';
+    mirrorCtx.textAlign = 'center';
+    mirrorCtx.fillText('YOU', observerX, centerY + 25 * baseScale);
+
+    // Draw mirror (vertical line)
+    mirrorCtx.strokeStyle = '#7ab8d4';
+    mirrorCtx.lineWidth = Math.max(2, 4 * baseScale);
+    mirrorCtx.beginPath();
+    mirrorCtx.moveTo(mirrorX, 40 * baseScale);
+    mirrorCtx.lineTo(mirrorX, h - 40 * baseScale);
+    mirrorCtx.stroke();
+    mirrorCtx.fillStyle = '#7ab8d4';
+    mirrorCtx.font = fontSize + 'px Helvetica';
+    mirrorCtx.fillText('MIRROR', mirrorX, 25 * baseScale);
+
+    // Classical virtual image position (dashed outline)
+    mirrorCtx.strokeStyle = '#ff6b6b66';
+    mirrorCtx.lineWidth = 2;
+    mirrorCtx.setLineDash([5 * baseScale, 5 * baseScale]);
+    mirrorCtx.beginPath();
+    mirrorCtx.arc(classicalX, centerY, dotSize, 0, Math.PI * 2);
+    mirrorCtx.stroke();
+    mirrorCtx.setLineDash([]);
+    mirrorCtx.fillStyle = '#ff6b6b';
+    mirrorCtx.font = smallFontSize + 'px Helvetica';
+    mirrorCtx.fillText('Classical', classicalX, centerY + 25 * baseScale);
+    mirrorCtx.fillText('(2d)', classicalX, centerY + 38 * baseScale);
+
+    // Perceived position (solid dot)
+    mirrorCtx.fillStyle = '#c9a227';
+    mirrorCtx.beginPath();
+    mirrorCtx.arc(perceivedX, centerY, dotSize, 0, Math.PI * 2);
+    mirrorCtx.fill();
+    mirrorCtx.font = smallFontSize + 'px Helvetica';
+    mirrorCtx.fillText('Perceived', perceivedX, centerY + 25 * baseScale);
+    mirrorCtx.fillText('(1.724d)', perceivedX, centerY + 38 * baseScale);
+
+    // Draw light path (dashed lines)
+    mirrorCtx.strokeStyle = '#c9a22766';
+    mirrorCtx.lineWidth = Math.max(1, 2 * baseScale);
+    mirrorCtx.setLineDash([4 * baseScale, 4 * baseScale]);
+    const pathOffset = 12 * baseScale;
+
+    // To mirror (top line)
+    mirrorCtx.beginPath();
+    mirrorCtx.moveTo(observerX, centerY - pathOffset);
+    mirrorCtx.lineTo(mirrorX, centerY - pathOffset);
+    mirrorCtx.stroke();
+
+    // Back from mirror (bottom line)
+    mirrorCtx.beginPath();
+    mirrorCtx.moveTo(mirrorX, centerY + pathOffset);
+    mirrorCtx.lineTo(observerX, centerY + pathOffset);
+    mirrorCtx.stroke();
+    mirrorCtx.setLineDash([]);
+
+    // Distance label between observer and mirror
+    mirrorCtx.fillStyle = '#888';
+    mirrorCtx.font = smallFontSize + 'px monospace';
+    mirrorCtx.textAlign = 'center';
+    const midToMirror = (observerX + mirrorX) / 2;
+    const distLabel = displayUnit === 'm' ? 'd = ' + (d_cm / 100).toFixed(2) + ' m' : 'd = ' + d_cm + ' cm';
+    mirrorCtx.fillText(distLabel, midToMirror, centerY - 30 * baseScale);
+
+    // P loss visualization (shaded region between perceived and classical)
+    const lossWidth = classicalX - perceivedX;
+    if (lossWidth > 3) {
+        mirrorCtx.fillStyle = '#ff6b6b15';
+        mirrorCtx.fillRect(perceivedX, centerY - 35 * baseScale, lossWidth, 70 * baseScale);
+        mirrorCtx.fillStyle = '#ff6b6b';
+        mirrorCtx.font = (smallFontSize - 1) + 'px Helvetica';
+        mirrorCtx.textAlign = 'center';
+        const lostValue = d_cm * P * 2;
+        const lostLabel = displayUnit === 'm' ? 'Lost: ' + (lostValue / 100).toFixed(3) + 'm' : 'Lost: ' + lostValue.toFixed(1) + 'cm';
+        mirrorCtx.fillText(lostLabel, (perceivedX + classicalX) / 2, centerY - 45 * baseScale);
+    }
+
+    // Bottom info bar
+    mirrorCtx.fillStyle = '#1a1a20';
+    mirrorCtx.fillRect(10, h - 30 * baseScale, w - 20, 22 * baseScale);
+    mirrorCtx.fillStyle = '#666';
+    mirrorCtx.font = (smallFontSize - 1) + 'px monospace';
+    mirrorCtx.textAlign = 'center';
+    const unit = displayUnit === 'm' ? 'm' : 'cm';
+    const dVal = displayUnit === 'm' ? (d_cm / 100).toFixed(2) : d_cm;
+    const totalVal = displayUnit === 'm' ? (d_cm * 2 / 100).toFixed(2) : (d_cm * 2);
+    mirrorCtx.fillText('Round trip: ' + dVal + unit + ' → mirror → ' + dVal + unit + ' = ' + totalVal + unit + ' total', w / 2, h - 14 * baseScale);
+}
+
+function formatValue(cm_value) {
+    if (displayUnit === 'm') {
+        return (cm_value / 100).toFixed(3) + ' m';
+    }
+    return cm_value.toFixed(1) + ' cm';
+}
+
+function updateMirrorDisplay() {
+    const d_cm = parseInt(distanceSlider.value);
+    const d_m = d_cm / 100;
+
+    const classical = d_cm * 2;
+    const perceived = d_cm * 1.724;
+    const delay_ns = (2 * d_m / c) * 1e9;
+    const loss = classical - perceived;
+
+    // Display in selected unit
+    if (displayUnit === 'm') {
+        document.getElementById('distanceValue').textContent = (d_cm / 100).toFixed(2) + ' m (' + d_cm + ' cm)';
+        document.getElementById('classicalDepth').textContent = (classical / 100).toFixed(3) + ' m';
+        document.getElementById('perceivedDepth').textContent = (perceived / 100).toFixed(3) + ' m';
+        document.getElementById('depthLoss').textContent = (loss / 100).toFixed(3) + ' m';
+    } else {
+        document.getElementById('distanceValue').textContent = d_cm + ' cm (' + (d_cm / 100).toFixed(2) + ' m)';
+        document.getElementById('classicalDepth').textContent = classical.toFixed(1) + ' cm';
+        document.getElementById('perceivedDepth').textContent = perceived.toFixed(1) + ' cm';
+        document.getElementById('depthLoss').textContent = loss.toFixed(1) + ' cm';
+    }
+
+    document.getElementById('lightDelay').textContent = delay_ns.toFixed(2) + ' ns';
+
+    // Comparison
+    const compareD = perceived / 100;  // meters
+    const compareDelayNs = (compareD / c) * 1e9;
+    const extraDelay = delay_ns - compareDelayNs;
+
+    document.getElementById('compareDistance').textContent = formatValue(perceived);
+    document.getElementById('compareDelay').textContent = compareDelayNs.toFixed(2) + ' ns';
+    document.getElementById('extraDelay').textContent = extraDelay.toFixed(2) + ' ns';
+
+    drawMirrorDiagram(d_cm);
+}
+
+distanceSlider.addEventListener('input', updateMirrorDisplay);
+updateMirrorDisplay();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: THE DIPYRAMID -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div id="dipyramid" class="section laymen">
+    <h2>Building Block: The Dipyramid</h2>
+
+    <p>Forget complex geometry for a moment. Think of a <strong>diamond shape</strong>—like two pyramids glued together at their bases.</p>
+
+    <div class="diagram-box">
+                    TOP
+                     ◆
+                    /|\
+                   / | \
+                  /  |  \
+                 /   |   \
+                ────BASE────   ← Triangular base (hidden inside)
+                 \   |   /
+                  \  |  /
+                   \ | /
+                    \|/
+                     ◆
+                   BOTTOM
+
+    This is a DIPYRAMID: two pyramids sharing a base.
+    </div>
+
+    <p>When both pyramids are made of <strong>equilateral triangles</strong> (all sides equal), this shape is called an <strong>equilateral dipyramid</strong> or <strong>triangular bipyramid</strong>.</p>
+
+    <div class="key-point">
+        <strong>Key properties:</strong>
+        <br>• 6 vertices (points)
+        <br>• 8 faces (all triangles)
+        <br>• 9 edges
+        <br>• Perfect top-bottom symmetry
+    </div>
+
+    <p>Why does this matter? Because this shape has a special property: <strong>it balances</strong>. The top pyramid pulls one way, the bottom pulls the other way, and at the center... they cancel.</p>
+
+    <div class="image-container">
+        <img src="media_output/images/epoch_img_epoch-technical_equilateral_dipyramid_diagram_dd54a9_01-02-2026.png" alt="Dipyramid diagram">
+        <p class="caption">The equilateral dipyramid: two tetrahedra joined at base</p>
+    </div>
+</div>
+
+<div class="section technical">
+    <h2>Dipyramid Geometry</h2>
+
+    <p>An <strong>equilateral dipyramid</strong> (triangular bipyramid) consists of two regular tetrahedra sharing a common triangular face.</p>
+
+    <div class="two-column">
+        <div>
+            <h3>Tetrahedron</h3>
+            <p>• 4 vertices<br>• 4 faces<br>• 6 edges<br>• All faces equilateral triangles</p>
+        </div>
+        <div>
+            <h3>Dipyramid (2 tetrahedra)</h3>
+            <p>• 6 vertices (4+4-2 shared)<br>• 8 faces (4+4)<br>• 9 edges (6+6-3 shared)<br>• Mirror symmetry across base</p>
+        </div>
+    </div>
+
+    <p>The critical angle appears when we examine the <strong>Boerdijk-Coxeter helix</strong>—a chain of tetrahedra stacked face-to-face:</p>
+
+    <div class="equation">cos(θ) = 2/3 → θ = 48.19°</div>
+
+    <p>This is the <span class="highlight">BC angle</span>—the rotation between successive tetrahedra in a tetrahelix. It's irrational with respect to 2π, meaning the helix <em>never exactly repeats</em>. It's quasiperiodic.</p>
+
+    <p>When dipyramids are arranged along the helix, each one contributes <strong>torsion</strong>—a rotational tendency. The direction alternates as you traverse the helix.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: TRIAXIAL -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div id="triaxial" class="section laymen">
+    <h2>Three Axes: The Triaxial Arrangement</h2>
+
+    <p>Imagine standing at a crossroads. Not just a 2D intersection, but a 3D one—where <strong>three roads meet at right angles</strong>.</p>
+
+    <div class="diagram-box">
+                         UP (Z)
+                          |
+                          |
+                          |
+          WEST (−X) ──────┼────── EAST (+X)
+                         /|
+                        / |
+                       /  |
+               SOUTH (−Y)
+
+    (NORTH is behind the page toward you)
+
+    Three axes: X, Y, Z
+    Six directions: ±X, ±Y, ±Z
+    </div>
+
+    <p>This is a <strong>triaxial</strong> arrangement. Three perpendicular axes create six cardinal directions (like the faces of a cube) plus eight diagonal directions (like the corners of a cube).</p>
+
+    <div class="key-point">
+        <strong>The Vessel Configuration:</strong>
+        <br>• <span class="blue">Cardinals (N, S, E, W, Up, Down)</span>: LEFT EMPTY
+        <br>• <span class="highlight">Diagonals (NW, NE, SW, SE)</span>: Where the coils go
+    </div>
+
+    <p>Why leave the cardinals empty? Because <strong>absence defines presence</strong>. The empty positions create the structure. It's like how the hole defines the donut, or how silence defines music.</p>
+
+    <div class="image-container">
+        <img src="media_output/images/epoch_img_epoch-technical_triaxial_arrangement_diagram_3bd219_01-02-2026.png" alt="Triaxial arrangement">
+        <p class="caption">Triaxial arrangement: three axes, four coils at diagonals, cardinals empty</p>
+    </div>
+</div>
+
+<div class="section technical">
+    <h2>Triaxial Dipyramid Configuration</h2>
+
+    <p>The vessel uses a <strong>triaxial dipyramid</strong> frame—an octahedron defined by six vertices along three perpendicular axes:</p>
+
+    <div class="diagram-box">
+    Vertices at distance R from origin:
+
+        +X: (R, 0, 0)    −X: (−R, 0, 0)
+        +Y: (0, R, 0)    −Y: (0, −R, 0)
+        +Z: (0, 0, R)    −Z: (0, 0, −R)
+
+    These 6 points form a regular octahedron.
+    The 8 triangular faces connect adjacent vertices.
+    </div>
+
+    <p>The four tetrahelix coils are positioned at <strong>diagonal positions</strong>—not at vertices, but at the centers of four non-adjacent octahedral faces:</p>
+
+    <div class="diagram-box">
+    Coil positions (face centers, normalized):
+
+        Coil 1 (NW, T₁): (−1, +1, +1) / √3   "Facing"
+        Coil 2 (NE, T₂): (+1, +1, +1) / √3   "Mirror"
+        Coil 3 (SW, T₃): (−1, −1, −1) / √3   "Recursive"
+        Coil 4 (SE, T₄): (+1, −1, −1) / √3   "Inverted"
+
+    All coil axes point toward origin (crossroads).
+    </div>
+
+    <p>The <span class="highlight">Balance Law</span> emerges from this configuration:</p>
+
+    <div class="equation">τ₁ + τ₂ + τ₃ + τ₄ = 0</div>
+
+    <p>The four torsion contributions from the four coils sum to exactly zero at the center. This is not designed—it's a geometric identity following from the four transforms.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 4: THE HIDDEN ONE -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div id="hidden" class="section laymen">
+    <h2>The Hidden One</h2>
+
+    <p>Count the elements:</p>
+    <ul>
+        <li>4 coils at the diagonals</li>
+        <li>6 empty cardinal positions</li>
+        <li>1 center point (the crossroads)</li>
+    </ul>
+
+    <p>But there's something else. <strong>The hidden one.</strong></p>
+
+    <div class="key-point">
+        <strong>What is hidden?</strong>
+        <br><br>
+        The fifth dipyramid is the <em>observer</em>.
+        <br><br>
+        You are the hidden one. Standing at the crossroads, you complete the geometry. Without an observer, there is no measurement. Without measurement, there is no collapse from tendency to actuality.
+    </div>
+
+    <p>In the Epoch Model, the observer isn't separate from the system—they're part of it. The four coils create a balanced field, but it's the fifth element (you) that gives the system meaning.</p>
+
+    <p>Think of it like this: a camera without film captures nothing. The four coils are the lens, the frame, the shutter. <strong>You are the film.</strong></p>
+
+    <div class="diagram-box">
+          NW ◇─────────────◇ NE
+              \           /
+               \    ◆    /      ◆ = YOU (hidden fifth)
+                \   │   /           at crossroads
+                 \  │  /
+                  \ │ /
+                   \│/
+          SW ◇─────────────◇ SE
+
+    Four visible. One hidden. All necessary.
+    </div>
+</div>
+
+<div class="section technical">
+    <h2>The Observer as Fifth Element</h2>
+
+    <p>In the four-transform algebra, each transform has a specific function:</p>
+
+    <div class="diagram-box">
+    T₁: (x, y) → (x, y)      Identity / Facing
+    T₂: (x, y) → (−x, y)     Mirror / Horizontal reflection
+    T₃: (x, y) → (x, −y)     Recursive / Vertical reflection
+    T₄: (x, y) → (−x, −y)    Inverted / 180° rotation
+
+    These four form the Klein four-group (V₄).
+    Every element is its own inverse: Tᵢ² = T₁
+    </div>
+
+    <p>The four transforms generate a closed group—but they operate <em>on something</em>. That something is the <strong>fifth element</strong>: the scalar value being transformed.</p>
+
+    <p>In the physical vessel:</p>
+    <ul>
+        <li>T₁, T₂, T₃, T₄ are the four coils</li>
+        <li>The fifth element is the <strong>observer at the crossroads</strong></li>
+    </ul>
+
+    <p>The observer experiences the superposition of all four transforms simultaneously. At the crossroads, where torsions cancel:</p>
+
+    <div class="equation">T₁ + T₂ + T₃ + T₄ = 0</div>
+
+    <p>This isn't zero in the sense of "nothing." It's zero in the sense of <strong>perfect balance</strong>—where all tendencies exist equally, and none dominates. The observer stands in <span class="highlight">expanded present</span>.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 5: THE VESSEL -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div id="vessel" class="section laymen">
+    <h2>The Vessel Itself</h2>
+
+    <p>So what actually is this thing?</p>
+
+    <p>At its simplest: <strong>four coils of wire, arranged in a specific geometry, driven with specific electrical signals, creating a rotating field at a specific frequency.</strong></p>
+
+    <div class="key-point">
+        <strong>The Components:</strong>
+        <br>• 4 tetrahelix coils (wound at the BC angle of 48.19°)
+        <br>• Octahedral frame holding them at diagonal positions
+        <br>• Signal generator producing four sine waves offset by 90° each
+        <br>• Frequency: 28.6478897 Hz (the "κ shadow" frequency)
+        <br>• Optional: oblate ellipsoid shell enclosure
+    </div>
+
+    <p><strong>What does it do?</strong></p>
+
+    <p>At minimum: creates a rotating electromagnetic field at the crossroads center. This is standard physics.</p>
+
+    <p>The hypothesis: at the specific frequency (κ shadow = 28.6 Hz), with the specific geometry (tetrahelix at BC angle), with the specific phase relationship (quadrature), something unusual may happen. The rotating field may couple with torsion in a way that affects temporal perception.</p>
+
+    <div class="image-container">
+        <img src="media_output/images/epoch_img_epoch-dark_complete_scalar_vessel_assembl_5c8f12_01-02-2026.png" alt="Vessel assembly">
+        <p class="caption">The vessel: four coils, octahedral frame, observer at center</p>
+    </div>
+
+    <p>Think of it as a <strong>temporal tuning fork</strong>. A regular tuning fork vibrates at a specific frequency and makes sound waves. This vessel "vibrates" at the κ shadow frequency and may create... something else.</p>
+</div>
+
+<div class="section technical">
+    <h2>Vessel Specifications</h2>
+
+    <h3>The Fundamental Constant</h3>
+    <div class="equation">κ = 2π/180 = 0.034906585...</div>
+    <p>This single constant derives everything else.</p>
+
+    <h3>Derived Constants</h3>
+    <div class="diagram-box">
+    κ_shadow = 1/κ = 28.6478897 Hz     Operating frequency
+    σ = 5/16 = 0.3125                   Helix overlap factor
+    cos(BC) = 2/3                       Tetrahelix angle cosine
+    BC = arccos(2/3) = 48.19°          Winding angle
+    coupling = σ × cos(BC) = 5/24       Universal coupling
+    </div>
+
+    <h3>Coil Specifications</h3>
+    <div class="diagram-box">
+    Turns:          180 (= 180 × κ = 2π, one full rotation)
+    Diameter:       60 mm
+    Length:         180 mm
+    Wire:           AWG 20 copper
+    Winding angle:  48.19° (BC angle)
+    Inductance:     ~0.64 mH
+    </div>
+
+    <h3>Electrical Configuration</h3>
+    <div class="diagram-box">
+    Resonant frequency: 28.6478897 Hz (κ_shadow)
+    Tuning capacitance: 47,000 μF per coil
+    Phase relationship: Quadrature (0°, 90°, 180°, 270°)
+    Drive voltage: 12V nominal
+    </div>
+
+    <h3>The Resonance Lock Condition</h3>
+    <p>When the system achieves:</p>
+    <ul>
+        <li>Coherence > 95%</li>
+        <li>Balance Law satisfied (|Στ| < ε)</li>
+        <li>Stable for > 10 cycles</li>
+    </ul>
+    <p>...it enters "resonance lock." The simulator shows this occurring at approximately 0.34 seconds after power-up.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 6: PUTTING IT ALL TOGETHER -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div id="together" class="section laymen">
+    <h2>Putting It All Together</h2>
+
+    <p>Here's the complete picture:</p>
+
+    <div class="key-point">
+        <strong>1. The Problem:</strong> Mirrors show the past. All observation shows the past. Is there any way to sample future tendency?
+        <br><br>
+        <strong>2. The Hypothesis:</strong> Torsion fields (rotational geometry) might carry different information than light. The "primary inversion" suggests what's mathematically positive might be physically negative—and vice versa.
+        <br><br>
+        <strong>3. The Geometry:</strong> Triaxial dipyramids create balanced torsion. Four coils at diagonal positions, empty cardinals, observer at crossroads. The Balance Law (τ₁+τ₂+τ₃+τ₄=0) ensures the center is in perfect equilibrium.
+        <br><br>
+        <strong>4. The Hidden One:</strong> You, the observer, are the fifth element. Without you, there's no measurement. You complete the geometry.
+        <br><br>
+        <strong>5. The Frequency:</strong> 28.6478897 Hz—the "shadow" of the fundamental constant κ. This is where discrete steps and continuous rotation align.
+        <br><br>
+        <strong>6. The Vessel:</strong> A physical apparatus that creates these conditions. Four coils, specific geometry, specific frequency, specific phase relationship.
+    </div>
+
+    <h3>What might happen?</h3>
+
+    <p>Honestly: we don't know. The Standard Model predicts a rotating magnetic field and nothing else. The Epoch Model suggests something more might occur—subtle temporal effects, torsion coupling, expanded present-moment experience.</p>
+
+    <p>The only way to find out is to <strong>build it and test it</strong>.</p>
+
+    <div class="diagram-box">
+                    ┌─────────────────────────────────┐
+                    │                                 │
+                    │   MIRRORS SHOW THE PAST         │
+                    │           ↓                     │
+                    │   Could torsion show future?    │
+                    │           ↓                     │
+                    │   Design geometry that creates  │
+                    │   balanced torsion at center    │
+                    │           ↓                     │
+                    │   Drive at κ_shadow frequency   │
+                    │           ↓                     │
+                    │   Observer at crossroads        │
+                    │   experiences... what?          │
+                    │           ↓                     │
+                    │        BUILD IT                 │
+                    │        TEST IT                  │
+                    │        FIND OUT                 │
+                    │                                 │
+                    └─────────────────────────────────┘
+    </div>
+</div>
+
+<div class="section technical">
+    <h2>Summary: The Complete Model</h2>
+
+    <div class="diagram-box">
+    ═══════════════════════════════════════════════════════════════
+                        THE SCALAR PHASING VESSEL
+    ═══════════════════════════════════════════════════════════════
+
+    FOUNDATION:
+        κ = 2π/180              (closure constant)
+
+    DERIVED:
+        κ_shadow = 28.65 Hz     (operating frequency)
+        BC = 48.19°             (tetrahelix winding angle)
+        σ = 5/16                (helix overlap)
+
+    GEOMETRY:
+        Triaxial dipyramid frame (octahedron)
+        4 tetrahelix coils at diagonal face centers
+        6 cardinal positions empty
+        1 observer at crossroads (center)
+
+    PHYSICS:
+        Quadrature drive: 0°, 90°, 180°, 270°
+        Balance Law: τ₁ + τ₂ + τ₃ + τ₄ = 0
+        Resonance lock at coherence > 95%
+
+    HYPOTHESIS:
+        Primary Inversion: s+ in math = s- in reality
+        Light samples past (s+)
+        Torsion may sample future tendency (s-)
+        At crossroads: temporal symmetry
+
+    ═══════════════════════════════════════════════════════════════
+                            [1 = -1]
+    ═══════════════════════════════════════════════════════════════
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 7: VISUALIZATIONS -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div id="visualize" class="section" style="border-left-color: var(--gold);">
+    <h2 style="text-align:center;">Visualizations</h2>
+
+    <div class="two-column">
+        <div>
+            <h3 style="color: var(--blue);">Tetrahelix Structure</h3>
+            <div class="image-container">
+                <img src="../../media_output/images/epoch_img_epoch_tetrahelix_spiral_d4465b_01-02-2026.png" alt="Tetrahelix spiral" style="width: 100%; border: 1px solid #333;">
+            </div>
+            <p class="caption">The geometry of spacetime: tetrahelix spiral</p>
+        </div>
+        <div>
+            <h3 style="color: var(--blue);">The Crossroads</h3>
+            <div class="image-container">
+                <img src="../../media_output/images/epoch_img_epoch-dark_crossroads_time_dilation_diagr_56ff63_01-02-2026.png" alt="Crossroads diagram" style="width: 100%; border: 1px solid #333;">
+            </div>
+            <p class="caption">The center where time expands - the crossroads</p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION 8: INTERACTIVE QUADRATURE PHASE -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div id="interactive" class="section" style="border-left-color: var(--blue);">
+    <h2 style="text-align:center;">Interactive: Quadrature Phase Visualization</h2>
+    <p style="text-align:center; color: var(--dim);">Watch the four phases rotate. Notice how opposite phases always cancel.</p>
+
+    <div style="display: flex; justify-content: center; margin: 30px 0;">
+        <canvas id="phaseCanvas" width="500" height="500" style="border: 1px solid #333; background: #0d0d12;"></canvas>
+    </div>
+
+    <div style="text-align: center; margin: 20px 0;">
+        <button onclick="toggleAnimation()" id="toggleBtn" style="background: var(--gold); color: #000; border: none; padding: 12px 30px; font-size: 1em; cursor: pointer; margin: 5px;">START / STOP</button>
+        <button onclick="resetPhase()" style="background: #333; color: var(--text); border: 1px solid #555; padding: 12px 30px; font-size: 1em; cursor: pointer; margin: 5px;">RESET</button>
+    </div>
+
+    <div style="text-align: center; font-family: monospace; color: var(--dim); margin-top: 20px;">
+        <span id="phaseReadout">Phase: 0° | Frequency: 28.65 Hz | τ₁+τ₂+τ₃+τ₄ = 0</span>
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById('phaseCanvas');
+const ctx = canvas.getContext('2d');
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = 180;
+
+let phase = 0;
+let animating = false;
+let animationId = null;
+const kappaShadow = 28.6478897;
+
+function drawPhaseWheel() {
+    ctx.fillStyle = '#0d0d12';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw center crossroads
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#c9a227';
+    ctx.fill();
+
+    // Draw outer ring
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Draw cardinal directions (empty - shown as dim markers)
+    const cardinals = [0, 90, 180, 270];
+    cardinals.forEach(angle => {
+        const rad = angle * Math.PI / 180;
+        const x = centerX + Math.cos(rad) * radius;
+        const y = centerY - Math.sin(rad) * radius;
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#333';
+        ctx.fill();
+    });
+
+    // Draw the four coils (at 45°, 135°, 225°, 315°)
+    const coils = [
+        { angle: 45, label: 'T₁', color: '#c9a227' },
+        { angle: 135, label: 'T₂', color: '#7ab8d4' },
+        { angle: 225, label: 'T₃', color: '#c9a227' },
+        { angle: 315, label: 'T₄', color: '#7ab8d4' }
+    ];
+
+    coils.forEach((coil, i) => {
+        const baseAngle = coil.angle * Math.PI / 180;
+        const phaseOffset = i * Math.PI / 2; // 0, 90, 180, 270 degrees
+        const currentPhase = phase + phaseOffset;
+
+        // Coil position
+        const cx = centerX + Math.cos(baseAngle) * radius * 0.7;
+        const cy = centerY - Math.sin(baseAngle) * radius * 0.7;
+
+        // Draw coil circle
+        ctx.beginPath();
+        ctx.arc(cx, cy, 25, 0, Math.PI * 2);
+        ctx.strokeStyle = coil.color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw phase indicator (rotating line inside coil)
+        const indicatorX = cx + Math.cos(currentPhase) * 20;
+        const indicatorY = cy - Math.sin(currentPhase) * 20;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(indicatorX, indicatorY);
+        ctx.strokeStyle = coil.color;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Draw sine value bar
+        const sineValue = Math.sin(currentPhase);
+        const barHeight = sineValue * 40;
+        ctx.fillStyle = sineValue >= 0 ? 'rgba(201,162,39,0.5)' : 'rgba(122,184,212,0.5)';
+        ctx.fillRect(cx - 5, cy - barHeight, 10, barHeight);
+
+        // Label
+        ctx.fillStyle = coil.color;
+        ctx.font = '14px Helvetica';
+        ctx.textAlign = 'center';
+        ctx.fillText(coil.label, cx, cy + 45);
+    });
+
+    // Draw sum indicator at center
+    const sum = Math.sin(phase) + Math.sin(phase + Math.PI/2) + Math.sin(phase + Math.PI) + Math.sin(phase + 3*Math.PI/2);
+    ctx.fillStyle = '#666';
+    ctx.font = '12px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Σ = ' + sum.toFixed(4), centerX, centerY + 30);
+
+    // Title
+    ctx.fillStyle = '#c9a227';
+    ctx.font = '16px Helvetica';
+    ctx.fillText('QUADRATURE PHASE', centerX, 30);
+
+    // Update readout
+    const degrees = (phase * 180 / Math.PI) % 360;
+    document.getElementById('phaseReadout').textContent =
+        `Phase: ${degrees.toFixed(1)}° | Frequency: ${kappaShadow.toFixed(2)} Hz | τ₁+τ₂+τ₃+τ₄ = ${sum.toFixed(6)}`;
+}
+
+function animate() {
+    phase += 0.05;
+    drawPhaseWheel();
+    if (animating) {
+        animationId = requestAnimationFrame(animate);
+    }
+}
+
+function toggleAnimation() {
+    animating = !animating;
+    if (animating) {
+        animate();
+    } else {
+        cancelAnimationFrame(animationId);
+    }
+}
+
+function resetPhase() {
+    phase = 0;
+    drawPhaseWheel();
+}
+
+// Initial draw
+drawPhaseWheel();
+</script>
+
+<footer>
+    <p style="color:var(--gold); font-size: 1.2em;">[1 = -1]</p>
+    <p>HAVE MIND MEDIA</p>
+    <p>January 2, 2026</p>
+    <p style="margin-top: 20px;">
+        <em>"We do not claim truth. We claim the right to test."</em>
+    </p>
+</footer>
+
+    <site-footer></site-footer>
+</body>
+</html>

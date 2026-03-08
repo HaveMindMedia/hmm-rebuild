@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Omega Project - A geometric framework that derives physical constants from pure mathematics. Have Mind Media.">
+    <meta name="keywords" content="geometry, physics, Standard Model, CERN, unified theory, Have Mind Media, Omega Project">
+    <title>The Geometry Challenge | Have Mind Media</title>
+    <style>
+        /* ============================================
+           CSS CUSTOM PROPERTIES - Easy theming
+           ============================================ */
+        :root {
+            --primary-dark: #0a0a0f;
+            --secondary-dark: #12121a;
+            --tertiary-dark: #1a1a2e;
+            --accent-red: #e94560;
+            --accent-orange: #f39c12;
+            --accent-blue: #3498db;
+            --accent-green: #2ecc71;
+            --accent-purple: #9b59b6;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --glow-red: rgba(233, 69, 96, 0.4);
+            --glow-blue: rgba(52, 152, 219, 0.4);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================================
+           RESET AND BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .home-nav {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+        .home-nav a {
+            display: inline-block;
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #c9a227;
+            border-radius: 4px;
+            background: rgba(10, 10, 26, 0.95);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .home-nav a:hover {
+            background: #c9a227;
+            color: #0a0a1a;
+        }
+
+        /* ============================================
+           ANIMATED BACKGROUND - Geometric particles
+           ============================================ */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--tertiary-dark) 50%, #0f3460 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, var(--glow-red) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--glow-blue) 0%, transparent 50%);
+            animation: pulseBackground 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseBackground {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Floating geometric shapes */
+        .geo-shape {
+            position: fixed;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .geo-shape.triangle {
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 173px solid var(--accent-red);
+            animation: floatRotate 20s linear infinite;
+        }
+
+        .geo-shape.circle {
+            width: 200px;
+            height: 200px;
+            border: 2px solid var(--accent-blue);
+            border-radius: 50%;
+            animation: floatRotate 25s linear infinite reverse;
+        }
+
+        .geo-shape.square {
+            width: 150px;
+            height: 150px;
+            border: 2px solid var(--accent-purple);
+            animation: floatRotate 30s linear infinite;
+        }
+
+        @keyframes floatRotate {
+            0% { transform: rotate(0deg) translateY(0px); }
+            50% { transform: rotate(180deg) translateY(-30px); }
+            100% { transform: rotate(360deg) translateY(0px); }
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition-smooth);
+        }
+
+        .nav.scrolled {
+            padding: 15px 40px;
+            background: rgba(10, 10, 15, 0.95);
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo span {
+            font-weight: 300;
+            opacity: 0.7;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-red);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 40px 80px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5em, 6vw, 4.5em);
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 1.3em;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .hero .cta-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+            color: white;
+            border: none;
+            box-shadow: 0 10px 30px var(--glow-red);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--glow-red);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+
+        /* ============================================
+           SECTIONS - General styling
+           ============================================ */
+        section {
+            padding: 100px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .section-header .accent-line {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+            margin: 0 auto 20px;
+            border-radius: 2px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           THE PROBLEM SECTION
+           ============================================ */
+        .problem-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .problem-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 35px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            width: 300px;
+        }
+
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-red), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition-smooth);
+        }
+
+        .problem-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+            border-color: rgba(233, 69, 96, 0.3);
+        }
+
+        .problem-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .problem-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: var(--accent-red);
+        }
+
+        .problem-card p {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        .problem-card .search-term {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-top: 15px;
+            color: var(--text-primary);
+            font-family: monospace;
+        }
+
+        /* ============================================
+           HELIX VISUALIZATION SECTION
+           ============================================ */
+        .helix-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin: 60px auto;
+            max-width: 1000px;
+        }
+
+        .helix-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .helix-svg {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Animated helix paths */
+        .helix-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawHelix 3s ease-out forwards;
+        }
+
+        @keyframes drawHelix {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .dimension-label {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .dimension-label:nth-child(1) { animation-delay: 0.5s; }
+        .dimension-label:nth-child(2) { animation-delay: 0.7s; }
+        .dimension-label:nth-child(3) { animation-delay: 0.9s; }
+        .dimension-label:nth-child(4) { animation-delay: 1.1s; }
+        .dimension-label:nth-child(5) { animation-delay: 1.3s; }
+        .dimension-label:nth-child(6) { animation-delay: 1.5s; }
+        .dimension-label:nth-child(7) { animation-delay: 1.7s; }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* ============================================
+           DIMENSIONS GRID
+           ============================================ */
+        .dimensions-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .dimension-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            width: 150px;
+        }
+
+        .dimension-card:hover {
+            background: rgba(233, 69, 96, 0.1);
+            border-color: var(--accent-red);
+            transform: scale(1.05);
+        }
+
+        .dimension-card .number {
+            font-size: 2.2em;
+            font-weight: 700;
+            background: linear-gradient(180deg, var(--accent-red), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dimension-card .name {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ============================================
+           PREDICTIONS SECTION
+           ============================================ */
+        .predictions-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .prediction-card {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.1), rgba(243, 156, 18, 0.05));
+            border-left: 4px solid var(--accent-red);
+            border-radius: 0 15px 15px 0;
+            padding: 30px;
+            transition: var(--transition-smooth);
+            width: 280px;
+        }
+
+        .prediction-card:hover {
+            transform: translateX(10px);
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.15), rgba(243, 156, 18, 0.1));
+        }
+
+        .prediction-card h3 {
+            color: var(--accent-orange);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .prediction-card .value {
+            font-family: 'Courier New', monospace;
+            font-size: 1.8em;
+            color: var(--text-primary);
+            margin: 15px 0;
+        }
+
+        .prediction-card p {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        /* ============================================
+           MATH DISPLAY
+           ============================================ */
+        .math-display {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .math-equation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .math-term {
+            font-size: 1.5em;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition-smooth);
+        }
+
+        .math-term:hover {
+            background: rgba(233, 69, 96, 0.2);
+            border-color: var(--accent-red);
+        }
+
+        .math-term .symbol {
+            color: var(--accent-orange);
+        }
+
+        .math-term .equals {
+            color: var(--accent-red);
+        }
+
+        /* ============================================
+           VERIFY SECTION
+           ============================================ */
+        .verify-section {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(46, 204, 113, 0.02));
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            border-radius: 20px;
+            padding: 50px;
+            margin: 60px 0;
+        }
+
+        .verify-section h2 {
+            color: var(--accent-green);
+            margin-bottom: 20px;
+        }
+
+        .search-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+            justify-content: center;
+        }
+
+        .search-chip {
+            background: white;
+            color: #333;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-chip:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .search-chip svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ============================================
+           CHALLENGE SECTION
+           ============================================ */
+        .challenge-section {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(180deg, transparent, rgba(233, 69, 96, 0.05));
+            border-radius: 20px;
+            margin: 60px 0;
+        }
+
+        .challenge-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .challenge-section .big-question {
+            font-size: 1.3em;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .challenge-section .emphasis {
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            text-align: center;
+            padding: 60px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 60px;
+        }
+
+        footer .logo {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+
+        footer .tagline-footer {
+            color: var(--text-secondary);
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        /* ============================================
+           RESPONSIVE ADJUSTMENTS
+           ============================================ */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none; /* Could be converted to hamburger menu */
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .hero {
+                padding: 100px 20px 60px;
+            }
+
+            .helix-section {
+                padding: 40px 20px;
+            }
+
+            .verify-section {
+                padding: 30px 20px;
+            }
+
+            .math-term {
+                font-size: 1.1em;
+                padding: 10px 15px;
+            }
+        }
+
+        /* ============================================
+           INTERSECTION OBSERVER ANIMATIONS
+           ============================================ */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered children animation */
+        .stagger-children > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+
+        .stagger-children.visible > *:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+        .stagger-children.visible > *:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+        .stagger-children.visible > *:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+        .stagger-children.visible > *:nth-child(4) { transition-delay: 0.4s; opacity: 1; transform: translateY(0); }
+        .stagger-children.visible > *:nth-child(5) { transition-delay: 0.5s; opacity: 1; transform: translateY(0); }
+        .stagger-children.visible > *:nth-child(6) { transition-delay: 0.6s; opacity: 1; transform: translateY(0); }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+<div class="home-nav"><a href="/">← Home</a></div>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+    <div class="geo-shape triangle" style="top: 20%; left: 10%;"></div>
+    <div class="geo-shape circle" style="top: 60%; right: 5%;"></div>
+    <div class="geo-shape square" style="bottom: 20%; left: 20%;"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="logo">HAVE<span>MIND</span>MEDIA</div>
+        <ul class="nav-links">
+            <li><a href="#problem">The Problem</a></li>
+            <li><a href="#geometry">The Geometry</a></li>
+            <li><a href="#predictions">Predictions</a></li>
+            <li><a href="#verify">Verify</a></li>
+            <li><a href="#challenge">Challenge</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>The Geometry <span class="highlight">Is Not Opinion</span></h1>
+            <p class="tagline">A mathematical framework that derives physical constants from pure structure. Testable. Falsifiable. Revolutionary.</p>
+            <div class="cta-group">
+                <a href="#geometry" class="btn btn-primary">Explore the Framework</a>
+                <a href="#verify" class="btn btn-secondary">Verify Yourself</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Problem Section -->
+    <section id="problem" class="animate-on-scroll">
+        <div class="section-header">
+            <h2>The Problem with Physics</h2>
+            <div class="accent-line"></div>
+            <p>The Standard Model is phenomenally successful at prediction, yet fundamentally incomplete in explanation.</p>
+        </div>
+
+        <div class="problem-grid stagger-children">
+            <div class="problem-card">
+                <h3>19 Free Parameters</h3>
+                <p>The Standard Model requires 19 constants that cannot be derived from first principles. They must be measured and plugged in. The model doesn't explain WHY these values exist.</p>
+                <span class="search-term">Google: "Standard Model free parameters"</span>
+            </div>
+
+            <div class="problem-card">
+                <h3>The Hierarchy Problem</h3>
+                <p>Why is gravity 10³² times weaker than the other forces? The Standard Model has no answer. It just accepts this bizarre ratio as given.</p>
+                <span class="search-term">Google: "hierarchy problem physics"</span>
+            </div>
+
+            <div class="problem-card">
+                <h3>Three Generations Mystery</h3>
+                <p>Why exactly three generations of particles? Why not two, or four, or seventeen? The Standard Model cannot explain this fundamental structure.</p>
+                <span class="search-term">Google: "why three generations particles"</span>
+            </div>
+
+            <div class="problem-card">
+                <h3>Dark Matter Failure</h3>
+                <p>95% of the universe is "dark" — invisible to the Standard Model. This isn't a small gap. It's an admission that the model describes only 5% of reality.</p>
+                <span class="search-term">Google: "dark matter Standard Model"</span>
+            </div>
+
+            <div class="problem-card">
+                <h3>Fine Structure Constant</h3>
+                <p>α ≈ 1/137. This number determines atomic structure, chemistry, life itself. No one knows why it has this value. It just does.</p>
+                <span class="search-term">Google: "fine structure constant unexplained"</span>
+            </div>
+
+            <div class="problem-card">
+                <h3>Cosmological Constant</h3>
+                <p>The worst prediction in physics history. Theory predicts a value 10¹²⁰ times larger than observed. This isn't an error. It's a confession of incompleteness.</p>
+                <span class="search-term">Google: "cosmological constant problem"</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Geometry Section -->
+    <section id="geometry">
+        <div class="section-header animate-on-scroll">
+            <h2>The Omega Framework</h2>
+            <div class="accent-line"></div>
+            <p>A ten-dimensional scalar geometry that derives constants from structure alone.</p>
+        </div>
+
+        <div class="helix-section">
+            <h3 style="text-align: center; margin-bottom: 30px; color: var(--text-secondary);">The Dimensional Helix: S+ and S- in Dynamic Balance</h3>
+            
+            <div class="helix-container">
+                <svg class="helix-svg" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Definitions -->
+                    <defs>
+                        <linearGradient id="gradientRed" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#e94560"/>
+                            <stop offset="100%" style="stop-color:#f39c12"/>
+                        </linearGradient>
+                        <linearGradient id="gradientBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#3498db"/>
+                            <stop offset="100%" style="stop-color:#2ecc71"/>
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    
+                    <!-- Central axis -->
+                    <line x1="50" y1="200" x2="750" y2="200" stroke="#333" stroke-width="1" stroke-dasharray="5,5"/>
+                    
+                    <!-- S+ Helix -->
+                    <path class="helix-path" d="M 50 200 
+                                 Q 100 80, 150 200 
+                                 Q 200 320, 250 200 
+                                 Q 300 80, 350 200 
+                                 Q 400 320, 450 200 
+                                 Q 500 80, 550 200 
+                                 Q 600 320, 650 200 
+                                 Q 700 80, 750 200" 
+                          fill="none" stroke="url(#gradientRed)" stroke-width="3" filter="url(#glow)"/>
+                    
+                    <!-- S- Helix -->
+                    <path class="helix-path" d="M 50 200 
+                                 Q 100 320, 150 200 
+                                 Q 200 80, 250 200 
+                                 Q 300 320, 350 200 
+                                 Q 400 80, 450 200 
+                                 Q 500 320, 550 200 
+                                 Q 600 80, 650 200 
+                                 Q 700 320, 750 200" 
+                          fill="none" stroke="url(#gradientBlue)" stroke-width="3" filter="url(#glow)" style="animation-delay: 0.5s"/>
+                    
+                    <!-- Dimension intersection points -->
+                    <g class="dimension-label">
+                        <circle cx="50" cy="200" r="6" fill="#fff"/>
+                        <text x="50" y="240" fill="#fff" text-anchor="middle" font-size="12" font-weight="bold">D₁</text>
+                        <text x="50" y="255" fill="#666" text-anchor="middle" font-size="9">ORIGIN</text>
+                    </g>
+                    
+                    <g class="dimension-label">
+                        <circle cx="150" cy="200" r="6" fill="#fff"/>
+                        <text x="150" y="240" fill="#fff" text-anchor="middle" font-size="12" font-weight="bold">D₂</text>
+                        <text x="150" y="255" fill="#666" text-anchor="middle" font-size="9">VISION</text>
+                    </g>
+                    
+                    <g class="dimension-label">
+                        <circle cx="250" cy="200" r="6" fill="#fff"/>
+                        <text x="250" y="240" fill="#fff" text-anchor="middle" font-size="12" font-weight="bold">D₃</text>
+                        <text x="250" y="255" fill="#666" text-anchor="middle" font-size="9">HEALER</text>
+                    </g>
+                    
+                    <g class="dimension-label">
+                        <circle cx="350" cy="200" r="6" fill="#fff"/>
+                        <text x="350" y="240" fill="#fff" text-anchor="middle" font-size="12" font-weight="bold">D₄</text>
+                        <text x="350" y="255" fill="#666" text-anchor="middle" font-size="9">BUILDER</text>
+                    </g>
+                    
+                    <g class="dimension-label">
+                        <circle cx="450" cy="200" r="8" fill="#e94560"/>
+                        <text x="450" y="240" fill="#fff" text-anchor="middle" font-size="12" font-weight="bold">D₅</text>
+                        <text x="450" y="255" fill="#f39c12" text-anchor="middle" font-size="9">WUSH</text>
+                    </g>
+                    
+                    <g class="dimension-label">
+                        <circle cx="550" cy="200" r="6" fill="#fff"/>
+                        <text x="550" y="240" fill="#fff" text-anchor="middle" font-size="12" font-weight="bold">D₆</text>
+                        <text x="550" y="255" fill="#666" text-anchor="middle" font-size="9">SELF</text>
+                    </g>
+                    
+                    <g class="dimension-label">
+                        <circle cx="650" cy="200" r="6" fill="#fff"/>
+                        <text x="650" y="240" fill="#fff" text-anchor="middle" font-size="12" font-weight="bold">D₇₋₈</text>
+                        <text x="650" y="255" fill="#666" text-anchor="middle" font-size="9">CYCLES</text>
+                    </g>
+                    
+                    <g class="dimension-label">
+                        <circle cx="750" cy="200" r="6" fill="#fff"/>
+                        <text x="750" y="240" fill="#fff" text-anchor="middle" font-size="12" font-weight="bold">D₉</text>
+                        <text x="750" y="255" fill="#666" text-anchor="middle" font-size="9">ANCHOR</text>
+                    </g>
+                    
+                    <!-- Labels -->
+                    <text x="100" y="60" fill="#e94560" font-size="13" font-weight="bold">S+ (Expansion)</text>
+                    <text x="100" y="360" fill="#3498db" font-size="13" font-weight="bold">S- (Contraction)</text>
+                    
+                    <!-- Wush boundary indicator -->
+                    <rect x="440" y="150" width="20" height="100" fill="rgba(243,156,18,0.2)" rx="5" stroke="#f39c12" stroke-width="1"/>
+                    <text x="450" y="140" fill="#f39c12" text-anchor="middle" font-size="10">OBSERVATION</text>
+                    <text x="450" y="280" fill="#f39c12" text-anchor="middle" font-size="10">BOUNDARY</text>
+                </svg>
+            </div>
+            
+            <p style="text-align: center; color: var(--text-muted); margin-top: 30px; font-size: 0.95em;">
+                Complementary forces spiral through dimensional space. At each intersection, observation collapses probability into measurable phenomena. The Wush marks the boundary where geometry becomes physics.
+            </p>
+        </div>
+
+        <!-- Dimensions Grid -->
+        <div class="dimensions-grid stagger-children animate-on-scroll">
+            <div class="dimension-card">
+                <div class="number">D₁</div>
+                <div class="name">Origin / WE</div>
+            </div>
+            <div class="dimension-card">
+                <div class="number">D₂</div>
+                <div class="name">Vision / Duality</div>
+            </div>
+            <div class="dimension-card">
+                <div class="number">D₃</div>
+                <div class="name">Healing / Creation</div>
+            </div>
+            <div class="dimension-card">
+                <div class="number">D₄</div>
+                <div class="name">Foundation</div>
+            </div>
+            <div class="dimension-card">
+                <div class="number">D₅</div>
+                <div class="name">Bridge / Wush</div>
+            </div>
+            <div class="dimension-card">
+                <div class="number">D₆</div>
+                <div class="name">Self / Power</div>
+            </div>
+            <div class="dimension-card">
+                <div class="number">D₇</div>
+                <div class="name">Present Moment</div>
+            </div>
+            <div class="dimension-card">
+                <div class="number">D₈</div>
+                <div class="name">Infinity / Cycles</div>
+            </div>
+            <div class="dimension-card">
+                <div class="number">D₉</div>
+                <div class="name">Anchor / Love</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Predictions Section -->
+    <section id="predictions" class="animate-on-scroll">
+        <div class="section-header">
+            <h2>Testable Predictions</h2>
+            <div class="accent-line"></div>
+            <p>A framework that predicts is not the same as a belief that interprets.</p>
+        </div>
+
+        <div class="predictions-container stagger-children">
+            <div class="prediction-card">
+                <h3>Projection Factor</h3>
+                <div class="value">√3/(2π) ≈ 0.276</div>
+                <p>Three-dimensional observation projects higher-dimensional structure. We observe approximately 27.6% of complete geometric forms. CERN Run 3 data can verify this ratio.</p>
+            </div>
+
+            <div class="prediction-card">
+                <h3>Scale Constant</h3>
+                <div class="value">k ≈ 0.14</div>
+                <p>This constant appears across 26 orders of magnitude, from atomic to cosmological scales. It represents the fundamental scaling relationship between dimensional layers.</p>
+            </div>
+
+            <div class="prediction-card">
+                <h3>Origin Equation</h3>
+                <div class="value">[1 = -1]</div>
+                <p>At the origin point, before observation separates phenomena, complementary forces exist in unity. This resolves apparent paradoxes in quantum mechanics.</p>
+            </div>
+
+            <div class="prediction-card">
+                <h3>Handshake Principle</h3>
+                <div class="value">S+ × S- = 1</div>
+                <p>Complementary forces maintain unity through multiplication, not addition. This explains why the universe conserves while transforming.</p>
+            </div>
+        </div>
+
+        <!-- Math Display -->
+        <div class="math-display animate-on-scroll">
+            <h3 style="text-align: center; margin-bottom: 30px; color: var(--text-secondary);">Core Mathematical Relationships</h3>
+            
+            <div class="math-equation">
+                <div class="math-term"><span class="symbol">[1</span> <span class="equals">=</span> <span class="symbol">-1]</span></div>
+                <div class="math-term"><span class="symbol">S+</span> × <span class="symbol">S-</span> <span class="equals">=</span> 1</div>
+            </div>
+            
+            <div class="math-equation">
+                <div class="math-term"><span class="symbol">√3</span>/<span class="symbol">(2π)</span> <span class="equals">≈</span> 0.276</div>
+                <div class="math-term"><span class="symbol">k</span> <span class="equals">≈</span> 0.14</div>
+            </div>
+            
+            <p style="text-align: center; color: var(--text-muted); margin-top: 30px;">
+                These are not arbitrary assertions. They are geometric derivations with testable consequences.
+            </p>
+        </div>
+    </section>
+
+    <!-- Verify Section -->
+    <section id="verify" class="verify-section animate-on-scroll">
+        <h2>Verify It Yourself</h2>
+        <p style="margin-bottom: 20px;">Don't take anyone's word for it. The following are acknowledged problems with the Standard Model. Search them yourself:</p>
+        
+        <div class="search-grid">
+            <a href="https://www.google.com/search?q=Standard+Model+free+parameters" target="_blank" class="search-chip">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                Standard Model free parameters
+            </a>
+            <a href="https://www.google.com/search?q=hierarchy+problem+physics" target="_blank" class="search-chip">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                hierarchy problem physics
+            </a>
+            <a href="https://www.google.com/search?q=fine+structure+constant+unexplained" target="_blank" class="search-chip">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                fine structure constant unexplained
+            </a>
+            <a href="https://www.google.com/search?q=why+three+generations+of+particles" target="_blank" class="search-chip">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                why three generations of particles
+            </a>
+            <a href="https://www.google.com/search?q=cosmological+constant+problem" target="_blank" class="search-chip">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                cosmological constant problem
+            </a>
+            <a href="https://www.google.com/search?q=dark+matter+Standard+Model+failure" target="_blank" class="search-chip">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                dark matter Standard Model failure
+            </a>
+        </div>
+        
+        <p style="margin-top: 30px; color: var(--text-secondary);">
+            What you'll find: The Standard Model is incredibly successful at <em>predicting</em> experimental results, but it cannot explain <em>why</em> the constants have the values they do. Physicists acknowledge this openly. The model is descriptive, not explanatory at the foundational level. A framework that <strong>derives</strong> these values from geometry would be explanatory. That's the claim being made.
+        </p>
+    </section>
+
+    <!-- Challenge Section -->
+    <section id="challenge" class="challenge-section animate-on-scroll">
+        <h2>The Real Question</h2>
+        
+        <p class="big-question">
+            This is not about who is right or who wins the argument. This is about whether a mathematical framework can derive physical constants from <span class="emphasis">pure geometry</span>. That's an empirical question. It either works or it doesn't.
+        </p>
+        
+        <p class="big-question">
+            If you think it's wrong, <span class="emphasis">find the error in the math</span>. That's how science works. Point to the calculation that fails. If you can't find an error but still don't believe it, ask yourself: is that skepticism, or is that something else wearing skepticism's clothes?
+        </p>
+        
+        <div class="cta-group" style="margin-top: 40px;">
+            <a href="#" class="btn btn-primary">Read the Full Framework</a>
+            <a href="#" class="btn btn-secondary">Contact Us</a>
+        </div>
+        
+        <p style="margin-top: 50px; color: var(--text-muted); font-style: italic;">
+            "A framework that predicts is always stronger than a position that only interprets."
+        </p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo">HAVE<span>MIND</span>MEDIA</div>
+        <p class="tagline-footer">The Omega Project — Building the geometry of tomorrow.</p>
+        <p>&copy; 2025 Have Mind Media. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Interactions -->
+    <script>
+        // ============================================
+        // NAVIGATION SCROLL EFFECT
+        // ============================================
+        const nav = document.getElementById('nav');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // ============================================
+        // INTERSECTION OBSERVER FOR ANIMATIONS
+        // ============================================
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Also trigger stagger children if present
+                    if (entry.target.querySelector('.stagger-children')) {
+                        entry.target.querySelector('.stagger-children').classList.add('visible');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Observe stagger children containers
+        document.querySelectorAll('.stagger-children').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ============================================
+        // SMOOTH SCROLL FOR ANCHOR LINKS
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ============================================
+        // DIMENSION CARD INTERACTION
+        // ============================================
+        document.querySelectorAll('.dimension-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Could expand to show more info about each dimension
+                this.classList.toggle('expanded');
+            });
+        });
+
+        // ============================================
+        // PARALLAX EFFECT FOR GEOMETRIC SHAPES
+        // ============================================
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const shapes = document.querySelectorAll('.geo-shape');
+            
+            shapes.forEach((shape, index) => {
+                const speed = 0.1 + (index * 0.05);
+                shape.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.02}deg)`;
+            });
+        });
+
+        // ============================================
+        // TYPING EFFECT FOR HERO (optional enhancement)
+        // ============================================
+        // Could add typing animation for the tagline if desired
+
+        // ============================================
+        // HELIX ANIMATION RESTART ON SCROLL INTO VIEW
+        // ============================================
+        const helixSection = document.querySelector('.helix-section');
+        const helixObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Restart helix animation
+                    document.querySelectorAll('.helix-path').forEach(path => {
+                        path.style.animation = 'none';
+                        path.offsetHeight; // Trigger reflow
+                        path.style.animation = null;
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        if (helixSection) {
+            helixObserver.observe(helixSection);
+        }
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

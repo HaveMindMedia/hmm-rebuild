@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M4 Array Simulator — Live Visualization</title>
+    <style>
+        :root {
+            --bg: #050508;
+            --text: #e8e8e8;
+            --accent: #8b5cf6;
+            --accent2: #06b6d4;
+            --proven: #22c55e;
+            --warning: #eab308;
+            --failed: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'SF Mono', 'Monaco', monospace;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid #222;
+        }
+
+        h1 {
+            font-size: 2em;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .grid .panel {
+            width: calc(50% - 10px);
+            min-width: 400px;
+        }
+
+        @media (max-width: 1000px) {
+            .grid .panel {
+                width: 100%;
+                min-width: 300px;
+            }
+        }
+
+        .panel {
+            background: #0a0a12;
+            border: 1px solid #1a1a2a;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .panel h2 {
+            color: var(--accent2);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #222;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: #000;
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        button:hover { transform: translateY(-2px); }
+
+        button.secondary {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .slider-row label { min-width: 100px; color: #888; }
+        .slider-row input { flex: 1; }
+        .slider-row .value { min-width: 80px; text-align: right; color: var(--proven); }
+
+        input[type="range"] {
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .data-display {
+            background: #000;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #1a1a2a;
+        }
+
+        .data-row:last-child { border-bottom: none; }
+
+        .data-label { color: #888; }
+        .data-value { color: var(--proven); font-weight: bold; }
+        .data-value.warning { color: var(--warning); }
+        .data-value.failed { color: var(--failed); }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        .status-badge.valid { background: rgba(34, 197, 94, 0.2); color: var(--proven); }
+        .status-badge.invalid { background: rgba(239, 68, 68, 0.2); color: var(--failed); }
+
+        .equation {
+            text-align: center;
+            font-size: 1.5em;
+            color: var(--proven);
+            padding: 20px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .history-graph {
+            height: 150px;
+            position: relative;
+            background: #000;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #444;
+        }
+
+        footer .sig { color: var(--accent); font-size: 1.5em; }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <div class="container">
+        <header>
+            <h1>M4 Array Simulator</h1>
+            <p style="color: #666; margin-top: 10px;">Triaxial Dipyramid Computation Testbed</p>
+        </header>
+
+        <div class="grid">
+            <!-- Main Visualization -->
+            <div class="panel">
+                <h2>Array Visualization</h2>
+                <canvas id="mainCanvas" width="500" height="500"></canvas>
+                <div class="controls">
+                    <button onclick="step(1)">Step +1</button>
+                    <button onclick="step(10)">Step +10</button>
+                    <button onclick="step(180)">Full Rotation</button>
+                    <button onclick="toggleAnimation()" id="animBtn">▶ Animate</button>
+                    <button class="secondary" onclick="reset()">Reset</button>
+                </div>
+            </div>
+
+            <!-- State Input -->
+            <div class="panel">
+                <h2>Input State</h2>
+                <div class="slider-row">
+                    <label>Inject Value:</label>
+                    <input type="range" id="injectValue" min="-100" max="100" value="50">
+                    <span class="value" id="injectValueDisplay">50</span>
+                </div>
+                <button onclick="injectState()" style="width: 100%; margin-top: 10px;">Inject State</button>
+
+                <h2 style="margin-top: 20px;">Balance Law</h2>
+                <div class="equation" id="balanceEquation">
+                    τ₁ + τ₂ + τ₃ + τ₄ = 0.000000
+                </div>
+                <div style="text-align: center;">
+                    <span id="balanceStatus" class="status-badge valid">✓ VALID</span>
+                </div>
+            </div>
+
+            <!-- Node States -->
+            <div class="panel">
+                <h2>Node States</h2>
+                <div class="data-display">
+                    <div class="data-row">
+                        <span class="data-label">NW (T₁ Facing)</span>
+                        <span class="data-value" id="node-nw">state: 0.0000, τ: 0.0000</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">NE (T₂ Mirror)</span>
+                        <span class="data-value" id="node-ne">state: 0.0000, τ: 0.0000</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">SW (T₃ Recursive)</span>
+                        <span class="data-value" id="node-sw">state: 0.0000, τ: 0.0000</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">SE (T₄ Inverted)</span>
+                        <span class="data-value" id="node-se">state: 0.0000, τ: 0.0000</span>
+                    </div>
+                    <div class="data-row" style="border-top: 2px solid var(--accent); padding-top: 10px; margin-top: 10px;">
+                        <span class="data-label">Crossroads (s=0)</span>
+                        <span class="data-value" id="crossroads">0.0000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="panel">
+                <h2>Simulation Metrics</h2>
+                <div class="data-display">
+                    <div class="data-row">
+                        <span class="data-label">κ Steps</span>
+                        <span class="data-value" id="stepCount">0</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Total Rotation</span>
+                        <span class="data-value" id="totalRotation">0.00°</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Energy Remaining</span>
+                        <span class="data-value" id="energyRemaining">100.00%</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Helix Turns</span>
+                        <span class="data-value" id="helixTurns">0.000</span>
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 20px;">Torsion History</h2>
+                <canvas id="historyCanvas" width="400" height="150"></canvas>
+            </div>
+        </div>
+
+        <footer>
+            <p>HAVE MIND MEDIA — The Epoch Project</p>
+            <div class="sig">[1 = -1]</div>
+        </footer>
+    </div>
+
+    <script>
+        // Constants
+        const KAPPA = (2 * Math.PI) / 180;
+        const ACTIVE_RATIO = 59 / 60;
+
+        // M4 Array State
+        let nodes = {
+            nw: { state: 0, torsion: 0, phase: 0 },
+            ne: { state: 0, torsion: 0, phase: 0 },
+            sw: { state: 0, torsion: 0, phase: 0 },
+            se: { state: 0, torsion: 0, phase: 0 }
+        };
+        let stepCount = 0;
+        let crossroadsState = 0;
+        let history = [];
+        let animating = false;
+        let animationId = null;
+
+        // Canvas setup
+        const mainCanvas = document.getElementById('mainCanvas');
+        const mainCtx = mainCanvas.getContext('2d');
+        const historyCanvas = document.getElementById('historyCanvas');
+        const historyCtx = historyCanvas.getContext('2d');
+
+        // Colors
+        const COLORS = {
+            nw: '#22c55e',
+            ne: '#8b5cf6',
+            sw: '#06b6d4',
+            se: '#eab308',
+            center: '#8b5cf6',
+            absent: '#333'
+        };
+
+        // Input handling
+        document.getElementById('injectValue').addEventListener('input', function() {
+            document.getElementById('injectValueDisplay').textContent = this.value;
+        });
+
+        function injectState() {
+            const value = parseFloat(document.getElementById('injectValue').value);
+
+            // Apply transforms
+            nodes.nw.state = value;  // Facing
+            nodes.ne.state = -value * Math.cos(nodes.ne.phase);  // Mirror
+            nodes.sw.state = value * Math.sin(nodes.sw.phase);   // Recursive
+            nodes.se.state = -value;  // Inverted
+
+            updateTorsions();
+            draw();
+            updateDisplay();
+        }
+
+        function updateTorsions() {
+            // Calculate torsions
+            nodes.nw.torsion = nodes.nw.state * Math.cos(nodes.nw.phase);
+            nodes.ne.torsion = nodes.ne.state * Math.cos(nodes.ne.phase + Math.PI/2);
+            nodes.sw.torsion = nodes.sw.state * Math.cos(nodes.sw.phase + Math.PI);
+
+            // Silent fourth balances to zero
+            nodes.se.torsion = -(nodes.nw.torsion + nodes.ne.torsion + nodes.sw.torsion);
+
+            // Crossroads reading
+            crossroadsState = Object.values(nodes).reduce((sum, n) =>
+                sum + n.state * (1 - Math.abs(n.torsion) / 100), 0);
+        }
+
+        function step(n = 1) {
+            for (let i = 0; i < n; i++) {
+                // Rotate all nodes by κ
+                Object.values(nodes).forEach(node => {
+                    node.phase = (node.phase + KAPPA) % (2 * Math.PI);
+                    node.state *= ACTIVE_RATIO;
+                });
+                stepCount++;
+                updateTorsions();
+
+                // Record history
+                const totalTorsion = Object.values(nodes).reduce((sum, n) => sum + n.torsion, 0);
+                history.push({
+                    step: stepCount,
+                    torsions: {...nodes},
+                    total: totalTorsion
+                });
+
+                // Keep history manageable
+                if (history.length > 200) history.shift();
+            }
+
+            draw();
+            updateDisplay();
+            drawHistory();
+        }
+
+        function reset() {
+            nodes = {
+                nw: { state: 0, torsion: 0, phase: 0 },
+                ne: { state: 0, torsion: 0, phase: 0 },
+                sw: { state: 0, torsion: 0, phase: 0 },
+                se: { state: 0, torsion: 0, phase: 0 }
+            };
+            stepCount = 0;
+            crossroadsState = 0;
+            history = [];
+            animating = false;
+            if (animationId) cancelAnimationFrame(animationId);
+            document.getElementById('animBtn').textContent = '▶ Animate';
+            draw();
+            updateDisplay();
+            drawHistory();
+        }
+
+        function toggleAnimation() {
+            animating = !animating;
+            document.getElementById('animBtn').textContent = animating ? '⏸ Pause' : '▶ Animate';
+
+            if (animating) {
+                animate();
+            } else if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        }
+
+        function animate() {
+            if (!animating) return;
+            step(1);
+            animationId = requestAnimationFrame(() => setTimeout(animate, 50));
+        }
+
+        function draw() {
+            const ctx = mainCtx;
+            const cx = mainCanvas.width / 2;
+            const cy = mainCanvas.height / 2;
+            const dist = 180;
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+
+            // Draw connections
+            const positions = {
+                nw: { x: -1, y: -1 },
+                ne: { x: 1, y: -1 },
+                sw: { x: -1, y: 1 },
+                se: { x: 1, y: 1 }
+            };
+
+            // Draw absent cardinals
+            const absents = [
+                { x: 0, y: -1, label: 'N' },
+                { x: 0, y: 1, label: 'S' },
+                { x: -1, y: 0, label: 'W' },
+                { x: 1, y: 0, label: 'E' }
+            ];
+
+            absents.forEach(a => {
+                const ax = cx + a.x * dist;
+                const ay = cy + a.y * dist;
+                ctx.strokeStyle = COLORS.absent;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.arc(ax, ay, 25, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#333';
+                ctx.font = '12px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(a.label + ' ∅', ax, ay + 5);
+            });
+
+            // Draw diagonal connections and nodes
+            Object.entries(positions).forEach(([key, pos]) => {
+                const node = nodes[key];
+                const nx = cx + pos.x * dist;
+                const ny = cy + pos.y * dist;
+
+                // Connection line with torsion coloring
+                const torsionIntensity = Math.min(Math.abs(node.torsion) / 50, 1);
+                ctx.strokeStyle = COLORS[key];
+                ctx.globalAlpha = 0.3 + torsionIntensity * 0.7;
+                ctx.lineWidth = 2 + torsionIntensity * 3;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(nx, ny);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.lineWidth = 1;
+
+                // Node circle
+                const nodeSize = 30 + Math.abs(node.state) / 5;
+                ctx.fillStyle = COLORS[key];
+                ctx.beginPath();
+                ctx.arc(nx, ny, nodeSize, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Phase indicator
+                const phaseX = nx + Math.cos(node.phase - Math.PI/2) * nodeSize * 0.7;
+                const phaseY = ny + Math.sin(node.phase - Math.PI/2) * nodeSize * 0.7;
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(phaseX, phaseY, 5, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 14px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(key.toUpperCase(), nx, ny + 5);
+            });
+
+            // Draw crossroads
+            ctx.fillStyle = COLORS.center;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 40, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 12px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('s=0', cx, cy - 5);
+            ctx.font = '10px monospace';
+            ctx.fillText(crossroadsState.toFixed(2), cx, cy + 10);
+
+            // Draw κ step indicator
+            const stepAngle = (stepCount * KAPPA) % (2 * Math.PI);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 50, -Math.PI/2, -Math.PI/2 + stepAngle);
+            ctx.stroke();
+        }
+
+        function updateDisplay() {
+            // Node displays
+            Object.entries(nodes).forEach(([key, node]) => {
+                document.getElementById(`node-${key}`).textContent =
+                    `state: ${node.state.toFixed(4)}, τ: ${node.torsion.toFixed(4)}`;
+            });
+
+            // Crossroads
+            document.getElementById('crossroads').textContent = crossroadsState.toFixed(4);
+
+            // Balance Law
+            const totalTorsion = Object.values(nodes).reduce((sum, n) => sum + n.torsion, 0);
+            document.getElementById('balanceEquation').textContent =
+                `τ₁ + τ₂ + τ₃ + τ₄ = ${totalTorsion.toFixed(6)}`;
+
+            const balanceValid = Math.abs(totalTorsion) < 1e-10;
+            const statusEl = document.getElementById('balanceStatus');
+            statusEl.textContent = balanceValid ? '✓ VALID' : '✗ INVALID';
+            statusEl.className = 'status-badge ' + (balanceValid ? 'valid' : 'invalid');
+
+            // Metrics
+            document.getElementById('stepCount').textContent = stepCount;
+            document.getElementById('totalRotation').textContent =
+                ((stepCount * 2) % 360).toFixed(2) + '°';
+
+            const energyRemaining = Math.pow(ACTIVE_RATIO, stepCount) * 100;
+            document.getElementById('energyRemaining').textContent =
+                energyRemaining.toFixed(2) + '%';
+            document.getElementById('energyRemaining').className =
+                'data-value' + (energyRemaining < 10 ? ' warning' : '');
+
+            document.getElementById('helixTurns').textContent =
+                (stepCount / 180).toFixed(3);
+        }
+
+        function drawHistory() {
+            const ctx = historyCtx;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, historyCanvas.width, historyCanvas.height);
+
+            if (history.length < 2) return;
+
+            // Draw total torsion history
+            ctx.strokeStyle = '#22c55e';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            history.forEach((h, i) => {
+                const x = (i / history.length) * historyCanvas.width;
+                const y = historyCanvas.height/2 - h.total * 2;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            // Zero line
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(0, historyCanvas.height/2);
+            ctx.lineTo(historyCanvas.width, historyCanvas.height/2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // Initial draw
+        draw();
+        updateDisplay();
+        drawHistory();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

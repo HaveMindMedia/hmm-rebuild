@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Balance Law - tau1 + tau2 + tau3 + tau4 = 0. The fundamental constraint proven in 1000 iterations.">
+    <title>Balance Law | CEDGA | Have Mind Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <style>
+        .page-hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .balance-equation {
+            font-family: 'Cambria Math', serif;
+            font-size: 2.5rem;
+            color: var(--bright-blue);
+            padding: 2rem 3rem;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(21, 26, 36, 0.3) 100%);
+            border: 2px solid rgba(34, 197, 94, 0.4);
+            border-radius: 16px;
+            margin: 2rem 0;
+            display: inline-block;
+        }
+
+        .proof-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .proof-stat {
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .proof-stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .proof-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .explanation-box {
+            background: linear-gradient(135deg, rgba(26, 42, 58, 0.3) 0%, rgba(21, 26, 36, 0.5) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .torsion-visual {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .torsion-item {
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .torsion-symbol {
+            font-family: 'Cambria Math', serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .torsion-item:nth-child(1) .torsion-symbol { color: #22c55e; }
+        .torsion-item:nth-child(2) .torsion-symbol { color: #8b5cf6; }
+        .torsion-item:nth-child(3) .torsion-symbol { color: #06b6d4; }
+        .torsion-item:nth-child(4) .torsion-symbol { color: #eab308; }
+
+        .torsion-name {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .why-box {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(21, 26, 36, 0.3) 100%);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+        }
+
+        .why-box h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .interactive-demo {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .demo-canvas {
+            background: #0a0d12;
+            border-radius: 8px;
+            margin: 1rem auto;
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .demo-output {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            color: #22c55e;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 8px;
+        }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <div class="vignette"></div>
+
+    <!-- Navigation -->
+    <nav class="unified-nav">
+        <div style="display: flex; align-items: center;">
+            <a href="https://havemindmedia.com" class="nav-brand">
+                <span class="nav-brand-text">HAVE MIND MEDIA</span>
+                <span class="nav-signature">&#9711;&Conint;&#10812;&#10992;&Cconint;&#10710;</span>
+            </a>
+            <span class="nav-subsite">CEDGA</span>
+        </div>
+        <div class="nav-menu">
+            <button class="nav-toggle" id="navToggle">
+                <span>Explore</span>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="nav-dropdown" id="navDropdown">
+                <a href="../../index.html" class="nav-back"><span>&#8592;</span> Back to Main Site</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">CEDGA Pages</span>
+                <a href="../index.html"><span class="nav-icon">&#9671;</span> Home</a>
+                <a href="kappa-constant.html"><span class="nav-icon">&#954;</span> The Kappa Constant</a>
+                <a href="tetrahelix.html"><span class="nav-icon">&#10034;</span> Tetrahelix</a>
+                <a href="balance-law.html"><span class="nav-icon">&#8721;</span> Balance Law</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">Interactive Tools</span>
+                <a href="../tools/m4-simulator.html"><span class="nav-icon">&#9881;</span> M4 Simulator</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">Research</span>
+                <a href="../research/test-analysis.html"><span class="nav-icon">&#128202;</span> Test Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="page-hero">
+            <span class="status-badge status-proven">PROVEN</span>
+            <h1>The Balance Law</h1>
+            <p style="color: var(--soft-blue); font-size: 1.2rem; font-style: italic;">The fundamental constraint that makes the geometry work</p>
+
+            <div class="balance-equation">
+                &#964;&#8321; + &#964;&#8322; + &#964;&#8323; + &#964;&#8324; = 0
+            </div>
+
+            <div class="proof-badge">
+                <div class="proof-stat">
+                    <div class="proof-stat-value">0</div>
+                    <div class="proof-stat-label">Failures in 1000 tests</div>
+                </div>
+                <div class="proof-stat">
+                    <div class="proof-stat-value">1.42e-14</div>
+                    <div class="proof-stat-label">Max deviation</div>
+                </div>
+                <div class="proof-stat">
+                    <div class="proof-stat-value">100%</div>
+                    <div class="proof-stat-label">Validation rate</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="explanation-box">
+                <h2 style="margin-bottom: 1rem;">What is the Balance Law?</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    The Balance Law states that the four torsions at the diagonal positions of the triaxial dipyramid MUST sum to zero. This isn't an assumption - it's a <strong>mathematical necessity</strong> that emerges from the geometry itself.
+                </p>
+            </div>
+
+            <h2>The Four Torsions</h2>
+            <div class="torsion-visual">
+                <div class="torsion-item">
+                    <div class="torsion-symbol">&#964;&#8321;</div>
+                    <div class="torsion-name">NW Node (Facing Transform)</div>
+                </div>
+                <div class="torsion-item">
+                    <div class="torsion-symbol">&#964;&#8322;</div>
+                    <div class="torsion-name">NE Node (Mirror Transform)</div>
+                </div>
+                <div class="torsion-item">
+                    <div class="torsion-symbol">&#964;&#8323;</div>
+                    <div class="torsion-name">SW Node (Recursive Transform)</div>
+                </div>
+                <div class="torsion-item">
+                    <div class="torsion-symbol">&#964;&#8324;</div>
+                    <div class="torsion-name">SE Node (Silent Fourth / Inverted)</div>
+                </div>
+            </div>
+
+            <div class="why-box">
+                <h3>Why Does This Matter?</h3>
+                <p style="line-height: 1.8;">
+                    The Balance Law is MANDATORY for any valid CEDGA derivation. If your geometry violates &#964;&#8321; + &#964;&#8322; + &#964;&#8323; + &#964;&#8324; = 0, you're not working within the framework.
+                </p>
+                <p style="line-height: 1.8; margin-top: 1rem;">
+                    The "silent fourth" (&#964;&#8324;) automatically compensates for whatever values &#964;&#8321;, &#964;&#8322;, and &#964;&#8323; take:
+                </p>
+                <div style="font-family: 'Cambria Math', serif; font-size: 1.3rem; color: var(--bright-blue); margin-top: 1rem; text-align: center;">
+                    &#964;&#8324; = -(&#964;&#8321; + &#964;&#8322; + &#964;&#8323;)
+                </div>
+            </div>
+
+            <!-- Interactive Demo -->
+            <div class="interactive-demo">
+                <h3 style="margin-bottom: 1rem;">Live Balance Law Demonstration</h3>
+                <canvas id="demoCanvas" class="demo-canvas" width="400" height="300"></canvas>
+                <div class="demo-output" id="demoOutput">
+                    &#964;&#8321; + &#964;&#8322; + &#964;&#8323; + &#964;&#8324; = 0.000000
+                </div>
+                <div class="demo-controls">
+                    <button class="btn" onclick="randomize()">Randomize Values</button>
+                    <button class="btn btn-gold" onclick="animateDemo()">Animate</button>
+                </div>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 1rem;">
+                    Watch how &#964;&#8324; (yellow) always compensates to maintain balance = 0
+                </p>
+            </div>
+
+            <div class="explanation-box">
+                <h3>The Proof</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">
+                    The M4 simulator ran 1000 iterations with random input values. In every single case, the sum of torsions was essentially zero (max deviation: 1.42e-14, which is floating-point precision noise).
+                </p>
+                <p style="line-height: 1.8;">
+                    This validates that the Balance Law is not just a theoretical claim - it's a <strong>mathematical fact</strong> that holds under all tested conditions.
+                </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="../tools/m4-simulator.html" class="btn btn-gold">Try the Full Simulator &#8594;</a>
+                <a href="../research/test-analysis.html" class="btn" style="margin-left: 1rem;">View Test Results &#8594;</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="unified-footer">
+        <p class="footer-logo">HAVE MIND MEDIA</p>
+        <p class="footer-tagline">The Mind is in Your Mind</p>
+        <p class="footer-signature">&#9711;&Conint;&#10812;&#10992;&Cconint;&#10710;</p>
+        <p class="footer-principle">[1 = -1]</p>
+    </footer>
+
+    <script>
+        // Navigation
+        const navToggle = document.getElementById('navToggle');
+        const navDropdown = document.getElementById('navDropdown');
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navDropdown.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+            if (!navDropdown.contains(e.target) && !navToggle.contains(e.target)) {
+                navDropdown.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        });
+
+        // Demo
+        const canvas = document.getElementById('demoCanvas');
+        const ctx = canvas.getContext('2d');
+        let torsions = { t1: 30, t2: -20, t3: 15, t4: 0 };
+        let animating = false;
+
+        function updateT4() {
+            torsions.t4 = -(torsions.t1 + torsions.t2 + torsions.t3);
+        }
+
+        function drawDemo() {
+            ctx.fillStyle = '#0a0d12';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const maxHeight = 100;
+
+            const colors = ['#22c55e', '#8b5cf6', '#06b6d4', '#eab308'];
+            const labels = ['\u03C4\u2081', '\u03C4\u2082', '\u03C4\u2083', '\u03C4\u2084'];
+            const values = [torsions.t1, torsions.t2, torsions.t3, torsions.t4];
+            const barWidth = 50;
+            const gap = 30;
+            const startX = cx - (4 * barWidth + 3 * gap) / 2;
+
+            // Zero line
+            ctx.strokeStyle = '#333';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(20, cy);
+            ctx.lineTo(canvas.width - 20, cy);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            values.forEach((val, i) => {
+                const x = startX + i * (barWidth + gap);
+                const height = (val / 50) * maxHeight;
+                const y = cy - height;
+
+                ctx.fillStyle = colors[i];
+                ctx.fillRect(x, val >= 0 ? y : cy, barWidth, Math.abs(height));
+
+                ctx.fillStyle = '#fff';
+                ctx.font = '14px Space Grotesk, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(labels[i], x + barWidth/2, canvas.height - 30);
+                ctx.fillText(val.toFixed(1), x + barWidth/2, val >= 0 ? y - 10 : cy + Math.abs(height) + 20);
+            });
+
+            // Sum
+            const sum = values.reduce((a, b) => a + b, 0);
+            document.getElementById('demoOutput').innerHTML =
+                `\u03C4\u2081 + \u03C4\u2082 + \u03C4\u2083 + \u03C4\u2084 = ${sum.toFixed(6)}`;
+        }
+
+        function randomize() {
+            torsions.t1 = (Math.random() - 0.5) * 80;
+            torsions.t2 = (Math.random() - 0.5) * 80;
+            torsions.t3 = (Math.random() - 0.5) * 80;
+            updateT4();
+            drawDemo();
+        }
+
+        function animateDemo() {
+            if (animating) return;
+            animating = true;
+            let frame = 0;
+            const animate = () => {
+                torsions.t1 = Math.sin(frame * 0.05) * 40;
+                torsions.t2 = Math.cos(frame * 0.03) * 30;
+                torsions.t3 = Math.sin(frame * 0.07 + 1) * 35;
+                updateT4();
+                drawDemo();
+                frame++;
+                if (frame < 200) requestAnimationFrame(animate);
+                else animating = false;
+            };
+            animate();
+        }
+
+        updateT4();
+        drawDemo();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

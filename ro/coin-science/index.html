@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="COIN Science - The Third Axis of Reality. Understanding the triaxial binary through coin-facing, void, and the hidden observer.">
+    <title>COIN Science | Have Mind Media</title>
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <style>
+        /* ==========================================
+           HERO SECTION
+           ========================================== */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 130px 40px 60px;
+            position: relative;
+        }
+
+        .hero-image {
+            width: 280px;
+            height: auto;
+            margin-bottom: 2rem;
+            border-radius: 50%;
+            box-shadow:
+                0 0 60px rgba(201, 162, 39, 0.3),
+                0 0 120px rgba(201, 162, 39, 0.1);
+            animation: gentleFloat 8s ease-in-out infinite;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.2em, 4.5vw, 3.5em);
+            font-weight: 500;
+            color: var(--pale-cream);
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+        }
+
+        .hero h1 .coin {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--bright-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-family: var(--font-body);
+            font-size: 1.4em;
+            font-style: italic;
+            color: var(--soft-blue);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        .hero .principle {
+            font-family: var(--font-display);
+            font-size: 1.3em;
+            color: var(--gold);
+            margin-bottom: 35px;
+            letter-spacing: 6px;
+            opacity: 0.7;
+        }
+
+        .hero .intro {
+            max-width: 720px;
+            font-size: 1.15em;
+            color: var(--soft-cream);
+            opacity: 0.85;
+            margin-bottom: 45px;
+            line-height: 2;
+        }
+
+        /* ==========================================
+           TRIAXIAL EXPLANATION
+           ========================================== */
+        .triaxial-section {
+            max-width: 900px;
+            margin: 0 auto 4rem;
+            padding: 3rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+        }
+
+        .triaxial-explanation {
+            background: linear-gradient(180deg, rgba(26, 42, 58, 0.3) 0%, rgba(21, 26, 36, 0.5) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .triaxial-explanation p {
+            font-size: 1.1rem;
+            color: var(--soft-cream);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .triaxial-explanation p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .highlight-blue {
+            color: var(--bright-blue);
+            font-weight: 500;
+        }
+
+        /* ==========================================
+           THREE AXES GRID
+           ========================================== */
+        .axes-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .axes-grid .axis-card {
+            width: calc(33% - 1rem);
+            min-width: 280px;
+            max-width: 400px;
+        }
+
+        @media (max-width: 800px) {
+            .axes-grid .axis-card {
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+        .axis-card {
+            background: linear-gradient(145deg, rgba(21, 26, 36, 0.6) 0%, rgba(15, 19, 24, 0.8) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .axis-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .axis-card.s-plus {
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+        .axis-card.s-plus:hover {
+            border-color: rgba(59, 130, 246, 0.7);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.15);
+        }
+
+        .axis-card.s-minus {
+            border-color: rgba(201, 162, 39, 0.4);
+        }
+        .axis-card.s-minus:hover {
+            border-color: rgba(201, 162, 39, 0.7);
+            box-shadow: 0 15px 40px rgba(201, 162, 39, 0.15);
+        }
+
+        .axis-card.coin-axis {
+            border-color: rgba(180, 140, 200, 0.4);
+        }
+        .axis-card.coin-axis:hover {
+            border-color: rgba(180, 140, 200, 0.7);
+            box-shadow: 0 15px 40px rgba(180, 140, 200, 0.15);
+        }
+
+        .axis-symbol {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .axis-card.s-plus .axis-symbol { color: var(--bright-blue); }
+        .axis-card.s-minus .axis-symbol { color: var(--gold); }
+        .axis-card.coin-axis .axis-symbol {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--bright-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .axis-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--soft-cream);
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        .axis-card .direction {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .axis-card p {
+            font-size: 0.95rem;
+            color: var(--soft-cream);
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* ==========================================
+           QUADRA-AXIAL NOTE
+           ========================================== */
+        .quadra-note {
+            background: rgba(180, 140, 200, 0.1);
+            border-left: 3px solid rgba(180, 140, 200, 0.5);
+            padding: 1.5rem 2rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 3rem;
+        }
+
+        .quadra-note h4 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--soft-cream);
+            margin-bottom: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        .quadra-note p {
+            font-size: 1rem;
+            color: var(--soft-cream);
+            opacity: 0.85;
+            line-height: 1.7;
+        }
+
+        /* ==========================================
+           EXPLORE PAGES GRID
+           ========================================== */
+        .explore-section {
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .explore-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .explore-grid .explore-card {
+            width: calc(50% - 1rem);
+            min-width: 280px;
+        }
+
+        @media (max-width: 700px) {
+            .explore-grid .explore-card {
+                width: 100%;
+            }
+        }
+
+        .explore-card {
+            display: block;
+            padding: 1.5rem;
+            background: linear-gradient(145deg, rgba(21, 26, 36, 0.6) 0%, rgba(15, 19, 24, 0.8) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
+        .explore-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-light);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .explore-card .card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .explore-card h3 {
+            font-size: 1.2rem;
+            color: var(--soft-cream);
+            margin-bottom: 0.5rem;
+        }
+
+        .explore-card p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .explore-card .card-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.7rem;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .tag-coin {
+            background: rgba(180, 140, 200, 0.2);
+            color: #d4a8e0;
+            border: 1px solid rgba(180, 140, 200, 0.4);
+        }
+
+        .tag-void {
+            background: rgba(100, 100, 120, 0.2);
+            color: #a0a0b0;
+            border: 1px solid rgba(100, 100, 120, 0.4);
+        }
+
+        .tag-mirror {
+            background: rgba(201, 162, 39, 0.2);
+            color: var(--gold);
+            border: 1px solid rgba(201, 162, 39, 0.4);
+        }
+
+        .tag-tool {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--bright-blue);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        /* ==========================================
+           SIGNATURE
+           ========================================== */
+        .signature {
+            text-align: center;
+            padding: 3rem 2rem;
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--soft-blue);
+            letter-spacing: 4px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <img src="images/ancient-mirror.png" alt="Two faces forming a coin" class="hero-image">
+            <h1><span class="coin">COIN</span> SCIENCE</h1>
+            <p class="subtitle">The Third Axis of Reality</p>
+            <p class="principle">[ 1 = -1 ]</p>
+            <p class="intro">
+                We are not a binary. We are a <strong>triaxial binary</strong>.
+                S+ extends outward through spacetime. S- folds inward through awareness.
+                But where do they meet? At the <em>coin</em> — the surface where observer faces observed,
+                where inside meets outside, where the hidden operator watches from the void.
+            </p>
+        </section>
+
+        <!-- Triaxial Explanation -->
+        <section class="triaxial-section">
+            <h2 class="section-title">— THE TRIAXIAL BINARY —</h2>
+
+            <div class="triaxial-explanation">
+                <p>
+                    Standard physics gives us one axis: <span class="highlight-blue">S+</span>, the outward extension through spacetime.
+                    Consciousness studies add a second: <span class="highlight">S-</span>, the inward folding through awareness.
+                    But this binary is incomplete.
+                </p>
+                <p>
+                    The <span class="highlight">coin</span> is the third axis — not a direction, but a <em>surface</em>.
+                    It is where S+ and S- meet, where the observer faces what is observed.
+                    One side faces outward (coin-facing), the other faces inward (void-facing).
+                    The edge is infinitely thin, yet contains everything.
+                </p>
+                <p>
+                    This is why the ancient image shows two faces in profile, forming a circle.
+                    They are not two beings — they are <em>one being seeing itself</em>.
+                    The mirror. The coin. The boundary that creates both sides by existing.
+                </p>
+            </div>
+
+            <!-- Three Axes -->
+            <div class="axes-grid">
+                <div class="axis-card s-plus">
+                    <div class="axis-symbol">S+</div>
+                    <h3>Physical Reality</h3>
+                    <p class="direction">Extends outward</p>
+                    <p>Spacetime, matter, energy. The observable universe expanding through geometric law.</p>
+                </div>
+
+                <div class="axis-card coin-axis">
+                    <div class="axis-symbol">◯</div>
+                    <h3>The Coin</h3>
+                    <p class="direction">The surface between</p>
+                    <p>Where observer meets observed. The mirror boundary. Coin-facing and void-facing as one.</p>
+                </div>
+
+                <div class="axis-card s-minus">
+                    <div class="axis-symbol">S-</div>
+                    <h3>Soul Science</h3>
+                    <p class="direction">Folds inward</p>
+                    <p>Awareness, consciousness, the felt sense of being. Inner space through geometric law.</p>
+                </div>
+            </div>
+
+            <!-- Quadra-Axial Note -->
+            <div class="quadra-note">
+                <h4>On the Fourth Axis</h4>
+                <p>
+                    Some see the coin as containing two distinct things: the <em>observer</em> (who sees)
+                    and the <em>operator</em> (who acts). If you separate these, you have a quadra-axial system:
+                    S+, S-, Observer, Operator. But in our view, observer and operator are the same —
+                    two faces of one coin. The hidden watcher is also the hidden mover.
+                    This is why we call it triaxial: three axes, where the third contains its own duality.
+                </p>
+            </div>
+        </section>
+
+        <!-- Explore Related Pages -->
+        <section class="explore-section">
+            <h2 class="section-title">— EXPLORE COIN SCIENCE —</h2>
+
+            <div class="explore-grid">
+                <a href="../education/becoming-a-coin.html" class="explore-card">
+                    <span class="card-tag tag-coin">Foundation</span>
+                    <div class="card-icon">◯</div>
+                    <h3>Becoming a Coin</h3>
+                    <p>The core teaching. How consciousness takes the shape of a coin — two faces, one being, infinite edge.</p>
+                </a>
+
+                <a href="../education/mirror/index.html" class="explore-card">
+                    <span class="card-tag tag-mirror">Coin-Facing</span>
+                    <div class="card-icon">☯</div>
+                    <h3>The Mirror</h3>
+                    <p>When the coin faces itself. Self-reflection, the collapsed now, and the ancient art of seeing.</p>
+                </a>
+
+                <a href="../physics/vessel/index.html" class="explore-card">
+                    <span class="card-tag tag-void">Void</span>
+                    <div class="card-icon">⬡</div>
+                    <h3>The Scalar Vessel</h3>
+                    <p>The geometric container. The void that holds the coin, the space where observer and observed arise.</p>
+                </a>
+
+                <a href="../tools/mind-reading/index.html" class="explore-card">
+                    <span class="card-tag tag-tool">Interactive</span>
+                    <div class="card-icon">🔮</div>
+                    <h3>Mind Reading</h3>
+                    <p>Experience the observer directly. An interactive demonstration of coin mechanics in action.</p>
+                </a>
+
+                <a href="../games/balance/index.html" class="explore-card">
+                    <span class="card-tag tag-coin">Game</span>
+                    <div class="card-icon">⚖</div>
+                    <h3>Balance</h3>
+                    <p>Play with equilibrium. A game exploring the coin's edge — the infinitely thin line between states.</p>
+                </a>
+
+                <a href="../tools/s-signature/s_signature_coin.html" class="explore-card">
+                    <span class="card-tag tag-tool">Tool</span>
+                    <div class="card-icon">✧</div>
+                    <h3>S-Signature Coin</h3>
+                    <p>Your personal coin reading. Discover which face you're showing and what lies on the other side.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Signature -->
+        <div class="signature">
+            [ 1 = -1 ]
+        </div>
+    </main>
+
+    <site-footer></site-footer>
+</body>
+</html>

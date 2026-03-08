@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE MIRROR - S-Minus Science | Have Mind Media</title>
+    <meta name="description" content="A new understanding of mirrors, scalar dimensionality, and the collapsed NOW. Standard Model vs Epoch Model depth calculator.">
+    <meta name="keywords" content="S-Minus Science, mirror physics, scalar dimensionality, Epoch Model, Have Mind Media">
+    <meta name="author" content="Have Mind Media">
+    <meta property="og:title" content="THE MIRROR - S-Minus Science">
+    <meta property="og:description" content="The Standard Model is incomplete. Discover scalar dimensionality and the 27.6% projection loss.">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Have Mind Media">
+    <meta name="category" content="S-Minus Science">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --bg-alt: #0d0d14;
+            --gold: #c9a227;
+            --gold-dim: #8a7020;
+            --blue: #7ab8d4;
+            --blue-dim: #4a8090;
+            --text: #e0e0e0;
+            --dim: #555;
+            --red: #d45050;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+        }
+
+        /* HEADER NAV */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            background: linear-gradient(180deg, rgba(10,10,15,0.98) 0%, rgba(10,10,15,0.9) 80%, transparent 100%);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-weight: 300;
+            font-size: 1.1em;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 0.15em;
+        }
+        .logo:hover { color: var(--text); }
+        nav a {
+            color: var(--dim);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 0.9em;
+            font-family: 'Helvetica Neue', sans-serif;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: var(--gold); }
+        nav a.active { color: var(--gold); }
+
+        /* SECTIONS */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 40px 60px;
+            position: relative;
+        }
+        .section-dark { background: var(--bg); }
+        .section-alt { background: var(--bg-alt); }
+        .section-gold { background: linear-gradient(135deg, #0a0a0f 0%, #1a1510 100%); }
+        .section-blue { background: linear-gradient(135deg, #0a0a0f 0%, #0a1015 100%); }
+
+        h1 {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-weight: 200;
+            font-size: 4em;
+            color: var(--gold);
+            text-align: center;
+            letter-spacing: 0.3em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-weight: 300;
+            font-size: 2.5em;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h3 {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-weight: 400;
+            font-size: 1.3em;
+            color: var(--blue);
+            margin-bottom: 15px;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            color: var(--dim);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .content {
+            max-width: 900px;
+            text-align: center;
+            line-height: 2;
+            font-size: 1.15em;
+        }
+
+        .image-full {
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px 0;
+            border: 1px solid #222;
+        }
+        .image-medium {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px 0;
+            border: 1px solid #222;
+        }
+
+        .quote {
+            font-style: italic;
+            color: var(--blue);
+            font-size: 1.3em;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 30px;
+            border-left: 3px solid var(--gold);
+            text-align: left;
+            background: rgba(0,0,0,0.3);
+        }
+        .quote-source {
+            color: var(--dim);
+            font-size: 0.7em;
+            margin-top: 15px;
+            font-style: normal;
+        }
+
+        .big-number {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 7em;
+            font-weight: 100;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .number-label {
+            font-size: 1.4em;
+            color: var(--dim);
+            margin-top: 20px;
+        }
+
+        .key-insight {
+            background: linear-gradient(135deg, #1a1a1f 0%, #0f0f14 100%);
+            border: 1px solid var(--gold);
+            padding: 40px;
+            margin: 40px 0;
+            max-width: 800px;
+            text-align: left;
+        }
+        .key-insight strong {
+            color: var(--gold);
+            font-size: 1.2em;
+        }
+
+        .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2.2em;
+            color: var(--gold);
+            margin: 25px 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            max-width: 1000px;
+            margin: 40px 0;
+        }
+        .column { text-align: left; }
+        @media (max-width: 800px) {
+            .two-column { grid-template-columns: 1fr; }
+        }
+
+        /* CALCULATOR */
+        .calculator {
+            background: #111;
+            border: 1px solid #333;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            margin: 40px 0;
+        }
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .calc-label {
+            color: var(--dim);
+            font-size: 1em;
+        }
+        .calc-value {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 1.8em;
+            font-weight: 300;
+        }
+        .calc-value.standard { color: var(--red); }
+        .calc-value.epoch { color: var(--gold); }
+        .calc-value.size { color: var(--blue); }
+
+        .slider-container {
+            width: 100%;
+            margin: 30px 0;
+        }
+        .slider-container input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: #333;
+            border-radius: 4px;
+            outline: none;
+        }
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--gold);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            color: var(--dim);
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .calc-visual {
+            height: 200px;
+            background: #0a0a0f;
+            border: 1px solid #222;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* COMPARISON BOX */
+        .compare-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            max-width: 800px;
+            margin: 40px 0;
+            border: 1px solid #333;
+        }
+        .compare-side {
+            padding: 30px;
+        }
+        .compare-side.standard {
+            background: rgba(212, 80, 80, 0.1);
+            border-right: 1px solid #333;
+        }
+        .compare-side.epoch {
+            background: rgba(201, 162, 39, 0.1);
+        }
+        .compare-title {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+        .compare-side.standard .compare-title { color: var(--red); }
+        .compare-side.epoch .compare-title { color: var(--gold); }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 60px 40px;
+            background: #050508;
+            border-top: 1px solid #222;
+        }
+        footer a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+        footer a:hover { color: var(--gold); }
+
+
+        /* FADE IN */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* NAV DOTS */
+        .nav-dots {
+            position: fixed;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #333;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-dot:hover, .nav-dot.active { background: var(--gold); }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+<div class="home-nav"><a href="../../index.html">← Home</a></div>
+
+<!-- HEADER -->
+<header>
+    <a href="../../index.html" class="logo">HAVE MIND MEDIA</a>
+    <nav>
+        <a href="../../index.html">Home</a>
+        <a href="#calculator">Calculator</a>
+        <a href="#ancient">Ancient Wisdom</a>
+        <a href="#synthesis">Synthesis</a>
+        <a href="../soul-science.html" class="active" style="color: var(--gold); border-bottom: 1px solid var(--gold); padding-bottom: 2px;">S-Minus Science</a>
+    </nav>
+</header>
+
+<!-- NAV DOTS -->
+<div class="nav-dots">
+    <div class="nav-dot active" data-section="0"></div>
+    <div class="nav-dot" data-section="1"></div>
+    <div class="nav-dot" data-section="2"></div>
+    <div class="nav-dot" data-section="3"></div>
+    <div class="nav-dot" data-section="4"></div>
+    <div class="nav-dot" data-section="5"></div>
+    <div class="nav-dot" data-section="6"></div>
+</div>
+
+<!-- SECTION 0: HERO -->
+<div class="section section-dark" id="hero">
+    <p class="subtitle fade-in">A New Understanding</p>
+    <h1 class="fade-in">THE MIRROR</h1>
+    <p class="subtitle fade-in" style="margin-top: 30px;">Reflection, Time, and Scalar Dimensionality</p>
+
+    <img src="images/ancient-mirror.png"
+         alt="Ancient mirror" class="image-medium fade-in">
+
+    <div class="content fade-in" style="margin-top: 20px;">
+        <p>What you see in a mirror is not what physics predicts.</p>
+        <p>The Standard Model is incomplete.</p>
+    </div>
+</div>
+
+<!-- SECTION 1: THE PROBLEM -->
+<div class="section section-alt" id="problem">
+    <h2 class="fade-in">The Size Paradox</h2>
+
+    <img src="images/mirror-depth-diagram.png"
+         alt="Scalar depth diagram" class="image-full fade-in">
+
+    <div class="content fade-in">
+        <p>As you approach a mirror, your reflection gets <strong style="color: var(--gold);">LARGER</strong>.</p>
+        <p style="margin-top: 20px;">But the Standard Model says your virtual image is always at distance <strong>2d</strong> behind you.</p>
+        <p style="margin-top: 20px;">If you're truly at 2d, why does your SIZE change with d?</p>
+    </div>
+
+    <div class="key-insight fade-in">
+        <strong>The mirror shows you the SIZE you are at distance d.</strong><br><br>
+        But it shows you at POSITION 2d.<br><br>
+        Size and position are decoupled. This is <span style="color: var(--gold);">scalar dimensionality</span>.
+    </div>
+</div>
+
+<!-- SECTION 2: THE CALCULATOR -->
+<div class="section section-dark" id="calculator">
+    <h2 class="fade-in">Standard Model vs Epoch Model</h2>
+    <p class="subtitle fade-in">Interactive Depth Calculator</p>
+
+    <div class="calculator fade-in">
+        <div class="slider-container">
+            <label style="color: var(--gold); font-size: 1.2em;">Your Distance from Mirror</label>
+            <input type="range" id="distSlider" min="10" max="300" value="100">
+            <div class="slider-label">
+                <span>10 cm</span>
+                <span id="distDisplay" style="color: var(--gold); font-size: 1.2em;">100 cm</span>
+                <span>300 cm</span>
+            </div>
+        </div>
+
+        <div class="calc-visual">
+            <canvas id="depthCanvas" width="860" height="200"></canvas>
+        </div>
+
+        <div class="compare-box" style="max-width: 100%; margin: 20px 0;">
+            <div class="compare-side standard">
+                <div class="compare-title">STANDARD MODEL</div>
+                <div class="calc-row">
+                    <span class="calc-label">Virtual Image Position</span>
+                    <span class="calc-value standard" id="stdPosition">200 cm</span>
+                </div>
+                <div class="calc-row">
+                    <span class="calc-label">Apparent Size</span>
+                    <span class="calc-value standard" id="stdSize">Based on 2d</span>
+                </div>
+                <div class="calc-row">
+                    <span class="calc-label">Time Delay</span>
+                    <span class="calc-value standard" id="stdDelay">6.67 ns</span>
+                </div>
+                <div style="color: var(--red); margin-top: 20px; font-size: 0.9em;">
+                    Problem: Size should match 2d, but it matches d
+                </div>
+            </div>
+            <div class="compare-side epoch">
+                <div class="compare-title">EPOCH MODEL</div>
+                <div class="calc-row">
+                    <span class="calc-label">Perceived Position</span>
+                    <span class="calc-value epoch" id="epochPosition">172.4 cm</span>
+                </div>
+                <div class="calc-row">
+                    <span class="calc-label">Size Reference</span>
+                    <span class="calc-value epoch" id="epochSize">Based on d</span>
+                </div>
+                <div class="calc-row">
+                    <span class="calc-label">Projection Loss (P)</span>
+                    <span class="calc-value epoch" id="epochLoss">27.6 cm</span>
+                </div>
+                <div style="color: var(--gold); margin-top: 20px; font-size: 0.9em;">
+                    Size at d, position at 1.724d — scalar separation
+                </div>
+            </div>
+        </div>
+
+        <div class="key-insight" style="margin-top: 30px;">
+            <strong>The Key Insight:</strong><br><br>
+            The mirror shows your SIZE at distance <strong>d</strong> (where you actually are).<br>
+            But your POSITION appears at <strong>1.724d</strong> (accounting for projection loss).<br><br>
+            Standard Model says 2d but can't explain the size.<br>
+            Epoch Model says 1.724d and SIZE is referenced to d — <span style="color: var(--gold);">scalar dimensionality</span>.
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 3: ANCIENT WISDOM -->
+<div class="section section-gold" id="ancient">
+    <h2 class="fade-in">The Ancients Knew</h2>
+
+    <div class="quote fade-in">
+        "The face of the person looking into the eye of another is reflected as in a mirror; and in the pupil there is a sort of image of the person looking."
+        <div class="quote-source">— Socrates, in Plato's Alcibiades I (c. 390 BCE)</div>
+    </div>
+
+    <div class="two-column fade-in">
+        <div class="column">
+            <h3>Plato: Eye as Mirror</h3>
+            <p>The pupil (κόρη, "little doll") contains your reflection. To know yourself, look into another's eye. Soul sees soul through reflection.</p>
+        </div>
+        <div class="column">
+            <h3>Plotinus: Matter as Mirror</h3>
+            <p>The One emanates without diminishing, like a reflection. Matter is the final mirror at the bottom of existence. Each level less perfect than above.</p>
+        </div>
+    </div>
+
+    <div class="quote fade-in">
+        "These images are like a skin, or a film, peeled from the body's surface, and they fly this way and that across the air."
+        <div class="quote-source">— Lucretius, De Rerum Natura IV (c. 55 BCE)</div>
+    </div>
+
+    <div class="content fade-in">
+        <p><strong style="color: var(--gold);">Simulacra</strong> — thin atomic films constantly shed from all surfaces.</p>
+        <p style="margin-top: 15px;">What you see is never the object. You see its shedding.</p>
+        <p style="margin-top: 15px;">The mirror redirects the stream.</p>
+    </div>
+</div>
+
+<!-- SECTION 4: THE 27.6% -->
+<div class="section section-dark">
+    <h2 class="fade-in">The Missing 27.6%</h2>
+
+    <div class="big-number fade-in">27.6%</div>
+    <div class="number-label fade-in">of depth is lost in projection</div>
+
+    <div class="equation fade-in">P = √3 / 2π = 0.27566...</div>
+
+    <div class="content fade-in" style="margin-top: 40px;">
+        <p>Classical optics: image at <strong>2d</strong></p>
+        <p>Perceived depth: <strong>1.724d</strong></p>
+        <p style="margin-top: 20px;">The difference: <strong style="color: var(--gold);">P × 2d = 27.6%</strong></p>
+    </div>
+
+    <div class="key-insight fade-in">
+        <strong>This is the Epoch projection factor exactly.</strong><br><br>
+        The mirror projects 3D → 2D surface → 3D perception.<br>
+        Each projection loses P.<br><br>
+        What's in that lost 27.6%? <span style="color: var(--gold);">The future tendency component.</span>
+    </div>
+</div>
+
+<!-- SECTION 5: THE COLLAPSED NOW -->
+<div class="section section-blue">
+    <h2 class="fade-in">The Collapsed NOW</h2>
+
+    <img src="images/collapsed-now.png"
+         alt="Collapsed NOW" class="image-medium fade-in">
+
+    <div class="content fade-in">
+        <p>The present moment is not a point in time.</p>
+        <p style="margin-top: 20px;">It is a <strong style="color: var(--gold);">collapsed void</strong> — the crossroads where all temporal directions meet before observation forces a configuration.</p>
+    </div>
+
+    <div class="compare-box fade-in">
+        <div class="compare-side" style="background: rgba(122,184,212,0.1); border-right: 1px solid #333;">
+            <div class="compare-title" style="color: var(--blue);">WUSH (Past-tending)</div>
+            <p>Light shows what was</p>
+            <p>s+ direction</p>
+            <p>Observable, measurable</p>
+        </div>
+        <div class="compare-side" style="background: rgba(201,162,39,0.1);">
+            <div class="compare-title" style="color: var(--gold);">RO (Future-tending)</div>
+            <p>Torsion samples tendency</p>
+            <p>s- direction</p>
+            <p>The hidden 27.6%</p>
+        </div>
+    </div>
+
+    <div class="content fade-in">
+        <p style="color: var(--dim);">The mirror shows the past (s+). The missing P contains the future (s-).</p>
+    </div>
+</div>
+
+<!-- SECTION 6: SYNTHESIS -->
+<div class="section section-gold" id="synthesis">
+    <h2 class="fade-in">The New Understanding</h2>
+
+    <div class="key-insight fade-in" style="text-align: center; max-width: 900px;">
+        <strong style="font-size: 1.5em;">The mirror reveals scalar dimensionality.</strong><br><br>
+        <p style="font-size: 1.2em; line-height: 1.8;">
+            SIZE is referenced to your actual distance (d).<br>
+            POSITION is offset by round-trip delay, minus projection loss (1.724d).<br>
+            TIME shows the past, but 27.6% carries the future tendency.<br><br>
+            <span style="color: var(--gold);">The mirror doesn't just reflect light.</span><br>
+            <span style="color: var(--gold);">It shows you the structure of NOW.</span>
+        </p>
+    </div>
+
+    <div class="equation fade-in" style="font-size: 3em; margin: 50px 0;">[1 = -1]</div>
+
+    <div class="content fade-in">
+        <p>Left becomes right. Present becomes past.</p>
+        <p style="margin-top: 15px;">The primary inversion operates in both space and time.</p>
+        <p style="margin-top: 15px;">What's hidden is as real as what's shown.</p>
+    </div>
+</div>
+
+<footer>
+    <p style="color: var(--gold); font-size: 1.8em; margin-bottom: 20px;">[1 = -1]</p>
+    <p style="color: var(--text); margin-bottom: 5px;">HAVE MIND MEDIA</p>
+    <p style="color: var(--gold); font-size: 0.9em; margin-bottom: 10px;">S-Minus Science</p>
+    <p style="color: var(--dim);">January 3, 2026</p>
+    <p style="color: var(--dim); margin-top: 15px; font-size: 0.85em;">
+        THE MIRROR - Understanding Scalar Dimensionality<br>
+        mirror_presentation_v1.0_01-03-2026
+    </p>
+    <p style="margin-top: 30px;">
+        <a href="https://www.havemindmedia.com" target="_blank" rel="noopener noreferrer">havemindmedia.com</a> |
+        <a href="https://www.havemindmedia.com/s-minus-science" target="_blank" rel="noopener noreferrer">S-Minus Science</a>
+    </p>
+    <p style="margin-top: 15px; color: var(--dim); font-size: 0.8em;">
+        Sources: <a href="https://donaldrobertson.substack.com/p/the-use-of-mirrors-in-ancient-philosophy" target="_blank" rel="noopener noreferrer">Ancient Mirror Philosophy</a> |
+        <a href="https://plato.stanford.edu/entries/lucretius/" target="_blank" rel="noopener noreferrer">Stanford: Lucretius</a> |
+        <a href="https://iep.utm.edu/plotinus/" target="_blank" rel="noopener noreferrer">IEP: Plotinus</a>
+    </p>
+</footer>
+
+<script>
+// Constants
+const c = 299792458; // m/s
+const P = 0.27566;
+const P_shadow = 1 - P;
+
+// Elements
+const slider = document.getElementById('distSlider');
+const canvas = document.getElementById('depthCanvas');
+const ctx = canvas.getContext('2d');
+
+function updateCalculator() {
+    const d_cm = parseInt(slider.value);
+    const d_m = d_cm / 100;
+
+    // Standard Model
+    const stdPos = d_cm * 2;
+    const stdDelay = (2 * d_m / c) * 1e9;
+
+    // Epoch Model
+    const epochPos = d_cm * 1.724;
+    const epochLoss = stdPos - epochPos;
+
+    // Update displays
+    document.getElementById('distDisplay').textContent = d_cm + ' cm';
+    document.getElementById('stdPosition').textContent = stdPos + ' cm';
+    document.getElementById('stdDelay').textContent = stdDelay.toFixed(2) + ' ns';
+    document.getElementById('stdSize').textContent = 'Angular: ' + (1/stdPos * 1000).toFixed(2);
+    document.getElementById('epochPosition').textContent = epochPos.toFixed(1) + ' cm';
+    document.getElementById('epochLoss').textContent = epochLoss.toFixed(1) + ' cm';
+    document.getElementById('epochSize').textContent = 'Angular: ' + (1/d_cm * 1000).toFixed(2);
+
+    // Draw visualization
+    drawDepthVisualization(d_cm);
+}
+
+function drawDepthVisualization(d_cm) {
+    const w = canvas.width;
+    const h = canvas.height;
+    const padding = 60;
+
+    ctx.fillStyle = '#0a0a0f';
+    ctx.fillRect(0, 0, w, h);
+
+    // Adaptive scaling: total span = d (observer to mirror) + 2d (mirror to standard position) = 3d
+    const totalSpan = d_cm * 3;
+    const availableWidth = w - (padding * 2);
+    const scale = availableWidth / totalSpan;  // px per cm
+
+    // Mirror is at d from left edge (after observer)
+    const mirrorX = padding + d_cm * scale;
+
+    // Observer is d to the left of mirror
+    const obsX = padding;
+
+    // Standard model position (2d behind mirror = d from observer)
+    const stdX = mirrorX + d_cm * scale;
+
+    // Epoch model position (0.862d behind mirror, since perceived = 1.724d from observer)
+    const epochX = mirrorX + d_cm * 0.862 * scale;
+
+    // Draw observer
+    ctx.fillStyle = '#c9a227';
+    ctx.beginPath();
+    ctx.arc(obsX, h/2, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#c9a227';
+    ctx.font = '12px Helvetica';
+    ctx.textAlign = 'center';
+    ctx.fillText('YOU', obsX, h/2 + 30);
+    ctx.fillText('(size ref)', obsX, h/2 + 45);
+
+    // Draw mirror
+    ctx.strokeStyle = '#7ab8d4';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(mirrorX, 30);
+    ctx.lineTo(mirrorX, h - 30);
+    ctx.stroke();
+    ctx.fillStyle = '#7ab8d4';
+    ctx.font = '11px Helvetica';
+    ctx.fillText('MIRROR', mirrorX, 20);
+
+    // Standard model position (2d)
+    ctx.strokeStyle = '#d4505044';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.arc(stdX, h/2, 10, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#d45050';
+    ctx.font = '11px Helvetica';
+    ctx.fillText('Standard (2d)', stdX, h/2 + 30);
+    ctx.fillText(d_cm * 2 + 'cm', stdX, h/2 + 45);
+
+    // Epoch model position (1.724d)
+    ctx.fillStyle = '#c9a227';
+    ctx.beginPath();
+    ctx.arc(epochX, h/2, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = '11px Helvetica';
+    ctx.fillText('Epoch (1.724d)', epochX, h/2 - 20);
+    ctx.fillText((d_cm * 1.724).toFixed(0) + 'cm', epochX, h/2 - 35);
+
+    // Draw the "lost" zone
+    const lossWidth = stdX - epochX;
+    if (lossWidth > 20) {
+        ctx.fillStyle = 'rgba(212, 80, 80, 0.15)';
+        ctx.fillRect(epochX + 10, h/2 - 50, lossWidth - 10, 100);
+        ctx.fillStyle = '#d45050';
+        ctx.font = '10px Helvetica';
+        ctx.fillText('Lost: ' + ((d_cm * 2) - (d_cm * 1.724)).toFixed(0) + 'cm (P)', (epochX + stdX) / 2, h/2 + 60);
+    }
+
+    // Distance labels
+    ctx.fillStyle = '#555';
+    ctx.font = '10px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('d = ' + d_cm + 'cm', 10, h - 10);
+}
+
+// Event listeners
+slider.addEventListener('input', updateCalculator);
+
+// Initial
+updateCalculator();
+
+// Fade in on scroll
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Nav dots
+const sections = document.querySelectorAll('.section');
+const dots = document.querySelectorAll('.nav-dot');
+
+dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+        const idx = parseInt(dot.dataset.section);
+        sections[idx].scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+window.addEventListener('scroll', () => {
+    let current = 0;
+    sections.forEach((section, index) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= window.innerHeight / 2) current = index;
+    });
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === current);
+    });
+});
+</script>
+
+    <site-footer></site-footer>
+</body>
+</html>

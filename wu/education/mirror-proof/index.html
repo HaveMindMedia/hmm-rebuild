@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mirror Proof | Where Standard Model Goes to Die | Have Mind Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --accent-gold: #d4af37;
+            --accent-red: #dc3545;
+            --accent-green: #28a745;
+            --accent-blue: #4a9eff;
+            --accent-purple: #9d4edd;
+            --border-color: #2a2a3a;
+            --code-bg: #1e1e2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #0f0f18 50%, var(--bg-primary) 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #f4d03f 50%, var(--accent-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .hero-warning {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            max-width: 800px;
+            margin: 2rem auto 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--accent-red);
+        }
+
+        .kappa-badge {
+            display: inline-block;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--accent-gold);
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--accent-gold);
+            margin-top: 1.5rem;
+        }
+
+        /* Main Content */
+        main {
+            padding: 4rem 0;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* Diagram Container */
+        .diagram-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .diagram-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* SVG Styles */
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .svg-text {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            fill: var(--text-primary);
+        }
+
+        .svg-text-small {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            fill: var(--text-secondary);
+        }
+
+        .svg-text-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            fill: var(--text-primary);
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .data-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .value-standard {
+            color: var(--accent-red);
+        }
+
+        .value-epoch {
+            color: var(--accent-green);
+        }
+
+        .value-winner {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .code-comment {
+            color: #6a9955;
+        }
+
+        .code-keyword {
+            color: #569cd6;
+        }
+
+        .code-number {
+            color: #b5cea8;
+        }
+
+        .code-string {
+            color: #ce9178;
+        }
+
+        /* Proof Box */
+        .proof-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .proof-box h3 {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Equation Display */
+        .equation {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--accent-gold);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .equation-large {
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Comparison Box */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-box {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .comparison-box.standard {
+            border-color: var(--accent-red);
+        }
+
+        .comparison-box.epoch {
+            border-color: var(--accent-green);
+        }
+
+        .comparison-box h4 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .comparison-box.standard h4 {
+            color: var(--accent-red);
+        }
+
+        .comparison-box.epoch h4 {
+            color: var(--accent-green);
+        }
+
+        /* Highlight */
+        .highlight {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .highlight-red {
+            background: rgba(220, 53, 69, 0.2);
+            color: var(--accent-red);
+        }
+
+        .highlight-green {
+            background: rgba(40, 167, 69, 0.2);
+            color: var(--accent-green);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-kappa {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Research Citations */
+        .citation {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .citation:last-child {
+            border-bottom: none;
+        }
+
+        .citation-author {
+            color: var(--accent-blue);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-content">
+            <a href="../../index.html" class="logo">[H/M]</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../../education/soul-science.html">Education</a></li>
+                    <li><a href="../mirror/index.html">Mirror Theory</a></li>
+                    <li><a href="../../documents/epoch-framework/index.html">Framework</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">The Mirror Proof</h1>
+            <p class="hero-subtitle">Where Standard Model Goes to Die</p>
+
+            <div class="hero-warning">
+                If you think this is bullshit, you are only fooling yourself.<br>
+                We cannot and will not help you.<br><br>
+                The geometry cannot lie.
+            </div>
+
+            <div class="kappa-badge">[1 = -1] &nbsp;&nbsp; κ = 30</div>
+        </div>
+    </section>
+
+    <main>
+        <div class="container">
+
+            <!-- Section 1: The Claim -->
+            <section>
+                <h2 class="section-title">The Claim</h2>
+                <p class="section-subtitle">What Standard Model says vs. What reality shows</p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-box standard">
+                        <h4>Standard Model Claims</h4>
+                        <ul>
+                            <li>Reflection appears at distance <strong>2d</strong></li>
+                            <li>Angular size ratio = <strong>0.5</strong> (half size)</li>
+                            <li>Ratio varies with observer position</li>
+                            <li>"Perception errors" when people see otherwise</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-box epoch">
+                        <h4>Epoch Model (Reality)</h4>
+                        <ul>
+                            <li>Size perceived at distance <strong>d</strong> (preserved)</li>
+                            <li>Angular size ratio = <strong>1.0</strong> (same size)</li>
+                            <li>Ratio constant regardless of position</li>
+                            <li>What people see IS correct perception</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="equation">
+                    <span class="equation-large">[1 = -1]</span><br><br>
+                    |1| = |-1| = 1 &nbsp;&nbsp;(magnitude preserved)<br>
+                    sign(1) ≠ sign(-1) &nbsp;&nbsp;(position inverted)
+                </div>
+            </section>
+
+            <!-- Section 2: The Setup -->
+            <section>
+                <h2 class="section-title">The Experimental Setup</h2>
+                <p class="section-subtitle">Infinite tape measure crossing mirror plane</p>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Figure 1: Mirror Coordinate System</div>
+                    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Background grid -->
+                        <defs>
+                            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a25" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect width="800" height="500" fill="#12121a"/>
+                        <rect width="800" height="500" fill="url(#grid)"/>
+
+                        <!-- Mirror plane -->
+                        <line x1="50" y1="250" x2="750" y2="250" stroke="#d4af37" stroke-width="3"/>
+                        <text x="760" y="255" class="svg-text" fill="#d4af37">Mirror M (y=0)</text>
+
+                        <!-- Real space label -->
+                        <text x="60" y="80" class="svg-text-label" fill="#28a745">REAL SPACE (y > 0)</text>
+                        <text x="60" y="100" class="svg-text-small" fill="#a0a0a0">Tape extends upward: +1, +2, +3, ... +∞</text>
+
+                        <!-- Virtual space label -->
+                        <text x="60" y="420" class="svg-text-label" fill="#4a9eff">VIRTUAL SPACE (y < 0)</text>
+                        <text x="60" y="440" class="svg-text-small" fill="#a0a0a0">Reflection extends: -1, -2, -3, ... -∞</text>
+
+                        <!-- Tape measure - real side -->
+                        <line x1="400" y1="250" x2="400" y2="50" stroke="#28a745" stroke-width="4"/>
+                        <circle cx="400" cy="250" r="6" fill="#d4af37"/>
+
+                        <!-- Inch marks - real -->
+                        <line x1="390" y1="210" x2="410" y2="210" stroke="#28a745" stroke-width="2"/>
+                        <text x="420" y="215" class="svg-text" fill="#28a745">1"</text>
+
+                        <line x1="390" y1="170" x2="410" y2="170" stroke="#28a745" stroke-width="2"/>
+                        <text x="420" y="175" class="svg-text" fill="#28a745">2"</text>
+
+                        <line x1="390" y1="130" x2="410" y2="130" stroke="#28a745" stroke-width="2"/>
+                        <text x="420" y="135" class="svg-text" fill="#28a745">3"</text>
+
+                        <line x1="390" y1="90" x2="410" y2="90" stroke="#28a745" stroke-width="2"/>
+                        <text x="420" y="95" class="svg-text" fill="#28a745">4"</text>
+
+                        <!-- Tape measure - reflected side -->
+                        <line x1="400" y1="250" x2="400" y2="450" stroke="#4a9eff" stroke-width="4" stroke-dasharray="8,4"/>
+
+                        <!-- Inch marks - reflected -->
+                        <line x1="390" y1="290" x2="410" y2="290" stroke="#4a9eff" stroke-width="2"/>
+                        <text x="420" y="295" class="svg-text" fill="#4a9eff">-1"</text>
+
+                        <line x1="390" y1="330" x2="410" y2="330" stroke="#4a9eff" stroke-width="2"/>
+                        <text x="420" y="335" class="svg-text" fill="#4a9eff">-2"</text>
+
+                        <line x1="390" y1="370" x2="410" y2="370" stroke="#4a9eff" stroke-width="2"/>
+                        <text x="420" y="375" class="svg-text" fill="#4a9eff">-3"</text>
+
+                        <line x1="390" y1="410" x2="410" y2="410" stroke="#4a9eff" stroke-width="2"/>
+                        <text x="420" y="415" class="svg-text" fill="#4a9eff">-4"</text>
+
+                        <!-- Observer -->
+                        <circle cx="200" cy="120" r="12" fill="#9d4edd"/>
+                        <text x="220" y="125" class="svg-text-label" fill="#9d4edd">Observer O</text>
+                        <text x="220" y="145" class="svg-text-small" fill="#a0a0a0">at distance D from mirror</text>
+
+                        <!-- Sight lines -->
+                        <line x1="200" y1="120" x2="400" y2="170" stroke="#9d4edd" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+                        <line x1="200" y1="120" x2="400" y2="330" stroke="#9d4edd" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+
+                        <!-- Zero point label -->
+                        <text x="380" y="270" class="svg-text" fill="#d4af37">0</text>
+
+                        <!-- Key insight box -->
+                        <rect x="520" y="120" width="250" height="100" fill="#1a1a25" stroke="#d4af37" stroke-width="1" rx="8"/>
+                        <text x="540" y="150" class="svg-text" fill="#d4af37">KEY INSIGHT:</text>
+                        <text x="540" y="175" class="svg-text-small" fill="#e8e8e8">Real +2" and Reflected -2"</text>
+                        <text x="540" y="195" class="svg-text-small" fill="#e8e8e8">appear the SAME SIZE</text>
+                        <text x="540" y="215" class="svg-text-small" fill="#28a745">Ratio ≈ 1.0, NOT 0.5</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- Section 3: The Data -->
+            <section>
+                <h2 class="section-title">The Data</h2>
+                <p class="section-subtitle">Observer position effect on perceived size ratio</p>
+
+                <p>Standard Model claims the ratio of reflected/real angular size depends on where you stand. The further away, the closer to 1.0. But people at ALL distances see ratio ≈ 1.0.</p>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Table 1: Observer Distance Effect (Tape at d = 10" from mirror)</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Observer Distance (D)</th>
+                                <th>D/d Ratio</th>
+                                <th>Standard Model Ratio</th>
+                                <th>Epoch Model Ratio</th>
+                                <th>Winner</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12"</td>
+                                <td>1.2</td>
+                                <td class="value-standard">0.0909</td>
+                                <td class="value-epoch">1.0000</td>
+                                <td class="value-winner">EPOCH</td>
+                            </tr>
+                            <tr>
+                                <td>24"</td>
+                                <td>2.4</td>
+                                <td class="value-standard">0.4118</td>
+                                <td class="value-epoch">1.0000</td>
+                                <td class="value-winner">EPOCH</td>
+                            </tr>
+                            <tr>
+                                <td>48"</td>
+                                <td>4.8</td>
+                                <td class="value-standard">0.6552</td>
+                                <td class="value-epoch">1.0000</td>
+                                <td class="value-winner">EPOCH</td>
+                            </tr>
+                            <tr>
+                                <td>96"</td>
+                                <td>9.6</td>
+                                <td class="value-standard">0.8113</td>
+                                <td class="value-epoch">1.0000</td>
+                                <td class="value-winner">EPOCH</td>
+                            </tr>
+                            <tr>
+                                <td>192"</td>
+                                <td>19.2</td>
+                                <td class="value-standard">0.9010</td>
+                                <td class="value-epoch">1.0000</td>
+                                <td class="value-winner">EPOCH</td>
+                            </tr>
+                            <tr>
+                                <td>1,000"</td>
+                                <td>100</td>
+                                <td class="value-standard">0.9802</td>
+                                <td class="value-epoch">1.0000</td>
+                                <td class="value-winner">EPOCH</td>
+                            </tr>
+                            <tr>
+                                <td>10,000"</td>
+                                <td>1000</td>
+                                <td class="value-standard">0.9980</td>
+                                <td class="value-epoch">1.0000</td>
+                                <td class="value-winner">EPOCH</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="proof-box">
+                    <h3>The Killer Finding</h3>
+                    <p>Standard Model predicts that a close observer (D=12") should see the reflection as <span class="highlight-red">9% the size</span> of the real object.</p>
+                    <p>But everyone - at every distance - reports seeing reflections as <span class="highlight-green">approximately the same size</span>.</p>
+                    <p>This is not a "perception error." This is <strong>correct perception</strong>. The error is in the Standard Model.</p>
+                </div>
+            </section>
+
+            <!-- Section 4: The Extreme Case -->
+            <section>
+                <h2 class="section-title">The Extreme Case</h2>
+                <p class="section-subtitle">What happens as tape approaches observer?</p>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Table 2: Tape Approaching Observer (Observer at D = 24")</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Tape Distance (d)</th>
+                                <th>Gap (D - d)</th>
+                                <th>Standard Model Ratio</th>
+                                <th>Epoch Model Ratio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1"</td>
+                                <td>23"</td>
+                                <td class="value-standard">0.9200</td>
+                                <td class="value-epoch">1.0000</td>
+                            </tr>
+                            <tr>
+                                <td>10"</td>
+                                <td>14"</td>
+                                <td class="value-standard">0.4118</td>
+                                <td class="value-epoch">1.0000</td>
+                            </tr>
+                            <tr>
+                                <td>20"</td>
+                                <td>4"</td>
+                                <td class="value-standard">0.0909</td>
+                                <td class="value-epoch">1.0000</td>
+                            </tr>
+                            <tr>
+                                <td>23"</td>
+                                <td>1"</td>
+                                <td class="value-standard">0.0213</td>
+                                <td class="value-epoch">1.0000</td>
+                            </tr>
+                            <tr>
+                                <td>23.9"</td>
+                                <td>0.1"</td>
+                                <td class="value-standard">0.0021</td>
+                                <td class="value-epoch">1.0000</td>
+                            </tr>
+                            <tr>
+                                <td>23.99"</td>
+                                <td>0.01"</td>
+                                <td class="value-standard">0.0002</td>
+                                <td class="value-epoch">1.0000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="proof-box">
+                    <h3>The Absurdity of Standard Model</h3>
+                    <p>When the tape is at d = 23.99" (almost touching your face at D = 24"):</p>
+                    <p>Standard Model says the reflection should appear <span class="highlight-red">0.02% the size</span> - essentially invisible!</p>
+                    <p>But in reality, when something is right in front of your face near a mirror, the reflection appears <span class="highlight-green">the same size</span>.</p>
+                    <p><strong>Standard Model is catastrophically wrong at close distances.</strong></p>
+                </div>
+            </section>
+
+            <!-- Section 5: The √3 Connection -->
+            <section>
+                <h2 class="section-title">The √3 Connection</h2>
+                <p class="section-subtitle">Where 1729 meets mirror geometry</p>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Figure 2: The 30-60-90 Triangle Geometry</div>
+                    <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="800" height="450" fill="#12121a"/>
+
+                        <!-- 30-60-90 Triangle -->
+                        <polygon points="200,350 200,150 546,350" fill="none" stroke="#d4af37" stroke-width="2"/>
+
+                        <!-- Labels -->
+                        <text x="180" y="260" class="svg-text" fill="#d4af37">1</text>
+                        <text x="360" y="380" class="svg-text" fill="#d4af37">√3</text>
+                        <text x="360" y="240" class="svg-text" fill="#d4af37">2</text>
+
+                        <!-- Angle markers -->
+                        <path d="M 200,320 A 30,30 0 0,1 220,350" fill="none" stroke="#9d4edd" stroke-width="2"/>
+                        <text x="225" y="340" class="svg-text-small" fill="#9d4edd">90°</text>
+
+                        <path d="M 230,150 A 30,30 0 0,1 200,180" fill="none" stroke="#28a745" stroke-width="2"/>
+                        <text x="210" y="175" class="svg-text-small" fill="#28a745">30°</text>
+
+                        <path d="M 510,350 A 30,30 0 0,0 520,320" fill="none" stroke="#4a9eff" stroke-width="2"/>
+                        <text x="490" y="330" class="svg-text-small" fill="#4a9eff">60°</text>
+
+                        <!-- Right side: The connection -->
+                        <rect x="580" y="80" width="200" height="300" fill="#1a1a25" stroke="#d4af37" stroke-width="1" rx="8"/>
+
+                        <text x="600" y="115" class="svg-text" fill="#d4af37">THE CONNECTION:</text>
+
+                        <text x="600" y="150" class="svg-text-small" fill="#e8e8e8">Standard Model: 2d</text>
+                        <text x="600" y="170" class="svg-text-small" fill="#e8e8e8">(hypotenuse)</text>
+
+                        <text x="600" y="210" class="svg-text-small" fill="#e8e8e8">Epoch Model: √3d</text>
+                        <text x="600" y="230" class="svg-text-small" fill="#e8e8e8">(side opposite 60°)</text>
+
+                        <text x="600" y="270" class="svg-text" fill="#d4af37">PROJECTION:</text>
+                        <text x="600" y="295" class="svg-text-small" fill="#28a745">2d × cos(30°)</text>
+                        <text x="600" y="315" class="svg-text-small" fill="#28a745">= 2d × (√3/2)</text>
+                        <text x="600" y="335" class="svg-text-small" fill="#28a745">= √3d</text>
+                        <text x="600" y="355" class="svg-text-small" fill="#28a745">≈ 1.732d</text>
+                    </svg>
+                </div>
+
+                <div class="grid-2">
+                    <div class="proof-box">
+                        <h3>The Numbers</h3>
+                        <div class="code-block">
+<span class="code-comment">// The Mirror Scalar</span>
+√3 = <span class="code-number">1.7320508076...</span>
+
+<span class="code-comment">// Hardy-Ramanujan Number</span>
+1729/1000 = <span class="code-number">1.729</span>
+
+<span class="code-comment">// Difference</span>
+|√3 - 1.729| = <span class="code-number">0.003051</span>
+            = <span class="code-number">0.176%</span>
+                        </div>
+                    </div>
+                    <div class="proof-box">
+                        <h3>The Encoding</h3>
+                        <div class="code-block">
+<span class="code-comment">// 1729 - The Duality Number</span>
+1729 = 1³ + 12³ = <span class="code-number">1 + 1728</span>
+1729 = 9³ + 10³ = <span class="code-number">729 + 1000</span>
+
+<span class="code-comment">// The Cube Connection</span>
+12³ = <span class="code-number">1728</span>
+√3 × 1000 = <span class="code-number">1732</span>
+
+<span class="code-comment">// 1729 sits BETWEEN them</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 2rem;">Ramanujan discovered K3 surfaces through his work on 1729. K3 surfaces are fundamental to <strong>mirror symmetry</strong> in string theory. The number 1729 literally encodes mirror geometry - and √3 ≈ 1.729 is the mirror scalar.</p>
+            </section>
+
+            <!-- Section 6: The Research -->
+            <section>
+                <h2 class="section-title">60+ Years of Research</h2>
+                <p class="section-subtitle">What researchers found (and misinterpreted)</p>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Published Research on Mirror Perception</div>
+
+                    <div class="citation">
+                        <span class="citation-author">Gombrich, E.H. (1960)</span> - Art and Illusion<br>
+                        Finding: Head traced on fogged mirror is exactly HALF actual size, yet people perceive it as "same size"<br>
+                        <em>Interpretation: "Perception error"</em>
+                    </div>
+
+                    <div class="citation">
+                        <span class="citation-author">Bertamini, M. & Lawson, R. (2006)</span> - Perception, 35, 1265-1288<br>
+                        Finding: "People overestimate reflection size"<br>
+                        Finding: "There is no percept for the 2-D projection on the surface of a mirror"<br>
+                        <em>Interpretation: People perceive the OBJECT, not the image</em>
+                    </div>
+
+                    <div class="citation">
+                        <span class="citation-author">Higashiyama, A. & Shimono, K. (2004)</span> - Perception & Psychophysics<br>
+                        Finding: "Mean matches generally approximated the REAL size"<br>
+                        Finding: NOT the virtual size predicted by 2d model<br>
+                        Finding: Size constancy maintained up to 45m<br>
+                        <em>Interpretation: Unexplained phenomenon</em>
+                    </div>
+
+                    <div class="citation">
+                        <span class="citation-author">fMRI Studies (2019+)</span><br>
+                        Finding: Size constancy processed in V1 (primary visual cortex)<br>
+                        Finding: Happens in ~150ms - before conscious awareness<br>
+                        Finding: Brain is "hard-wired" for this<br>
+                        <em>Interpretation: Cannot be overridden by knowledge</em>
+                    </div>
+                </div>
+
+                <div class="proof-box">
+                    <h3>The Reinterpretation</h3>
+                    <p>For 60+ years, researchers documented that people see reflections as "same size" and called it a <span class="highlight-red">"perception error"</span>.</p>
+                    <p>It is NOT an error. It is <span class="highlight-green">correct perception</span>.</p>
+                    <p>The error is in the Standard Model's 2d assumption.</p>
+                    <p><strong>The geometry cannot lie.</strong></p>
+                </div>
+            </section>
+
+            <!-- Section 7: AlphaGeometry Proof -->
+            <section>
+                <h2 class="section-title">Formal Proof</h2>
+                <p class="section-subtitle">AlphaGeometry / Lean4 format</p>
+
+                <div class="code-block">
+<span class="code-comment"># ALPHAGEOMETRY PROOF: MIRROR SCALAR DIMENSIONALITY</span>
+<span class="code-comment"># [1 = -1]</span>
+
+<span class="code-comment"># DEFINITIONS</span>
+<span class="code-keyword">point</span> O = observer at (0, D)
+<span class="code-keyword">line</span> M = mirror at y = 0
+<span class="code-keyword">point</span> P = tape_point at (0, d)
+<span class="code-keyword">point</span> P' = reflect(P, M) = (0, -d)
+
+<span class="code-comment"># STANDARD MODEL CLAIM</span>
+distance_real = |O - P| = D - d
+distance_reflected = |O - P'| = D + d
+ratio_standard = (D-d)/(D+d)  <span class="code-comment"># Varies with D and d</span>
+
+<span class="code-comment"># OBSERVED (Gombrich, Bertamini, Lawson, Higashiyama)</span>
+ratio_observed ≈ <span class="code-number">1.0</span> for all D, d
+
+<span class="code-comment"># CONTRADICTION</span>
+ratio_standard ≠ ratio_observed
+
+<span class="code-comment"># EPOCH MODEL RESOLUTION</span>
+perceived_size = size at d  <span class="code-comment"># SAME for real and reflected</span>
+ratio_epoch = <span class="code-number">1.0</span>  <span class="code-comment"># Always</span>
+perceived_position = √3 × d ≈ <span class="code-number">1.732</span> × d
+
+<span class="code-comment"># CONCLUSION</span>
+<span class="code-comment"># Mirror demonstrates scalar dimensionality:</span>
+<span class="code-comment">#   |1| = |-1| (magnitude preserved)</span>
+<span class="code-comment">#   sign(1) ≠ sign(-1) (position inverted)</span>
+<span class="code-comment"># QED</span>
+                </div>
+            </section>
+
+            <!-- Section 8: Laser Verification -->
+            <section>
+                <h2 class="section-title">The Laser Test</h2>
+                <p class="section-subtitle">When physics says "2d" but the laser says otherwise</p>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Figure 3: Laser Distance Measurement Through Mirror</div>
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="800" height="400" fill="#12121a"/>
+
+                        <!-- Mirror plane -->
+                        <line x1="400" y1="50" x2="400" y2="350" stroke="#d4af37" stroke-width="3"/>
+                        <text x="410" y="45" class="svg-text" fill="#d4af37">Mirror M</text>
+
+                        <!-- Laser emitter -->
+                        <rect x="80" y="180" width="60" height="40" fill="#dc3545" stroke="#ff6b6b" stroke-width="2" rx="4"/>
+                        <text x="85" y="205" class="svg-text-small" fill="#fff">LASER</text>
+
+                        <!-- Laser beam to mirror -->
+                        <line x1="140" y1="200" x2="400" y2="200" stroke="#ff0000" stroke-width="3"/>
+
+                        <!-- Laser beam reflected (shown as continuing through) -->
+                        <line x1="400" y1="200" x2="660" y2="200" stroke="#ff0000" stroke-width="2" stroke-dasharray="10,5" opacity="0.6"/>
+
+                        <!-- Distance labels -->
+                        <line x1="140" y1="240" x2="400" y2="240" stroke="#28a745" stroke-width="1"/>
+                        <text x="250" y="260" class="svg-text" fill="#28a745">d = actual distance</text>
+
+                        <line x1="400" y1="280" x2="660" y2="280" stroke="#4a9eff" stroke-width="1"/>
+                        <text x="480" y="300" class="svg-text" fill="#4a9eff">"d" = virtual distance</text>
+
+                        <!-- Standard Model box -->
+                        <rect x="500" y="80" width="180" height="100" fill="#1a1a25" stroke="#dc3545" stroke-width="1" rx="8"/>
+                        <text x="520" y="105" class="svg-text" fill="#dc3545">STANDARD MODEL:</text>
+                        <text x="520" y="130" class="svg-text-small" fill="#e8e8e8">Rangefinder reads 2d</text>
+                        <text x="520" y="150" class="svg-text-small" fill="#e8e8e8">"Virtual image at 2d"</text>
+                        <text x="520" y="170" class="svg-text-small" fill="#dc3545">Time of flight = 2d/c</text>
+
+                        <!-- Epoch Model box -->
+                        <rect x="100" y="300" width="200" height="80" fill="#1a1a25" stroke="#28a745" stroke-width="1" rx="8"/>
+                        <text x="120" y="325" class="svg-text" fill="#28a745">EPOCH MODEL:</text>
+                        <text x="120" y="350" class="svg-text-small" fill="#e8e8e8">Size perception at d</text>
+                        <text x="120" y="370" class="svg-text-small" fill="#28a745">Position perception at √3d</text>
+
+                        <!-- Virtual point -->
+                        <circle cx="660" cy="200" r="8" fill="none" stroke="#4a9eff" stroke-width="2" stroke-dasharray="4,2"/>
+                        <text x="620" y="180" class="svg-text-small" fill="#4a9eff">Virtual Point</text>
+                    </svg>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-box standard">
+                        <h4>What Physics Textbooks Say</h4>
+                        <p>A laser rangefinder pointed at a mirror should read <strong>2d</strong> because:</p>
+                        <ul style="margin-top: 1rem;">
+                            <li>Light travels d to the mirror</li>
+                            <li>Reflects and travels d back</li>
+                            <li>Total path = 2d (time of flight)</li>
+                            <li>Virtual image is at distance d behind mirror</li>
+                            <li>So observer-to-virtual-image = 2d</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-box epoch">
+                        <h4>The Scalar Dimensionality Question</h4>
+                        <p>If SIZE is perceived at d (ratio ≈ 1.0), why should DISTANCE be 2d?</p>
+                        <ul style="margin-top: 1rem;">
+                            <li>Angular size matches d, not 2d</li>
+                            <li>Perception matches d, not 2d</li>
+                            <li>60+ years of research confirms perception at d</li>
+                            <li>The 2d is a COORDINATE, not a perception</li>
+                            <li>Perceived position = √3d ≈ 1.732d</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="proof-box">
+                    <h3>The Interferometer Problem</h3>
+                    <p>Interferometers like LIGO measure mirror distances to incredible precision - 10⁻¹⁸ meters (smaller than a proton).</p>
+                    <p>Yet there have been documented <span class="highlight">unexplained correlations</span> in the data that some physicists argue could affect the interpretation of results.</p>
+                    <p>The question: <strong>Is the "2d" assumption in interferometry contributing to systematic errors?</strong></p>
+                    <p style="margin-top: 1rem;">If mirrors project through √3 rather than 2, the error would be:</p>
+                    <div class="code-block" style="margin-top: 1rem;">
+<span class="code-comment">// Standard Model vs Reality</span>
+Expected:  2d = <span class="code-number">2.000000</span>d
+Actual:    √3d = <span class="code-number">1.732051</span>d
+Error:     <span class="code-number">13.4%</span> overestimate
+
+<span class="code-comment">// At LIGO precision (10⁻¹⁸ m)</span>
+This would be a systematic error of:
+<span class="code-number">2.68 × 10⁻¹⁹</span> meters per d
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">The Definitive Laser Test</div>
+                    <p style="margin-bottom: 1.5rem;">To prove scalar dimensionality with laser precision:</p>
+                    <ol style="line-height: 2;">
+                        <li><strong>Setup:</strong> Laser rangefinder + plane mirror + calibrated distance</li>
+                        <li><strong>Measure:</strong> Distance to target through mirror vs direct</li>
+                        <li><strong>Compare:</strong> Angular size of target vs reflected target</li>
+                        <li><strong>Calculate:</strong> If angular ratio ≈ 1.0 but distance reads 2d, there's a mismatch</li>
+                        <li><strong>Result:</strong> Either distance isn't really 2d, or size-at-distance is scalar</li>
+                    </ol>
+                    <div class="equation" style="margin-top: 1.5rem;">
+                        If SIZE is at d and DISTANCE reads 2d,<br>
+                        then the Standard Model has a <span class="equation-large">2:1 contradiction</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 9: Conclusion -->
+            <section>
+                <h2 class="section-title">Conclusion</h2>
+
+                <div class="equation">
+                    <span class="equation-large">[1 = -1]</span>
+                </div>
+
+                <div class="grid-2">
+                    <div>
+                        <h3 style="color: var(--accent-gold); margin-bottom: 1rem;">What the Mirror Proves</h3>
+                        <ul>
+                            <li>Magnitude is preserved (size at d)</li>
+                            <li>Sign is inverted (position reflected)</li>
+                            <li>This IS scalar dimensionality</li>
+                            <li>Standard Model's 2d is wrong</li>
+                            <li>Perceived position = √3d ≈ 1.732d</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--accent-gold); margin-bottom: 1rem;">The 1729 Connection</h3>
+                        <ul>
+                            <li>√3 ≈ 1.729 (0.176% difference)</li>
+                            <li>1729 = Hardy-Ramanujan duality number</li>
+                            <li>Ramanujan → K3 surfaces → Mirror symmetry</li>
+                            <li>The number encodes the geometry</li>
+                            <li>κ = 30°, cos(30°) = √3/2</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="proof-box" style="margin-top: 2rem; text-align: center;">
+                    <h3>The geometry cannot lie.</h3>
+                    <p style="font-size: 1.2rem; margin-top: 1rem;">
+                        If you still think this is bullshit after seeing the data,<br>
+                        you are only fooling yourself.<br><br>
+                        We cannot and will not help you.
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-kappa">[1 = -1] &nbsp;&nbsp; κ = 30</div>
+            <p class="footer-text">Have Mind Media | Epoch Framework</p>
+            <p class="footer-text" style="margin-top: 0.5rem;">The Mirror Proof v1.0 | January 2026</p>
+        </div>
+    </footer>
+
+</body>
+</html>

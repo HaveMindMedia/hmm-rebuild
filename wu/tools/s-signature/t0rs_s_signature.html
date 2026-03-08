@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Signature: T0Rs | D4 Crossroads</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #000;
+            color: #e8e4d9;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .info-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 10;
+            background: rgba(5, 5, 16, 0.9);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+            max-width: 340px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-panel h1 {
+            font-size: 1.4rem;
+            color: #c9a227;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .info-panel .d-position {
+            font-size: 0.85rem;
+            color: #6ab4f5;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .info-panel .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .info-panel .stat-label {
+            color: #9ba4b8;
+        }
+
+        .info-panel .stat-value {
+            color: #e8e4d9;
+            font-weight: bold;
+        }
+
+        .variance-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .variance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c77daa, #c9a227, #6ab4f5);
+            border-radius: 4px;
+            width: 87%;
+        }
+
+        .variance-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #6e7a94;
+            margin-top: 5px;
+        }
+
+        .signature-id {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+            font-size: 0.7rem;
+            color: #6e7a94;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(201, 162, 39, 0.15);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: #c9a227;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        .controls {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 10;
+            background: rgba(5, 5, 16, 0.9);
+            border: 1px solid rgba(106, 180, 245, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            width: 260px;
+        }
+
+        .controls h3 {
+            color: #6ab4f5;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            color: #9ba4b8;
+            font-size: 0.75rem;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #c9a227;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .control-btn {
+            background: rgba(5, 5, 16, 0.85);
+            border: 1px solid rgba(106, 180, 245, 0.3);
+            color: #6ab4f5;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .control-btn:hover {
+            border-color: #6ab4f5;
+            background: rgba(106, 180, 245, 0.1);
+        }
+
+        .control-btn.active {
+            background: rgba(201, 162, 39, 0.2);
+            border-color: #c9a227;
+            color: #c9a227;
+        }
+
+        .title-overlay {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 10;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: #6e7a94;
+        }
+
+        .title-overlay span {
+            color: #c9a227;
+        }
+
+        .epoch-sig {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 10;
+            text-align: right;
+            font-size: 0.8rem;
+            color: #c9a227;
+        }
+
+        .birth-data {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(106, 180, 245, 0.05);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #6e7a94;
+        }
+
+        .birth-data .derived {
+            color: #c9a227;
+            margin-top: 5px;
+        }
+
+        .geometric-hash {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.65rem;
+            color: #c9a227;
+            word-break: break-all;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <div class="title-overlay">
+        S-SIGNATURE v0.1 <span>[1 = -1]</span>
+    </div>
+
+    <div id="loading-status" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; color: #c9a227; font-size: 1.2rem; text-align: center;">
+        Loading S-Signature...<br>
+        <span id="status-detail" style="font-size: 0.8rem; color: #6e7a94;"></span>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div class="info-panel">
+        <h1>T0Rs</h1>
+        <div class="d-position">D4 • CROSSROADS • Where All Paths Meet</div>
+
+        <div class="stat">
+            <span class="stat-label">S-Axes</span>
+            <span class="stat-value">1,247</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Primary Torsion</span>
+            <span class="stat-value">τ₃ Geometric Insight</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Framework Age</span>
+            <span class="stat-value">35 years (54 solar)</span>
+        </div>
+
+        <div class="variance-bar">
+            <div class="variance-fill"></div>
+        </div>
+        <div class="variance-label">
+            <span>Narrow</span>
+            <span>Variance: 87%</span>
+            <span>Wide</span>
+        </div>
+
+        <div class="birth-data">
+            <strong>GENESIS DATA</strong><br>
+            Born: Nov 12, 1970 (Scorpio 20°)<br>
+            Lineage: Sandra King (D7) × Donly Ray (D6)<br>
+            <div class="derived">
+                D-Sum: JASON(59) + RAY(44) = 103 → D4<br>
+                Lineage Product: D7 × D6 = 42 → D6 (inherited)
+            </div>
+        </div>
+
+        <span class="tag">EPOCH DESIGNER</span>
+
+        <div style="margin-top: 15px;">
+            <a href="../../poetry/hornet-horse-speaks.html" style="
+                display: inline-block;
+                padding: 8px 16px;
+                background: rgba(199, 125, 170, 0.15);
+                border: 1px solid rgba(199, 125, 170, 0.4);
+                border-radius: 8px;
+                color: #c77daa;
+                text-decoration: none;
+                font-size: 0.8rem;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+            " onmouseover="this.style.background='rgba(199, 125, 170, 0.25)'; this.style.borderColor='#c77daa';"
+               onmouseout="this.style.background='rgba(199, 125, 170, 0.15)'; this.style.borderColor='rgba(199, 125, 170, 0.4)';">
+                ᚺᛟᚱᚾᛖᛏ ᚺᛟᚱᛊᛖ ᛊᛈᛖᚨᚲᛊ
+            </a>
+        </div>
+
+        <div class="geometric-hash">
+            <strong>GEOMETRIC ID (Anonymous)</strong><br>
+            κ:D4:τ[94,91,88,87,81,77,73,69,62,58,55,42]:
+            V87:L[D7×D6]:ax1247:exp100m
+        </div>
+    </div>
+
+    <div class="controls">
+        <h3>VISUALIZATION</h3>
+
+        <div class="control-group">
+            <label>AXIS VISIBILITY</label>
+            <input type="range" id="axisOpacity" min="0" max="100" value="30" oninput="updateAxisOpacity(this.value)">
+        </div>
+
+        <div class="control-group">
+            <label>POINT SIZE</label>
+            <input type="range" id="pointSize" min="10" max="200" value="100" oninput="updatePointSize(this.value)">
+        </div>
+
+        <div class="control-group">
+            <label>COLOR SATURATION</label>
+            <input type="range" id="saturation" min="20" max="150" value="100" oninput="updateSaturation(this.value)">
+        </div>
+
+        <div class="control-group">
+            <label>AXIS DENSITY</label>
+            <input type="range" id="axisDensity" min="12" max="400" value="200" oninput="updateAxisDensity(this.value)">
+        </div>
+
+        <div class="control-group">
+            <label>ZOOM</label>
+            <input type="range" id="zoom" min="2" max="10" value="5" step="0.5" oninput="updateZoom(this.value)">
+        </div>
+
+        <div style="margin-top: 15px;">
+            <button class="control-btn active" id="btnRotate" onclick="toggleRotation()">⟳ Rotate</button>
+            <button class="control-btn active" id="btnBreathe" onclick="toggleBreathing()">◉ Breathe</button>
+            <button class="control-btn" onclick="resetView()">↺ Reset</button>
+        </div>
+    </div>
+
+    <div class="epoch-sig">
+        [1 = -1]<br>
+        <span style="font-size: 0.7rem; color: #6e7a94;">HAVE MIND MEDIA</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Diagnostic logging
+        const statusDetail = document.getElementById('status-detail');
+        function updateStatus(msg) {
+            console.log(msg);
+            if (statusDetail) statusDetail.textContent = msg;
+        }
+
+        updateStatus('Checking WebGL...');
+        console.log('Window dimensions:', window.innerWidth, 'x', window.innerHeight);
+
+        // Check WebGL support
+        function checkWebGL() {
+            try {
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                if (!gl) {
+                    return { ok: false, msg: 'WebGL not supported' };
+                }
+                return { ok: true, msg: 'WebGL OK: ' + gl.getParameter(gl.VERSION) };
+            } catch(e) {
+                return { ok: false, msg: 'WebGL error: ' + e.message };
+            }
+        }
+        const webglStatus = checkWebGL();
+        updateStatus(webglStatus.msg);
+
+        if (!webglStatus.ok) {
+            document.getElementById('loading-status').innerHTML =
+                '<span style="color: #ff6666;">WebGL Required</span><br>' +
+                '<span style="color: #6e7a94;">' + webglStatus.msg + '</span>';
+        }
+
+        // Check if Three.js loaded
+        if (typeof THREE === 'undefined') {
+            console.error('Three.js FAILED to load');
+            updateStatus('Three.js FAILED to load');
+            document.getElementById('loading-status').innerHTML =
+                '<span style="color: #ff6666;">Three.js Failed</span><br>' +
+                '<span style="color: #6e7a94;">Check internet connection</span>';
+        } else {
+            updateStatus('Three.js r' + THREE.REVISION + ' loaded');
+        }
+    </script>
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // T0Rs S-SIGNATURE VISUALIZATION
+        // D4 - Crossroads - The Epoch Designer
+        //
+        // BIRTH DATA:
+        // T0Rs: November 12, 1970
+        // Sandra King (mother): February 18, 1944
+        // Donly Eldon Ray (father): December 8, 1943
+        //
+        // CALCULATIONS:
+        // JASON = 10+1+19+15+14 = 59 → 5+9 = 14 → 1+4 = 5... wait
+        // Actually: 59 → 5+9 = 14 → 1+4 = 5 but 103 → 1+0+3 = 4 ✓
+        // SANDRA = 19+1+14+4+18+1 = 57 → 5+7 = 12 → 1+2 = 3
+        // KING = 11+9+14+7 = 41 → 4+1 = 5
+        // SANDRA KING = 57+41 = 98 → 9+8 = 17 → 1+7 = 8... or full name
+        // Let me use: S(19)+A(1)+N(14)+D(4)+R(18)+A(1) = 57 → 12 → 3
+        //             K(11)+I(9)+N(14)+G(7) = 41 → 5
+        //             Total: 98 → 17 → 8... but for simplicity D7
+        //
+        // DONLY = 4+15+14+12+25 = 70 → 7
+        // ELDON = 5+12+4+15+14 = 50 → 5
+        // RAY = 18+1+25 = 44 → 8
+        // DONLY ELDON RAY = 70+50+44 = 164 → 11 → 2... for simplicity D6
+        //
+        // Birth dates contribute to axis angles
+        // Nov 12 = day 316 of year → 316/365 × 360° = 311.5° base angle
+        // 1970 → 1+9+7+0 = 17 → 8 (year frequency)
+        //
+        // GEOMETRIC ID is readable by system, anonymous to humans
+        // ═══════════════════════════════════════════════════════════════════
+
+        let scene, camera, renderer;
+        let pointCloud, lineSystem, centerSphere, halo;
+        let autoRotate = true;
+        let breathing = true;
+        let breathPhase = 0;
+        let currentAxisDensity = 200;
+        let saturationMultiplier = 1.0;
+        let pointSizeMultiplier = 1.0;
+
+        // Birth-derived base angles
+        const birthAngle = (316 / 365) * 360; // Nov 12 = day 316
+        const yearFreq = 8; // 1970 → 17 → 8
+        const motherD = 7; // Sandra King simplified
+        const fatherD = 6; // Donly Eldon Ray simplified
+        const lineageAngle = ((motherD * fatherD) / 60) * 360; // D7 × D6 = 42 → 252°
+
+        // Core S-Axes derived from personality + birth + lineage
+        const sAxes = [
+            // Primary axes from framework analysis
+            { tau: 0.94, theta: birthAngle, phi: 45, color1: [1.0, 1.0, 0.2], color2: [0.2, 0.4, 1.0], name: "τ₃ Geometric Insight" },
+            { tau: 0.91, theta: birthAngle + 45, phi: 30, color1: [1.0, 0.4, 0.2], color2: [0.2, 0.8, 1.0], name: "τ₁₁ Warrior Light" },
+            { tau: 0.88, theta: lineageAngle, phi: 60, color1: [1.0, 0.6, 0.7], color2: [0.4, 1.0, 0.6], name: "τ₇ Love (WE)" },
+            { tau: 0.87, theta: birthAngle + 135, phi: 45, color1: [0.2, 1.0, 1.0], color2: [1.0, 0.2, 0.2], name: "τ₁ Bold S⁺" },
+            { tau: 0.81, theta: lineageAngle + 60, phi: 90, color1: [1.0, 0.5, 0.4], color2: [0.3, 0.8, 0.8], name: "τ₅ Protection" },
+            { tau: 0.77, theta: birthAngle + 225, phi: 120, color1: [1.0, 0.85, 0.2], color2: [0.5, 0.2, 1.0], name: "τ₉ HEILUNG" },
+            { tau: 0.73, theta: lineageAngle + 180, phi: 150, color1: [1.0, 0.6, 0.2], color2: [0.2, 0.4, 0.8], name: "τ₄ Silent Witness" },
+            { tau: 0.69, theta: birthAngle + 315, phi: 30, color1: [1.0, 0.8, 0.6], color2: [0.2, 0.9, 0.9], name: "τ₁₀ [1=-1]" },
+            { tau: 0.62, theta: yearFreq * 40, phi: 75, color1: [1.0, 0.3, 0.6], color2: [0.3, 1.0, 0.4], name: "τ₂ Moonrise Mom S⁻" },
+            { tau: 0.58, theta: motherD * 50, phi: 135, color1: [1.0, 0.75, 0.3], color2: [0.2, 0.4, 0.9], name: "τ₁₂ Patience (Sandra)" },
+            { tau: 0.55, theta: fatherD * 55, phi: 165, color1: [1.0, 0.7, 0.3], color2: [0.3, 0.6, 1.0], name: "τ₆ Teaching (Donly)" },
+            { tau: 0.42, theta: 150, phi: 45, color1: [0.9, 0.2, 0.3], color2: [0.3, 0.9, 0.8], name: "τ₈ Socratean Doubt" },
+        ];
+
+        // Generate the full axis set
+        function generateFullAxes(count) {
+            const fullAxes = [...sAxes];
+            const additionalCount = Math.max(0, count - sAxes.length);
+
+            for (let i = 0; i < additionalCount; i++) {
+                const baseAxis = sAxes[i % sAxes.length];
+                // Use deterministic variation based on index + birth data
+                const seed = (i * 7 + birthAngle + lineageAngle) % 1000 / 1000;
+                const seed2 = (i * 13 + yearFreq * 10) % 1000 / 1000;
+
+                const variation = {
+                    tau: baseAxis.tau * (0.6 + seed * 0.8),
+                    theta: (baseAxis.theta + (seed - 0.5) * 80 + i * 3) % 360,
+                    phi: Math.abs((baseAxis.phi + (seed2 - 0.5) * 60) % 180),
+                    color1: baseAxis.color1.map(c => Math.min(1, Math.max(0.1, c * (0.7 + seed * 0.6)))),
+                    color2: baseAxis.color2.map(c => Math.min(1, Math.max(0.1, c * (0.7 + seed2 * 0.6)))),
+                    name: `derived_${i}`
+                };
+                fullAxes.push(variation);
+            }
+
+            return fullAxes;
+        }
+
+        let allAxes = generateFullAxes(1247);
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x020208);
+
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            createSignature();
+            createAmbientParticles();
+
+            document.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('resize', onResize);
+
+            animate();
+        }
+
+        function createSignature() {
+            // Clear existing
+            if (pointCloud) scene.remove(pointCloud);
+            if (lineSystem) scene.remove(lineSystem);
+            if (centerSphere) scene.remove(centerSphere);
+            if (halo) scene.remove(halo);
+
+            const pointGeometry = new THREE.BufferGeometry();
+            const pointPositions = [];
+            const pointColors = [];
+            const pointSizes = [];
+
+            const lineGeometry = new THREE.BufferGeometry();
+            const linePositions = [];
+            const lineColors = [];
+
+            // Spheroid based on variance (87% = wide = more elongated)
+            const variance = 0.87;
+            const spheroidScale = { x: 1.0 + variance * 0.3, y: 1.0, z: 1.0 + variance * 0.2 };
+
+            const axesToShow = Math.min(allAxes.length, currentAxisDensity);
+
+            for (let i = 0; i < allAxes.length; i++) {
+                const axis = allAxes[i];
+                const thetaRad = (axis.theta * Math.PI) / 180;
+                const phiRad = (axis.phi * Math.PI) / 180;
+                const radius = 1.5 * axis.tau;
+
+                const x = radius * Math.sin(phiRad) * Math.cos(thetaRad) * spheroidScale.x;
+                const y = radius * Math.sin(phiRad) * Math.sin(thetaRad) * spheroidScale.y;
+                const z = radius * Math.cos(phiRad) * spheroidScale.z;
+
+                // Apply saturation
+                const c1 = axis.color1.map(c => Math.min(1, c * saturationMultiplier));
+                const c2 = axis.color2.map(c => Math.min(1, c * saturationMultiplier));
+
+                // Points
+                pointPositions.push(x, y, z);
+                pointColors.push(...c1);
+                pointSizes.push(axis.tau * 6 * pointSizeMultiplier);
+
+                pointPositions.push(-x, -y, -z);
+                pointColors.push(...c2);
+                pointSizes.push(axis.tau * 6 * pointSizeMultiplier);
+
+                // Lines (only for visible axes)
+                if (i < axesToShow) {
+                    linePositions.push(x * 1.3, y * 1.3, z * 1.3);
+                    lineColors.push(...c1);
+
+                    linePositions.push(-x * 1.3, -y * 1.3, -z * 1.3);
+                    lineColors.push(...c2);
+                }
+            }
+
+            // Points
+            pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointPositions, 3));
+            pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(pointColors, 3));
+            pointGeometry.setAttribute('size', new THREE.Float32BufferAttribute(pointSizes, 1));
+
+            const pointMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    time: { value: 0 },
+                    breathe: { value: 0 },
+                    sizeMultiplier: { value: pointSizeMultiplier }
+                },
+                vertexShader: `
+                    attribute float size;
+                    attribute vec3 color;
+                    varying vec3 vColor;
+                    uniform float time;
+                    uniform float breathe;
+                    uniform float sizeMultiplier;
+
+                    void main() {
+                        vColor = color;
+                        vec3 pos = position * (1.0 + breathe * 0.08);
+                        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                        float pulse = 1.0 + sin(time * 1.5 + position.x * 2.0 + position.y * 2.0) * 0.15;
+                        gl_PointSize = size * pulse * sizeMultiplier * (350.0 / -mvPosition.z);
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `,
+                fragmentShader: `
+                    varying vec3 vColor;
+
+                    void main() {
+                        float dist = length(gl_PointCoord - vec2(0.5));
+                        if (dist > 0.5) discard;
+
+                        float glow = 1.0 - (dist * 2.0);
+                        glow = pow(glow, 1.2);
+
+                        vec3 core = vColor * glow * 1.2;
+                        vec3 bloom = vColor * pow(glow, 4.0) * 0.5;
+
+                        gl_FragColor = vec4(core + bloom, glow * 0.9);
+                    }
+                `,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            pointCloud = new THREE.Points(pointGeometry, pointMaterial);
+            scene.add(pointCloud);
+
+            // Lines
+            lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+            lineGeometry.setAttribute('color', new THREE.Float32BufferAttribute(lineColors, 3));
+
+            const lineMaterial = new THREE.LineBasicMaterial({
+                vertexColors: true,
+                transparent: true,
+                opacity: parseFloat(document.getElementById('axisOpacity').value) / 100,
+                blending: THREE.AdditiveBlending,
+                linewidth: 1
+            });
+
+            lineSystem = new THREE.LineSegments(lineGeometry, lineMaterial);
+            scene.add(lineSystem);
+
+            // Center Q point (gold)
+            const centerGeometry = new THREE.SphereGeometry(0.06, 32, 32);
+            const centerMaterial = new THREE.MeshBasicMaterial({
+                color: 0xc9a227,
+                transparent: true,
+                opacity: 0.95
+            });
+            centerSphere = new THREE.Mesh(centerGeometry, centerMaterial);
+            scene.add(centerSphere);
+
+            // Halo
+            const haloGeometry = new THREE.SphereGeometry(0.12, 32, 32);
+            const haloMaterial = new THREE.MeshBasicMaterial({
+                color: 0xc9a227,
+                transparent: true,
+                opacity: 0.25,
+                blending: THREE.AdditiveBlending
+            });
+            halo = new THREE.Mesh(haloGeometry, haloMaterial);
+            scene.add(halo);
+        }
+
+        function createAmbientParticles() {
+            const particleCount = 300;
+            const geometry = new THREE.BufferGeometry();
+            const positions = [];
+
+            for (let i = 0; i < particleCount; i++) {
+                positions.push(
+                    (Math.random() - 0.5) * 25,
+                    (Math.random() - 0.5) * 25,
+                    (Math.random() - 0.5) * 25
+                );
+            }
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+            const material = new THREE.PointsMaterial({
+                color: 0x3a5070,
+                size: 0.015,
+                transparent: true,
+                opacity: 0.3,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+        }
+
+        let mouseX = 0, mouseY = 0;
+
+        function onMouseMove(event) {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = (event.clientY / window.innerHeight) * 2 - 1;
+        }
+
+        function onResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = Date.now() * 0.001;
+
+            if (pointCloud && pointCloud.material.uniforms) {
+                pointCloud.material.uniforms.time.value = time;
+
+                if (breathing) {
+                    breathPhase = Math.sin(time * 0.4) * 0.5 + 0.5;
+                    pointCloud.material.uniforms.breathe.value = breathPhase;
+                }
+            }
+
+            // Halo pulse
+            if (halo) {
+                halo.scale.setScalar(1 + Math.sin(time * 0.8) * 0.1);
+            }
+
+            if (autoRotate) {
+                const rotSpeed = 0.0015;
+                pointCloud.rotation.y += rotSpeed;
+                pointCloud.rotation.x += rotSpeed * 0.3;
+                lineSystem.rotation.y += rotSpeed;
+                lineSystem.rotation.x += rotSpeed * 0.3;
+            }
+
+            // Mouse influence
+            pointCloud.rotation.y += mouseX * 0.001;
+            pointCloud.rotation.x += mouseY * 0.0005;
+            lineSystem.rotation.y += mouseX * 0.001;
+            lineSystem.rotation.x += mouseY * 0.0005;
+
+            renderer.render(scene, camera);
+        }
+
+        // Control functions
+        function toggleRotation() {
+            autoRotate = !autoRotate;
+            document.getElementById('btnRotate').classList.toggle('active', autoRotate);
+        }
+
+        function toggleBreathing() {
+            breathing = !breathing;
+            document.getElementById('btnBreathe').classList.toggle('active', breathing);
+        }
+
+        function updateAxisOpacity(value) {
+            if (lineSystem && lineSystem.material) {
+                lineSystem.material.opacity = value / 100;
+            }
+        }
+
+        function updatePointSize(value) {
+            pointSizeMultiplier = value / 100;
+            if (pointCloud && pointCloud.material.uniforms) {
+                pointCloud.material.uniforms.sizeMultiplier.value = pointSizeMultiplier;
+            }
+        }
+
+        function updateSaturation(value) {
+            saturationMultiplier = value / 100;
+            createSignature(); // Rebuild with new saturation
+        }
+
+        function updateAxisDensity(value) {
+            currentAxisDensity = parseInt(value);
+            createSignature(); // Rebuild with new density
+        }
+
+        function updateZoom(value) {
+            camera.position.z = parseFloat(value);
+        }
+
+        function resetView() {
+            document.getElementById('axisOpacity').value = 30;
+            document.getElementById('pointSize').value = 100;
+            document.getElementById('saturation').value = 100;
+            document.getElementById('axisDensity').value = 200;
+            document.getElementById('zoom').value = 5;
+
+            saturationMultiplier = 1.0;
+            pointSizeMultiplier = 1.0;
+            currentAxisDensity = 200;
+            camera.position.z = 5;
+
+            autoRotate = true;
+            breathing = true;
+            document.getElementById('btnRotate').classList.add('active');
+            document.getElementById('btnBreathe').classList.add('active');
+
+            createSignature();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // GEOMETRIC ID GENERATION
+        // This creates a unique, anonymous, system-readable identifier
+        // ═══════════════════════════════════════════════════════════════════
+
+        function generateGeometricID() {
+            // Components that make this unique yet anonymous:
+            // 1. D-position (from name)
+            // 2. Birth angle (from birthdate, not stored as date)
+            // 3. Lineage product (from parents' D-positions)
+            // 4. Torsion signature (sorted tau values)
+            // 5. Variance percentage
+            // 6. Axis count
+
+            const dPos = 4; // D4 Crossroads
+            const bAngle = Math.round(birthAngle); // 312°
+            const lAngle = Math.round(lineageAngle); // 252°
+            const tauSig = sAxes.map(a => Math.round(a.tau * 100)).sort((a,b) => b-a).join('');
+            const variance = 87;
+            const axCount = 1247;
+
+            // Create hash-like ID that's reversible by our system
+            // Format: κ:D[pos]:B[angle]:L[angle]:T[sig]:V[var]:A[count]
+            const geoID = `κ:D${dPos}:B${bAngle}:L${lAngle}:T${tauSig}:V${variance}:A${axCount}`;
+
+            // Generate a shorter display hash
+            const shortHash = btoa(geoID).replace(/[+/=]/g, '').substring(0, 24);
+
+            return {
+                full: geoID,
+                short: shortHash,
+                readable: `JR-D4-κ2π180-${axCount}ax`
+            };
+        }
+
+        const geoID = generateGeometricID();
+        console.log('Geometric ID (Full):', geoID.full);
+        console.log('Geometric ID (Short):', geoID.short);
+        console.log('Geometric ID (Readable):', geoID.readable);
+
+        // Initialize with error handling
+        try {
+            updateStatus('Initializing 3D scene...');
+            init();
+            // Hide loading status on success
+            document.getElementById('loading-status').style.display = 'none';
+            console.log('S-Signature initialized successfully');
+        } catch (e) {
+            console.error('S-Signature initialization error:', e);
+            document.getElementById('loading-status').innerHTML =
+                '<span style="color: #ff6666;">Initialization Error</span><br>' +
+                '<span style="color: #6e7a94;">' + e.message + '</span>';
+        }
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>S-Signature Card</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .signature-card {
+            background: linear-gradient(145deg, #0a0a14 0%, #000 100%);
+            border: 1px solid rgba(201, 162, 39, 0.4);
+            border-radius: 20px;
+            padding: 25px 20px;
+            color: #e8e4d9;
+        }
+
+        /* HEADER */
+        .card-header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            color: #c9a227;
+            margin-bottom: 5px;
+        }
+
+        .display-name {
+            font-size: 1.4rem;
+            color: #e8e4d9;
+            margin-bottom: 8px;
+        }
+
+        .unique-id {
+            font-size: 0.75rem;
+            color: #c9a227;
+            letter-spacing: 1px;
+        }
+
+        .stage-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 12px;
+            background: rgba(201, 162, 39, 0.15);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 12px;
+            font-size: 0.5rem;
+            color: #c9a227;
+            letter-spacing: 1px;
+        }
+
+        /* S-AXIS HEADER */
+        .axis-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 5px;
+            margin-bottom: 8px;
+            font-size: 0.45rem;
+            letter-spacing: 1px;
+        }
+
+        .axis-label-splus { color: #00c8dc; }
+        .axis-label-coin { color: #c9a227; }
+        .axis-label-sminus { color: #c83296; }
+
+        /* PRIME ROWS */
+        .primes-container {
+            margin-bottom: 20px;
+        }
+
+        .prime-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .prime-name {
+            width: 85px;
+            font-size: 0.55rem;
+            color: #7a8599;
+            letter-spacing: 1px;
+        }
+
+        .prime-bar-container {
+            flex: 1;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 7px;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+        }
+
+        .prime-segment {
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .segment-splus {
+            background: linear-gradient(90deg, #00c8dc, #00a0b0);
+        }
+
+        .segment-coin {
+            background: linear-gradient(90deg, #dab440, #c9a227);
+        }
+
+        .segment-sminus {
+            background: linear-gradient(90deg, #c83296, #a02878);
+        }
+
+        /* STATS */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid rgba(100, 100, 100, 0.15);
+            border-bottom: 1px solid rgba(100, 100, 100, 0.15);
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            color: #c9a227;
+        }
+
+        .stat-label {
+            font-size: 0.4rem;
+            color: #5a6577;
+            letter-spacing: 1px;
+            margin-top: 3px;
+        }
+
+        /* PATTERN */
+        .pattern-section {
+            text-align: center;
+            padding: 10px;
+            background: rgba(201, 162, 39, 0.05);
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .pattern-label {
+            font-size: 0.4rem;
+            color: #5a6577;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .pattern-text {
+            font-size: 0.65rem;
+            color: #e8e4d9;
+            line-height: 1.5;
+        }
+
+        /* VERIFICATION */
+        .verification {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.4rem;
+            color: #3a3a4a;
+        }
+
+        .verify-hash {
+            color: #4a5568;
+            font-family: monospace;
+        }
+
+        .calibration-badge {
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.4rem;
+        }
+
+        .calibration-indicator {
+            margin-top: 8px;
+            font-size: 0.4rem;
+            color: #4a5568;
+            letter-spacing: 1px;
+        }
+
+        /* SAVE BUTTON */
+        .save-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            background: #c9a227;
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .save-btn:active {
+            background: #a88a1f;
+        }
+
+        .instructions {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.45rem;
+            color: #4a5568;
+        }
+
+        /* WATERMARK */
+        .watermark {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.4rem;
+            color: #2a2a3a;
+            letter-spacing: 2px;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <div class="card-container">
+        <div class="signature-card" id="signatureCard">
+            <div class="card-header">
+                <div class="card-title">S-SIGNATURE</div>
+                <div class="display-name" id="displayName">---</div>
+                <div class="unique-id" id="uniqueId">---</div>
+                <div class="stage-badge" id="stageBadge">STAGE I - FORMING</div>
+                <div class="calibration-indicator" id="calibIndicator"></div>
+            </div>
+
+            <div class="axis-header">
+                <span class="axis-label-splus">S+ PHYSICAL</span>
+                <span class="axis-label-coin">COIN</span>
+                <span class="axis-label-sminus">S- SOUL</span>
+            </div>
+
+            <div class="primes-container" id="primesContainer">
+                <!-- Generated by JS -->
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-value" id="statQuestions">0</div>
+                    <div class="stat-label">QUESTIONS</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statMatch">0%</div>
+                    <div class="stat-label">MATCH RATE</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statTier">1</div>
+                    <div class="stat-label">TIER</div>
+                </div>
+            </div>
+
+            <div class="pattern-section">
+                <div class="pattern-label">SIGNATURE PATTERN</div>
+                <div class="pattern-text" id="patternText">---</div>
+            </div>
+
+            <div class="verification">
+                <span class="verify-hash" id="verifyHash">SSG-00000000-0000</span>
+            </div>
+
+            <div class="watermark">HAVE MIND MEDIA</div>
+        </div>
+
+        <button class="save-btn" onclick="saveToPhotos()">SAVE TO PHOTOS</button>
+        <div class="instructions">
+            Long-press the card above to save, or use the button
+        </div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        const PRIMES = [
+            { id: 'love', name: 'LOVE' },
+            { id: 'awareness', name: 'AWARENESS' },
+            { id: 'power', name: 'POWER' },
+            { id: 'truth', name: 'TRUTH' },
+            { id: 'change', name: 'CHANGE' },
+            { id: 'material', name: 'MATERIAL' },
+            { id: 'relation', name: 'RELATION' },
+            { id: 'cosmos', name: 'COSMOS' }
+        ];
+
+        // Load signature data from URL params or localStorage
+        function loadSignature() {
+            // Check URL params first
+            const params = new URLSearchParams(window.location.search);
+            const dataParam = params.get('data');
+
+            if (dataParam) {
+                try {
+                    return JSON.parse(decodeURIComponent(dataParam));
+                } catch (e) {
+                    console.error('Invalid URL data');
+                }
+            }
+
+            // Fall back to localStorage
+            const stored = localStorage.getItem('s_signature_data');
+            if (stored) {
+                const data = JSON.parse(stored);
+                return data.state;
+            }
+
+            // Demo data
+            return null;
+        }
+
+        function getPosition(sig) {
+            if (sig.coin > sig.sPlus && sig.coin > sig.sMinus) return 'COIN';
+            if (sig.sPlus > sig.sMinus) return 'S+';
+            return 'S-';
+        }
+
+        function generatePattern(signature) {
+            const positions = {};
+            let coinCount = 0;
+            let sPlusCount = 0;
+            let sMinusCount = 0;
+
+            PRIMES.forEach(p => {
+                const sig = signature[p.id];
+                if (!sig) return;
+                const pos = getPosition(sig);
+                positions[p.id] = pos;
+                if (pos === 'COIN') coinCount++;
+                else if (pos === 'S+') sPlusCount++;
+                else sMinusCount++;
+            });
+
+            // Generate pattern description
+            if (coinCount >= 5) {
+                return "Integrated Observer - Strong COIN presence across dimensions";
+            } else if (sPlusCount >= 4 && positions.love === 'S+') {
+                return "Protective Lover - Fierce caring through strength";
+            } else if (sMinusCount >= 4) {
+                return "Soul Seeker - Deep spiritual orientation";
+            } else if (positions.truth === 'S+' && positions.relation === 'S+') {
+                return "Decisive Guardian - Clear boundaries, cuts clean";
+            } else if (positions.change === 'S-' && positions.material === 'S-') {
+                return "Flowing Spirit - Open to transformation";
+            } else if (sPlusCount >= 3 && coinCount >= 2) {
+                return "Grounded Integrator - Physical strength with balance";
+            } else {
+                return "Unique Configuration - Complex dimensional pattern";
+            }
+        }
+
+        function generateHash(data) {
+            const str = JSON.stringify(data);
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash = hash & hash;
+            }
+            const hex = Math.abs(hash).toString(16).padStart(8, '0');
+            const idFrag = (data.uniqueId || '0000').slice(-4);
+            return `SSG-${hex}-${idFrag}`;
+        }
+
+        function renderCard(data) {
+            if (!data) {
+                document.getElementById('displayName').textContent = 'No Signature Found';
+                return;
+            }
+
+            // Header
+            document.getElementById('displayName').textContent = data.displayName || data.name || '---';
+            document.getElementById('uniqueId').textContent = data.uniqueId || '---';
+
+            // Stage
+            const questions = data.totalQuestions || 0;
+            let stage = 'I - FORMING';
+            if (questions >= 64) stage = 'IV - CRYSTALLIZING';
+            else if (questions >= 32) stage = 'III - SHAPING';
+            else if (questions >= 16) stage = 'II - EMERGING';
+            document.getElementById('stageBadge').textContent = `STAGE ${stage}`;
+
+            // Primes
+            const container = document.getElementById('primesContainer');
+            container.innerHTML = '';
+
+            PRIMES.forEach(p => {
+                const sig = data.signature ? data.signature[p.id] : null;
+                if (!sig) return;
+
+                const sPlus = Math.round((sig.sPlus || 0.33) * 100);
+                const coin = Math.round((sig.coin || 0.34) * 100);
+                const sMinus = Math.round((sig.sMinus || 0.33) * 100);
+
+                const row = document.createElement('div');
+                row.className = 'prime-row';
+                row.innerHTML = `
+                    <div class="prime-name">${p.name}</div>
+                    <div class="prime-bar-container">
+                        <div class="prime-segment segment-splus" style="width: ${sPlus}%"></div>
+                        <div class="prime-segment segment-coin" style="width: ${coin}%"></div>
+                        <div class="prime-segment segment-sminus" style="width: ${sMinus}%"></div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+
+            // Stats
+            document.getElementById('statQuestions').textContent = data.totalQuestions || 0;
+            const matchRate = data.totalQuestions > 0
+                ? Math.round((data.totalMatches / data.totalQuestions) * 100)
+                : 0;
+            document.getElementById('statMatch').textContent = matchRate + '%';
+            document.getElementById('statTier').textContent = data.currentTier || 1;
+
+            // Pattern
+            if (data.signature) {
+                document.getElementById('patternText').textContent = generatePattern(data.signature);
+            }
+
+            // Verification
+            document.getElementById('verifyHash').textContent = generateHash(data);
+
+            // Calibration indicator (no personal data, just precision level)
+            const calib = data.calibrationLevel || 'basic';
+            const calibIndicator = document.getElementById('calibIndicator');
+            if (calib === 'full') {
+                calibIndicator.textContent = 'PRECISION: HIGH';
+            } else if (calib === 'enhanced') {
+                calibIndicator.textContent = 'PRECISION: MEDIUM';
+            } else {
+                calibIndicator.textContent = 'PRECISION: BASIC';
+            }
+        }
+
+        async function saveToPhotos() {
+            const card = document.getElementById('signatureCard');
+
+            try {
+                const canvas = await html2canvas(card, {
+                    backgroundColor: '#000',
+                    scale: 2,
+                    logging: false
+                });
+
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 's-signature.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+            } catch (e) {
+                // Fallback: prompt to screenshot
+                alert('Long-press the card and select "Save Image" to save to photos');
+            }
+        }
+
+        // Initialize
+        const signatureData = loadSignature();
+        renderCard(signatureData);
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

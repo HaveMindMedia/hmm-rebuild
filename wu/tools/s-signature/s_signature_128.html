@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Signature | 128 Dimensions</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 270px 1fr 270px;
+            min-height: 100vh;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           LEFT PANEL - PRIMES
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .left-panel {
+            background: rgba(5, 5, 15, 0.98);
+            border-right: 1px solid rgba(100, 100, 100, 0.15);
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .panel-header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .panel-header h1 {
+            font-size: 0.9rem;
+            color: #c9a227;
+            letter-spacing: 4px;
+        }
+
+        .panel-header .sub {
+            font-size: 0.5rem;
+            color: #4a5568;
+            margin-top: 5px;
+        }
+
+        .prime-section {
+            margin-bottom: 15px;
+        }
+
+        .prime-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            background: rgba(201, 162, 39, 0.08);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .prime-header:hover {
+            background: rgba(201, 162, 39, 0.15);
+        }
+
+        .prime-header.active {
+            background: rgba(201, 162, 39, 0.2);
+            border-left: 2px solid #c9a227;
+        }
+
+        .prime-name {
+            font-size: 0.65rem;
+            color: #c9a227;
+            letter-spacing: 1px;
+        }
+
+        .prime-summary {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mini-bar {
+            width: 60px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .mini-bar-fill {
+            position: absolute;
+            height: 100%;
+            transition: all 0.3s;
+        }
+
+        .prime-count {
+            font-size: 0.45rem;
+            color: #5a6577;
+        }
+
+        .aspect-list {
+            display: none;
+            padding: 8px 0 8px 12px;
+        }
+
+        .aspect-list.visible {
+            display: block;
+        }
+
+        .aspect-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 8px;
+            margin: 3px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .aspect-item:hover {
+            background: rgba(100, 100, 100, 0.15);
+        }
+
+        .aspect-item.selected {
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        .aspect-name {
+            font-size: 0.55rem;
+            color: #7a8599;
+        }
+
+        .aspect-depth {
+            font-size: 0.4rem;
+            color: #4a5568;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           CENTER - SPHERE
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .center-panel {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sphere-header {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 1px solid rgba(100, 100, 100, 0.1);
+        }
+
+        .identity-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(0, 200, 220, 0.05));
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 20px;
+            padding: 10px 25px;
+        }
+
+        .badge-name {
+            font-size: 1rem;
+            color: #e8e4d9;
+        }
+
+        .badge-id {
+            font-size: 0.6rem;
+            color: #c9a227;
+            margin-top: 3px;
+        }
+
+        .badge-stage {
+            font-size: 0.45rem;
+            color: #5a6577;
+            margin-top: 5px;
+        }
+
+        #sphereCanvas {
+            flex: 1;
+            width: 100%;
+        }
+
+        .sphere-controls {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(100, 100, 100, 0.2);
+        }
+
+        .ctrl-btn {
+            background: rgba(201, 162, 39, 0.15);
+            border: 1px solid rgba(201, 162, 39, 0.4);
+            color: #c9a227;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(201, 162, 39, 0.3);
+        }
+
+        .ctrl-btn.active {
+            background: #c9a227;
+            color: #000;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           RIGHT PANEL - DETAIL
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .right-panel {
+            background: rgba(5, 5, 15, 0.98);
+            border-left: 1px solid rgba(100, 100, 100, 0.15);
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-header {
+            font-size: 0.55rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.15);
+        }
+
+        /* THREE-ZONE LINE VISUALIZATION */
+        .parameter-line {
+            margin: 10px 0;
+        }
+
+        .param-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.5rem;
+            margin-bottom: 4px;
+        }
+
+        .param-name {
+            color: #7a8599;
+        }
+
+        .param-depth {
+            color: #4a5568;
+        }
+
+        .three-zone-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zone {
+            position: absolute;
+            height: 100%;
+            transition: all 0.4s ease-out;
+        }
+
+        .zone.splus {
+            left: 0;
+            background: linear-gradient(90deg, #00c8dc, #00a8b8);
+            border-radius: 5px 0 0 5px;
+        }
+
+        .zone.coin {
+            background: linear-gradient(90deg, #dab440, #c9a227);
+        }
+
+        .zone.sminus {
+            right: 0;
+            background: linear-gradient(90deg, #c83296, #a02878);
+            border-radius: 0 5px 5px 0;
+        }
+
+        .zone-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.4rem;
+            color: #3a3a4a;
+            margin-top: 2px;
+        }
+
+        /* COLOR LEGEND */
+        .color-legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.45rem;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.splus { background: #00c8dc; }
+        .legend-dot.coin { background: #c9a227; }
+        .legend-dot.sminus { background: #c83296; }
+
+        .legend-label { color: #6e7a94; }
+
+        /* STATS */
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(100, 100, 100, 0.1);
+            font-size: 0.5rem;
+        }
+
+        .stat-label { color: #5a6577; }
+        .stat-value { color: #9ba4b8; }
+        .stat-value.high { color: #7dd87d; }
+        .stat-value.low { color: #c77daa; }
+
+        /* INPUT MODE */
+        .input-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-overlay.hidden {
+            display: none;
+        }
+
+        .input-card {
+            background: rgba(10, 10, 25, 0.98);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 15px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .input-card h2 {
+            font-size: 0.8rem;
+            color: #c9a227;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.55rem;
+            color: #6e7a94;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            border-radius: 8px;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: rgba(201, 162, 39, 0.5);
+        }
+
+        .generated-id-display {
+            text-align: center;
+            padding: 15px;
+            background: rgba(201, 162, 39, 0.08);
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .gen-label {
+            font-size: 0.45rem;
+            color: #5a6577;
+            margin-bottom: 5px;
+        }
+
+        .gen-value {
+            font-size: 1rem;
+            color: #c9a227;
+            letter-spacing: 1px;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 14px;
+            background: #c9a227;
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .start-btn:hover {
+            background: #d4af37;
+        }
+
+        .start-btn:disabled {
+            background: #4a4a4a;
+            cursor: not-allowed;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <!-- IDENTITY INPUT OVERLAY -->
+    <div class="input-overlay" id="inputOverlay">
+        <div class="input-card">
+            <h2>S-SIGNATURE</h2>
+            <div class="input-group">
+                <label>What would you like to be called?</label>
+                <input type="text" id="nameInput" placeholder="Your name..." oninput="generateId()">
+            </div>
+            <div class="input-group">
+                <label>Birth date (optional)</label>
+                <input type="date" id="birthInput" onchange="generateId()">
+            </div>
+            <div class="generated-id-display">
+                <div class="gen-label">YOUR UNIQUE IDENTIFIER</div>
+                <div class="gen-value" id="genId">---</div>
+            </div>
+            <button class="start-btn" id="startBtn" onclick="startSignature()" disabled>BEGIN</button>
+        </div>
+    </div>
+
+    <!-- MAIN INTERFACE -->
+    <div class="main-container">
+        <!-- LEFT: PRIMES -->
+        <div class="left-panel">
+            <div class="panel-header">
+                <h1>PRIMES</h1>
+                <div class="sub">8 fundamental dimensions</div>
+            </div>
+            <div id="primesList"></div>
+        </div>
+
+        <!-- CENTER: SPHERE -->
+        <div class="center-panel">
+            <div class="sphere-header">
+                <div class="identity-badge">
+                    <div class="badge-name" id="displayName">---</div>
+                    <div class="badge-id" id="displayId">---</div>
+                    <div class="badge-stage" id="displayStage">STAGE I - FORMING</div>
+                </div>
+            </div>
+            <canvas id="sphereCanvas"></canvas>
+            <div class="sphere-controls">
+                <button class="ctrl-btn active" onclick="setView('primes')">PRIMES</button>
+                <button class="ctrl-btn" onclick="setView('aspects')">ASPECTS</button>
+                <button class="ctrl-btn" onclick="setView('full')">FULL 128</button>
+                <button class="ctrl-btn" onclick="toggleRotate()">PAUSE</button>
+            </div>
+        </div>
+
+        <!-- RIGHT: DETAIL -->
+        <div class="right-panel">
+            <div class="detail-section">
+                <div class="detail-header">SELECTED DIMENSION</div>
+                <div id="selectedDetail">
+                    <p style="font-size: 0.5rem; color: #4a5568;">Click a prime or aspect to view details</p>
+                </div>
+            </div>
+
+            <div class="color-legend">
+                <div class="legend-item">
+                    <div class="legend-dot splus"></div>
+                    <span class="legend-label">S+ Physical</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot coin"></div>
+                    <span class="legend-label">COIN Balance</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot sminus"></div>
+                    <span class="legend-label">S- Soul</span>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-header">SIGNATURE STATS</div>
+                <div id="statsPanel">
+                    <div class="stat-row">
+                        <span class="stat-label">Parameters Active</span>
+                        <span class="stat-value" id="statActive">16 / 128</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Overall Position</span>
+                        <span class="stat-value" id="statPosition">Centered</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Coin Integration</span>
+                        <span class="stat-value" id="statCoin">42%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Development</span>
+                        <span class="stat-value" id="statDev">Seed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-header">PARAMETER LINES</div>
+                <div id="parameterLines"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // 128 PARAMETER DEFINITIONS
+        // ═══════════════════════════════════════════════════════════════════
+
+        const PRIMES = [
+            { id: 'love', name: 'LOVE', hue: 340, aspects: ['Self-Love', 'Love of Other', 'Love of World', 'Love of Truth'] },
+            { id: 'awareness', name: 'AWARENESS', hue: 200, aspects: ['Physical', 'Mental', 'Emotional', 'Soul'] },
+            { id: 'power', name: 'POWER', hue: 30, aspects: ['Personal', 'Relational', 'Creative', 'Transformative'] },
+            { id: 'truth', name: 'TRUTH', hue: 60, aspects: ['Factual', 'Personal', 'Relational', 'Universal'] },
+            { id: 'change', name: 'CHANGE', hue: 160, aspects: ['Personal', 'Relational', 'World', 'Eternal'] },
+            { id: 'material', name: 'MATERIAL', hue: 280, aspects: ['Resources', 'Body', 'Environment', 'Tools'] },
+            { id: 'relation', name: 'RELATION', hue: 120, aspects: ['Boundaries', 'Intimacy', 'Community', 'Humanity'] },
+            { id: 'cosmos', name: 'COSMOS', hue: 240, aspects: ['Meaning', 'Mystery', 'Sacred', 'Absolute'] }
+        ];
+
+        const DEPTHS = ['Seed', 'Growing', 'Flowering', 'Mastery'];
+
+        // Generate all 128 parameters
+        const PARAMETERS = [];
+        let paramId = 0;
+        PRIMES.forEach((prime, pIdx) => {
+            prime.aspects.forEach((aspect, aIdx) => {
+                DEPTHS.forEach((depth, dIdx) => {
+                    PARAMETERS.push({
+                        id: paramId++,
+                        primeId: prime.id,
+                        primeName: prime.name,
+                        primeIndex: pIdx,
+                        aspectName: aspect,
+                        aspectIndex: aIdx,
+                        depth: depth,
+                        depthIndex: dIdx,
+                        hue: prime.hue,
+                        // Initial values (will be set by user interaction)
+                        sPlusRatio: 0.33,
+                        coinRatio: 0.34,
+                        sMinusRatio: 0.33,
+                        development: 0, // 0-1
+                        unlocked: dIdx === 0 && aIdx === 0 // Only first depth of first aspect unlocked initially
+                    });
+                });
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════════
+        // STATE
+        // ═══════════════════════════════════════════════════════════════════
+
+        let state = {
+            name: '',
+            uniqueId: '',
+            birthDate: null,
+            stage: 1,
+            selectedPrime: null,
+            selectedAspect: null,
+            viewMode: 'primes', // primes, aspects, full
+            autoRotate: true
+        };
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SYMBOLS FOR ID
+        // ═══════════════════════════════════════════════════════════════════
+
+        const SYMBOLS = ['◬', '⫯', '∮', '⧉', '△', '⃝', '∯', '⫲', '⧫', '◭', '∲', '⧊', '⫳', '⃟',
+                         '◇', '⟁', '⟐', '⧖', '⧗', '⬡', '⬢', '◎', '⊛', '⊕', '⊗', '⊙', '⊚'];
+
+        const WORDS = ['soul', 'mind', 'echo', 'wave', 'light', 'path', 'seed', 'root',
+                       'flux', 'drift', 'pulse', 'glow', 'veil', 'edge', 'core', 'axis'];
+
+        const ASPECTS_WORDS = ['crossed', 'rising', 'seeking', 'turning', 'weaving', 'bridging',
+                               'sailing', 'dancing', 'holding', 'reaching', 'standing', 'walking'];
+
+        function generateId() {
+            const name = document.getElementById('nameInput').value;
+            const birth = document.getElementById('birthInput').value;
+
+            state.name = name;
+            state.birthDate = birth;
+
+            if (!name) {
+                document.getElementById('genId').textContent = '---';
+                document.getElementById('startBtn').disabled = true;
+                return;
+            }
+
+            let hash = 0;
+            const seed = name + birth + 'salt';
+            for (let i = 0; i < seed.length; i++) {
+                hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+                hash = hash & hash;
+            }
+
+            const w1 = WORDS[Math.abs(hash) % WORDS.length];
+            const asp = ASPECTS_WORDS[Math.abs(hash >> 8) % ASPECTS_WORDS.length];
+            const w2 = WORDS[Math.abs(hash >> 16) % WORDS.length];
+
+            let symbols = '';
+            for (let i = 0; i < 4; i++) {
+                symbols += SYMBOLS[Math.abs(hash >> (i * 5)) % SYMBOLS.length];
+            }
+
+            state.uniqueId = `${w1}${asp}${w2}${symbols}`;
+            document.getElementById('genId').textContent = state.uniqueId;
+            document.getElementById('startBtn').disabled = false;
+        }
+
+        function startSignature() {
+            document.getElementById('inputOverlay').classList.add('hidden');
+            document.getElementById('displayName').textContent = state.name;
+            document.getElementById('displayId').textContent = state.uniqueId;
+
+            // Generate random signature for demo (would come from questions in real version)
+            generateRandomSignature();
+            renderPrimes();
+            initSphere();
+            updateStats();
+        }
+
+        function generateRandomSignature() {
+            // For demo: assign random values weighted toward center
+            PARAMETERS.forEach(p => {
+                if (p.unlocked) {
+                    // Random position with slight coin bias
+                    const rand = Math.random();
+                    p.sPlusRatio = 0.2 + Math.random() * 0.3;
+                    p.sMinusRatio = 0.2 + Math.random() * 0.3;
+                    p.coinRatio = 1 - p.sPlusRatio - p.sMinusRatio;
+                    p.development = 0.3 + Math.random() * 0.5;
+                }
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // RENDER PRIMES LIST
+        // ═══════════════════════════════════════════════════════════════════
+
+        function renderPrimes() {
+            const container = document.getElementById('primesList');
+
+            container.innerHTML = PRIMES.map((prime, pIdx) => {
+                const primeParams = PARAMETERS.filter(p => p.primeId === prime.id);
+                const unlockedCount = primeParams.filter(p => p.unlocked).length;
+
+                // Calculate aggregate position for mini-bar
+                const unlocked = primeParams.filter(p => p.unlocked);
+                let avgSPlus = 0, avgCoin = 0, avgSMinus = 0;
+                if (unlocked.length > 0) {
+                    unlocked.forEach(p => {
+                        avgSPlus += p.sPlusRatio;
+                        avgCoin += p.coinRatio;
+                        avgSMinus += p.sMinusRatio;
+                    });
+                    avgSPlus /= unlocked.length;
+                    avgCoin /= unlocked.length;
+                    avgSMinus /= unlocked.length;
+                }
+
+                return `
+                    <div class="prime-section">
+                        <div class="prime-header ${state.selectedPrime === prime.id ? 'active' : ''}"
+                             onclick="selectPrime('${prime.id}')">
+                            <span class="prime-name">${prime.name}</span>
+                            <div class="prime-summary">
+                                <div class="mini-bar">
+                                    <div class="mini-bar-fill" style="
+                                        left: 0;
+                                        width: ${avgSPlus * 100}%;
+                                        background: #00c8dc;
+                                    "></div>
+                                    <div class="mini-bar-fill" style="
+                                        left: ${avgSPlus * 100}%;
+                                        width: ${avgCoin * 100}%;
+                                        background: #c9a227;
+                                    "></div>
+                                    <div class="mini-bar-fill" style="
+                                        left: ${(avgSPlus + avgCoin) * 100}%;
+                                        width: ${avgSMinus * 100}%;
+                                        background: #c83296;
+                                    "></div>
+                                </div>
+                                <span class="prime-count">${unlockedCount}/16</span>
+                            </div>
+                        </div>
+                        <div class="aspect-list ${state.selectedPrime === prime.id ? 'visible' : ''}">
+                            ${prime.aspects.map((aspect, aIdx) => {
+                                const aspectParams = primeParams.filter(p => p.aspectIndex === aIdx);
+                                const aspectUnlocked = aspectParams.filter(p => p.unlocked).length;
+                                return `
+                                    <div class="aspect-item ${state.selectedAspect === aspect ? 'selected' : ''}"
+                                         onclick="selectAspect('${prime.id}', '${aspect}', ${aIdx})">
+                                        <span class="aspect-name">${aspect}</span>
+                                        <span class="aspect-depth">${aspectUnlocked}/4</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectPrime(primeId) {
+            state.selectedPrime = state.selectedPrime === primeId ? null : primeId;
+            state.selectedAspect = null;
+            renderPrimes();
+            renderDetail();
+            updateSphereHighlight();
+        }
+
+        function selectAspect(primeId, aspectName, aspectIndex) {
+            state.selectedPrime = primeId;
+            state.selectedAspect = aspectName;
+            renderPrimes();
+            renderDetail();
+            updateSphereHighlight();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // RENDER DETAIL PANEL
+        // ═══════════════════════════════════════════════════════════════════
+
+        function renderDetail() {
+            const container = document.getElementById('selectedDetail');
+            const linesContainer = document.getElementById('parameterLines');
+
+            if (!state.selectedPrime) {
+                container.innerHTML = '<p style="font-size: 0.5rem; color: #4a5568;">Click a prime or aspect to view details</p>';
+                linesContainer.innerHTML = '';
+                return;
+            }
+
+            let params;
+            let title;
+
+            if (state.selectedAspect) {
+                const prime = PRIMES.find(p => p.id === state.selectedPrime);
+                const aspectIndex = prime.aspects.indexOf(state.selectedAspect);
+                params = PARAMETERS.filter(p => p.primeId === state.selectedPrime && p.aspectIndex === aspectIndex);
+                title = `${prime.name} / ${state.selectedAspect}`;
+            } else {
+                params = PARAMETERS.filter(p => p.primeId === state.selectedPrime);
+                title = PRIMES.find(p => p.id === state.selectedPrime).name;
+            }
+
+            container.innerHTML = `
+                <h3 style="font-size: 0.6rem; color: #c9a227; margin-bottom: 10px;">${title}</h3>
+                <p style="font-size: 0.45rem; color: #5a6577;">${params.filter(p => p.unlocked).length} of ${params.length} parameters active</p>
+            `;
+
+            // Render three-zone lines
+            linesContainer.innerHTML = params.filter(p => p.unlocked).map(p => `
+                <div class="parameter-line">
+                    <div class="param-label">
+                        <span class="param-name">${p.aspectName}</span>
+                        <span class="param-depth">${p.depth}</span>
+                    </div>
+                    <div class="three-zone-bar">
+                        <div class="zone splus" style="width: ${p.sPlusRatio * 100}%;"></div>
+                        <div class="zone coin" style="left: ${p.sPlusRatio * 100}%; width: ${p.coinRatio * 100}%;"></div>
+                        <div class="zone sminus" style="width: ${p.sMinusRatio * 100}%;"></div>
+                    </div>
+                    <div class="zone-labels">
+                        <span>S+</span>
+                        <span>COIN</span>
+                        <span>S-</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            const unlocked = PARAMETERS.filter(p => p.unlocked);
+            document.getElementById('statActive').textContent = `${unlocked.length} / 128`;
+
+            // Calculate overall position
+            let totalPos = 0;
+            unlocked.forEach(p => {
+                totalPos += (p.sMinusRatio - p.sPlusRatio);
+            });
+            const avgPos = unlocked.length > 0 ? totalPos / unlocked.length : 0;
+
+            let posLabel = 'Centered';
+            if (avgPos < -0.15) posLabel = 'S+ Leaning';
+            else if (avgPos > 0.15) posLabel = 'S- Leaning';
+            document.getElementById('statPosition').textContent = posLabel;
+
+            // Coin integration
+            let totalCoin = 0;
+            unlocked.forEach(p => totalCoin += p.coinRatio);
+            const avgCoin = unlocked.length > 0 ? totalCoin / unlocked.length : 0;
+            document.getElementById('statCoin').textContent = `${Math.round(avgCoin * 100)}%`;
+
+            // Development level
+            let totalDev = 0;
+            unlocked.forEach(p => totalDev += p.development);
+            const avgDev = unlocked.length > 0 ? totalDev / unlocked.length : 0;
+            let devLabel = 'Seed';
+            if (avgDev > 0.75) devLabel = 'Mastery';
+            else if (avgDev > 0.5) devLabel = 'Flowering';
+            else if (avgDev > 0.25) devLabel = 'Growing';
+            document.getElementById('statDev').textContent = devLabel;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // THREE.JS SPHERE
+        // ═══════════════════════════════════════════════════════════════════
+
+        let scene, camera, renderer, sphereGroup, lines = [];
+
+        function hslToHex(h, s, l) {
+            s /= 100; l /= 100;
+            const a = s * Math.min(l, 1 - l);
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return parseInt(`${f(0)}${f(8)}${f(4)}`, 16);
+        }
+
+        function initSphere() {
+            const canvas = document.getElementById('sphereCanvas');
+            const rect = canvas.parentElement.getBoundingClientRect();
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(55, rect.width / (rect.height - 80), 0.1, 1000);
+            camera.position.z = 4;
+
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setSize(rect.width, rect.height - 80);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            sphereGroup = new THREE.Group();
+            scene.add(sphereGroup);
+
+            createLines();
+            animate();
+
+            // Mouse interaction
+            let isDragging = false, prevMouse = { x: 0, y: 0 };
+
+            canvas.addEventListener('mousedown', e => {
+                isDragging = true;
+                prevMouse = { x: e.clientX, y: e.clientY };
+                state.autoRotate = false;
+            });
+
+            canvas.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                sphereGroup.rotation.y += (e.clientX - prevMouse.x) * 0.008;
+                sphereGroup.rotation.x += (e.clientY - prevMouse.y) * 0.008;
+                prevMouse = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener('mouseup', () => isDragging = false);
+            canvas.addEventListener('mouseleave', () => isDragging = false);
+
+            canvas.addEventListener('wheel', e => {
+                e.preventDefault();
+                camera.position.z = Math.max(2, Math.min(8, camera.position.z + e.deltaY * 0.003));
+            });
+
+            window.addEventListener('resize', () => {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                camera.aspect = rect.width / (rect.height - 80);
+                camera.updateProjectionMatrix();
+                renderer.setSize(rect.width, rect.height - 80);
+            });
+        }
+
+        function createLines() {
+            lines = [];
+            while (sphereGroup.children.length) sphereGroup.remove(sphereGroup.children[0]);
+
+            // Core
+            const coreGeom = new THREE.SphereGeometry(0.08, 32, 32);
+            const coreMat = new THREE.MeshBasicMaterial({ color: 0xc9a227, transparent: true, opacity: 0.8 });
+            sphereGroup.add(new THREE.Mesh(coreGeom, coreMat));
+
+            // Glow
+            const glowGeom = new THREE.SphereGeometry(0.12, 32, 32);
+            const glowMat = new THREE.MeshBasicMaterial({ color: 0xc9a227, transparent: true, opacity: 0.15 });
+            sphereGroup.add(new THREE.Mesh(glowGeom, glowMat));
+
+            sphereGroup.add(new THREE.PointLight(0xc9a227, 0.6, 4));
+
+            // Create lines based on view mode
+            const paramsToShow = getParamsForView();
+            const goldenRatio = (1 + Math.sqrt(5)) / 2;
+
+            paramsToShow.forEach((p, i) => {
+                const t = i / paramsToShow.length;
+                const inclination = Math.acos(1 - 2 * t);
+                const azimuth = 2 * Math.PI * goldenRatio * i;
+
+                // Line length based on development
+                const length = 0.4 + p.development * 0.8;
+
+                // Create three-segment line
+                const segments = createThreeZoneLine(p, length, inclination, azimuth);
+                segments.forEach(s => {
+                    sphereGroup.add(s);
+                    lines.push({ mesh: s, param: p });
+                });
+            });
+        }
+
+        function createThreeZoneLine(param, totalLength, inclination, azimuth) {
+            const segments = [];
+            const radius = 0.15;
+
+            // Direction from center
+            const x = Math.sin(inclination) * Math.cos(azimuth);
+            const y = Math.sin(inclination) * Math.sin(azimuth);
+            const z = Math.cos(inclination);
+            const dir = new THREE.Vector3(x, y, z).normalize();
+
+            // Calculate segment lengths
+            const sPlusLen = totalLength * param.sPlusRatio;
+            const coinLen = totalLength * param.coinRatio;
+            const sMinusLen = totalLength * param.sMinusRatio;
+
+            // Colors
+            const sPlusColor = 0x00c8dc;
+            const coinColor = 0xc9a227;
+            const sMinusColor = 0xc83296;
+
+            let currentPos = radius;
+
+            // S+ segment (starts from core)
+            if (sPlusLen > 0.01) {
+                const geom = new THREE.CylinderGeometry(0.006, 0.008, sPlusLen, 6);
+                const mat = new THREE.MeshBasicMaterial({ color: sPlusColor, transparent: true, opacity: 0.7 });
+                const mesh = new THREE.Mesh(geom, mat);
+
+                const segCenter = currentPos + sPlusLen / 2;
+                mesh.position.copy(dir.clone().multiplyScalar(segCenter));
+                mesh.lookAt(0, 0, 0);
+                mesh.rotateX(Math.PI / 2);
+
+                segments.push(mesh);
+                currentPos += sPlusLen;
+            }
+
+            // COIN segment (middle)
+            if (coinLen > 0.01) {
+                const geom = new THREE.CylinderGeometry(0.007, 0.007, coinLen, 6);
+                const mat = new THREE.MeshBasicMaterial({ color: coinColor, transparent: true, opacity: 0.8 });
+                const mesh = new THREE.Mesh(geom, mat);
+
+                const segCenter = currentPos + coinLen / 2;
+                mesh.position.copy(dir.clone().multiplyScalar(segCenter));
+                mesh.lookAt(0, 0, 0);
+                mesh.rotateX(Math.PI / 2);
+
+                segments.push(mesh);
+                currentPos += coinLen;
+            }
+
+            // S- segment (outer)
+            if (sMinusLen > 0.01) {
+                const geom = new THREE.CylinderGeometry(0.008, 0.006, sMinusLen, 6);
+                const mat = new THREE.MeshBasicMaterial({ color: sMinusColor, transparent: true, opacity: 0.7 });
+                const mesh = new THREE.Mesh(geom, mat);
+
+                const segCenter = currentPos + sMinusLen / 2;
+                mesh.position.copy(dir.clone().multiplyScalar(segCenter));
+                mesh.lookAt(0, 0, 0);
+                mesh.rotateX(Math.PI / 2);
+
+                segments.push(mesh);
+            }
+
+            // Tip
+            const tipPos = radius + totalLength;
+            const tipGeom = new THREE.SphereGeometry(0.012, 8, 8);
+            const tipColor = param.coinRatio > 0.4 ? coinColor : (param.sMinusRatio > param.sPlusRatio ? sMinusColor : sPlusColor);
+            const tipMat = new THREE.MeshBasicMaterial({ color: tipColor, transparent: true, opacity: 0.9 });
+            const tip = new THREE.Mesh(tipGeom, tipMat);
+            tip.position.copy(dir.clone().multiplyScalar(tipPos));
+            segments.push(tip);
+
+            return segments;
+        }
+
+        function getParamsForView() {
+            const unlocked = PARAMETERS.filter(p => p.unlocked);
+
+            switch (state.viewMode) {
+                case 'primes':
+                    // Aggregate to 8 primes
+                    return PRIMES.map(prime => {
+                        const primeParams = unlocked.filter(p => p.primeId === prime.id);
+                        if (primeParams.length === 0) return null;
+
+                        let sPlus = 0, coin = 0, sMinus = 0, dev = 0;
+                        primeParams.forEach(p => {
+                            sPlus += p.sPlusRatio;
+                            coin += p.coinRatio;
+                            sMinus += p.sMinusRatio;
+                            dev += p.development;
+                        });
+                        const n = primeParams.length;
+
+                        return {
+                            primeId: prime.id,
+                            sPlusRatio: sPlus / n,
+                            coinRatio: coin / n,
+                            sMinusRatio: sMinus / n,
+                            development: dev / n,
+                            hue: prime.hue
+                        };
+                    }).filter(p => p !== null);
+
+                case 'aspects':
+                    // Aggregate to 32 aspects
+                    const aspects = [];
+                    PRIMES.forEach(prime => {
+                        prime.aspects.forEach((aspect, aIdx) => {
+                            const aspectParams = unlocked.filter(p => p.primeId === prime.id && p.aspectIndex === aIdx);
+                            if (aspectParams.length === 0) return;
+
+                            let sPlus = 0, coin = 0, sMinus = 0, dev = 0;
+                            aspectParams.forEach(p => {
+                                sPlus += p.sPlusRatio;
+                                coin += p.coinRatio;
+                                sMinus += p.sMinusRatio;
+                                dev += p.development;
+                            });
+                            const n = aspectParams.length;
+
+                            aspects.push({
+                                primeId: prime.id,
+                                aspectName: aspect,
+                                sPlusRatio: sPlus / n,
+                                coinRatio: coin / n,
+                                sMinusRatio: sMinus / n,
+                                development: dev / n,
+                                hue: prime.hue
+                            });
+                        });
+                    });
+                    return aspects;
+
+                case 'full':
+                default:
+                    return unlocked;
+            }
+        }
+
+        function updateSphereHighlight() {
+            // Could highlight selected prime/aspect
+            createLines();
+        }
+
+        function setView(mode) {
+            state.viewMode = mode;
+            document.querySelectorAll('.ctrl-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            createLines();
+        }
+
+        function toggleRotate() {
+            state.autoRotate = !state.autoRotate;
+            event.target.textContent = state.autoRotate ? 'PAUSE' : 'ROTATE';
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (state.autoRotate) {
+                sphereGroup.rotation.y += 0.003;
+                sphereGroup.rotation.x += 0.0008;
+            }
+
+            const time = Date.now() * 0.001;
+            lines.forEach((l, i) => {
+                if (l.mesh.material) {
+                    l.mesh.material.opacity = 0.5 + Math.sin(time * 0.8 + i * 0.3) * 0.15;
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

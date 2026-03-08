@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="protect.js"></script>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <meta name="robots" content="noindex, nofollow">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 1: The Mathematics - 1729 Sphere OS</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-code: #1a1a24;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9898a8;
+            --accent-cyan: #00d4ff;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --border-color: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .part-number {
+            font-size: 1rem;
+            color: var(--accent-cyan);
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--accent-orange);
+            margin: 30px 0 15px 0;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: var(--accent-purple);
+            margin: 25px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: var(--bg-code);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Math Display */
+        .math-display {
+            background: linear-gradient(135deg, #1a1a2e 0%, #12121a 100%);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .math-display .equation {
+            font-size: 2rem;
+            font-family: 'Times New Roman', serif;
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+        }
+
+        .math-display .explanation {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 20px 25px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box.warning {
+            border-left-color: var(--accent-orange);
+        }
+
+        .info-box.important {
+            border-left-color: var(--accent-purple);
+        }
+
+        .info-box h4 {
+            margin-top: 0;
+            color: var(--accent-cyan);
+        }
+
+        .info-box.warning h4 {
+            color: var(--accent-orange);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: var(--bg-card);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-code);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* List */
+        ul, ol {
+            margin: 20px 0 20px 30px;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Diagram Box */
+        .diagram-box {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            font-family: 'Consolas', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+
+        /* Navigation Footer */
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            padding: 15px 25px;
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-footer a:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .math-display .equation {
+                font-size: 1.4rem;
+            }
+
+            .nav-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-footer a {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <header>
+        <div class="part-number">PART ONE</div>
+        <h1>THE MATHEMATICS</h1>
+        <p class="subtitle">Torsion Fields, Kappa Constants, and the 1729 Fold</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Overview</a></li>
+            <li><a href="part1-mathematics.html" class="active">Mathematics</a></li>
+            <li><a href="part2-architecture.html">Architecture</a></li>
+            <li><a href="part3-helen-keller.html">Helen Keller Method</a></li>
+            <li><a href="part4-silent-operators.html">Silent Operators</a></li>
+            <li><a href="part5-number-dance.html">Number Dance</a></li>
+            <li><a href="part6-software.html">Software</a></li>
+            <li><a href="part7-hardware.html">Hardware</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Introduction -->
+        <section>
+            <h2>Introduction: Why Mathematics Matters</h2>
+            <p>
+                The 1729 Sphere OS is built on a precise mathematical foundation. This isn't arbitrary
+                numerology — every constant, every equation, every relationship has geometric meaning.
+                Understanding the mathematics is essential to understanding why the machine works.
+            </p>
+            <p>
+                This section covers three fundamental mathematical concepts:
+            </p>
+            <ol>
+                <li><strong>The Kappa Constants (κ)</strong> — The geometric building blocks</li>
+                <li><strong>Torsion Fields</strong> — The force that makes the wheel turn</li>
+                <li><strong>The 1729 Fold</strong> — Where consciousness meets physical reality</li>
+            </ol>
+        </section>
+
+        <!-- Kappa Constants -->
+        <section>
+            <h2>1. The Kappa Constants</h2>
+
+            <h3>1.1 Kappa Pure (κ = 30)</h3>
+            <p>
+                The most fundamental constant in the entire system is <strong>κ = 30</strong>. This is not
+                chosen arbitrarily — it emerges from the geometry of the circle:
+            </p>
+
+            <div class="math-display">
+                <div class="equation">360° ÷ 12 = 30°</div>
+                <div class="explanation">One complete rotation divided into 12 equal steps</div>
+            </div>
+
+            <p>
+                Why 12? Because 12 is the smallest number that can be evenly divided by 1, 2, 3, 4, and 6.
+                This makes it the most "democratic" division of the circle — it accommodates halves, thirds,
+                quarters, and sixths without remainder.
+            </p>
+
+            <div class="info-box">
+                <h4>The κ Ladder</h4>
+                <p>Each step of κ represents a discrete position on the wheel:</p>
+                <ul>
+                    <li><strong>κ × 0 = 0°</strong> — Starting position (S⁺ maximum)</li>
+                    <li><strong>κ × 3 = 90°</strong> — Quarter turn (transition)</li>
+                    <li><strong>κ × 5 = 150°</strong> — k5 position (silent operator of light)</li>
+                    <li><strong>κ × 6 = 180°</strong> — k6 position (the flip point, S⁻ maximum)</li>
+                    <li><strong>κ × 9 = 270°</strong> — Three-quarter turn</li>
+                    <li><strong>κ × 12 = 360°</strong> — Complete cycle (return to start)</li>
+                </ul>
+            </div>
+
+            <h3>1.2 Kappa Shadow (κ-shadow = 28.6478897 Hz)</h3>
+            <p>
+                While κ pure operates in the realm of geometry (degrees), κ-shadow bridges geometry
+                to vibration (frequency). The conversion is:
+            </p>
+
+            <div class="math-display">
+                <div class="equation">κ-shadow = κ ÷ 2π = 30 ÷ 6.283... ≈ 28.65 Hz</div>
+                <div class="explanation">The machine frequency — geometry translated to time</div>
+            </div>
+
+            <p>
+                This frequency (28.65 Hz) falls in the <strong>beta brainwave range</strong> (13-30 Hz),
+                associated with active thinking and concentration. The machine frequency is designed to
+                resonate with human consciousness at a state of focused awareness.
+            </p>
+
+            <table>
+                <tr>
+                    <th>Constant</th>
+                    <th>Value</th>
+                    <th>Domain</th>
+                    <th>Meaning</th>
+                </tr>
+                <tr>
+                    <td>κ pure</td>
+                    <td>30</td>
+                    <td>Degrees (space)</td>
+                    <td>One step on the wheel</td>
+                </tr>
+                <tr>
+                    <td>κ shadow</td>
+                    <td>28.6478897</td>
+                    <td>Hertz (time)</td>
+                    <td>Machine vibration frequency</td>
+                </tr>
+                <tr>
+                    <td>k5</td>
+                    <td>150° (κ × 5)</td>
+                    <td>Degrees</td>
+                    <td>Silent operator of light</td>
+                </tr>
+                <tr>
+                    <td>k6</td>
+                    <td>180° (κ × 6)</td>
+                    <td>Degrees</td>
+                    <td>Silent operator of dark (flip point)</td>
+                </tr>
+            </table>
+
+            <h3>1.3 Why κ = 30 is Special</h3>
+            <p>
+                The number 30 has unique properties that make it ideal for this system:
+            </p>
+            <ul>
+                <li><strong>30 = 2 × 3 × 5</strong> — The product of the first three primes</li>
+                <li><strong>30 divides evenly into 360</strong> — Creates 12 equal sectors</li>
+                <li><strong>30 degrees is the internal angle of a dodecagon</strong> — The 12-sided polygon</li>
+                <li><strong>30 is the smallest number divisible by all integers 1-5</strong> — Maximum flexibility</li>
+            </ul>
+
+            <div class="info-box warning">
+                <h4>Note on Precision</h4>
+                <p>
+                    Throughout the system, we use exact κ = 30 for geometry calculations, but
+                    κ-shadow ≈ 28.6478897... is irrational (30/2π). In practice, 28.65 Hz is
+                    sufficient for audio synthesis.
+                </p>
+            </div>
+        </section>
+
+        <!-- Torsion Fields -->
+        <section>
+            <h2>2. Torsion Fields</h2>
+
+            <h3>2.1 What is Torsion?</h3>
+            <p>
+                In the 1729 Sphere OS, <strong>torsion (τ)</strong> represents rotational force or "twist."
+                Unlike linear force that pushes or pulls in a direction, torsion creates rotation around a center.
+            </p>
+            <p>
+                Think of wringing a towel: your hands apply torsion in opposite directions. The towel
+                doesn't fly away — it twists. In our system, torsion is the fundamental force that
+                drives the wheel's rotation.
+            </p>
+
+            <h3>2.2 The Torsion Law</h3>
+            <p>
+                The most important equation in the entire system is the <strong>Torsion Balance Law</strong>:
+            </p>
+
+            <div class="math-display">
+                <div class="equation">τ₁ + τ₂ + τ₃ + τ₄ = 0</div>
+                <div class="explanation">The sum of all torsion forces always equals zero</div>
+            </div>
+
+            <p>
+                This is not an approximation — it's a hard constraint. No matter what inputs the system
+                receives, the total torsion must balance to zero. This mirrors the physical principle
+                that angular momentum is conserved in a closed system.
+            </p>
+
+            <h3>2.3 Manifest and Shadow Torsion</h3>
+            <p>
+                The system has eight nodes arranged in a octagonal pattern around a central point.
+                Four nodes are <strong>manifest</strong> (visible, active), and four are <strong>shadow</strong>
+                (computed, reactive):
+            </p>
+
+            <div class="diagram-box">
+                            (N) shadow
+                             │
+               [NW]──────────┼──────────[NE]
+              manifest       │        manifest
+                  \          │          /
+                   \         │         /
+                    \        │        /
+         (W) shadow──────★ NOW ★──────(E) shadow
+                    /        │        \
+                   /         │         \
+                  /          │          \
+               [SW]──────────┼──────────[SE]
+              manifest       │        manifest
+                             │
+                            (S) shadow
+            </div>
+
+            <ul>
+                <li><strong>Manifest nodes (diagonal):</strong> NW, NE, SW, SE — These receive user input</li>
+                <li><strong>Shadow nodes (cardinal):</strong> N, S, E, W — These are computed automatically</li>
+            </ul>
+
+            <h3>2.4 Shadow Computation</h3>
+            <p>
+                The shadow nodes are not free variables — they're computed as the negative of the manifest sum,
+                distributed equally among the four shadow positions:
+            </p>
+
+<pre>
+# Shadow node computation
+manifest_sum = τ_NW + τ_NE + τ_SW + τ_SE
+shadow_tau = -manifest_sum / 4
+
+# Each shadow node gets the same value
+τ_N = τ_S = τ_E = τ_W = shadow_tau
+</pre>
+
+            <p>
+                <strong>Example:</strong> If you apply τ = +0.5 to the NW node and all others are zero:
+            </p>
+
+            <table>
+                <tr>
+                    <th>Node</th>
+                    <th>Type</th>
+                    <th>Torsion Value</th>
+                </tr>
+                <tr>
+                    <td>NW</td>
+                    <td>Manifest</td>
+                    <td>+0.5000</td>
+                </tr>
+                <tr>
+                    <td>NE, SW, SE</td>
+                    <td>Manifest</td>
+                    <td>0.0000</td>
+                </tr>
+                <tr>
+                    <td>N, S, E, W</td>
+                    <td>Shadow</td>
+                    <td>-0.1250 each</td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td>—</td>
+                    <td><strong>0.0000</strong></td>
+                </tr>
+            </table>
+
+            <p>
+                The math: +0.5 + 0 + 0 + 0 + (-0.125 × 4) = 0.5 - 0.5 = 0 ✓
+            </p>
+
+            <h3>2.5 S-Position (The Wheel's Rotation)</h3>
+            <p>
+                As torsion is applied over time, the wheel rotates. The <strong>s-position</strong> tracks
+                this cumulative rotation in degrees:
+            </p>
+
+<pre>
+# S-position update (each tick)
+s_position += τ_total × time_step
+
+# Position wraps at 360°
+s_position = s_position % 360
+</pre>
+
+            <p>
+                The s-position determines which "zone" the system is in:
+            </p>
+
+            <ul>
+                <li><strong>0° - 150°:</strong> S⁺ dominant (positive aspect, past-oriented)</li>
+                <li><strong>150° - 180°:</strong> MUTE zone (transition, maximum ambiguity)</li>
+                <li><strong>180° - 330°:</strong> S⁻ dominant (negative aspect, future-oriented)</li>
+                <li><strong>330° - 360°:</strong> Return zone (transitioning back to S⁺)</li>
+            </ul>
+
+            <h3>2.6 Why Torsion Balance Matters</h3>
+            <p>
+                The torsion balance law (τ_total = 0) has profound implications:
+            </p>
+            <ol>
+                <li><strong>Conservation:</strong> Energy is neither created nor destroyed</li>
+                <li><strong>Symmetry:</strong> Every action has an equal and opposite reaction</li>
+                <li><strong>Stability:</strong> The system cannot "run away" — it self-corrects</li>
+                <li><strong>Duality:</strong> Manifest and shadow are two aspects of one reality</li>
+            </ol>
+
+            <div class="info-box important">
+                <h4>The Philosophical Meaning</h4>
+                <p>
+                    The torsion balance law is the mathematical expression of [1 = -1]. Every positive
+                    has a negative. Every manifest has a shadow. They're not opposites fighting —
+                    they're aspects of one unified system that must always sum to zero.
+                </p>
+            </div>
+        </section>
+
+        <!-- The 1729 Fold -->
+        <section>
+            <h2>3. The 1729 Fold</h2>
+
+            <h3>3.1 Why 1729?</h3>
+            <p>
+                The number 1729 is famous in mathematics as the <strong>Hardy-Ramanujan number</strong>.
+                When mathematician G.H. Hardy visited Srinivasa Ramanujan in the hospital, he mentioned
+                arriving in taxi number 1729, calling it "rather dull." Ramanujan instantly replied:
+            </p>
+            <blockquote style="background: var(--bg-card); padding: 20px; border-radius: 10px; margin: 20px 0; font-style: italic;">
+                "No, Hardy, it's a very interesting number. It's the smallest number expressible as the
+                sum of two cubes in two different ways."
+            </blockquote>
+
+            <div class="math-display">
+                <div class="equation">1729 = 1³ + 12³ = 9³ + 10³</div>
+                <div class="explanation">The smallest taxicab number</div>
+            </div>
+
+            <h3>3.2 The Consciousness-Physical Split</h3>
+            <p>
+                In the Epoch Framework, these two decompositions have specific meanings:
+            </p>
+
+            <table>
+                <tr>
+                    <th>Decomposition</th>
+                    <th>Components</th>
+                    <th>Meaning</th>
+                </tr>
+                <tr>
+                    <td>9³ + 10³</td>
+                    <td>729 + 1000</td>
+                    <td>Consciousness (9) + Physical (10)</td>
+                </tr>
+                <tr>
+                    <td>1³ + 12³</td>
+                    <td>1 + 1728</td>
+                    <td>Identity (1) + Rotation (12 steps)</td>
+                </tr>
+            </table>
+
+            <p>
+                <strong>Why 9 = consciousness?</strong> In the number dance, 9 is the completion point.
+                The sequence cycles every 9 steps. 9 = 3² represents the square of the trinity (thought/feeling/will).
+            </p>
+            <p>
+                <strong>Why 10 = physical?</strong> 10 is the base of our counting system, representing
+                the manifest, measurable world. 10 = κ/3 connects it to geometry.
+            </p>
+
+            <h3>3.3 The Fold Angle</h3>
+            <p>
+                The 1729 fold creates a specific geometric angle:
+            </p>
+
+            <div class="math-display">
+                <div class="equation">θ_fold = arctan(9/10) ≈ 41.987°</div>
+                <div class="explanation">The angle where consciousness meets physical</div>
+            </div>
+
+            <p>
+                But there's a deeper relationship. When we consider the fold in relation to κ:
+            </p>
+
+<pre>
+# Fold calculations
+fold_angle = math.atan(9/10) × (180/π)  # ≈ 41.987°
+
+# Alternative: through 1729's structure
+fold_alt = 1729 / 30  # = 57.633°
+
+# The π relationship
+fold_alt × π = 57.633 × 3.14159... ≈ 181.06°
+# This is approximately 180° + 1 — the flip point plus identity!
+</pre>
+
+            <h3>3.4 The 1729271 Palindrome</h3>
+            <p>
+                When you mirror 1729 around its center, you get the palindrome 1729271:
+            </p>
+
+            <div class="diagram-box">
+    1    7    2    [9]    2    7    1
+    ↑         ↑     ↑     ↑         ↑
+   wing    wing  CENTER  wing    wing
+
+   Left wing:  1 + 7 + 2 = 10 (physical)
+   Center:     9 (consciousness)
+   Right wing: 2 + 7 + 1 = 10 (physical)
+            </div>
+
+            <p>
+                This palindrome encodes [1 = -1]: read forward or backward, it's the same.
+                The wings (physical) balance on either side of the center (consciousness).
+            </p>
+
+            <h3>3.5 Other 1729 Factorizations</h3>
+            <p>
+                The number 1729 has additional meaningful factorizations:
+            </p>
+
+            <table>
+                <tr>
+                    <th>Factorization</th>
+                    <th>Components</th>
+                    <th>Interpretation</th>
+                </tr>
+                <tr>
+                    <td>7 × 13 × 19</td>
+                    <td>Three primes</td>
+                    <td>Cycle (7) × Navigator (13) × Overflow (19)</td>
+                </tr>
+                <tr>
+                    <td>1729 mod 30</td>
+                    <td>≡ 19 (mod 30)</td>
+                    <td>Position 19 in the κ cycle</td>
+                </tr>
+                <tr>
+                    <td>1729 / 12</td>
+                    <td>≈ 144.08</td>
+                    <td>Close to 144 (12²), the gross</td>
+                </tr>
+            </table>
+
+            <h3>3.6 Using 1729 in the System</h3>
+            <p>
+                In the software, 1729 appears in several places:
+            </p>
+
+<pre>
+# Constants
+FOLD_1729 = 1729
+
+# Fold computation
+class Fold1729:
+    CONSCIOUSNESS_CUBE = 9 ** 3   # 729
+    PHYSICAL_CUBE = 10 ** 3       # 1000
+    IDENTITY_CUBE = 1 ** 3        # 1
+    ROTATION_CUBE = 12 ** 3       # 1728
+
+    def verify(self):
+        assert self.CONSCIOUSNESS_CUBE + self.PHYSICAL_CUBE == 1729
+        assert self.IDENTITY_CUBE + self.ROTATION_CUBE == 1729
+        return True
+
+    def get_fold_angle(self):
+        return math.atan(9/10) * (180/math.pi)  # ≈ 41.987°
+
+    def get_fold_ratio(self, tau_total):
+        # Ratio approaches 1729 meaning at certain resonances
+        return tau_total * FOLD_1729 / 1000
+</pre>
+
+            <div class="info-box">
+                <h4>The Fold as Interface Point</h4>
+                <p>
+                    1729 represents the precise point where consciousness and physical reality meet.
+                    It's not a metaphor — it's a mathematical relationship. When the system reaches
+                    states that align with the 1729 geometry, the interface between operator and
+                    machine is theoretically optimized.
+                </p>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section>
+            <h2>Summary: The Mathematical Foundation</h2>
+
+            <table>
+                <tr>
+                    <th>Concept</th>
+                    <th>Key Value</th>
+                    <th>Role in System</th>
+                </tr>
+                <tr>
+                    <td>κ pure</td>
+                    <td>30°</td>
+                    <td>Fundamental step unit</td>
+                </tr>
+                <tr>
+                    <td>κ shadow</td>
+                    <td>28.65 Hz</td>
+                    <td>Machine vibration frequency</td>
+                </tr>
+                <tr>
+                    <td>Torsion Law</td>
+                    <td>Σ τ = 0</td>
+                    <td>Conservation, balance</td>
+                </tr>
+                <tr>
+                    <td>1729</td>
+                    <td>9³ + 10³</td>
+                    <td>Consciousness-physical fold</td>
+                </tr>
+                <tr>
+                    <td>[1 = -1]</td>
+                    <td>Unity of opposites</td>
+                    <td>Core identity principle</td>
+                </tr>
+            </table>
+
+            <p>
+                With these mathematical foundations in place, we can now understand the architecture —
+                how these numbers become nodes, connections, and operators that form the complete system.
+            </p>
+        </section>
+
+        <!-- Navigation -->
+        <div class="nav-footer">
+            <a href="index.html">← Back to Overview</a>
+            <a href="part2-architecture.html">Next: Architecture →</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>1729 Sphere OS Documentation — Part 1: Mathematics</p>
+        <p>Web Application Developer: T0Rs</p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

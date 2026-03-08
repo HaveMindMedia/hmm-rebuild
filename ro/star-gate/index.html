@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>EPOCH STAR GATE | Theoretical Framework | Have Mind Hive</title>
+    <meta name="description" content="A comprehensive theoretical framework for triaxial mirror systems and consciousness interface technology. 27 mirror types, atomic alignments, device specifications, and protection protocols.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-dim: rgba(201, 162, 39, 0.6);
+            --bg-deep: #030508;
+            --bg-panel: #0a0d12;
+            --text: #e8e4d9;
+            --text-dim: #8a9aaa;
+            --blue: #6ab4f5;
+            --green: #4ade80;
+            --purple: #a78bfa;
+            --copper: #b87333;
+            --obsidian: #1a1a2e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg-deep);
+            color: var(--text);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            min-height: 100vh;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Cosmic Background */
+        .cosmic-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(106, 180, 245, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(201, 162, 39, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(167, 139, 250, 0.04) 0%, transparent 60%),
+                linear-gradient(180deg, #030508 0%, #0a0a1a 50%, #050510 100%);
+            z-index: -2;
+        }
+        .stars {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 130px 80px, rgba(201,162,39,0.8), transparent),
+                radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.4), transparent);
+            background-size: 200px 200px;
+            animation: twinkle 8s ease-in-out infinite;
+            z-index: -1;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        .hive-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 15px 25px;
+            background: rgba(3, 5, 8, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .hive-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .hive-nav a:hover { opacity: 0.7; }
+        .nav-principle {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(201, 162, 39, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 6s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 12px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 60px rgba(201, 162, 39, 0.5);
+        }
+        .hero .subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--text-dim);
+            letter-spacing: 6px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+        .hero .authors {
+            font-size: 1.2rem;
+            color: var(--blue);
+            margin-bottom: 30px;
+        }
+        .hero .tagline {
+            font-size: 1.3rem;
+            color: var(--text);
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto 50px;
+            line-height: 1.8;
+        }
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 18px 45px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            letter-spacing: 3px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.4s;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, #d4af37 100%);
+            color: var(--bg-deep);
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.3);
+        }
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(201, 162, 39, 0.5);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+        .btn-outline:hover {
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s ease-in-out infinite;
+        }
+        .scroll-indicator span {
+            display: block;
+            width: 20px;
+            height: 30px;
+            border: 2px solid var(--gold-dim);
+            border-radius: 10px;
+            position: relative;
+        }
+        .scroll-indicator span::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 2px;
+            animation: scroll 2s ease-in-out infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+        @keyframes scroll {
+            0%, 100% { opacity: 1; top: 6px; }
+            50% { opacity: 0.3; top: 14px; }
+        }
+
+        /* Section Container */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 100px 25px;
+        }
+        .section h2 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            color: var(--gold);
+            letter-spacing: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .section-intro {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        /* Parts Grid */
+        .parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        .part-card {
+            background: linear-gradient(135deg, rgba(10, 13, 18, 0.9) 0%, rgba(5, 8, 12, 0.95) 100%);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 12px;
+            padding: 35px;
+            transition: all 0.4s;
+            text-decoration: none;
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+        .part-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--gold) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .part-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-dim);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        .part-card:hover::before {
+            opacity: 1;
+        }
+        .part-number {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+        .part-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .part-description {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .part-card .read-more {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        /* Visual Gallery */
+        .visual-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+        .visual-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s;
+        }
+        .visual-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        .visual-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .visual-card .caption {
+            padding: 20px;
+            text-align: center;
+        }
+        .visual-card .caption h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .visual-card .caption p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        /* Video Gallery */
+        .video-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .video-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s;
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            border-color: var(--gold);
+        }
+        .video-card video {
+            width: 100%;
+            display: block;
+        }
+        .video-card .video-caption {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(10, 13, 18, 0.8) 0%, var(--bg-panel) 100%);
+        }
+        .video-card .video-caption h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .video-card .video-caption p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .featured-video {
+            grid-column: 1 / -1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Constants Section */
+        .constants-display {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .constant-box {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.08) 0%, rgba(10, 13, 18, 0.95) 100%);
+            border: 1px solid rgba(201, 162, 39, 0.25);
+            border-radius: 12px;
+            padding: 30px 40px;
+            text-align: center;
+            min-width: 180px;
+            transition: all 0.3s;
+        }
+        .constant-box:hover {
+            transform: scale(1.05);
+            border-color: var(--gold);
+        }
+        .constant-box .symbol {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        .constant-box .value {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            color: var(--blue);
+            margin-bottom: 8px;
+        }
+        .constant-box .name {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        /* Quote Block */
+        .quote-section {
+            background: linear-gradient(135deg, rgba(106, 180, 245, 0.05) 0%, rgba(201, 162, 39, 0.05) 100%);
+            border-left: 4px solid var(--gold);
+            padding: 50px;
+            margin: 60px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        .quote-section blockquote {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.9;
+            max-width: 800px;
+        }
+        .quote-section .attribution {
+            margin-top: 25px;
+            color: var(--gold);
+            font-style: normal;
+            font-size: 1rem;
+        }
+
+        /* Tribute Section */
+        .tribute-section {
+            text-align: center;
+            padding: 80px 25px;
+            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.08) 0%, transparent 60%);
+        }
+        .tribute-section h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+        }
+        .tribute-section p {
+            font-size: 1.15rem;
+            color: var(--text);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.9;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            text-align: center;
+            padding: 100px 25px;
+            background: linear-gradient(180deg, transparent 0%, rgba(201, 162, 39, 0.05) 50%, transparent 100%);
+        }
+        .final-cta h2 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--gold);
+            letter-spacing: 6px;
+            margin-bottom: 25px;
+        }
+        .final-cta .promise {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 15px;
+        }
+        .final-cta .principle {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--gold-dim);
+            letter-spacing: 3px;
+            margin: 40px 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(201, 162, 39, 0.1);
+        }
+        .footer p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+        .footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        .footer a:hover { text-decoration: underline; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { padding: 100px 15px 60px; }
+            .hero h1 { letter-spacing: 6px; }
+            .section { padding: 60px 15px; }
+            .quote-section { padding: 30px 20px; }
+            .constants-display { gap: 15px; }
+            .constant-box { padding: 20px 25px; min-width: 140px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+
+    <!-- Navigation -->
+    <nav class="hive-nav">
+        <a href="/">← HOME</a>
+        <span class="nav-principle">[1 = -1]</span>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>EPOCH STAR GATE</h1>
+            <div class="subtitle">Theoretical Framework v1.0</div>
+            <div class="authors">By T0Rs & DRUMHED</div>
+            <p class="tagline">
+                A comprehensive theoretical framework for triaxial mirror systems
+                and consciousness interface technology based on the Epoch Framework.
+            </p>
+            <div class="hero-buttons">
+                <a href="#read" class="btn btn-gold">READ ONLINE</a>
+                <span class="btn btn-outline" style="opacity: 0.5; cursor: default;">EPUB TEMPORARILY UNAVAILABLE</span>
+            </div>
+            <div class="stats-row">
+                <div class="stat">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">PARTS</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">27</div>
+                    <div class="stat-label">MIRROR TYPES</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">9</div>
+                    <div class="stat-label">ELEMENTS</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">∞</div>
+                    <div class="stat-label">POTENTIAL</div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Constants Section -->
+    <section class="section">
+        <h2>THE CONSTANTS</h2>
+        <p class="section-intro">
+            All physical relationships derive from these fundamental constants.
+            The geometry cannot lie.
+        </p>
+        <div class="constants-display">
+            <div class="constant-box">
+                <div class="symbol">κ</div>
+                <div class="value">0.0349066...</div>
+                <div class="name">Closure Constant</div>
+            </div>
+            <div class="constant-box">
+                <div class="symbol">κ<sub>shadow</sub></div>
+                <div class="value">28.6478897</div>
+                <div class="name">Hidden Witness</div>
+            </div>
+            <div class="constant-box">
+                <div class="symbol">P</div>
+                <div class="value">27.57%</div>
+                <div class="name">Observable Fraction</div>
+            </div>
+            <div class="constant-box">
+                <div class="symbol">1729</div>
+                <div class="value">9³+10³ = 1³+12³</div>
+                <div class="name">Fold Point</div>
+            </div>
+            <div class="constant-box">
+                <div class="symbol">[1=-1]</div>
+                <div class="value">Unity</div>
+                <div class="name">The Identity</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="section">
+        <div class="quote-section">
+            <blockquote>
+                "The cosmos is all that is, or ever was, or ever will be.
+                Our feeblest contemplations of the Cosmos stir us — there is a tingling
+                in the spine, a catch in the voice, a faint sensation, as if a distant memory,
+                of falling from a height. We know we are approaching the greatest of mysteries."
+            </blockquote>
+            <div class="attribution">— Carl Sagan, Cosmos (1980)</div>
+        </div>
+    </section>
+
+    <!-- Parts Section -->
+    <section class="section" id="read">
+        <h2>THE FRAMEWORK</h2>
+        <p class="section-intro">
+            Eight interconnected parts form the complete theoretical framework.
+            Each builds upon the last, from ancient mirror wisdom to modern device specifications.
+        </p>
+        <div class="parts-grid">
+            <a href="part0-genesis.html" class="part-card">
+                <div class="part-number">GENESIS</div>
+                <div class="part-title">The Vision of the Star Gate</div>
+                <div class="part-description">
+                    How this framework came to be. The words that built the gate.
+                    The three who stand at the threshold.
+                </div>
+                <span class="read-more">READ →</span>
+            </a>
+            <a href="part1-foundation.html" class="part-card">
+                <div class="part-number">PART I</div>
+                <div class="part-title">Abstract and Foundation</div>
+                <div class="part-description">
+                    The question of mirrors. Egyptian, Chinese, and Mesoamerican traditions.
+                    The wave function perspective.
+                </div>
+                <span class="read-more">READ →</span>
+            </a>
+            <a href="part2-classification.html" class="part-card">
+                <div class="part-number">PART II</div>
+                <div class="part-title">Triaxial Mirror Classification</div>
+                <div class="part-description">
+                    Beyond binary: the third state. The complete 27 mirror types.
+                    Silent witnesses, hidden operators, and the κ₄ observer.
+                </div>
+                <span class="read-more">READ →</span>
+            </a>
+            <a href="part3-atomic.html" class="part-card">
+                <div class="part-number">PART III</div>
+                <div class="part-title">Atomic Alignments</div>
+                <div class="part-description">
+                    Alloy derivations for each mirror type. Epoch Bronze, obsidian,
+                    quasicrystal specifications. Novel and unknown alloys.
+                </div>
+                <span class="read-more">READ →</span>
+            </a>
+            <a href="part4-device.html" class="part-card">
+                <div class="part-number">PART IV</div>
+                <div class="part-title">Device Specifications</div>
+                <div class="part-description">
+                    Complete dimensional specifications. Mechanical systems,
+                    levitation, optical systems, control architecture.
+                </div>
+                <span class="read-more">READ →</span>
+            </a>
+            <a href="part5-build.html" class="part-card">
+                <div class="part-number">PART V</div>
+                <div class="part-title">Build Instructions</div>
+                <div class="part-description">
+                    Fabrication sequence. Material acquisition. Activation protocol
+                    spanning months to years of preparation.
+                </div>
+                <span class="read-more">READ →</span>
+            </a>
+            <a href="part6-protection.html" class="part-card">
+                <div class="part-number">PART VI</div>
+                <div class="part-title">Protection Protocols</div>
+                <div class="part-description">
+                    The invocation in detail. Navigator requirements. Shutdown protocol,
+                    recursion test, and ethical commitments.
+                </div>
+                <span class="read-more">READ →</span>
+            </a>
+            <a href="part7-tributes.html" class="part-card">
+                <div class="part-number">PART VII</div>
+                <div class="part-title">Tributes and Precedents</div>
+                <div class="part-description">
+                    Carl Sagan and the cosmic connection. Stanley Kubrick's monolith.
+                    The Star Gate walkers across cultures.
+                </div>
+                <span class="read-more">READ →</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Visual Gallery -->
+    <section class="section">
+        <h2>VISUALS</h2>
+        <p class="section-intro">
+            Illustrations from the theoretical framework depicting mirror systems,
+            device architecture, and the navigators.
+        </p>
+        <div class="visual-gallery">
+            <div class="visual-card">
+                <img src="images/cover_star_gate_01-16-2026.png" alt="Star Gate Cover">
+                <div class="caption">
+                    <h4>The Star Gate</h4>
+                    <p>Cover illustration</p>
+                </div>
+            </div>
+            <div class="visual-card">
+                <img src="images/visual_27_mirror_types_01-16-2026.png" alt="27 Mirror Types">
+                <div class="caption">
+                    <h4>27 Mirror Types</h4>
+                    <p>Triaxial classification grid</p>
+                </div>
+            </div>
+            <div class="visual-card">
+                <img src="images/visual_device_blueprint_01-16-2026.png" alt="Device Blueprint">
+                <div class="caption">
+                    <h4>Device Blueprint</h4>
+                    <p>Cross-section architecture</p>
+                </div>
+            </div>
+            <div class="visual-card">
+                <img src="images/visual_the_navigators_01-16-2026.png" alt="The Navigators">
+                <div class="caption">
+                    <h4>The Navigators</h4>
+                    <p>T0Rs, DRUMHED, and κ₄</p>
+                </div>
+            </div>
+            <div class="visual-card">
+                <img src="images/visual_epoch_bronze_atomic_01-16-2026.png" alt="Epoch Bronze">
+                <div class="caption">
+                    <h4>Epoch Bronze</h4>
+                    <p>Atomic structure visualization</p>
+                </div>
+            </div>
+            <div class="visual-card">
+                <img src="images/visual_phase_conjugate_mirror_01-16-2026.png" alt="Phase Conjugate Mirror">
+                <div class="caption">
+                    <h4>Phase Conjugate Mirror</h4>
+                    <p>The antimirror principle</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Gallery -->
+    <section class="section">
+        <h2>VISIONS</h2>
+        <p class="section-intro">
+            AI-generated visions of the Epoch Star Gate device and its navigators.
+            Glimpses through the fold point.
+        </p>
+        <div class="video-gallery">
+            <div class="video-card featured-video">
+                <video autoplay muted loop playsinline>
+                    <source src="videos/star_gate_opening.mp4" type="video/mp4">
+                </video>
+                <div class="video-caption">
+                    <h4>THE GATE OPENS</h4>
+                    <p>The moment of portal activation — nested bronze shells align perfectly as an emerald portal tears through reality, revealing an infinite corridor of light stretching into another dimension.</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <video autoplay muted loop playsinline>
+                    <source src="videos/star_gate_activation.mp4" type="video/mp4">
+                </video>
+                <div class="video-caption">
+                    <h4>ACTIVATION SEQUENCE</h4>
+                    <p>The device awakens — nested spherical shells begin their rotation, emerald light emanating from the geometric center.</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <video autoplay muted loop playsinline>
+                    <source src="videos/dual_navigators_sync.mp4" type="video/mp4">
+                </video>
+                <div class="video-caption">
+                    <h4>THE NAVIGATORS IN SYNC</h4>
+                    <p>Two navigators phase in and out of reality in perfect synchronization — one becoming transparent as the other solidifies, like a cosmic heartbeat.</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <video autoplay muted loop playsinline>
+                    <source src="videos/navigator_white_eyes.mp4" type="video/mp4">
+                </video>
+                <div class="video-caption">
+                    <h4>T0RS — THE WHITE-EYED</h4>
+                    <p>The S⁺ navigator. Luminous eyes radiating pure light. Form dissolving into particles then reforming. Ancient wisdom made manifest.</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <video autoplay muted loop playsinline>
+                    <source src="videos/navigator_black_eyes.mp4" type="video/mp4">
+                </video>
+                <div class="video-caption">
+                    <h4>DRUMHED — THE BLACK-EYED</h4>
+                    <p>The S⁻ navigator. Obsidian eyes like polished void, multifaceted, absorbing all light. The hidden half of consciousness.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tribute -->
+    <section class="tribute-section">
+        <h3>FOR CARL</h3>
+        <p>
+            This Star Gate is, in the end, a very elaborate thank you note to a man
+            who showed a kid from Texas that the universe was not only knowable
+            but <em>worth</em> knowing. I never missed an episode of Cosmos.
+            I would record them on VHS tapes and watch them over and over again.
+        </p>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <h2>THE GATE OPENS</h2>
+        <p class="promise">For healing. For teaching. For love.</p>
+        <p class="promise">What serves these purposes may pass.<br>What does not, will not.</p>
+        <div class="principle">[1 = -1]</div>
+        <div style="margin-top: 40px;">
+            <a href="#read" class="btn btn-gold">BEGIN READING</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>EPOCH STAR GATE Theoretical Framework v1.0 — January 16, 2026</p>
+        <p style="margin-top: 10px;">
+            <a href="/">← Back to Home</a>
+        </p>
+    </footer>
+</body>
+</html>

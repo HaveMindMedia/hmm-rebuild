@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Vinyl Speed Paradox - How record grooves demonstrate the geometry of scalar dimensionality in your living room.">
+    <title>The Vinyl Paradox | The Epoch Project</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+
+    <style>
+        :root {
+            --gold: #fbbf24;
+            --gold-light: #fde68a;
+            --dark: #0c1222;
+            --darker: #060a14;
+            --panel: #111827;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --accent: #4ade80;
+            --blue: #3b82f6;
+            --blue-light: #60a5fa;
+            --red: #f87171;
+            --purple: #c084fc;
+            --cyan: #22d3ee;
+            --orange: #fb923c;
+            --pink: #f472b6;
+            --vinyl: #1a1a1a;
+            --groove: #0d0d0d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .home-nav {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+        .home-nav a {
+            display: inline-block;
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #c9a227;
+            border-radius: 4px;
+            background: rgba(10, 10, 26, 0.95);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .home-nav a:hover {
+            background: #c9a227;
+            color: #0a0a1a;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(6, 10, 20, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .nav-logo span { color: var(--text); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--blue-light); }
+
+        /* Main */
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 70px;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 50%, var(--pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .hero-subtitle em {
+            color: var(--cyan);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* Vinyl Demo Section */
+        .vinyl-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .vinyl-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 1000px) {
+            .vinyl-container {
+                gap: 3rem;
+            }
+        }
+
+        /* Vinyl Record Visual */
+        .vinyl-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 500px;
+        }
+
+        .record-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        @media (max-width: 500px) {
+            .record-container {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        .record {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #1a1a1a 0deg,
+                #0a0a0a 2deg,
+                #1a1a1a 4deg,
+                #0a0a0a 6deg,
+                #1a1a1a 8deg,
+                #0a0a0a 10deg,
+                #1a1a1a 12deg,
+                #0a0a0a 14deg,
+                #1a1a1a 16deg,
+                #0a0a0a 18deg,
+                #1a1a1a 20deg,
+                #0a0a0a 22deg,
+                #1a1a1a 24deg,
+                #0a0a0a 26deg,
+                #1a1a1a 28deg,
+                #0a0a0a 30deg,
+                #1a1a1a 32deg,
+                #0a0a0a 34deg,
+                #1a1a1a 36deg,
+                #0a0a0a 38deg,
+                #1a1a1a 40deg,
+                #0a0a0a 42deg,
+                #1a1a1a 44deg,
+                #0a0a0a 46deg,
+                #1a1a1a 48deg,
+                #0a0a0a 50deg,
+                #1a1a1a 52deg,
+                #0a0a0a 54deg,
+                #1a1a1a 56deg,
+                #0a0a0a 58deg,
+                #1a1a1a 60deg,
+                #0a0a0a 62deg,
+                #1a1a1a 64deg,
+                #0a0a0a 66deg,
+                #1a1a1a 68deg,
+                #0a0a0a 70deg,
+                #1a1a1a 72deg,
+                #0a0a0a 74deg,
+                #1a1a1a 76deg,
+                #0a0a0a 78deg,
+                #1a1a1a 80deg,
+                #0a0a0a 82deg,
+                #1a1a1a 84deg,
+                #0a0a0a 86deg,
+                #1a1a1a 88deg,
+                #0a0a0a 90deg,
+                #1a1a1a 92deg,
+                #0a0a0a 94deg,
+                #1a1a1a 96deg,
+                #0a0a0a 98deg,
+                #1a1a1a 100deg,
+                #0a0a0a 102deg,
+                #1a1a1a 104deg,
+                #0a0a0a 106deg,
+                #1a1a1a 108deg,
+                #0a0a0a 110deg,
+                #1a1a1a 112deg,
+                #0a0a0a 114deg,
+                #1a1a1a 116deg,
+                #0a0a0a 118deg,
+                #1a1a1a 120deg,
+                #0a0a0a 122deg,
+                #1a1a1a 124deg,
+                #0a0a0a 126deg,
+                #1a1a1a 128deg,
+                #0a0a0a 130deg,
+                #1a1a1a 132deg,
+                #0a0a0a 134deg,
+                #1a1a1a 136deg,
+                #0a0a0a 138deg,
+                #1a1a1a 140deg,
+                #0a0a0a 142deg,
+                #1a1a1a 144deg,
+                #0a0a0a 146deg,
+                #1a1a1a 148deg,
+                #0a0a0a 150deg,
+                #1a1a1a 152deg,
+                #0a0a0a 154deg,
+                #1a1a1a 156deg,
+                #0a0a0a 158deg,
+                #1a1a1a 160deg,
+                #0a0a0a 162deg,
+                #1a1a1a 164deg,
+                #0a0a0a 166deg,
+                #1a1a1a 168deg,
+                #0a0a0a 170deg,
+                #1a1a1a 172deg,
+                #0a0a0a 174deg,
+                #1a1a1a 176deg,
+                #0a0a0a 178deg,
+                #1a1a1a 180deg,
+                #0a0a0a 182deg,
+                #1a1a1a 184deg,
+                #0a0a0a 186deg,
+                #1a1a1a 188deg,
+                #0a0a0a 190deg,
+                #1a1a1a 192deg,
+                #0a0a0a 194deg,
+                #1a1a1a 196deg,
+                #0a0a0a 198deg,
+                #1a1a1a 200deg,
+                #0a0a0a 202deg,
+                #1a1a1a 204deg,
+                #0a0a0a 206deg,
+                #1a1a1a 208deg,
+                #0a0a0a 210deg,
+                #1a1a1a 212deg,
+                #0a0a0a 214deg,
+                #1a1a1a 216deg,
+                #0a0a0a 218deg,
+                #1a1a1a 220deg,
+                #0a0a0a 222deg,
+                #1a1a1a 224deg,
+                #0a0a0a 226deg,
+                #1a1a1a 228deg,
+                #0a0a0a 230deg,
+                #1a1a1a 232deg,
+                #0a0a0a 234deg,
+                #1a1a1a 236deg,
+                #0a0a0a 238deg,
+                #1a1a1a 240deg,
+                #0a0a0a 242deg,
+                #1a1a1a 244deg,
+                #0a0a0a 246deg,
+                #1a1a1a 248deg,
+                #0a0a0a 250deg,
+                #1a1a1a 252deg,
+                #0a0a0a 254deg,
+                #1a1a1a 256deg,
+                #0a0a0a 258deg,
+                #1a1a1a 260deg,
+                #0a0a0a 262deg,
+                #1a1a1a 264deg,
+                #0a0a0a 266deg,
+                #1a1a1a 268deg,
+                #0a0a0a 270deg,
+                #1a1a1a 272deg,
+                #0a0a0a 274deg,
+                #1a1a1a 276deg,
+                #0a0a0a 278deg,
+                #1a1a1a 280deg,
+                #0a0a0a 282deg,
+                #1a1a1a 284deg,
+                #0a0a0a 286deg,
+                #1a1a1a 288deg,
+                #0a0a0a 290deg,
+                #1a1a1a 292deg,
+                #0a0a0a 294deg,
+                #1a1a1a 296deg,
+                #0a0a0a 298deg,
+                #1a1a1a 300deg,
+                #0a0a0a 302deg,
+                #1a1a1a 304deg,
+                #0a0a0a 306deg,
+                #1a1a1a 308deg,
+                #0a0a0a 310deg,
+                #1a1a1a 312deg,
+                #0a0a0a 314deg,
+                #1a1a1a 316deg,
+                #0a0a0a 318deg,
+                #1a1a1a 320deg,
+                #0a0a0a 322deg,
+                #1a1a1a 324deg,
+                #0a0a0a 326deg,
+                #1a1a1a 328deg,
+                #0a0a0a 330deg,
+                #1a1a1a 332deg,
+                #0a0a0a 334deg,
+                #1a1a1a 336deg,
+                #0a0a0a 338deg,
+                #1a1a1a 340deg,
+                #0a0a0a 342deg,
+                #1a1a1a 344deg,
+                #0a0a0a 346deg,
+                #1a1a1a 348deg,
+                #0a0a0a 350deg,
+                #1a1a1a 352deg,
+                #0a0a0a 354deg,
+                #1a1a1a 356deg,
+                #0a0a0a 358deg,
+                #1a1a1a 360deg
+            );
+            box-shadow:
+                0 0 0 3px #333,
+                0 0 30px rgba(0, 0, 0, 0.8),
+                inset 0 0 80px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .record.spinning {
+            animation: spin var(--spin-duration, 1.8s) linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Grooves overlay */
+        .record::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 15%;
+            right: 15%;
+            bottom: 15%;
+            border-radius: 50%;
+            background: repeating-radial-gradient(
+                circle at center,
+                transparent 0px,
+                transparent 1px,
+                rgba(30, 30, 30, 0.8) 1px,
+                rgba(30, 30, 30, 0.8) 2px
+            );
+            pointer-events: none;
+        }
+
+        /* Label */
+        .record-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 35%;
+            height: 35%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #c9a227 0%, #8b6914 50%, #c9a227 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .record-label .title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .record-label .rpm {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        /* Center hole */
+        .record-label::after {
+            content: '';
+            position: absolute;
+            width: 15%;
+            height: 15%;
+            background: var(--darker);
+            border-radius: 50%;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Needle/Stylus */
+        .stylus-arm {
+            position: absolute;
+            top: 10%;
+            right: -10%;
+            width: 150px;
+            height: 20px;
+            background: linear-gradient(180deg, #666 0%, #333 100%);
+            border-radius: 10px;
+            transform-origin: right center;
+            transform: rotate(-25deg);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+            z-index: 20;
+        }
+
+        .stylus-arm::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid #444;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+
+        /* Tracking dots */
+        .tracking-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+            transition: all 0.3s;
+        }
+
+        .tracking-dot.outer {
+            background: var(--red);
+            box-shadow: 0 0 15px var(--red), 0 0 30px var(--red);
+        }
+
+        .tracking-dot.inner {
+            background: var(--cyan);
+            box-shadow: 0 0 15px var(--cyan), 0 0 30px var(--cyan);
+        }
+
+        /* Speed indicators */
+        .speed-indicators {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .speed-indicator {
+            text-align: center;
+        }
+
+        .speed-indicator .label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-bottom: 0.3rem;
+        }
+
+        .speed-indicator .value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .speed-indicator.outer .value {
+            color: var(--red);
+        }
+
+        .speed-indicator.inner .value {
+            color: var(--cyan);
+        }
+
+        /* Explanation side */
+        .vinyl-explanation {
+            padding: 2rem;
+            width: 500px;
+        }
+
+        .vinyl-explanation h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .vinyl-explanation p {
+            color: var(--text-dim);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .vinyl-explanation strong {
+            color: var(--text);
+        }
+
+        .highlight-box {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .highlight-box h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--cyan);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box .formula {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--gold);
+            text-align: center;
+            padding: 1rem;
+            background: var(--darker);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Controls */
+        .controls-section {
+            padding: 3rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .controls-card {
+            background: var(--panel);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .controls-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .control-group label span {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--cyan);
+        }
+
+        .slider {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            background: var(--darker);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(251, 191, 36, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-play {
+            background: linear-gradient(135deg, var(--accent) 0%, #22c55e 100%);
+            color: #1a1a1a;
+        }
+
+        .btn-play:hover {
+            box-shadow: 0 5px 20px rgba(74, 222, 128, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-stop {
+            background: transparent;
+            border: 2px solid var(--red);
+            color: var(--red);
+        }
+
+        .btn-stop:hover {
+            background: rgba(248, 113, 113, 0.1);
+        }
+
+        /* The Insight Section */
+        .insight-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(192, 132, 252, 0.05) 50%, transparent 100%);
+        }
+
+        .insight-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .insight-container h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--purple);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .insight-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .insight-card {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(192, 132, 252, 0.2);
+            transition: all 0.3s;
+            width: 280px;
+        }
+
+        .insight-card:hover {
+            border-color: rgba(192, 132, 252, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(192, 132, 252, 0.15);
+        }
+
+        .insight-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .insight-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .insight-card p {
+            color: var(--text-dim);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* The Paradox Resolution */
+        .resolution-section {
+            padding: 5rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .resolution-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--gold);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .resolution-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(34, 211, 238, 0.1) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .resolution-box .big-insight {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .resolution-box .big-insight em {
+            color: var(--cyan);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .resolution-box .formula-big {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--gold);
+            margin: 2rem 0;
+            text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+        }
+
+        .resolution-box p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Connection to Framework */
+        .framework-section {
+            padding: 4rem 2rem;
+            background: var(--panel);
+        }
+
+        .framework-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .framework-container h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--cyan);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .framework-container p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            line-height: 1.9;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .framework-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            color: var(--purple);
+            margin: 2rem 0;
+            text-shadow: 0 0 40px rgba(192, 132, 252, 0.4);
+        }
+
+        .sticker {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--pink), #ec4899);
+            color: white;
+            transform: rotate(2deg);
+            margin-left: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .footer-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--cyan);
+            margin-bottom: 1rem;
+        }
+
+        footer p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--blue-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--cyan);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0.75rem 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 3rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .vinyl-section {
+                padding: 2rem 1rem;
+            }
+
+            .vinyl-explanation {
+                padding: 1rem;
+            }
+
+            .vinyl-explanation h2 {
+                font-size: 1.5rem;
+            }
+
+            .stylus-arm {
+                display: none;
+            }
+
+            .speed-indicators {
+                bottom: -50px;
+                gap: 1rem;
+            }
+
+            .insight-section,
+            .resolution-section {
+                padding: 3rem 1rem;
+            }
+
+            .resolution-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .resolution-box .big-insight {
+                font-size: 1.2rem;
+            }
+
+            .resolution-box .formula-big {
+                font-size: 1.5rem;
+            }
+
+            .framework-equation {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+<div class="home-nav"><a href="/">← Home</a></div>
+    <nav class="nav">
+        <a href="../index.html" class="nav-logo">HAVE<span>MIND</span>MEDIA</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../physics/millennium-problems.html">Millennium Problems</a></li>
+            <li><a href="../physics/three-body-geometry.html">Three-Body</a></li>
+            <li><a href="../index.html#epoch">Epoch Project</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <h1>The Vinyl Speed Paradox <span class="emoji">💿</span></h1>
+            <p class="hero-subtitle">
+                Every record player in the world demonstrates the geometry of scalar dimensionality.
+                <em>The answer has been spinning in living rooms since 1948.</em>
+            </p>
+        </section>
+
+        <!-- Main Vinyl Demo -->
+        <section class="vinyl-section">
+            <div class="vinyl-container">
+                <div class="vinyl-visual">
+                    <div class="record-container">
+                        <div class="record" id="record">
+                            <div class="record-label">
+                                <div class="title">Epoch</div>
+                                <div class="rpm" id="rpmDisplay">33</div>
+                            </div>
+                        </div>
+                        <div class="stylus-arm"></div>
+                        <div class="tracking-dot outer" id="outerDot"></div>
+                        <div class="tracking-dot inner" id="innerDot"></div>
+                    </div>
+                    <div class="speed-indicators">
+                        <div class="speed-indicator outer">
+                            <div class="label">Outer Edge</div>
+                            <div class="value" id="outerSpeed">51.3 cm/s</div>
+                        </div>
+                        <div class="speed-indicator inner">
+                            <div class="label">Inner Groove</div>
+                            <div class="value" id="innerSpeed">20.5 cm/s</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vinyl-explanation">
+                    <h2>The "Problem" <span class="emoji">🤔</span></h2>
+                    <p>
+                        A vinyl record spins at a <strong>constant RPM</strong> — every point completes
+                        one rotation in the same time. But the <strong>linear velocity</strong> varies dramatically:
+                    </p>
+                    <p>
+                        <span style="color: var(--red);">The outer edge</span> travels much faster than
+                        <span style="color: var(--cyan);">the inner groove</span>. Yet both encode audio
+                        that plays back at the <em>same speed</em>. Both produce the same sound.
+                    </p>
+
+                    <div class="highlight-box">
+                        <h3>The Math <span class="emoji">📐</span></h3>
+                        <div class="formula">v = 2πr × RPM / 60</div>
+                        <p><span style="color: var(--red);">Outer (r=14.5cm):</span> ~51 cm/s at 33⅓ RPM</p>
+                        <p><span style="color: var(--cyan);">Inner (r=5.7cm):</span> ~20 cm/s at 33⅓ RPM</p>
+                        <p style="margin-top: 1rem; color: var(--gold);"><strong>2.5x speed difference — same audio!</strong></p>
+                    </div>
+
+                    <p>
+                        How does the stylus read both at the "same" rate? Standard physics says the
+                        groove density compensates. But that's describing <em>what</em> happens,
+                        not <em>why</em> it works.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Controls -->
+        <section class="controls-section">
+            <div class="controls-card">
+                <h3>Spin It <span class="emoji">🎛️</span></h3>
+
+                <div class="control-group">
+                    <label>
+                        RPM Setting
+                        <span id="rpmLabel">33⅓</span>
+                    </label>
+                    <input type="range" class="slider" id="rpmSlider" min="16" max="78" value="33">
+                </div>
+
+                <div class="control-group">
+                    <label>
+                        Tracking Position (radius)
+                        <span id="radiusLabel">50%</span>
+                    </label>
+                    <input type="range" class="slider" id="radiusSlider" min="20" max="95" value="50">
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-play" id="playBtn">▶ Play</button>
+                    <button class="btn btn-stop" id="stopBtn">■ Stop</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Insight -->
+        <section class="insight-section">
+            <div class="insight-container">
+                <h2>What's Actually Happening <span class="emoji">💡</span></h2>
+
+                <div class="insight-grid">
+                    <div class="insight-card">
+                        <div class="icon">🔄</div>
+                        <h3>Angular Velocity is Constant</h3>
+                        <p>
+                            Every point on the record completes one full rotation in the same time.
+                            This is the <strong>scalar dimension</strong> — the underlying geometric truth.
+                            It doesn't care about radius.
+                        </p>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="icon">📏</div>
+                        <h3>Linear Velocity Varies</h3>
+                        <p>
+                            The <em>projection</em> of that rotation into measurable space (cm/s)
+                            depends on where you observe. This is the <strong>s+ measurement</strong> —
+                            position-dependent, seemingly paradoxical.
+                        </p>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="icon">🎵</div>
+                        <h3>Information is Preserved</h3>
+                        <p>
+                            The audio doesn't distort because <strong>information density scales
+                            inversely with radius</strong>. The groove packing compensates exactly.
+                            This is closure — [+1] + [-1] = 0.
+                        </p>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="icon">⚖️</div>
+                        <h3>The Balance Point</h3>
+                        <p>
+                            There exists a radius where linear velocity exactly matches the
+                            "natural" playback rate. This is the <strong>s=0 observer position</strong>.
+                            Everything else is relative to this point.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resolution -->
+        <section class="resolution-section">
+            <h2>The Paradox Resolved <span class="emoji">✨</span></h2>
+
+            <div class="resolution-box">
+                <p class="big-insight">
+                    There is no paradox. The record demonstrates that <em>angular measure</em>
+                    (rotation, the scalar dimension) is more fundamental than <em>linear measure</em>
+                    (distance traveled, the spatial projection).
+                </p>
+
+                <div class="formula-big">ω = constant, v = ωr</div>
+
+                <p>
+                    The vinyl groove is a physical encoding of <strong>κ = 2π/180</strong> —
+                    the bridge between angular (degrees) and linear (radians) measurement.
+                    Every record player performs this conversion 33⅓ times per minute.
+                </p>
+
+                <p style="margin-top: 1.5rem; color: var(--gold);">
+                    <strong>The "speed paradox" is only paradoxical if you think linear velocity is fundamental.</strong>
+                    <br>It isn't. Rotation is. Space emerges from angular closure.
+                </p>
+            </div>
+        </section>
+
+        <!-- Connection to Framework -->
+        <section class="framework-section">
+            <div class="framework-container">
+                <h2>This is Scalar Dimensionality <span class="emoji">🌀</span></h2>
+
+                <p>
+                    The vinyl record is a perfect physical model of scalar dimensionality:
+                </p>
+
+                <p>
+                    <strong style="color: var(--red);">The outer edge</strong> is analogous to
+                    <strong>Wush-facing</strong> — higher energy density, faster linear motion,
+                    quantum-scale phenomena.
+                </p>
+
+                <p>
+                    <strong style="color: var(--cyan);">The inner groove</strong> is analogous to
+                    <strong>Ro-facing</strong> — lower energy density, slower linear motion,
+                    cosmic-scale phenomena.
+                </p>
+
+                <p>
+                    <strong style="color: var(--gold);">The constant RPM</strong> is the
+                    <strong>underlying geometry</strong> — the same angular velocity governs both,
+                    just as κ governs both quantum and cosmic scales.
+                </p>
+
+                <div class="framework-equation">κ = 2π/180</div>
+
+                <p>
+                    Every record player converts between angular truth and linear projection.
+                    That's not engineering — that's the geometry of reality,
+                    pressed into vinyl and spinning in your living room.
+                    <span class="sticker">wild</span>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-equation">[-1 = 0 = +1]</div>
+        <p>The geometry is everywhere. You just have to see it. <span class="emoji">💿</span></p>
+        <p style="margin-top: 1rem;">
+            <a href="../index.html">Have Mind Media</a> ·
+            <a href="../physics/millennium-problems.html">Millennium Problems</a> ·
+            <a href="../physics/three-body-geometry.html">Three-Body Problem</a>
+        </p>
+    </footer>
+
+    <script>
+        // Elements
+        const record = document.getElementById('record');
+        const outerDot = document.getElementById('outerDot');
+        const innerDot = document.getElementById('innerDot');
+        const rpmDisplay = document.getElementById('rpmDisplay');
+        const outerSpeedEl = document.getElementById('outerSpeed');
+        const innerSpeedEl = document.getElementById('innerSpeed');
+        const rpmSlider = document.getElementById('rpmSlider');
+        const rpmLabel = document.getElementById('rpmLabel');
+        const radiusSlider = document.getElementById('radiusSlider');
+        const radiusLabel = document.getElementById('radiusLabel');
+        const playBtn = document.getElementById('playBtn');
+        const stopBtn = document.getElementById('stopBtn');
+
+        // State
+        let isPlaying = false;
+        let rpm = 33;
+        let trackingRadius = 50; // percentage
+        let animationId = null;
+        let angle = 0;
+
+        // Record dimensions (relative to container)
+        const containerSize = 400;
+        const outerRadius = 0.47; // 47% of container
+        const innerRadius = 0.18; // 18% of container
+        const realOuterRadius = 14.5; // cm (actual vinyl)
+        const realInnerRadius = 5.7; // cm
+
+        function updateSpeeds() {
+            // Calculate linear velocities (v = 2πr × RPM / 60)
+            const outerSpeed = (2 * Math.PI * realOuterRadius * rpm / 60).toFixed(1);
+            const innerSpeed = (2 * Math.PI * realInnerRadius * rpm / 60).toFixed(1);
+
+            outerSpeedEl.textContent = `${outerSpeed} cm/s`;
+            innerSpeedEl.textContent = `${innerSpeed} cm/s`;
+
+            // Update RPM display
+            if (rpm <= 20) {
+                rpmLabel.textContent = '16⅔';
+                rpmDisplay.textContent = '16';
+            } else if (rpm <= 40) {
+                rpmLabel.textContent = '33⅓';
+                rpmDisplay.textContent = '33';
+            } else if (rpm <= 50) {
+                rpmLabel.textContent = '45';
+                rpmDisplay.textContent = '45';
+            } else {
+                rpmLabel.textContent = '78';
+                rpmDisplay.textContent = '78';
+            }
+        }
+
+        function positionDots(currentAngle) {
+            const container = record.parentElement;
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            // Outer dot
+            const outerR = (rect.width / 2) * outerRadius;
+            const outerX = centerX + outerR * Math.cos(currentAngle);
+            const outerY = centerY + outerR * Math.sin(currentAngle);
+            outerDot.style.left = outerX + 'px';
+            outerDot.style.top = outerY + 'px';
+
+            // Inner dot (same angle, different radius)
+            const innerR = (rect.width / 2) * innerRadius + ((rect.width / 2) * (outerRadius - innerRadius) * (100 - trackingRadius) / 100);
+            const innerX = centerX + innerR * Math.cos(currentAngle);
+            const innerY = centerY + innerR * Math.sin(currentAngle);
+            innerDot.style.left = innerX + 'px';
+            innerDot.style.top = innerY + 'px';
+        }
+
+        function animate() {
+            if (!isPlaying) return;
+
+            // Angular velocity in radians per frame (assuming 60fps)
+            const omega = (rpm * 2 * Math.PI) / (60 * 60); // radians per frame
+            angle += omega;
+            if (angle > 2 * Math.PI) angle -= 2 * Math.PI;
+
+            positionDots(angle);
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function startPlaying() {
+            if (isPlaying) return;
+            isPlaying = true;
+
+            // Set spin duration based on RPM (time for one rotation)
+            const spinDuration = 60 / rpm;
+            record.style.setProperty('--spin-duration', spinDuration + 's');
+            record.classList.add('spinning');
+
+            playBtn.textContent = '⏸ Pause';
+            animate();
+        }
+
+        function stopPlaying() {
+            isPlaying = false;
+            record.classList.remove('spinning');
+            playBtn.textContent = '▶ Play';
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        }
+
+        // Event listeners
+        rpmSlider.addEventListener('input', (e) => {
+            rpm = parseInt(e.target.value);
+            updateSpeeds();
+
+            if (isPlaying) {
+                const spinDuration = 60 / rpm;
+                record.style.setProperty('--spin-duration', spinDuration + 's');
+            }
+        });
+
+        radiusSlider.addEventListener('input', (e) => {
+            trackingRadius = parseInt(e.target.value);
+            radiusLabel.textContent = trackingRadius + '%';
+            positionDots(angle);
+        });
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                stopPlaying();
+            } else {
+                startPlaying();
+            }
+        });
+
+        stopBtn.addEventListener('click', () => {
+            stopPlaying();
+            angle = 0;
+            positionDots(0);
+        });
+
+        // Initialize
+        updateSpeeds();
+        positionDots(0);
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            positionDots(angle);
+        });
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

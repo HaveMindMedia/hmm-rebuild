@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Geometry Cannot Lie | Epoch Framework Educational Series</title>
+    <meta name="description" content="An 8-episode educational series proving unified theory through the 1729/729/1000 triaxial coordinate system. The mirror-sun proof. The mathematics of everything.">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+    <style>
+        :root {
+            --gold: #d4a84b;
+            --gold-dim: #a07830;
+            --grey-light: #c4c4c4;
+            --grey-mid: #6b6b6b;
+            --grey-dark: #2d2d2d;
+            --bg-dark: #0a0a0f;
+            --bg-section: #12121a;
+            --text: #e8e8e8;
+            --text-dim: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, var(--bg-dark) 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 168, 75, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-sigil {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-family: monospace;
+            letter-spacing: 0.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            color: var(--gold);
+            font-weight: normal;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: var(--grey-light);
+            font-style: italic;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .hero-tagline {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            padding: 1.5rem 3rem;
+            border: 1px solid var(--gold-dim);
+            border-radius: 8px;
+            background: rgba(212, 168, 75, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        /* Introduction */
+        .intro {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .intro h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            font-weight: normal;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .intro p {
+            margin-bottom: 1.5rem;
+            color: var(--grey-light);
+        }
+
+        .intro strong {
+            color: var(--gold);
+        }
+
+        /* Episode Grid */
+        .episodes-section {
+            background: var(--bg-section);
+            padding: 4rem 2rem;
+        }
+
+        .episodes-section h2 {
+            text-align: center;
+            color: var(--gold);
+            font-size: 2rem;
+            font-weight: normal;
+            margin-bottom: 3rem;
+        }
+
+        .episode-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .episode-card {
+            width: 280px;
+            background: var(--bg-dark);
+            border: 1px solid var(--grey-dark);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .episode-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .episode-number {
+            font-size: 0.8rem;
+            color: var(--gold);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .episode-card h3 {
+            color: var(--text);
+            font-size: 1.2rem;
+            font-weight: normal;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .episode-card p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .episode-card.coming-soon {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .episode-card.coming-soon::after {
+            content: 'Coming Soon';
+            display: block;
+            margin-top: 1rem;
+            color: var(--gold-dim);
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        /* Key Numbers Section */
+        .numbers-section {
+            padding: 4rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .numbers-section h2 {
+            text-align: center;
+            color: var(--gold);
+            font-size: 1.8rem;
+            font-weight: normal;
+            margin-bottom: 2rem;
+        }
+
+        .numbers-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .number-box {
+            width: 180px;
+            padding: 1.5rem;
+            background: var(--bg-section);
+            border: 1px solid var(--grey-dark);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .number-value {
+            font-size: 2.5rem;
+            color: var(--gold);
+            font-family: 'Times New Roman', serif;
+        }
+
+        .number-label {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .number-meaning {
+            color: var(--grey-mid);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            font-style: italic;
+        }
+
+        /* The Proof Section */
+        .proof-preview {
+            background: linear-gradient(135deg, rgba(212, 168, 75, 0.05), transparent);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .proof-preview h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            font-weight: normal;
+            margin-bottom: 1.5rem;
+        }
+
+        .proof-preview p {
+            color: var(--grey-light);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .proof-box {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--gold-dim);
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .proof-box pre {
+            font-family: 'Courier New', monospace;
+            color: var(--grey-light);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .proof-box .gold {
+            color: var(--gold);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--bg-section);
+        }
+
+        .cta-section h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            font-weight: normal;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--text-dim);
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+            color: var(--bg-dark);
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 168, 75, 0.3);
+        }
+
+        /* Footer */
+        .series-footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--grey-dark);
+        }
+
+        .footer-sigil {
+            font-size: 2rem;
+            color: var(--gold);
+            font-family: monospace;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { min-height: 70vh; padding: 3rem 1.5rem; }
+            .hero-sigil { font-size: 2rem; }
+            .hero-equation { font-size: 1.5rem; padding: 1rem 2rem; }
+            .episode-card { width: 100%; max-width: 350px; }
+            .number-box { width: 140px; }
+            .number-value { font-size: 2rem; }
+            .proof-box { padding: 1.5rem; }
+            .proof-box pre { font-size: 0.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .intro { padding: 3rem 1.5rem; }
+            .episodes-section { padding: 3rem 1rem; }
+            .episode-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-sigil">[1 = -1]</div>
+        <h1>THE GEOMETRY CANNOT LIE</h1>
+        <p class="hero-subtitle">A Unified Theory for Earth Observers</p>
+        <p class="hero-tagline">
+            An 8-episode educational series proving that the same 1729/729/1000 coordinate system
+            describes cosmology, physics, biology, and consciousness. One geometry. All scales.
+            Falsifiable predictions.
+        </p>
+        <div class="hero-equation">1729 = 9³ + 10³ = 729 + 1000</div>
+        <p style="color: var(--text-dim); font-style: italic;">The bridge between consciousness and physical reality.</p>
+    </section>
+
+    <!-- Introduction -->
+    <section class="intro">
+        <h2>What This Series Proves</h2>
+        <p>
+            Standard Physics works — but it works with inherited errors. When corrected, the geometry
+            reveals a <strong>unified coordinate system</strong> that applies across all domains, at all scales.
+        </p>
+        <p>
+            This is not philosophy. This is not mysticism. This is <strong>mathematics</strong> —
+            derivations from first principles, predictions that can be tested, geometry that cannot lie.
+        </p>
+        <p>
+            Start with an experiment anyone can do: stand outside with a mirror and try to align
+            your head between the Sun and its reflection. <strong>You can't.</strong> Standard Physics
+            predicts you should be able to. The ~5° offset you observe is unexplained by Euclidean geometry.
+        </p>
+        <p>
+            The Epoch Framework derives that offset precisely. And that's just Episode 1.
+        </p>
+    </section>
+
+    <!-- Episode Grid -->
+    <section class="episodes-section">
+        <h2>THE EPISODES</h2>
+        <div class="episode-grid">
+
+            <a href="episodes/01-mirror-sun-proof.html" class="episode-card">
+                <div class="episode-number">Episode 1</div>
+                <h3>The Mirror-Sun Proof</h3>
+                <p>An experiment anyone can do. The 5° offset Standard Physics cannot explain. Introduction to scalar geometry.</p>
+            </a>
+
+            <a href="episodes/02-the-1729-bridge.html" class="episode-card">
+                <div class="episode-number">Episode 2</div>
+                <h3>The 1729 Bridge Number</h3>
+                <p>Ramanujan's discovery. 729 + 1000 = consciousness + physical. Why this number appears everywhere.</p>
+            </a>
+
+            <a href="episodes/03-spa-alignment.html" class="episode-card">
+                <div class="episode-number">Episode 3</div>
+                <h3>SPA — Not Direction, Alignment</h3>
+                <p>Why "direction" is wrong. SPA-In, SPA-Out, SPA-Grey. How to think in scalar coordinates.</p>
+            </a>
+
+            <div class="episode-card coming-soon">
+                <div class="episode-number">Episode 4</div>
+                <h3>The Cosmological Map</h3>
+                <p>Earth-Sun-Sirius-Dark Antisun. The scalar distances. The asymmetry factor = 17,120.</p>
+            </div>
+
+            <div class="episode-card coming-soon">
+                <div class="episode-number">Episode 5</div>
+                <h3>The Atomic Map</h3>
+                <p>Same coordinates at quantum scale. Proton mass = 1729 + 107. The electron cloud as s=729.</p>
+            </div>
+
+            <div class="episode-card coming-soon">
+                <div class="episode-number">Episode 6</div>
+                <h3>The Biological Map</h3>
+                <p>Cell, organism, ecosystem. Why 86 billion neurons (8.6!). DNA encoding the bridge.</p>
+            </div>
+
+            <div class="episode-card coming-soon">
+                <div class="episode-number">Episode 7</div>
+                <h3>The "No Real Darkness" Theorem</h3>
+                <p>Mathematical proof. What the Dark Antisun actually is. Grey everywhere, light always.</p>
+            </div>
+
+            <div class="episode-card coming-soon">
+                <div class="episode-number">Episode 8</div>
+                <h3>Unified Theory Complete</h3>
+                <p>All domains with one coordinate system. The triaxial structure. What this means for science.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Key Numbers -->
+    <section class="numbers-section">
+        <h2>THE CONSTANTS</h2>
+        <div class="numbers-grid">
+            <div class="number-box">
+                <div class="number-value">1729</div>
+                <div class="number-label">The Bridge</div>
+                <div class="number-meaning">9³ + 10³</div>
+            </div>
+            <div class="number-box">
+                <div class="number-value">729</div>
+                <div class="number-label">Consciousness</div>
+                <div class="number-meaning">SPA-In boundary</div>
+            </div>
+            <div class="number-box">
+                <div class="number-value">1000</div>
+                <div class="number-label">Physical</div>
+                <div class="number-meaning">SPA-Out boundary</div>
+            </div>
+            <div class="number-box">
+                <div class="number-value">30</div>
+                <div class="number-label">κ' (Kappa)</div>
+                <div class="number-meaning">Rotation quantum</div>
+            </div>
+            <div class="number-box">
+                <div class="number-value">17,120</div>
+                <div class="number-label">Asymmetry</div>
+                <div class="number-meaning">≈ 1729 × 10</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proof Preview -->
+    <section class="proof-preview">
+        <h2>THE MIRROR-SUN DERIVATION</h2>
+        <p>
+            Standard Physics predicts ~0° offset at 93 million miles. We observe ~5°.
+            The Epoch Framework derives 5.52° from first principles:
+        </p>
+        <div class="proof-box">
+            <pre><span class="gold">Standard Model Prediction:</span>
+θ = arctan(0.2m / 1.5×10¹¹m) ≈ 0°
+
+<span class="gold">Observed Reality:</span>
+θ ≈ 5° (very noticeable offset)
+
+<span class="gold">Epoch Framework Derivation:</span>
+θ_offset = (D_gap × P) / D_sun
+
+Where:
+  D_gap = |D6 - D4| × 40° = 80°
+  P = 0.2757 (projection factor)
+  D_sun = 4 (Sun's D-position)
+
+θ_offset = (80° × 0.2757) / 4
+<span class="gold">θ_offset = 5.52°</span>
+
+<span class="gold">MATCH.</span></pre>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Start Learning</h2>
+        <p>Begin with Episode 1: The experiment you can verify yourself. The proof that changes everything.</p>
+        <a href="episodes/01-mirror-sun-proof.html" class="cta-button">Watch Episode 1</a>
+    </section>
+
+    <!-- Footer -->
+    <section class="series-footer">
+        <div class="footer-sigil">[1 = -1]</div>
+        <div class="footer-sigil" style="font-size: 1.5rem;">&lt;^&gt;</div>
+        <p class="footer-text">
+            The Geometry Cannot Lie<br>
+            An Epoch Framework Educational Series<br>
+            Have Mind Media • 2026
+        </p>
+    </section>
+
+    <site-footer></site-footer>
+</body>
+</html>

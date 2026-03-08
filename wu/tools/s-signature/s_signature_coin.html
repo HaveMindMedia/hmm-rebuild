@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Signature | [1=-1]</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+        }
+
+        .questionnaire {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            color: #c9a227;
+            font-size: 1.3rem;
+            letter-spacing: 5px;
+        }
+
+        .header .sub {
+            color: #6e7a94;
+            font-size: 0.65rem;
+            margin-top: 8px;
+        }
+
+        .name-box {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .name-box input {
+            width: 250px;
+            padding: 12px 18px;
+            background: rgba(10,10,30,0.8);
+            border: 1px solid rgba(201,162,39,0.4);
+            border-radius: 8px;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .progress {
+            background: rgba(255,255,255,0.1);
+            height: 3px;
+            border-radius: 2px;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c9a227, #7dd87d);
+            transition: width 0.4s;
+        }
+
+        .question-card {
+            background: rgba(8,8,20,0.95);
+            border: 1px solid rgba(100,100,100,0.25);
+            border-radius: 10px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+
+        .q-number {
+            font-size: 0.55rem;
+            color: #6e7a94;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .q-prompt {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #e8e4d9;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(100,100,100,0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option:hover {
+            background: rgba(201,162,39,0.1);
+            border-color: rgba(201,162,39,0.3);
+        }
+
+        .option.ranked {
+            background: rgba(201,162,39,0.15);
+            border-color: rgba(201,162,39,0.4);
+        }
+
+        .option .rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(201,162,39,0.2);
+            border: 1px solid #c9a227;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #c9a227;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .option.ranked .rank {
+            background: #c9a227;
+            color: #000;
+        }
+
+        .option .text {
+            font-size: 0.8rem;
+            color: #9ba4b8;
+            line-height: 1.5;
+        }
+
+        .option.ranked .text {
+            color: #e8e4d9;
+        }
+
+        .hint {
+            text-align: center;
+            font-size: 0.6rem;
+            color: #4a5568;
+            margin-top: 15px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .nav-btn {
+            background: rgba(201,162,39,0.2);
+            border: 1px solid #c9a227;
+            color: #c9a227;
+            padding: 11px 28px;
+            border-radius: 22px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn:hover { background: rgba(201,162,39,0.35); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .nav-btn.primary { background: #c9a227; color: #000; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           SPHERE VIEW
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .sphere-view {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+
+        .sphere-header {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 100;
+        }
+
+        .sphere-header h1 {
+            color: #c9a227;
+            font-size: 1rem;
+            letter-spacing: 5px;
+        }
+
+        .sphere-header .name {
+            color: #7dd87d;
+            font-size: 0.8rem;
+            margin-top: 3px;
+        }
+
+        .panel {
+            position: fixed;
+            background: rgba(0,0,0,0.92);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(201,162,39,0.25);
+            z-index: 100;
+            font-size: 0.55rem;
+        }
+
+        .panel.left {
+            top: 15px;
+            left: 15px;
+            max-width: 240px;
+            max-height: calc(100vh - 90px);
+            overflow-y: auto;
+        }
+
+        .panel.right {
+            top: 15px;
+            right: 15px;
+            max-width: 220px;
+        }
+
+        .panel h3 {
+            font-size: 0.55rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .dim-row {
+            display: grid;
+            grid-template-columns: 75px 1fr 30px;
+            gap: 6px;
+            align-items: center;
+            margin: 6px 0;
+        }
+
+        .dim-name { color: #7a8599; }
+
+        .dim-bar {
+            height: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .dim-fill {
+            position: absolute;
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .dim-fill.left {
+            right: 50%;
+            background: linear-gradient(270deg, #c9a227, #6ab4f5);
+        }
+
+        .dim-fill.right {
+            left: 50%;
+            background: linear-gradient(90deg, #c9a227, #c77daa);
+        }
+
+        .dim-center {
+            position: absolute;
+            left: 50%;
+            top: -1px;
+            width: 1px;
+            height: 7px;
+            background: #c9a227;
+        }
+
+        .dim-val { text-align: right; color: #9ba4b8; }
+
+        .coin-display {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(201,162,39,0.2);
+            text-align: center;
+        }
+
+        .coin-label { color: #6e7a94; margin-bottom: 4px; }
+        .coin-value { font-size: 1rem; font-weight: bold; color: #c9a227; }
+
+        .insight-block {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(100,100,100,0.2);
+        }
+
+        .insight-block h4 {
+            font-size: 0.5rem;
+            color: #c9a227;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .insight-item {
+            background: rgba(100,60,60,0.15);
+            border-left: 2px solid #c77daa;
+            padding: 5px 7px;
+            margin: 5px 0;
+            border-radius: 0 4px 4px 0;
+            line-height: 1.4;
+            color: #9ba4b8;
+        }
+
+        .insight-item.good {
+            background: rgba(60,100,60,0.15);
+            border-left-color: #7dd87d;
+        }
+
+        .insight-item strong {
+            color: #e8e4d9;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .reading-text {
+            line-height: 1.6;
+            color: #c0c0c0;
+        }
+
+        .reading-text em {
+            color: #c9a227;
+            font-style: normal;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: rgba(0,0,0,0.9);
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(201,162,39,0.25);
+            z-index: 100;
+        }
+
+        .ctrl-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .ctrl-label { font-size: 0.45rem; color: #c9a227; }
+
+        .ctrl-slider {
+            -webkit-appearance: none;
+            width: 60px;
+            height: 3px;
+            background: rgba(201,162,39,0.3);
+            border-radius: 2px;
+        }
+
+        .ctrl-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #c9a227;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .ctrl-btn {
+            background: rgba(201,162,39,0.2);
+            border: 1px solid #c9a227;
+            color: #c9a227;
+            padding: 5px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.5rem;
+        }
+
+        .ctrl-btn:hover { background: rgba(201,162,39,0.4); }
+
+        .hint-bottom {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.45rem;
+            color: #3a3a4a;
+            z-index: 100;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <div class="questionnaire" id="questionnaireView">
+        <div class="header">
+            <h1>S-SIGNATURE</h1>
+            <div class="sub">Rank each set of perspectives in order of resonance. 1 = most true for you.</div>
+        </div>
+
+        <div class="name-box">
+            <input type="text" id="userName" placeholder="Your name...">
+        </div>
+
+        <div class="progress">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div id="questionContainer"></div>
+
+        <div class="nav">
+            <button class="nav-btn" id="prevBtn" onclick="prevQ()" disabled>← BACK</button>
+            <button class="nav-btn primary" id="nextBtn" onclick="nextQ()">NEXT →</button>
+        </div>
+    </div>
+
+    <div class="sphere-view" id="sphereView">
+        <div class="sphere-header">
+            <h1>S-SIGNATURE</h1>
+            <div class="name" id="displayName"></div>
+        </div>
+
+        <div class="panel left">
+            <h3>PROFILE</h3>
+            <div id="dimReadouts"></div>
+
+            <div class="coin-display">
+                <div class="coin-label">EDGE VISION</div>
+                <div class="coin-value" id="coinValue">0%</div>
+            </div>
+
+            <div class="insight-block">
+                <h4>GROWTH</h4>
+                <div id="growthAreas"></div>
+            </div>
+
+            <div class="insight-block">
+                <h4>STRENGTHS</h4>
+                <div id="strengthAreas"></div>
+            </div>
+        </div>
+
+        <div id="canvas-container"></div>
+
+        <div class="panel right">
+            <h3>READING</h3>
+            <div class="reading-text" id="readingText"></div>
+        </div>
+
+        <div class="hint-bottom">DRAG TO ROTATE | SCROLL TO ZOOM</div>
+
+        <div class="controls">
+            <div class="ctrl-group">
+                <span class="ctrl-label">SCALE</span>
+                <input type="range" class="ctrl-slider" id="scalarSlider" min="0.6" max="1.5" step="0.1" value="1">
+            </div>
+            <div class="ctrl-group">
+                <span class="ctrl-label">PULSE</span>
+                <input type="range" class="ctrl-slider" id="pulseSlider" min="0.3" max="2" step="0.1" value="1">
+            </div>
+            <button class="ctrl-btn" id="rotateBtn" onclick="toggleRotate()">PAUSE</button>
+            <button class="ctrl-btn" onclick="retake()">RETAKE</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // QUESTIONS — Three options each, secretly mapped to S+, S-, COIN
+        // Order is randomized per question so position doesn't give it away
+        // ═══════════════════════════════════════════════════════════════════
+
+        const QUESTIONS = [
+            {
+                dimension: 'reality',
+                name: 'Reality',
+                prompt: 'When thinking about what is truly real:',
+                options: [
+                    { text: 'What can be measured and proven is what exists. The physical world is the foundation.', type: 'sPlus' },
+                    { text: 'There is more than meets the eye. Consciousness, spirit, meaning — these are as real as matter.', type: 'sMinus' },
+                    { text: 'The seen and unseen are two sides of one thing. Neither is more real — they complete each other.', type: 'coin' }
+                ],
+                lowInsight: 'Seeing only one face of reality. The other half is invisible.',
+                highInsight: 'Perceives the unity behind apparent opposites.',
+                hue: 280
+            },
+            {
+                dimension: 'love',
+                name: 'Love',
+                prompt: 'In how you give and receive love:',
+                options: [
+                    { text: 'I give when it makes sense. Protect yourself first. Not everyone deserves your love.', type: 'sPlus' },
+                    { text: 'Love should flow freely without conditions. Everyone deserves compassion regardless of what they\'ve done.', type: 'sMinus' },
+                    { text: 'Healthy love includes both — boundaries AND openness. Self-love enables love for others.', type: 'coin' }
+                ],
+                lowInsight: 'Love is blocked — either withheld or depleted. The flow is interrupted.',
+                highInsight: 'Love circulates freely. Gives AND receives in balance.',
+                hue: 340
+            },
+            {
+                dimension: 'self',
+                name: 'Self/Other',
+                prompt: 'When your needs conflict with others\':',
+                options: [
+                    { text: 'I need to take care of myself first. Others will handle themselves.', type: 'sPlus' },
+                    { text: 'Others\' needs often matter more. I can sacrifice for those I care about.', type: 'sMinus' },
+                    { text: 'We\'re connected. What truly serves me serves them. What truly serves them serves me.', type: 'coin' }
+                ],
+                lowInsight: 'Stuck in separation. Either drowning or isolated.',
+                highInsight: 'Sees the WE. Self-care and service are one motion.',
+                hue: 120
+            },
+            {
+                dimension: 'truth',
+                name: 'Truth',
+                prompt: 'When you encounter beliefs different from yours:',
+                options: [
+                    { text: 'One of us is right, one is wrong. Truth is truth — it doesn\'t change based on opinion.', type: 'sPlus' },
+                    { text: 'Everyone has their own truth. Who am I to say what\'s real for someone else?', type: 'sMinus' },
+                    { text: 'There can be a deeper truth that includes seemingly opposite views. Paradox is often closer to reality.', type: 'coin' }
+                ],
+                lowInsight: 'Either rigid or formless. Cannot hold paradox.',
+                highInsight: 'Comfortable with mystery. Certain AND humble.',
+                hue: 200
+            },
+            {
+                dimension: 'change',
+                name: 'Change',
+                prompt: 'When facing significant change in your life:',
+                options: [
+                    { text: 'I prefer stability. Change often brings loss. Better to hold onto what works.', type: 'sPlus' },
+                    { text: 'Change is growth. I embrace the new and release the old willingly.', type: 'sMinus' },
+                    { text: 'Some things should change, some should stay. Wisdom is knowing which is which.', type: 'coin' }
+                ],
+                lowInsight: 'Either frozen or chaotic. Cannot discern what to keep.',
+                highInsight: 'Flows with change while anchored in center.',
+                hue: 160
+            },
+            {
+                dimension: 'material',
+                name: 'Material',
+                prompt: 'Regarding money and possessions:',
+                options: [
+                    { text: 'Financial security matters. Building wealth provides freedom and options.', type: 'sPlus' },
+                    { text: 'Attachment to things causes suffering. Simplicity and letting go bring peace.', type: 'sMinus' },
+                    { text: 'Use things fully but hold loosely. Abundance flows through open hands.', type: 'coin' }
+                ],
+                lowInsight: 'Either grasping or rejecting. Material cannot flow.',
+                highInsight: 'Material is tool, not master. Flow maintained.',
+                hue: 30
+            },
+            {
+                dimension: 'knowing',
+                name: 'Knowing',
+                prompt: 'When making important decisions:',
+                options: [
+                    { text: 'I analyze the facts and think it through logically. Data and reason guide me.', type: 'sPlus' },
+                    { text: 'I trust my gut feeling. Intuition knows things the mind can\'t grasp.', type: 'sMinus' },
+                    { text: 'I use both — check the facts AND listen to my intuition. They work together.', type: 'coin' }
+                ],
+                lowInsight: 'Using only one eye. Half the picture is missing.',
+                highInsight: 'Both eyes open. Head and heart in harmony.',
+                hue: 240
+            }
+        ];
+
+        // ═══════════════════════════════════════════════════════════════════
+        // STATE
+        // ═══════════════════════════════════════════════════════════════════
+
+        let currentQ = 0;
+        let answers = {}; // answers[dimension] = { rankings: [type, type, type] }
+        let shuffledOptions = {}; // Store shuffled order per question
+
+        // Shuffle options for each question
+        QUESTIONS.forEach((q, i) => {
+            const indices = [0, 1, 2];
+            for (let j = indices.length - 1; j > 0; j--) {
+                const k = Math.floor(Math.random() * (j + 1));
+                [indices[j], indices[k]] = [indices[k], indices[j]];
+            }
+            shuffledOptions[i] = indices.map(idx => q.options[idx]);
+        });
+
+        function renderQuestion() {
+            const q = QUESTIONS[currentQ];
+            const opts = shuffledOptions[currentQ];
+            const current = answers[q.dimension] || { rankings: [] };
+
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="q-number">QUESTION ${currentQ + 1} OF ${QUESTIONS.length}</div>
+                    <div class="q-prompt">${q.prompt}</div>
+                    <div class="options">
+                        ${opts.map((opt, i) => {
+                            const rankIndex = current.rankings.indexOf(opt.type);
+                            const rank = rankIndex >= 0 ? rankIndex + 1 : '';
+                            const ranked = rank !== '';
+                            return `
+                                <div class="option ${ranked ? 'ranked' : ''}" onclick="rankOption(${i})">
+                                    <div class="rank">${rank}</div>
+                                    <div class="text">${opt.text}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div class="hint">Click to rank. Click ranked option to remove.</div>
+                </div>
+            `;
+
+            document.getElementById('progressFill').style.width =
+                ((currentQ + 1) / QUESTIONS.length * 100) + '%';
+
+            document.getElementById('prevBtn').disabled = currentQ === 0;
+            document.getElementById('nextBtn').textContent =
+                currentQ === QUESTIONS.length - 1 ? 'SEE SIGNATURE →' : 'NEXT →';
+        }
+
+        function rankOption(optIndex) {
+            const q = QUESTIONS[currentQ];
+            const opts = shuffledOptions[currentQ];
+            const optType = opts[optIndex].type;
+
+            if (!answers[q.dimension]) {
+                answers[q.dimension] = { rankings: [] };
+            }
+
+            const rankings = answers[q.dimension].rankings;
+            const existingIndex = rankings.indexOf(optType);
+
+            if (existingIndex >= 0) {
+                // Remove this ranking and all after it
+                rankings.splice(existingIndex);
+            } else if (rankings.length < 3) {
+                // Add ranking
+                rankings.push(optType);
+            }
+
+            renderQuestion();
+        }
+
+        function prevQ() {
+            if (currentQ > 0) { currentQ--; renderQuestion(); }
+        }
+
+        function nextQ() {
+            const q = QUESTIONS[currentQ];
+            const current = answers[q.dimension];
+
+            if (!current || current.rankings.length < 3) {
+                // Need all three ranked
+                return;
+            }
+
+            if (currentQ < QUESTIONS.length - 1) {
+                currentQ++;
+                renderQuestion();
+            } else {
+                generateSignature();
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SIGNATURE MATH
+        // ═══════════════════════════════════════════════════════════════════
+
+        let profile = {};
+
+        function generateSignature() {
+            const userName = document.getElementById('userName').value || 'Anonymous';
+
+            profile = { userName, dimensions: {}, totalCoin: 0, totalPosition: 0 };
+
+            let coinSum = 0;
+            let positionSum = 0;
+
+            QUESTIONS.forEach(q => {
+                const a = answers[q.dimension];
+                if (!a) return;
+
+                // Rankings: [0] = 1st choice, [1] = 2nd, [2] = 3rd
+                // Score: 1st = 3 points, 2nd = 2 points, 3rd = 1 point
+                const scores = { sPlus: 0, sMinus: 0, coin: 0 };
+                a.rankings.forEach((type, idx) => {
+                    scores[type] = 3 - idx; // 3, 2, 1
+                });
+
+                // Position: (S- score - S+ score) / 6 => range -1 to +1
+                const position = (scores.sMinus - scores.sPlus) / 4;
+
+                // Coin influence: coin score / 3 => range 0 to 1
+                const coinWeight = scores.coin / 3;
+
+                // If coin was ranked #1, it dampens the position (pulls toward center)
+                const adjustedPosition = position * (1 - coinWeight * 0.5);
+
+                profile.dimensions[q.dimension] = {
+                    position: adjustedPosition,
+                    coinWeight,
+                    intensity: Math.abs(adjustedPosition),
+                    scores,
+                    name: q.name,
+                    lowInsight: q.lowInsight,
+                    highInsight: q.highInsight,
+                    hue: q.hue
+                };
+
+                coinSum += coinWeight;
+                positionSum += adjustedPosition;
+            });
+
+            profile.totalCoin = coinSum / QUESTIONS.length;
+            profile.totalPosition = positionSum / QUESTIONS.length;
+
+            document.getElementById('questionnaireView').style.display = 'none';
+            document.getElementById('sphereView').style.display = 'block';
+            document.getElementById('displayName').textContent = userName;
+
+            renderProfile();
+            initSphere();
+        }
+
+        function renderProfile() {
+            let html = '';
+            const growth = [];
+            const strengths = [];
+
+            QUESTIONS.forEach(q => {
+                const d = profile.dimensions[q.dimension];
+                if (!d) return;
+
+                const leftWidth = d.position < 0 ? Math.abs(d.position) * 50 : 0;
+                const rightWidth = d.position > 0 ? d.position * 50 : 0;
+
+                html += `
+                    <div class="dim-row">
+                        <span class="dim-name">${d.name}</span>
+                        <div class="dim-bar">
+                            <div class="dim-fill left" style="width: ${leftWidth}%"></div>
+                            <div class="dim-fill right" style="width: ${rightWidth}%"></div>
+                            <div class="dim-center"></div>
+                        </div>
+                        <span class="dim-val">${d.coinWeight > 0.6 ? '⊙' : (d.position > 0.2 ? 'S-' : (d.position < -0.2 ? 'S+' : '—'))}</span>
+                    </div>
+                `;
+
+                if (d.coinWeight > 0.6) {
+                    strengths.push({ name: d.name, insight: d.highInsight, coinWeight: d.coinWeight });
+                } else if (d.intensity > 0.4) {
+                    growth.push({ name: d.name, insight: d.lowInsight, intensity: d.intensity });
+                }
+            });
+
+            document.getElementById('dimReadouts').innerHTML = html;
+            document.getElementById('coinValue').textContent = (profile.totalCoin * 100).toFixed(0) + '%';
+
+            growth.sort((a, b) => b.intensity - a.intensity);
+            document.getElementById('growthAreas').innerHTML = growth.length === 0
+                ? '<div class="insight-item good">Balanced across dimensions.</div>'
+                : growth.slice(0, 2).map(g => `
+                    <div class="insight-item"><strong>${g.name}</strong>${g.insight}</div>
+                `).join('');
+
+            strengths.sort((a, b) => b.coinWeight - a.coinWeight);
+            document.getElementById('strengthAreas').innerHTML = strengths.length === 0
+                ? '<div class="insight-item">Developing edge vision.</div>'
+                : strengths.slice(0, 2).map(s => `
+                    <div class="insight-item good"><strong>${s.name}</strong>${s.insight}</div>
+                `).join('');
+
+            // Reading
+            let reading = `<strong>${profile.userName}</strong> `;
+
+            if (profile.totalCoin > 0.55) {
+                reading += `shows strong edge vision. The coin is seen whole. Both faces held together.`;
+            } else if (profile.totalCoin > 0.35) {
+                reading += `glimpses the edge but often falls to one face or the other.`;
+            } else {
+                reading += `tends to see one side at a time. The coin appears flat.`;
+            }
+
+            if (growth.length > 0) {
+                reading += `<br><br><em>Work:</em> ${growth[0].insight}`;
+            }
+
+            if (strengths.length > 0) {
+                reading += `<br><br><em>Gift:</em> ${strengths[0].insight}`;
+            }
+
+            document.getElementById('readingText').innerHTML = reading;
+        }
+
+        function retake() {
+            currentQ = 0;
+            answers = {};
+            document.getElementById('sphereView').style.display = 'none';
+            document.getElementById('questionnaireView').style.display = 'block';
+            renderQuestion();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // THREE.JS
+        // ═══════════════════════════════════════════════════════════════════
+
+        let scene, camera, renderer, sphereGroup;
+        let needles = [], coreLight, coreGlow;
+        let isDragging = false, prevMouse = { x: 0, y: 0 };
+        let autoRotate = true;
+
+        function hslToHex(h, s, l) {
+            s /= 100; l /= 100;
+            const a = s * Math.min(l, 1 - l);
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return parseInt(`${f(0)}${f(8)}${f(4)}`, 16);
+        }
+
+        function initSphere() {
+            const container = document.getElementById('canvas-container');
+            container.innerHTML = '';
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 4.2;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            sphereGroup = new THREE.Group();
+            scene.add(sphereGroup);
+
+            createNeedles();
+            setupEvents();
+            animate();
+        }
+
+        function createNeedles() {
+            needles = [];
+            while (sphereGroup.children.length) sphereGroup.remove(sphereGroup.children[0]);
+
+            const scalar = parseFloat(document.getElementById('scalarSlider').value);
+            const needleCount = 60;
+            const goldenRatio = (1 + Math.sqrt(5)) / 2;
+            const dims = Object.keys(profile.dimensions);
+
+            // Core
+            let coreHue = 45;
+            if (profile.totalPosition > 0.15) coreHue = 330;
+            else if (profile.totalPosition < -0.15) coreHue = 210;
+
+            const coreBright = 40 + profile.totalCoin * 25;
+            const coreColor = hslToHex(coreHue, 65, coreBright);
+
+            const coreGeom = new THREE.SphereGeometry(0.09 * scalar, 32, 32);
+            coreLight = new THREE.Mesh(coreGeom, new THREE.MeshBasicMaterial({
+                color: coreColor, transparent: true, opacity: 0.95
+            }));
+            sphereGroup.add(coreLight);
+
+            const glowGeom = new THREE.SphereGeometry(0.16 * scalar, 32, 32);
+            coreGlow = new THREE.Mesh(glowGeom, new THREE.MeshBasicMaterial({
+                color: hslToHex((coreHue + 180) % 360, 50, 30), transparent: true, opacity: 0.2
+            }));
+            sphereGroup.add(coreGlow);
+
+            sphereGroup.add(new THREE.PointLight(coreColor, 1, 6));
+
+            // Needles
+            for (let i = 0; i < needleCount; i++) {
+                const t = i / needleCount;
+                const inclination = Math.acos(1 - 2 * t);
+                const azimuth = 2 * Math.PI * goldenRatio * i;
+
+                const dimKey = dims[i % dims.length];
+                const d = profile.dimensions[dimKey];
+
+                // Length
+                const baseLen = 0.35 * scalar;
+                const intensityLen = d.intensity * 1.0 * scalar;
+                const coinBonus = d.coinWeight * 0.35 * scalar;
+                const totalLen = baseLen + intensityLen + coinBonus;
+
+                // Color - unique per needle
+                let hue = d.hue + (i * 6) % 25 - 12;
+                if (d.position < -0.15) hue = (hue - 35 + 360) % 360;
+                else if (d.position > 0.15) hue = (hue + 35) % 360;
+
+                let sat = 50 + d.intensity * 30;
+                let light = 42 + d.coinWeight * 22;
+
+                if (d.coinWeight > 0.5) {
+                    hue = (hue + 25) % 360;
+                    sat = 65;
+                    light = 55;
+                } else if (d.intensity > 0.4 && d.coinWeight < 0.3) {
+                    light = 28;
+                }
+
+                const needleColor = hslToHex(hue, sat, light);
+                const tipColor = hslToHex((hue + 180) % 360, sat + 10, Math.min(72, light + 18));
+
+                const needleGeom = new THREE.CylinderGeometry(0.004 * scalar, 0.009 * scalar, totalLen, 8);
+                const needleMat = new THREE.MeshBasicMaterial({
+                    color: needleColor, transparent: true, opacity: 0.55 + d.coinWeight * 0.35
+                });
+
+                const needle = new THREE.Mesh(needleGeom, needleMat);
+
+                const radius = 0.2 * scalar;
+                const x = radius * Math.sin(inclination) * Math.cos(azimuth);
+                const y = radius * Math.sin(inclination) * Math.sin(azimuth);
+                const z = radius * Math.cos(inclination);
+
+                needle.position.set(x, y, z);
+                needle.lookAt(0, 0, 0);
+                needle.rotateX(Math.PI / 2);
+
+                const dir = new THREE.Vector3(x, y, z).normalize();
+                needle.position.add(dir.multiplyScalar(totalLen / 2));
+
+                needle.userData = {
+                    intensity: d.intensity,
+                    coinWeight: d.coinWeight,
+                    phase: Math.random() * Math.PI * 2,
+                    pulseSpeed: 0.5 + d.coinWeight * 0.7,
+                    hue
+                };
+
+                needles.push(needle);
+                sphereGroup.add(needle);
+
+                // Tip
+                const tipSize = 0.01 * scalar * (0.5 + d.coinWeight * 0.5);
+                const tip = new THREE.Mesh(
+                    new THREE.SphereGeometry(tipSize, 8, 8),
+                    new THREE.MeshBasicMaterial({ color: tipColor, transparent: true, opacity: 0.8 })
+                );
+                tip.position.copy(needle.position).add(dir.multiplyScalar(totalLen / 2));
+                tip.userData = { phase: needle.userData.phase };
+                sphereGroup.add(tip);
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = Date.now() * 0.001;
+            const pulse = parseFloat(document.getElementById('pulseSlider').value);
+
+            if (autoRotate) {
+                sphereGroup.rotation.y += 0.003;
+                sphereGroup.rotation.x += 0.0008;
+            }
+
+            if (coreLight) {
+                const p = 0.85 + Math.sin(time * pulse * 1.4) * 0.15;
+                coreLight.scale.setScalar(p);
+                coreGlow.scale.setScalar(p * 1.5);
+            }
+
+            needles.forEach(n => {
+                const d = n.userData;
+                n.material.opacity = 0.45 + Math.sin(time * d.pulseSpeed * pulse + d.phase) * 0.2 + d.coinWeight * 0.25;
+                n.scale.y = 1 + Math.sin(time * pulse * 0.6 + d.phase) * 0.025;
+
+                const shimmer = (Math.sin(time * 0.5 + d.phase) + 1) / 2;
+                n.material.color.setHex(hslToHex((d.hue + shimmer * 8) % 360, 55, 48));
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        function setupEvents() {
+            const c = renderer.domElement;
+
+            c.addEventListener('mousedown', e => {
+                isDragging = true;
+                prevMouse = { x: e.clientX, y: e.clientY };
+                autoRotate = false;
+                document.getElementById('rotateBtn').textContent = 'ROTATE';
+            });
+
+            c.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                sphereGroup.rotation.y += (e.clientX - prevMouse.x) * 0.008;
+                sphereGroup.rotation.x += (e.clientY - prevMouse.y) * 0.008;
+                prevMouse = { x: e.clientX, y: e.clientY };
+            });
+
+            c.addEventListener('mouseup', () => isDragging = false);
+            c.addEventListener('mouseleave', () => isDragging = false);
+
+            c.addEventListener('touchstart', e => {
+                isDragging = true;
+                prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                autoRotate = false;
+            });
+
+            c.addEventListener('touchmove', e => {
+                if (!isDragging) return;
+                sphereGroup.rotation.y += (e.touches[0].clientX - prevMouse.x) * 0.008;
+                sphereGroup.rotation.x += (e.touches[0].clientY - prevMouse.y) * 0.008;
+                prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            });
+
+            c.addEventListener('touchend', () => isDragging = false);
+
+            c.addEventListener('wheel', e => {
+                e.preventDefault();
+                camera.position.z = Math.max(2, Math.min(7, camera.position.z + e.deltaY * 0.003));
+            });
+
+            document.getElementById('scalarSlider').addEventListener('input', createNeedles);
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        function toggleRotate() {
+            autoRotate = !autoRotate;
+            document.getElementById('rotateBtn').textContent = autoRotate ? 'PAUSE' : 'ROTATE';
+        }
+
+        renderQuestion();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

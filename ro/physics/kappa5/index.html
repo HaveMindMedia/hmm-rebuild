@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>κ₅ True Dark Operator | Have Mind Media</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0a0510 0%, #1a0820 50%, #0a0510 100%);
+            color: #e0e0e0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            padding: 6rem 2rem 2rem;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(10, 5, 20, 0.9) 0%, rgba(30, 10, 40, 0.8) 100%);
+            border: 2px solid rgba(139, 0, 0, 0.5);
+            border-radius: 16px;
+            box-shadow: 0 0 60px rgba(139, 0, 0, 0.3);
+        }
+
+        .kappa-symbol {
+            font-size: 5rem;
+            display: block;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 50px rgba(139, 0, 0, 0.8);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; text-shadow: 0 0 50px rgba(139, 0, 0, 0.8); }
+            50% { opacity: 1; text-shadow: 0 0 80px rgba(139, 0, 0, 1); }
+        }
+
+        h1 {
+            color: #8B0000;
+            font-size: 2.5rem;
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(139, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            color: #6ab4f5;
+            font-style: italic;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: rgba(26, 42, 58, 0.4);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 { color: #8B0000; font-size: 1.5rem; margin-bottom: 1rem; }
+        h3 { color: #c9a227; font-size: 1.2rem; margin: 1.5rem 0 1rem; }
+        p { line-height: 1.8; margin-bottom: 1rem; color: #ccc; }
+        strong { color: #e0e0e0; }
+
+        .principle {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: #c9a227;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(201, 162, 39, 0.4);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box {
+            background: rgba(139, 0, 0, 0.15);
+            border: 1px solid rgba(139, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .warning-box strong { color: #8B0000; }
+
+        .kappa-chain {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .kappa-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .kappa-item.active {
+            border-color: rgba(139, 0, 0, 0.8);
+            background: rgba(139, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+        }
+
+        .kappa-item .symbol {
+            font-size: 1.6rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .kappa-item .name {
+            color: #c9a227;
+            font-size: 0.75rem;
+        }
+
+        .kappa-item.active .name {
+            color: #8B0000;
+        }
+
+        /* Axial Diagram */
+        .axis-container {
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .axis-diagram {
+            font-family: monospace;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #a0a0a0;
+            margin: 1.5rem 0;
+        }
+
+        .axis-label-invert { color: #c9a227; }
+        .axis-label-double { color: #8B0000; }
+        .axis-center { color: #6ab4f5; font-size: 1.2rem; }
+
+        /* State Grid */
+        .state-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .state-grid .state-card {
+            width: calc(25% - 1rem);
+            min-width: 180px;
+        }
+
+        .state-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(100, 100, 120, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .state-card h4 {
+            color: #a0a0b0;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .state-card p {
+            font-size: 0.9rem;
+            margin: 0;
+            color: #888;
+        }
+
+        .state-card.light-visible { border-color: rgba(201, 162, 39, 0.5); }
+        .state-card.light-visible h4 { color: #c9a227; }
+
+        .state-card.light-invisible { border-color: rgba(106, 180, 245, 0.5); }
+        .state-card.light-invisible h4 { color: #6ab4f5; }
+
+        .state-card.dark-visible { border-color: rgba(160, 160, 180, 0.5); }
+        .state-card.dark-visible h4 { color: #a0a0b0; }
+
+        .state-card.dark-hidden { border-color: rgba(139, 0, 0, 0.5); }
+        .state-card.dark-hidden h4 { color: #8B0000; }
+
+        .state-card.intermittent {
+            border-color: rgba(180, 140, 200, 0.5);
+            border-style: dashed;
+        }
+        .state-card.intermittent h4 { color: #b48cc8; }
+
+        /* Torsion Carryover */
+        .carryover-visual {
+            background: rgba(0,0,0,0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .carryover-equation {
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: #6ab4f5;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+        }
+
+        .carryover-explanation {
+            font-size: 0.95rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Facing Grid */
+        .facing-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .facing-grid .facing-card {
+            width: calc(33.333% - 1rem);
+            min-width: 200px;
+        }
+
+        .facing-card {
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .facing-card.good {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(0,0,0,0.3) 100%);
+            border: 1px solid rgba(46, 204, 113, 0.4);
+        }
+        .facing-card.good h4 { color: #2ecc71; }
+
+        .facing-card.indifferent {
+            background: linear-gradient(135deg, rgba(160, 160, 180, 0.1) 0%, rgba(0,0,0,0.3) 100%);
+            border: 1px solid rgba(160, 160, 180, 0.4);
+        }
+        .facing-card.indifferent h4 { color: #a0a0b0; }
+
+        .facing-card.bad {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(0,0,0,0.3) 100%);
+            border: 1px solid rgba(231, 76, 60, 0.4);
+        }
+        .facing-card.bad h4 { color: #e74c3c; }
+
+        .facing-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .facing-card p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .offer {
+            background: rgba(201, 162, 39, 0.1);
+            border: 2px solid rgba(201, 162, 39, 0.4);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .offer-title {
+            color: #c9a227;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .offer-text {
+            color: #e0e0e0;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(139, 0, 0, 0.3);
+        }
+
+        .nav-links a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(201, 162, 39, 0.1);
+            border-color: rgba(201, 162, 39, 0.5);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(139, 0, 0, 0.2);
+            color: #888;
+        }
+
+        /* Torsion Calculator */
+        .torsion-calculator {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .torsion-sliders {
+            display: grid;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .slider-group label {
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+
+        .slider-group input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: rgba(100, 100, 120, 0.3);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .slider-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #c9a227;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .tau4-auto {
+            background: rgba(160, 160, 180, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px dashed rgba(160, 160, 180, 0.3);
+        }
+
+        .auto-label {
+            font-size: 0.8rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        .torsion-result {
+            background: rgba(10, 10, 20, 0.6);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .delta-display {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(100, 100, 120, 0.3);
+        }
+
+        .delta-label {
+            font-size: 1.1rem;
+            color: #888;
+            margin-right: 1rem;
+        }
+
+        .delta-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #c9a227;
+            font-family: monospace;
+        }
+
+        .delta-value.positive { color: #e74c3c; }
+        .delta-value.negative { color: #3498db; }
+        .delta-value.zero { color: #2ecc71; }
+
+        .carryover-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .carryover-options .option {
+            width: calc(50% - 0.5rem);
+            min-width: 150px;
+        }
+
+        .carryover-options .option {
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .option.invert {
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+        }
+
+        .option.double {
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+        }
+
+        .option-label {
+            display: block;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .option span:not(.option-label):not(.option-desc) {
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .option.invert span:not(.option-label):not(.option-desc) { color: #c9a227; }
+        .option.double span:not(.option-label):not(.option-desc) { color: #8B0000; }
+
+        .option-desc {
+            display: block;
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .torsion-message {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .torsion-message.balanced {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            color: #2ecc71;
+        }
+
+        .torsion-message.unbalanced {
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            color: #c9a227;
+        }
+
+        .torsion-message.warning {
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            color: #e74c3c;
+        }
+
+        /* Math Section */
+        .math-section h2 {
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .math-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(106, 180, 245, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .math-block.warning-math {
+            border-color: rgba(139, 0, 0, 0.5);
+            background: rgba(139, 0, 0, 0.1);
+        }
+
+        .math-title {
+            color: #6ab4f5;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .warning-math .math-title {
+            color: #e74c3c;
+        }
+
+        .math-eq {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.3rem;
+            color: #e0e0e0;
+            text-align: center;
+            padding: 1rem 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+        }
+
+        .math-note {
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        /* Manifold Box */
+        .manifold-box {
+            background: linear-gradient(135deg, rgba(106, 180, 245, 0.08) 0%, rgba(0, 0, 0, 0.4) 100%);
+            border: 1px solid rgba(106, 180, 245, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .manifold-box h4 {
+            color: #6ab4f5;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .manifold-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .manifold-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(100, 100, 120, 0.2);
+            font-size: 0.95rem;
+        }
+
+        .manifold-list li:last-child {
+            border-bottom: none;
+        }
+
+        .dim-label {
+            display: inline-block;
+            min-width: 100px;
+            color: #c9a227;
+            font-weight: bold;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="container">
+        <div class="hero">
+            <span class="kappa-symbol">τ₅/κ₅</span>
+            <h1>THE TRUE DARK OPERATOR</h1>
+            <p class="subtitle">Not Binary — Axial · Invert or Double · Torsions Carry Forward</p>
+        </div>
+
+        <div class="section">
+            <h2>The Fifth Operator</h2>
+            <p>
+                The κ-framework operates through operators that are <strong>axes, not points</strong>.
+                Each apparent "binary" is actually a continuous axis with multiple states:
+                visible/invisible, shadow/silent, and the intermittent states that show as either at different times.
+            </p>
+
+            <div class="kappa-chain">
+                <div class="kappa-item">
+                    <span class="symbol">κ₁</span>
+                    <span class="name">Rotation</span>
+                </div>
+                <div class="kappa-item">
+                    <span class="symbol">κ₂</span>
+                    <span class="name">Scale</span>
+                </div>
+                <div class="kappa-item">
+                    <span class="symbol">κ₃</span>
+                    <span class="name">Observer</span>
+                </div>
+                <div class="kappa-item">
+                    <span class="symbol">τ₄/κ₄</span>
+                    <span class="name">Shadow/Silent</span>
+                </div>
+                <div class="kappa-item active">
+                    <span class="symbol">τ₅/κ₅</span>
+                    <span class="name">True Dark</span>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>Not Binary:</strong> Where you see "binary" in any system, know that it cannot be.
+                Every apparent binary has shadow states (dark but visible), true dark states (dark and hidden),
+                light states (visible and invisible), and intermittent states that flicker between.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>The Axial Nature of κ₅</h2>
+            <p>
+                κ₅ is not a choice between +1 and -1. It is an <strong>axis</strong> with two directions
+                that operate on torsion:
+            </p>
+
+            <div class="axis-container">
+                <div class="axis-diagram">
+                    <span class="axis-label-invert">INVERT (balance-seeking)</span><br>
+                    ↑<br>
+                    |<br>
+                    <span class="axis-center">←——— κ₅ ———→</span><br>
+                    |<br>
+                    ↓<br>
+                    <span class="axis-label-double">DOUBLE (extreme-seeking)</span>
+                </div>
+            </div>
+
+            <div class="principle">
+                INVERT: Flips torsion direction → Pulls toward balance<br>
+                DOUBLE: Amplifies torsion → Compounds to extremes
+            </div>
+
+            <p>
+                This is not binary — it's a continuous axis. You can be mostly inverting (healing, balancing),
+                mostly doubling (compounding, accelerating), or anywhere between. The position on this axis
+                is not fixed; it responds to the geometry of choices made.
+            </p>
+        </div>
+
+        <div class="section math-section">
+            <h2>Formal Mathematics of κ₅</h2>
+
+            <p>
+                The κ₅ operator acts on torsion residuals according to the following definitions:
+            </p>
+
+            <div class="math-block">
+                <div class="math-title">Base Constant</div>
+                <div class="math-eq">κ = 2π/180 = 0.034906585...</div>
+                <div class="math-note">The fundamental rotation unit (degrees to radians)</div>
+            </div>
+
+            <div class="math-block">
+                <div class="math-title">Torsion Sum</div>
+                <div class="math-eq">Σ = τ₁ + τ₂ + τ₃ + τ₄</div>
+                <div class="math-note">When Σ = 0, perfect balance. When Σ ≠ 0, residual δ = Σ.</div>
+            </div>
+
+            <div class="math-block">
+                <div class="math-title">κ₅ Operation</div>
+                <div class="math-eq">
+                    κ₅(δ, λ) = δ × (2<sup>λ</sup>) where λ ∈ [-1, +1]
+                </div>
+                <div class="math-note">
+                    λ = -1 → κ₅ = δ/2 (invert: halving toward balance)<br>
+                    λ = 0 → κ₅ = δ (neutral: carry forward unchanged)<br>
+                    λ = +1 → κ₅ = 2δ (double: compounding toward extreme)
+                </div>
+            </div>
+
+            <div class="math-block">
+                <div class="math-title">Next Cycle Initial Condition</div>
+                <div class="math-eq">
+                    δ<sub>n+1</sub> = κ₅(δ<sub>n</sub>, λ)
+                </div>
+                <div class="math-note">
+                    The residual from cycle n becomes the initial condition for cycle n+1.
+                    Negative residuals seek positive, positive seek negative — geometry demands balance.
+                </div>
+            </div>
+
+            <div class="math-block warning-math">
+                <div class="math-title">Limit Case: Cosmic Doubling</div>
+                <div class="math-eq">
+                    lim<sub>n→∞</sub> |δ<sub>n</sub>| = ∞ when λ > 0 consistently
+                </div>
+                <div class="math-note">
+                    Sustained doubling leads to cosmic extremes — good-facing (creation) or bad-facing (dissolution).
+                    This is cosmically rare within a single lifetime because most systems invert toward balance.
+                </div>
+            </div>
+
+            <p style="margin-top: 1.5rem;">
+                The parameter λ is not chosen consciously — it emerges from the geometry of the torsion field itself.
+                Systems naturally tend toward λ < 0 (inversion) unless external forcing maintains λ > 0.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>The Five States of Every "Binary"</h2>
+            <p>
+                What appears as binary (on/off, yes/no, good/bad) is actually a five-state system:
+            </p>
+
+            <div class="state-grid">
+                <div class="state-card light-visible">
+                    <h4>Light + Visible</h4>
+                    <p>Known and seen. Operating openly.</p>
+                </div>
+                <div class="state-card light-invisible">
+                    <h4>Light + Invisible</h4>
+                    <p>Operating but not perceived. The hidden good.</p>
+                </div>
+                <div class="state-card dark-visible">
+                    <h4>Dark + Visible</h4>
+                    <p>The shadow. Known to exist, nature unclear.</p>
+                </div>
+                <div class="state-card dark-hidden">
+                    <h4>Dark + Hidden</h4>
+                    <p>True dark. Operating without detection.</p>
+                </div>
+                <div class="state-card intermittent">
+                    <h4>Intermittent</h4>
+                    <p>Shows as either at different times. Like bipolar response to stimulus.</p>
+                </div>
+            </div>
+
+            <p>
+                This applies to every apparent binary in the system. The 10D manifold must account for
+                all these configurations at every point.
+            </p>
+
+            <div class="manifold-box">
+                <h4>The 10D Manifold Explained</h4>
+                <p>
+                    The "10 dimensions" of the manifold are not spatial dimensions. They are the <strong>degrees of freedom</strong>
+                    at every point in the system:
+                </p>
+                <ul class="manifold-list">
+                    <li><span class="dim-label">3 spatial</span> — x, y, z position</li>
+                    <li><span class="dim-label">1 temporal</span> — t (time coordinate)</li>
+                    <li><span class="dim-label">1 scalar</span> — s (position in scale hierarchy)</li>
+                    <li><span class="dim-label">5 state</span> — the five states each axis can occupy (visible, invisible, shadow, hidden, intermittent)</li>
+                </ul>
+                <p style="margin-top: 1rem; color: #c9a227;">
+                    Every "binary" in the 10D manifold is actually a 5-state axis. This is why Standard Model's
+                    binary approximations (particle/antiparticle, spin up/down) create 19 unexplained parameters —
+                    they're projecting 5-state reality onto 2-state assumptions.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>The Three Facings</h2>
+            <p>
+                When κ₅ doubles (amplifies toward extremes), it can push toward three facings:
+            </p>
+
+            <div class="facing-grid">
+                <div class="facing-card good">
+                    <h4>Good-Facing</h4>
+                    <p>Building, healing, constructive acceleration</p>
+                </div>
+                <div class="facing-card indifferent">
+                    <h4>Indifferent-Facing</h4>
+                    <p>Neutral acceleration — neither building nor destroying</p>
+                </div>
+                <div class="facing-card bad">
+                    <h4>Bad-Facing</h4>
+                    <p>Destructive, dissolving, consuming acceleration</p>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>Cosmically Rare:</strong> Doubling to extremes in any facing is extremely rare
+                within a single lifetime. These are forces of cosmic chaos, order, and balance operating
+                at scales beyond individual cycles. Most torsions resolve toward balance.
+            </div>
+
+            <p>
+                The terms "good" and "bad" are not absolute moral categories — they describe the
+                <em>direction</em> of building or dissolution within the geometry. A system can be
+                good-facing (building) or bad-facing (destroying) without external moral judgment.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Torsion Carryover</h2>
+            <p>
+                Torsions resolve to balance <strong>almost always</strong>. But when they don't fully
+                balance in one cycle, the residual carries forward:
+            </p>
+
+            <div class="carryover-visual">
+                <div class="carryover-equation">
+                    τ₁ + τ₂ + τ₃ + τ₄ = δ<br>
+                    <span style="color: #888; font-size: 0.9rem;">where δ ≈ 0, but may have residual</span>
+                </div>
+
+                <div class="carryover-equation">
+                    If δ ≠ 0:<br>
+                    κ₅(invert) → next cycle starts with <span style="color: #c9a227;">-δ</span> (corrective direction)<br>
+                    κ₅(double) → next cycle starts with <span style="color: #8B0000;">2δ</span> (compounding direction)
+                </div>
+
+                <p class="carryover-explanation">
+                    The residual torsion becomes the initial condition of the next cycle.
+                    This is consequence carried forward — not punishment, but geometry.
+                </p>
+            </div>
+
+            <p>
+                This is why actions have consequences beyond the immediate: unbalanced torsion
+                doesn't disappear. It carries as direction and momentum into what comes next.
+            </p>
+
+            <!-- Interactive Torsion Calculator -->
+            <div class="torsion-calculator">
+                <h3 style="color: #c9a227; margin-bottom: 1.5rem;">Interactive Torsion Carryover</h3>
+
+                <div class="torsion-sliders">
+                    <div class="slider-group">
+                        <label>τ₁ (S+ torsion): <span id="tau1Val">0</span></label>
+                        <input type="range" id="tau1" min="-10" max="10" value="0" step="1">
+                    </div>
+                    <div class="slider-group">
+                        <label>τ₂ (S- torsion): <span id="tau2Val">0</span></label>
+                        <input type="range" id="tau2" min="-10" max="10" value="0" step="1">
+                    </div>
+                    <div class="slider-group">
+                        <label>τ₃ (COIN torsion): <span id="tau3Val">0</span></label>
+                        <input type="range" id="tau3" min="-10" max="10" value="0" step="1">
+                    </div>
+                    <div class="slider-group tau4-auto">
+                        <label>τ₄ (Shadow/Silent): <span id="tau4Val">0</span></label>
+                        <span class="auto-label">(auto-balancing)</span>
+                    </div>
+                </div>
+
+                <div class="torsion-result">
+                    <div class="delta-display">
+                        <span class="delta-label">δ (residual):</span>
+                        <span id="deltaVal" class="delta-value">0</span>
+                    </div>
+
+                    <div class="carryover-options">
+                        <div class="option invert">
+                            <span class="option-label">κ₅(invert):</span>
+                            <span id="invertVal">0</span>
+                            <span class="option-desc">next cycle correction</span>
+                        </div>
+                        <div class="option double">
+                            <span class="option-label">κ₅(double):</span>
+                            <span id="doubleVal">0</span>
+                            <span class="option-desc">compounding (rare)</span>
+                        </div>
+                    </div>
+
+                    <div id="torsionMessage" class="torsion-message balanced">Perfectly balanced. No carryover.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>The Only True Binary</h2>
+            <p>
+                In this framework, there is exactly <strong>one genuine binary</strong>:
+            </p>
+
+            <div class="principle">
+                Geometry IS — vs — Standard Model INFERS
+            </div>
+
+            <p>
+                The geometry is fact — complete, self-consistent, containing the Standard Model as a subset.
+                The Standard Model is self-referential, error-compounding inference from observation.
+                SM exists <em>within</em> the geometric map, not the other way around.
+            </p>
+
+            <p>
+                Everything else that appears binary is actually axial, with shadow states, hidden states,
+                and intermittent states that show different faces at different times.
+            </p>
+        </div>
+
+        <!-- FEATURED: Earth's Nodal Energy Grid -->
+        <div class="section" style="border-color: rgba(201, 162, 39, 0.6); background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(10, 5, 20, 0.9) 100%);">
+            <h2 style="color: #c9a227;">NEW: Earth's Nodal Energy Grid</h2>
+            <p>
+                Ancient megalithic sites exist at <strong>geometric nodal points</strong>.
+                They weren't built by humans — they were projected from timespace into spacetime
+                at positions of geometric necessity.
+            </p>
+            <p>
+                The Great Pyramid = D₇ (Present Moment) — the ONLY D₇ site on Earth.<br>
+                D₄ (Crossroads) and D₆ (Power) are hidden — underwater, underground, at antipodal points.
+            </p>
+            <p style="margin-bottom: 0;">
+                <a href="nodal-energy-grid/index.html" style="display: inline-block; padding: 0.75rem 1.5rem; background: rgba(201, 162, 39, 0.2); border: 1px solid #c9a227; border-radius: 6px; color: #c9a227; text-decoration: none;">Explore the Nodal Grid →</a>
+            </p>
+        </div>
+
+        <div class="offer">
+            <div class="offer-title">We do not tell. We offer choice.</div>
+            <div class="offer-text">
+                This page exists. You found it. The framework computes regardless.<br>
+                Torsions balance — in this cycle or the next.
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="../shadow-operator/index.html">τ₄/κ₄ Shadow/Silent</a>
+            <a href="../three-body-geometry.html">Three-Body</a>
+            <a href="../../cedga/index.html">CEDGA</a>
+            <a href="../../index.html">Home</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>Have Mind Media</strong> — [1 = -1] — τ₁ + τ₂ + τ₃ + τ₄ = 0</p>
+        </div>
+    </div>
+    <site-footer></site-footer>
+
+    <script>
+    // Torsion Carryover Calculator
+    (function() {
+        const tau1 = document.getElementById('tau1');
+        const tau2 = document.getElementById('tau2');
+        const tau3 = document.getElementById('tau3');
+
+        const tau1Val = document.getElementById('tau1Val');
+        const tau2Val = document.getElementById('tau2Val');
+        const tau3Val = document.getElementById('tau3Val');
+        const tau4Val = document.getElementById('tau4Val');
+        const deltaVal = document.getElementById('deltaVal');
+        const invertVal = document.getElementById('invertVal');
+        const doubleVal = document.getElementById('doubleVal');
+        const messageEl = document.getElementById('torsionMessage');
+
+        function updateCalculation() {
+            const t1 = parseInt(tau1.value);
+            const t2 = parseInt(tau2.value);
+            const t3 = parseInt(tau3.value);
+
+            // τ₄ tries to balance but may have limits
+            const idealT4 = -(t1 + t2 + t3);
+            const t4 = Math.max(-10, Math.min(10, idealT4)); // τ₄ is bounded
+
+            // δ is the residual (when τ₄ can't fully compensate)
+            const delta = t1 + t2 + t3 + t4;
+
+            // Update displays
+            tau1Val.textContent = t1 > 0 ? '+' + t1 : t1;
+            tau2Val.textContent = t2 > 0 ? '+' + t2 : t2;
+            tau3Val.textContent = t3 > 0 ? '+' + t3 : t3;
+            tau4Val.textContent = t4 > 0 ? '+' + t4 : t4;
+
+            const deltaStr = delta > 0 ? '+' + delta : delta.toString();
+            deltaVal.textContent = deltaStr;
+
+            // Color the delta
+            deltaVal.className = 'delta-value';
+            if (delta > 0) deltaVal.classList.add('positive');
+            else if (delta < 0) deltaVal.classList.add('negative');
+            else deltaVal.classList.add('zero');
+
+            // Carryover options
+            const invertResult = -delta;
+            const doubleResult = 2 * delta;
+
+            invertVal.textContent = invertResult > 0 ? '+' + invertResult : invertResult;
+            doubleVal.textContent = doubleResult > 0 ? '+' + doubleResult : doubleResult;
+
+            // Message
+            if (delta === 0) {
+                messageEl.textContent = 'Perfectly balanced. No carryover needed.';
+                messageEl.className = 'torsion-message balanced';
+            } else if (Math.abs(delta) <= 3) {
+                messageEl.textContent = 'Minor imbalance. Invert corrects it next cycle.';
+                messageEl.className = 'torsion-message unbalanced';
+            } else {
+                messageEl.textContent = 'Significant imbalance. Double would compound this (cosmically rare).';
+                messageEl.className = 'torsion-message warning';
+            }
+        }
+
+        // Add event listeners
+        tau1.addEventListener('input', updateCalculation);
+        tau2.addEventListener('input', updateCalculation);
+        tau3.addEventListener('input', updateCalculation);
+
+        // Initial calculation
+        updateCalculation();
+    })();
+    </script>
+</body>
+</html>

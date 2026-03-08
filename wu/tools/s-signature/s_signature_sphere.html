@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Signature Sphere | [1=-1]</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        /* Controls overlay */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: rgba(0,0,0,0.7);
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 1px solid rgba(201,162,39,0.3);
+            z-index: 100;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .control-label {
+            font-size: 0.6rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 4px;
+            background: rgba(201,162,39,0.3);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #c9a227;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .btn {
+            background: rgba(201,162,39,0.2);
+            border: 1px solid #c9a227;
+            color: #c9a227;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: rgba(201,162,39,0.4);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 100;
+        }
+
+        .header h1 {
+            color: #c9a227;
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            text-shadow: 0 0 20px rgba(201,162,39,0.5);
+        }
+
+        .header .sub {
+            color: #6e7a94;
+            font-size: 0.6rem;
+            margin-top: 5px;
+        }
+
+        /* Legend */
+        .legend {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(100,100,100,0.3);
+            z-index: 100;
+        }
+
+        .legend h3 {
+            font-size: 0.65rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 6px 0;
+            font-size: 0.6rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .legend-color.love { background: linear-gradient(90deg, #ff6b9d, #c9a227); }
+        .legend-color.indifference { background: linear-gradient(90deg, #6e7a94, #4a5568); }
+        .legend-color.dogma { background: linear-gradient(90deg, #8b4513, #4a0000); }
+        .legend-color.purity { background: linear-gradient(90deg, #7dd87d, #ffffff); }
+
+        /* Torsion readout */
+        .readout {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(100,100,100,0.3);
+            z-index: 100;
+        }
+
+        .readout h3 {
+            font-size: 0.65rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .readout-item {
+            font-size: 0.6rem;
+            margin: 4px 0;
+            color: #9ba4b8;
+        }
+
+        .readout-value {
+            color: #7dd87d;
+            font-weight: bold;
+        }
+
+        /* Instructions */
+        .instructions {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.55rem;
+            color: #4a5568;
+            z-index: 100;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <div class="header">
+        <h1>S-SIGNATURE SPHERE</h1>
+        <div class="sub">FIBER OPTIC TORSION VISUALIZATION | [1=-1]</div>
+    </div>
+
+    <div class="legend">
+        <h3>TORSION SPECTRUM</h3>
+        <div class="legend-item">
+            <div class="legend-color love"></div>
+            <span>LOVE (S- nurturing)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color purity"></div>
+            <span>PURITY (balanced)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color indifference"></div>
+            <span>INDIFFERENCE (void)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color dogma"></div>
+            <span>DOGMA (S+ stagnation)</span>
+        </div>
+    </div>
+
+    <div class="readout">
+        <h3>SIGNATURE READING</h3>
+        <div class="readout-item">Love: <span class="readout-value" id="loveValue">0.00</span></div>
+        <div class="readout-item">Purity: <span class="readout-value" id="purityValue">0.00</span></div>
+        <div class="readout-item">Indifference: <span class="readout-value" id="indiffValue">0.00</span></div>
+        <div class="readout-item">Dogma: <span class="readout-value" id="dogmaValue">0.00</span></div>
+        <div class="readout-item" style="margin-top: 8px; border-top: 1px solid #333; padding-top: 8px;">
+            τ₄ Facing: <span class="readout-value" id="tau4Value">0</span>
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div class="instructions">DRAG TO ROTATE | SCROLL TO ZOOM</div>
+
+    <div class="controls">
+        <div class="control-group">
+            <span class="control-label">SCALAR (S)</span>
+            <input type="range" class="slider" id="scalarSlider" min="0.5" max="2" step="0.1" value="1">
+        </div>
+        <div class="control-group">
+            <span class="control-label">NEEDLE COUNT</span>
+            <input type="range" class="slider" id="needleSlider" min="30" max="120" step="10" value="60">
+        </div>
+        <div class="control-group">
+            <span class="control-label">PULSE RATE</span>
+            <input type="range" class="slider" id="pulseSlider" min="0.5" max="3" step="0.25" value="1">
+        </div>
+        <button class="btn" id="deriveBtn">DERIVE NEW</button>
+        <button class="btn" id="autoRotateBtn">AUTO ROTATE</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // CONSTANTS & KNOWNS
+        // ═══════════════════════════════════════════════════════════════════
+
+        const KAPPA = (2 * Math.PI) / 180;
+        const ENERGY_DECAY = 59 / 60;
+        const FACTORS_60 = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60];
+
+        // Torsion categories with associated words
+        const TORSION_MAP = {
+            love: {
+                words: ['LOVE', 'AHAVA', 'HEAL', 'HEALING', 'HEILUNG', 'NURTURE', 'RECEIVE', 'GIVE', 'CARE', 'COMPASSION', 'EMBRACE', 'TRUST', 'FAITH', 'HOPE', 'GRACE', 'PEACE', 'JOY', 'MOTHER', 'HEART', 'SOUL', 'SAFE', 'PROTECTED'],
+                color: { primary: 0xff6b9d, secondary: 0xc9a227 }
+            },
+            purity: {
+                words: ['TRUTH', 'PURE', 'CLEAR', 'BALANCE', 'HARMONY', 'LIGHT', 'GROWTH', 'RISE', 'RISING', 'WISDOM', 'KNOWING', 'OPEN', 'FREE', 'FREEDOM', 'WHOLE', 'ONE', 'UNITY', 'SOURCE', 'ORIGIN'],
+                color: { primary: 0x7dd87d, secondary: 0xffffff }
+            },
+            indifference: {
+                words: ['VOID', 'NOTHING', 'EMPTY', 'NUMB', 'SILENT', 'STILL', 'PAUSE', 'WAIT', 'DOUBT', 'UNCERTAIN', 'MAYBE', 'UNKNOWN', 'SHADOW', 'HIDDEN', 'ABSENT'],
+                color: { primary: 0x6e7a94, secondary: 0x4a5568 }
+            },
+            dogma: {
+                words: ['DOGMA', 'STAGNANT', 'STUCK', 'RIGID', 'CONTROL', 'DEMAND', 'FORCE', 'JUDGE', 'CONDEMN', 'PUNISH', 'FEAR', 'HATE', 'ANGER', 'EXTREME', 'ABSOLUTE', 'NEVER', 'ALWAYS', 'MUST', 'SHOULD', 'BLACK', 'WHITE', 'BINARY', 'CORRUPT']
+            ,
+                color: { primary: 0x8b4513, secondary: 0x4a0000 }
+            }
+        };
+
+        // ═══════════════════════════════════════════════════════════════════
+        // THREE.JS SETUP
+        // ═══════════════════════════════════════════════════════════════════
+
+        let scene, camera, renderer;
+        let needles = [];
+        let coreLight, coreGlow;
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let sphereGroup;
+        let autoRotate = true;
+        let currentSignature = null;
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Sphere group for rotation
+            sphereGroup = new THREE.Group();
+            scene.add(sphereGroup);
+
+            // Create initial signature
+            deriveNewSignature();
+
+            // Event listeners
+            setupEventListeners();
+
+            // Start animation
+            animate();
+        }
+
+        function createNeedles(signature) {
+            // Clear existing needles
+            while (sphereGroup.children.length > 0) {
+                sphereGroup.remove(sphereGroup.children[0]);
+            }
+            needles = [];
+
+            const needleCount = parseInt(document.getElementById('needleSlider').value);
+            const scalar = parseFloat(document.getElementById('scalarSlider').value);
+
+            // Create core glow
+            const coreGeom = new THREE.SphereGeometry(0.15 * scalar, 32, 32);
+            const coreMat = new THREE.MeshBasicMaterial({
+                color: signature.coreColor.primary,
+                transparent: true,
+                opacity: 0.9
+            });
+            coreLight = new THREE.Mesh(coreGeom, coreMat);
+            sphereGroup.add(coreLight);
+
+            // Outer glow
+            const glowGeom = new THREE.SphereGeometry(0.25 * scalar, 32, 32);
+            const glowMat = new THREE.MeshBasicMaterial({
+                color: signature.coreColor.secondary,
+                transparent: true,
+                opacity: 0.3
+            });
+            coreGlow = new THREE.Mesh(glowGeom, glowMat);
+            sphereGroup.add(coreGlow);
+
+            // Point light at center
+            const pointLight = new THREE.PointLight(signature.coreColor.primary, 1, 10);
+            sphereGroup.add(pointLight);
+
+            // Create needles distributed on sphere using golden ratio
+            const goldenRatio = (1 + Math.sqrt(5)) / 2;
+
+            for (let i = 0; i < needleCount; i++) {
+                const t = i / needleCount;
+                const inclination = Math.acos(1 - 2 * t);
+                const azimuth = 2 * Math.PI * goldenRatio * i;
+
+                // Get needle properties from signature
+                const needleData = signature.needles[i % signature.needles.length];
+
+                // Length based on intensity (longer = stronger tendency)
+                // Base length + intensity modifier
+                const baseLength = 0.8 * scalar;
+                const intensityLength = needleData.intensity * 1.2 * scalar;
+                const totalLength = baseLength + intensityLength;
+
+                // Create needle geometry (thin cylinder)
+                const needleGeom = new THREE.CylinderGeometry(0.008 * scalar, 0.015 * scalar, totalLength, 8);
+
+                // Material with glow effect
+                const needleMat = new THREE.MeshBasicMaterial({
+                    color: needleData.color.primary,
+                    transparent: true,
+                    opacity: 0.7 + needleData.intensity * 0.3
+                });
+
+                const needle = new THREE.Mesh(needleGeom, needleMat);
+
+                // Position on sphere surface
+                const radius = 0.3 * scalar;
+                const x = radius * Math.sin(inclination) * Math.cos(azimuth);
+                const y = radius * Math.sin(inclination) * Math.sin(azimuth);
+                const z = radius * Math.cos(inclination);
+
+                needle.position.set(x, y, z);
+
+                // Orient needle to point outward from center
+                needle.lookAt(0, 0, 0);
+                needle.rotateX(Math.PI / 2);
+
+                // Offset so needle starts at sphere surface
+                const direction = new THREE.Vector3(x, y, z).normalize();
+                needle.position.add(direction.multiplyScalar(totalLength / 2));
+
+                // Store data for animation
+                needle.userData = {
+                    basePosition: needle.position.clone(),
+                    category: needleData.category,
+                    intensity: needleData.intensity,
+                    phase: Math.random() * Math.PI * 2,
+                    pulseSpeed: 0.5 + Math.random() * 1.5,
+                    originalColor: needleData.color.primary,
+                    secondaryColor: needleData.color.secondary
+                };
+
+                needles.push(needle);
+                sphereGroup.add(needle);
+
+                // Add glow tip
+                const tipGeom = new THREE.SphereGeometry(0.02 * scalar, 8, 8);
+                const tipMat = new THREE.MeshBasicMaterial({
+                    color: needleData.color.secondary,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const tip = new THREE.Mesh(tipGeom, tipMat);
+
+                // Position at end of needle
+                const tipDirection = new THREE.Vector3(x, y, z).normalize();
+                tip.position.copy(needle.position).add(tipDirection.multiplyScalar(totalLength / 2));
+                tip.userData = { phase: needle.userData.phase };
+
+                sphereGroup.add(tip);
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SIGNATURE DERIVATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        function deriveNewSignature() {
+            // Generate random tendencies with some patterns
+            const torsionScores = {
+                love: Math.random() * 0.5 + Math.random() * 0.5,
+                purity: Math.random() * 0.5 + Math.random() * 0.5,
+                indifference: Math.random() * 0.4,
+                dogma: Math.random() * 0.3 + Math.pow(Math.random(), 2) * 0.4
+            };
+
+            // Normalize to sum to ~1
+            const total = Object.values(torsionScores).reduce((a, b) => a + b, 0);
+            Object.keys(torsionScores).forEach(k => {
+                torsionScores[k] /= total;
+            });
+
+            // Calculate τ₄ facing based on balance
+            const positiveEnergy = torsionScores.love + torsionScores.purity;
+            const negativeEnergy = torsionScores.indifference + torsionScores.dogma;
+            const tau4Facing = positiveEnergy > negativeEnergy ? 1 : (positiveEnergy < negativeEnergy ? -1 : 0);
+
+            // Determine core colors based on dominant tendency
+            let dominant = 'purity';
+            let maxScore = 0;
+            Object.entries(torsionScores).forEach(([k, v]) => {
+                if (v > maxScore) {
+                    maxScore = v;
+                    dominant = k;
+                }
+            });
+
+            // Generate needles
+            const needleCount = parseInt(document.getElementById('needleSlider').value);
+            const needleData = [];
+
+            for (let i = 0; i < needleCount; i++) {
+                // Weighted random category selection
+                const rand = Math.random();
+                let cumulative = 0;
+                let category = 'purity';
+
+                for (const [cat, score] of Object.entries(torsionScores)) {
+                    cumulative += score;
+                    if (rand <= cumulative) {
+                        category = cat;
+                        break;
+                    }
+                }
+
+                // Intensity varies - some needles are more intense
+                const baseIntensity = torsionScores[category];
+                const variance = (Math.random() - 0.5) * 0.4;
+                const intensity = Math.max(0.1, Math.min(1, baseIntensity + variance));
+
+                needleData.push({
+                    category,
+                    intensity,
+                    color: TORSION_MAP[category].color
+                });
+            }
+
+            currentSignature = {
+                torsionScores,
+                tau4Facing,
+                coreColor: TORSION_MAP[dominant].color,
+                needles: needleData
+            };
+
+            // Update readout
+            document.getElementById('loveValue').textContent = torsionScores.love.toFixed(2);
+            document.getElementById('purityValue').textContent = torsionScores.purity.toFixed(2);
+            document.getElementById('indiffValue').textContent = torsionScores.indifference.toFixed(2);
+            document.getElementById('dogmaValue').textContent = torsionScores.dogma.toFixed(2);
+            document.getElementById('tau4Value').textContent = tau4Facing > 0 ? '+1 (S-)' : (tau4Facing < 0 ? '-1 (S+)' : '0 (void)');
+
+            // Recreate needles
+            createNeedles(currentSignature);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // ANIMATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const time = Date.now() * 0.001;
+            const pulseRate = parseFloat(document.getElementById('pulseSlider').value);
+
+            // Auto rotation
+            if (autoRotate) {
+                sphereGroup.rotation.y += 0.003;
+                sphereGroup.rotation.x += 0.001;
+            }
+
+            // Pulse the core
+            if (coreLight) {
+                const pulse = 0.8 + Math.sin(time * pulseRate * 2) * 0.2;
+                coreLight.scale.setScalar(pulse);
+                coreGlow.scale.setScalar(pulse * 1.5);
+            }
+
+            // Animate needles
+            needles.forEach((needle, i) => {
+                const data = needle.userData;
+
+                // Pulse opacity
+                const opacityPulse = 0.6 + Math.sin(time * data.pulseSpeed * pulseRate + data.phase) * 0.3;
+                needle.material.opacity = opacityPulse;
+
+                // Subtle length pulse based on intensity
+                const lengthPulse = 1 + Math.sin(time * pulseRate + data.phase) * 0.05 * data.intensity;
+                needle.scale.y = lengthPulse;
+
+                // Color shift between primary and secondary
+                const colorMix = (Math.sin(time * 0.5 + data.phase) + 1) / 2;
+                const color = new THREE.Color(data.originalColor);
+                const secondary = new THREE.Color(data.secondaryColor);
+                color.lerp(secondary, colorMix * 0.3);
+                needle.material.color = color;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // EVENT LISTENERS
+        // ═══════════════════════════════════════════════════════════════════
+
+        function setupEventListeners() {
+            const canvas = renderer.domElement;
+
+            // Mouse drag rotation
+            canvas.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+                autoRotate = false;
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+
+                const deltaX = e.clientX - previousMousePosition.x;
+                const deltaY = e.clientY - previousMousePosition.y;
+
+                sphereGroup.rotation.y += deltaX * 0.01;
+                sphereGroup.rotation.x += deltaY * 0.01;
+
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                isDragging = false;
+            });
+
+            // Touch support
+            canvas.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                autoRotate = false;
+            });
+
+            canvas.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+
+                const deltaX = e.touches[0].clientX - previousMousePosition.x;
+                const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+                sphereGroup.rotation.y += deltaX * 0.01;
+                sphereGroup.rotation.x += deltaY * 0.01;
+
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            });
+
+            canvas.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            // Scroll zoom
+            canvas.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                camera.position.z += e.deltaY * 0.005;
+                camera.position.z = Math.max(2.5, Math.min(10, camera.position.z));
+            });
+
+            // Controls
+            document.getElementById('deriveBtn').addEventListener('click', deriveNewSignature);
+
+            document.getElementById('autoRotateBtn').addEventListener('click', () => {
+                autoRotate = !autoRotate;
+                document.getElementById('autoRotateBtn').textContent = autoRotate ? 'STOP ROTATE' : 'AUTO ROTATE';
+            });
+
+            document.getElementById('scalarSlider').addEventListener('input', () => {
+                if (currentSignature) createNeedles(currentSignature);
+            });
+
+            document.getElementById('needleSlider').addEventListener('input', () => {
+                deriveNewSignature();
+            });
+
+            // Window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        // Initialize
+        init();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

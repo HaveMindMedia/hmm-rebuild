@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOG ↔ GOD | Epoch Geometry | Have Mind Media</title>
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=JetBrains+Mono:wght@400&family=Noto+Sans:wght@400;700&family=Playfair+Display:wght@400;700&family=Roboto+Mono:wght@400&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <style>
+        .header-space { height: 80px; }
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-light: #e8e4dc;
+            --gold: #c9a227;
+            --text-light: #e8e4dc;
+            --text-dark: #0a0a0f;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            letter-spacing: 0.2em;
+        }
+
+        .subtitle {
+            color: #6b6b6b;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        /* The coin container */
+        .coin {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            background: var(--bg-dark);
+            box-shadow:
+                0 0 30px rgba(201, 162, 39, 0.2),
+                inset 0 0 20px rgba(201, 162, 39, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coin::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            pointer-events: none;
+        }
+
+        /* Individual letter containers */
+        .letter-box {
+            width: 50px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            transition: none; /* No transition - instant changes */
+        }
+
+        .letter-box.solid-light {
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .letter-box.solid-dark {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .letter-box.outline-light {
+            background: var(--bg-light);
+            color: transparent;
+            -webkit-text-stroke: 2px var(--text-dark);
+        }
+
+        .letter-box.outline-dark {
+            background: var(--bg-dark);
+            color: transparent;
+            -webkit-text-stroke: 2px var(--text-light);
+        }
+
+        /* D9 special state - gold glow */
+        .coin.d9-active {
+            box-shadow:
+                0 0 50px rgba(201, 162, 39, 0.6),
+                0 0 100px rgba(201, 162, 39, 0.3),
+                inset 0 0 30px rgba(201, 162, 39, 0.2);
+        }
+
+        .coin.d9-active .letter-box {
+            color: var(--gold) !important;
+            -webkit-text-stroke-color: var(--gold) !important;
+        }
+
+        /* qQq interrupt state */
+        .coin.qqq-active {
+            border-color: #4ade80;
+            box-shadow:
+                0 0 50px rgba(74, 222, 128, 0.5),
+                inset 0 0 20px rgba(74, 222, 128, 0.1);
+        }
+
+        /* Stats display */
+        .stats {
+            margin-top: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #6b6b6b;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .stats .value {
+            color: var(--gold);
+        }
+
+        .stats .label {
+            color: #4a4a4a;
+        }
+
+        /* Torsion indicator */
+        .torsion-display {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .torsion-display span {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #333;
+            border-radius: 3px;
+        }
+
+        .torsion-display .active {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* Balance indicator */
+        .balance {
+            margin-top: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .balance.zero {
+            color: #4ade80;
+        }
+
+        .balance.nonzero {
+            color: #dc2626;
+        }
+
+        /* Equation */
+        .equation {
+            margin-top: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        button {
+            background: rgba(201, 162, 39, 0.15);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+
+        button.active {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="header-space"></div>
+    <h1>DOG ↔ GOD</h1>
+    <p class="subtitle">Epoch Geometry Driven · κ = 30 · F = 1729</p>
+
+    <div class="coin" id="coin">
+        <div class="letter-box solid-dark" id="letter1">D</div>
+        <div class="letter-box solid-dark" id="letter2">O</div>
+        <div class="letter-box solid-dark" id="letter3">G</div>
+    </div>
+
+    <div class="torsion-display">
+        <span id="t1">τ₁</span>
+        <span id="t2">τ₂</span>
+        <span id="t3">τ₃</span>
+        <span id="t4">τ₄</span>
+    </div>
+
+    <div class="balance" id="balance">τ₁ + τ₂ + τ₃ + τ₄ = 0</div>
+
+    <div class="stats">
+        <span class="label">Frame:</span> <span class="value" id="frameCount">0</span> / <span class="value">30</span> (κ cycle)<br>
+        <span class="label">Total:</span> <span class="value" id="totalFrames">0</span><br>
+        <span class="label">Next qQq in:</span> <span class="value" id="nextInterrupt">17</span><br>
+        <span class="label">Duration:</span> <span class="value">1729ms</span>
+    </div>
+
+    <div class="equation">[1 = -1]</div>
+
+    <div class="controls">
+        <button id="playBtn" class="active">⏸ PAUSE</button>
+        <button id="stepBtn">STEP →</button>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // EPOCH GEOMETRY CONSTANTS
+        // ═══════════════════════════════════════════════════════════════
+        const KAPPA = 30;                    // κ = 30 (Hypatia Refinement)
+        const FOLD_POINT = 1729;             // F = 1729 ms (Hardy-Ramanujan)
+        const D9_INTERVAL = 9;               // D9 = Love frequency
+        const PRIME_A = 17;                  // First prime interrupt
+        const PRIME_B = 29;                  // Second prime interrupt
+        const P = 0.2757;                    // Projection factor √3/2π
+
+        // ═══════════════════════════════════════════════════════════════
+        // GLYPH OPTIONS (D, O, G variants including Cyrillic, symbols)
+        // ═══════════════════════════════════════════════════════════════
+        const GLYPHS = {
+            D: ['D', 'd', 'Д', '∂', 'Ð', 'δ', 'ᗡ', 'Ꭰ'],
+            O: ['O', 'o', 'О', '0', '○', 'Ø', 'θ', '◯', '☉', '⊙'],
+            G: ['G', 'g', 'Ꮐ', 'ɢ', 'Ğ', 'ᘜ', '9', 'Ԍ']
+        };
+
+        // Font options
+        const FONTS = [
+            "'Noto Sans', sans-serif",
+            "'Cinzel', serif",
+            "'JetBrains Mono', monospace",
+            "'Playfair Display', serif",
+            "'Roboto Mono', monospace",
+            "'UnifrakturMaguntia', cursive",
+            "Georgia, serif",
+            "Impact, sans-serif"
+        ];
+
+        // ═══════════════════════════════════════════════════════════════
+        // TORSION TRANSFORMS (τ₁, τ₂, τ₃, τ₄)
+        // Balance Law: τ₁ + τ₂ + τ₃ + τ₄ = 0
+        // ═══════════════════════════════════════════════════════════════
+        const TORSIONS = {
+            1: { name: 'FACING',    transform: 'scale(1, 1)',   value: 1 },   // (x, y)
+            2: { name: 'MIRROR',    transform: 'scale(-1, 1)',  value: -1 },  // (-x, y)
+            3: { name: 'RECURSIVE', transform: 'scale(1, -1)',  value: 1 },   // (x, -y)
+            4: { name: 'SILENT',    transform: 'scale(-1, -1)', value: -1 }   // (-x, -y)
+        };
+
+        // ═══════════════════════════════════════════════════════════════
+        // STATE
+        // ═══════════════════════════════════════════════════════════════
+        let frameCount = 0;
+        let totalFrames = 0;
+        let interruptCounter = 0;
+        let nextInterruptAt = PRIME_A;
+        let usePrimeA = true;
+        let isPlaying = true;
+        let intervalId = null;
+
+        // DOM elements
+        const coin = document.getElementById('coin');
+        const letter1 = document.getElementById('letter1');
+        const letter2 = document.getElementById('letter2');
+        const letter3 = document.getElementById('letter3');
+        const frameCountEl = document.getElementById('frameCount');
+        const totalFramesEl = document.getElementById('totalFrames');
+        const nextInterruptEl = document.getElementById('nextInterrupt');
+        const balanceEl = document.getElementById('balance');
+        const t1El = document.getElementById('t1');
+        const t2El = document.getElementById('t2');
+        const t3El = document.getElementById('t3');
+        const t4El = document.getElementById('t4');
+        const playBtn = document.getElementById('playBtn');
+        const stepBtn = document.getElementById('stepBtn');
+
+        // ═══════════════════════════════════════════════════════════════
+        // GENERATE BALANCED TORSION SET
+        // Must satisfy: τ₁ + τ₂ + τ₃ + τ₄ = 0
+        // ═══════════════════════════════════════════════════════════════
+        function generateBalancedTorsions() {
+            // Pick 3 random torsions for 3 letters
+            // Then verify balance (with implicit τ₄ = -(τ₁ + τ₂ + τ₃))
+            const torsionKeys = [1, 2, 3, 4];
+            const selected = [];
+
+            for (let i = 0; i < 3; i++) {
+                selected.push(torsionKeys[Math.floor(Math.random() * 4)]);
+            }
+
+            // Calculate sum
+            const sum = selected.reduce((acc, t) => acc + TORSIONS[t].value, 0);
+
+            // τ₄ must balance
+            const t4Value = -sum;
+
+            return {
+                letters: selected,
+                sum: sum,
+                t4Needed: t4Value,
+                balanced: (sum + t4Value) === 0
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // APPLY RANDOM STATE TO A LETTER
+        // ═══════════════════════════════════════════════════════════════
+        function applyLetterState(element, letterType, torsion) {
+            // Random glyph
+            const glyphs = GLYPHS[letterType];
+            const glyph = glyphs[Math.floor(Math.random() * glyphs.length)];
+
+            // Random font
+            const font = FONTS[Math.floor(Math.random() * FONTS.length)];
+
+            // Random fill (solid/outline) and background (light/dark)
+            const fills = ['solid-light', 'solid-dark', 'outline-light', 'outline-dark'];
+            const fill = fills[Math.floor(Math.random() * fills.length)];
+
+            // Apply torsion transform
+            const transform = TORSIONS[torsion].transform;
+
+            // Set content and styles
+            element.textContent = glyph;
+            element.style.fontFamily = font;
+            element.style.transform = transform;
+            element.className = 'letter-box ' + fill;
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // UPDATE TORSION DISPLAY
+        // ═══════════════════════════════════════════════════════════════
+        function updateTorsionDisplay(torsions) {
+            [t1El, t2El, t3El, t4El].forEach(el => el.classList.remove('active'));
+
+            torsions.letters.forEach(t => {
+                document.getElementById('t' + t).classList.add('active');
+            });
+
+            // Balance check
+            if (torsions.balanced) {
+                balanceEl.textContent = `τ₁ + τ₂ + τ₃ + τ₄ = 0 ✓`;
+                balanceEl.className = 'balance zero';
+            } else {
+                balanceEl.textContent = `Σ = ${torsions.sum} (τ₄ balances)`;
+                balanceEl.className = 'balance zero';
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // GENERATE FRAME
+        // ═══════════════════════════════════════════════════════════════
+        function generateFrame() {
+            totalFrames++;
+            frameCount = totalFrames % KAPPA;
+            interruptCounter++;
+
+            // Check for qQq/QqQ interrupt
+            if (interruptCounter >= nextInterruptAt) {
+                showInterrupt();
+                interruptCounter = 0;
+                // Alternate between 17 and 29
+                usePrimeA = !usePrimeA;
+                nextInterruptAt = usePrimeA ? PRIME_A : PRIME_B;
+                return;
+            }
+
+            // Check for D9 special (every 9th frame)
+            const isD9 = (totalFrames % D9_INTERVAL === 0);
+
+            // Generate balanced torsions
+            const torsions = generateBalancedTorsions();
+
+            // Determine word order: DOG or GOD
+            const isGOD = Math.random() > 0.5;
+            const order = isGOD ? ['G', 'O', 'D'] : ['D', 'O', 'G'];
+
+            // Apply states
+            applyLetterState(letter1, order[0], torsions.letters[0]);
+            applyLetterState(letter2, order[1], torsions.letters[1]);
+            applyLetterState(letter3, order[2], torsions.letters[2]);
+
+            // Update displays
+            updateTorsionDisplay(torsions);
+            frameCountEl.textContent = frameCount;
+            totalFramesEl.textContent = totalFrames;
+            nextInterruptEl.textContent = nextInterruptAt - interruptCounter;
+
+            // D9 glow effect
+            if (isD9) {
+                coin.classList.add('d9-active');
+                setTimeout(() => coin.classList.remove('d9-active'), 500);
+            }
+
+            coin.classList.remove('qqq-active');
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // qQq / QqQ INTERRUPT
+        // ═══════════════════════════════════════════════════════════════
+        function showInterrupt() {
+            const isQqQ = Math.random() > 0.5;
+            const pattern = isQqQ ? ['Q', 'q', 'Q'] : ['q', 'Q', 'q'];
+
+            letter1.textContent = pattern[0];
+            letter2.textContent = pattern[1];
+            letter3.textContent = pattern[2];
+
+            // Reset transforms and styles for interrupt
+            [letter1, letter2, letter3].forEach(el => {
+                el.style.transform = 'scale(1, 1)';
+                el.style.fontFamily = "'Cinzel', serif";
+                el.className = 'letter-box solid-dark';
+            });
+
+            coin.classList.add('qqq-active');
+            coin.classList.remove('d9-active');
+
+            // Update displays
+            frameCountEl.textContent = 'qQq';
+            nextInterruptEl.textContent = usePrimeA ? PRIME_A : PRIME_B;
+
+            [t1El, t2El, t3El, t4El].forEach(el => el.classList.remove('active'));
+            balanceEl.textContent = '+qQq = Q';
+            balanceEl.className = 'balance zero';
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // CONTROLS
+        // ═══════════════════════════════════════════════════════════════
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            playBtn.textContent = isPlaying ? '⏸ PAUSE' : '▶ PLAY';
+            playBtn.classList.toggle('active', isPlaying);
+
+            if (isPlaying) {
+                startCycle();
+            } else {
+                stopCycle();
+            }
+        }
+
+        function startCycle() {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(generateFrame, FOLD_POINT);
+        }
+
+        function stopCycle() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        function step() {
+            if (isPlaying) {
+                togglePlay();
+            }
+            generateFrame();
+        }
+
+        // Event listeners
+        playBtn.addEventListener('click', togglePlay);
+        stepBtn.addEventListener('click', step);
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ') { e.preventDefault(); togglePlay(); }
+            if (e.key === 'ArrowRight') step();
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // INITIALIZE
+        // ═══════════════════════════════════════════════════════════════
+        generateFrame();
+        startCycle();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

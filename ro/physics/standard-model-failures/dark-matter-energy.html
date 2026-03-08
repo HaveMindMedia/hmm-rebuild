@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Matter & Dark Energy | Standard Model Failure #3 | Have Mind Media</title>
+    <meta name="description" content="The 95% of the universe the Standard Model cannot explain is simply S- reality - unmanifested potential. Not missing - just not collapsed into S+.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Raleway:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --gold: #d4af37;
+            --gold-dim: #8b7355;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --accent-blue: #4a9eff;
+            --accent-green: #3fb950;
+            --accent-red: #f85149;
+            --accent-purple: #a855f7;
+            --accent-cyan: #22d3ee;
+            --border-subtle: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0a0a0f 0%, #0a0510 50%, #05050a 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--accent-purple);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(34, 211, 238, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.5) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .failure-badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .hero h1 span.dark {
+            color: var(--accent-purple);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero-stat {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            color: var(--accent-red);
+            margin: 1.5rem 0;
+        }
+
+        .hero-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--gold-dim);
+            display: inline-block;
+        }
+
+        .principle-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gold-dim);
+        }
+
+        h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        /* Pie chart visualization */
+        .pie-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .pie-chart {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--accent-purple) 0deg 245deg,
+                var(--accent-cyan) 245deg 342deg,
+                var(--accent-green) 342deg 360deg
+            );
+            position: relative;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .pie-chart::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        .legend-color.dark-energy { background: var(--accent-purple); }
+        .legend-color.dark-matter { background: var(--accent-cyan); }
+        .legend-color.ordinary { background: var(--accent-green); }
+
+        .legend-text {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .legend-text .percent {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .legend-text .label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        /* Standard Model failure box */
+        .sm-failure {
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .sm-failure h3 {
+            color: var(--accent-red);
+            margin-top: 0;
+        }
+
+        .sm-failure ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .sm-failure li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .sm-failure li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: var(--accent-red);
+            font-weight: bold;
+        }
+
+        /* Explanation boxes */
+        .explanation-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .explanation-box.s-plus {
+            border-color: var(--accent-green);
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(63, 185, 80, 0.05) 100%);
+        }
+
+        .explanation-box.s-minus {
+            border-color: var(--accent-purple);
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(168, 85, 247, 0.05) 100%);
+        }
+
+        .explanation-box h3 {
+            margin-top: 0;
+        }
+
+        .explanation-box.s-plus h3 { color: var(--accent-green); }
+        .explanation-box.s-minus h3 { color: var(--accent-purple); }
+
+        /* Math displays */
+        .math-display {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .math-display .highlight-gold { color: var(--gold); font-weight: 600; }
+        .math-display .highlight-purple { color: var(--accent-purple); }
+        .math-display .highlight-green { color: var(--accent-green); }
+        .math-display .highlight-cyan { color: var(--accent-cyan); }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        /* Key insight boxes */
+        .key-insight {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+        }
+
+        .key-insight h4 {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            margin-bottom: 1rem;
+        }
+
+        /* The revelation box */
+        .revelation-box {
+            background: linear-gradient(135deg, #0a050f 0%, #0f0515 100%);
+            border: 2px solid var(--accent-purple);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .revelation-box h3 {
+            color: var(--accent-purple);
+            font-size: 1.5rem;
+            margin-top: 0;
+        }
+
+        .revelation-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin: 1.5rem 0;
+        }
+
+        /* Comparison grid */
+        .comparison-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-grid .comparison-col {
+            width: calc(50% - 1rem);
+            min-width: 280px;
+        }
+
+        .comparison-col {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .comparison-col.standard { border: 1px solid var(--accent-red); }
+        .comparison-col.epoch { border: 1px solid var(--accent-green); }
+
+        .comparison-col h4 {
+            font-family: 'Cinzel', serif;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-col.standard h4 { color: var(--accent-red); }
+        .comparison-col.epoch h4 { color: var(--accent-green); }
+
+        /* Timeline */
+        .timeline {
+            margin: 2rem 0;
+            padding-left: 2rem;
+            border-left: 2px solid var(--accent-red);
+        }
+
+        .timeline-item {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-red);
+        }
+
+        .timeline-year {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-red);
+            font-weight: 700;
+        }
+
+        .timeline-event {
+            margin-top: 0.3rem;
+        }
+
+        /* Prediction box */
+        .prediction-box {
+            background: linear-gradient(135deg, #050f05 0%, #0a150a 100%);
+            border: 2px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .prediction-box h3 {
+            color: var(--accent-green);
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .prediction-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 1.5rem;
+        }
+
+        .prediction-list li {
+            padding: 0.8rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .prediction-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .nav-link:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .nav-link .direction {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .nav-link .title {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            margin-top: 0.3rem;
+        }
+
+        .nav-link.next {
+            text-align: right;
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 4rem;
+        }
+
+        .page-footer p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero-stat { font-size: 2.2rem; }
+            .pie-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div id="site-header"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="failure-badge">EXISTENTIAL CRISIS</span>
+            <h1><span class="dark">Dark</span> Matter & <span class="dark">Dark</span> Energy</h1>
+            <p class="hero-subtitle">The 95% of Reality They Cannot Explain</p>
+            <div class="hero-stat">95% UNKNOWN</div>
+            <div class="hero-equation">
+                S+ (manifested) ≈ 5% | S- (potential) ≈ 95%
+            </div>
+            <div class="principle-tag">[1 = -1]</div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- The Scandal -->
+        <section>
+            <h2>The Greatest Scandal in Physics</h2>
+
+            <p>
+                The Standard Model of physics claims to describe the fundamental particles and forces
+                of nature. It's called "the most successful theory in history."
+            </p>
+
+            <p>
+                <strong>It cannot explain 95% of the universe.</strong>
+            </p>
+
+            <div class="pie-container">
+                <div class="pie-chart"></div>
+                <div class="pie-legend">
+                    <div class="legend-item">
+                        <div class="legend-color dark-energy"></div>
+                        <div class="legend-text">
+                            <span class="percent" style="color: var(--accent-purple);">68%</span>
+                            <span class="label">Dark Energy — UNKNOWN</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color dark-matter"></div>
+                        <div class="legend-text">
+                            <span class="percent" style="color: var(--accent-cyan);">27%</span>
+                            <span class="label">Dark Matter — UNKNOWN</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color ordinary"></div>
+                        <div class="legend-text">
+                            <span class="percent" style="color: var(--accent-green);">5%</span>
+                            <span class="label">Ordinary Matter — Known</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                Think about this: physicists have spent a century building the Standard Model, conducted
+                thousands of experiments, built the Large Hadron Collider for $10 billion — and they can
+                only describe <strong>5%</strong> of what exists.
+            </p>
+
+            <p>
+                The other 95% is called "dark" because they have no idea what it is.
+            </p>
+        </section>
+
+        <!-- Standard Model Failure -->
+        <section>
+            <h2>What The Standard Model Says</h2>
+
+            <div class="sm-failure">
+                <h3>The Official Position</h3>
+                <ul>
+                    <li>Dark matter: "Some unknown particle we haven't detected yet"</li>
+                    <li>Dark energy: "Some unknown field driving cosmic expansion"</li>
+                    <li>We know they exist because our equations don't work without them</li>
+                    <li>40+ years of searching for dark matter particles: zero found</li>
+                    <li>No theoretical prediction for dark energy — it's just a fudge factor</li>
+                    <li>Best candidate (cosmological constant) off by 10^120 — the worst prediction in physics</li>
+                </ul>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1933</div>
+                    <div class="timeline-event">Fritz Zwicky proposes "dunkle Materie" (dark matter) to explain galaxy cluster dynamics</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1970s</div>
+                    <div class="timeline-event">Vera Rubin confirms galaxy rotation curves don't match visible mass</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1998</div>
+                    <div class="timeline-event">Dark energy discovered — universe expansion accelerating</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1998-2024</div>
+                    <div class="timeline-event">Dozens of experiments searching for dark matter particles: XENON, LUX, CDMS, PandaX... <strong>NOTHING FOUND</strong></div>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>The Uncomfortable Truth</h4>
+                <p>
+                    After 90 years, physics has no explanation for 95% of the universe. The Standard Model
+                    is not "the most successful theory in history." It's a theory that describes 5% of reality
+                    and has utterly failed to explain the rest.
+                </p>
+            </div>
+        </section>
+
+        <!-- The Epoch Explanation -->
+        <section>
+            <h2>The Epoch Framework Explanation</h2>
+
+            <p>
+                There is no "missing" matter or energy. The 95% is not invisible particles waiting to be discovered.
+                <strong>It is S- reality — unmanifested potential.</strong>
+            </p>
+
+            <div class="explanation-box s-plus">
+                <h3>S+ Reality (≈5%)</h3>
+                <p>
+                    S+ is <strong>manifested reality</strong>. Past-as-now. Collapsed wave functions.
+                    Definite outcomes. This is what our instruments can measure, what our eyes can see,
+                    what has already become actual.
+                </p>
+                <div class="math-display">
+                    S+ = What IS
+                    <br>= Collapsed quantum states
+                    <br>= Particles with definite position/momentum
+                    <br>= The "ordinary matter" of physics
+                    <br>≈ <span class="highlight-green">5% of total reality</span>
+                </div>
+            </div>
+
+            <div class="explanation-box s-minus">
+                <h3>S- Reality (≈95%)</h3>
+                <p>
+                    S- is <strong>potential reality</strong>. Future-as-now. Uncollapsed wave functions.
+                    Probability distributions. This is what hasn't yet manifested, what exists as possibility
+                    rather than actuality.
+                </p>
+                <div class="math-display">
+                    S- = What COULD BE
+                    <br>= Uncollapsed quantum states
+                    <br>= Probability amplitudes before measurement
+                    <br>= The "dark" sector of physics
+                    <br>≈ <span class="highlight-purple">95% of total reality</span>
+                </div>
+            </div>
+
+            <div class="revelation-box">
+                <h3>The Revelation</h3>
+                <p style="font-size: 1.2rem; margin-bottom: 1.5rem;">
+                    "Dark matter" and "dark energy" are not mysterious substances.
+                    They are <strong>S- reality</strong> — potential that hasn't manifested into S+.
+                </p>
+                <div class="revelation-equation">
+                    S+ + S- = TOTAL REALITY = 1
+                    <br>5% + 95% = 100%
+                </div>
+                <p style="color: var(--text-secondary); margin-top: 1.5rem;">
+                    The Standard Model only describes S+. Of course it finds 95% "missing."
+                </p>
+            </div>
+        </section>
+
+        <!-- Why The Ratio? -->
+        <section>
+            <h2>Why 5% vs 95%?</h2>
+
+            <p>
+                The ratio is not arbitrary. It emerges from the geometry of phase space and the κ constant.
+            </p>
+
+            <div class="math-display">
+                <span class="highlight-gold">κ = 2π/180 = 0.034906585...</span>
+                <br>
+                <br>The manifested fraction relates to how much of phase space
+                <br>collapses into definite states at any moment:
+                <br>
+                <br>S+ fraction ≈ κ × (1/π) × correction_factor
+                <br>≈ 0.03490 × 0.3183 × ...
+                <br>
+                <br>The exact derivation is complex, but the key point:
+                <br><span class="highlight-green">The ratio is GEOMETRIC, not accidental.</span>
+            </div>
+
+            <div class="key-insight">
+                <h4>Why This Makes Sense</h4>
+                <p>
+                    At any moment, most of reality exists as <em>potential</em> — things that could happen,
+                    paths that could be taken, states that could be occupied. Only a small fraction has
+                    collapsed into definite actuality.
+                </p>
+                <p style="margin-top: 1rem;">
+                    When you measure a quantum system, you collapse ONE outcome from MANY possibilities.
+                    The ratio of actualized-to-possible is approximately 5:95. This is the "dark" ratio.
+                </p>
+            </div>
+        </section>
+
+        <!-- Dark Matter Explained -->
+        <section>
+            <h2>"Dark Matter" Explained</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-col standard">
+                    <h4>Standard Model Says</h4>
+                    <p>
+                        "Galaxy rotation curves are wrong. There must be invisible matter we can't see
+                        that provides extra gravity. We've searched for 40 years. Nothing found."
+                    </p>
+                    <p style="margin-top: 1rem; font-style: italic; color: var(--accent-red);">
+                        Candidates: WIMPs, axions, sterile neutrinos — none detected
+                    </p>
+                </div>
+                <div class="comparison-col epoch">
+                    <h4>Epoch Framework Says</h4>
+                    <p>
+                        Galaxy dynamics are influenced by S- potential as well as S+ matter.
+                        The gravitational effect of uncollapsed probability distributions contributes
+                        to rotation curves.
+                    </p>
+                    <p style="margin-top: 1rem; font-style: italic; color: var(--accent-green);">
+                        No invisible particles needed — it's the effect of S- on spacetime
+                    </p>
+                </div>
+            </div>
+
+            <p>
+                When astronomers measure galaxy rotation, they're measuring S+ matter (stars, gas, dust).
+                But gravity operates across the S+/S- boundary. The "extra" gravity comes from S- reality
+                influencing spacetime curvature.
+            </p>
+
+            <p>
+                This is why dark matter searches fail: they're looking for S+ particles (things that have
+                manifested). But the effect comes from S- (things that haven't manifested yet). You can't
+                detect S- directly — it's potential, not actual.
+            </p>
+        </section>
+
+        <!-- Dark Energy Explained -->
+        <section>
+            <h2>"Dark Energy" Explained</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-col standard">
+                    <h4>Standard Model Says</h4>
+                    <p>
+                        "The universe expansion is accelerating. Something is pushing it apart.
+                        We call it 'dark energy.' We have no idea what it is."
+                    </p>
+                    <p style="margin-top: 1rem; font-style: italic; color: var(--accent-red);">
+                        Best guess: vacuum energy — but calculated value is 10^120 times too large
+                    </p>
+                </div>
+                <div class="comparison-col epoch">
+                    <h4>Epoch Framework Says</h4>
+                    <p>
+                        S- reality is continuously "pressuring" S+ to expand — more potential means more
+                        possibilities trying to manifest. This creates effective negative pressure.
+                    </p>
+                    <p style="margin-top: 1rem; font-style: italic; color: var(--accent-green);">
+                        Expansion is the S- "trying to become" S+ — potential seeking actuality
+                    </p>
+                </div>
+            </div>
+
+            <p>
+                Dark energy is not a mysterious force. It's the effect of S- reality's inherent tendency
+                to manifest into S+. There is always more potential than actuality (95% vs 5%), creating
+                a constant "pressure" toward expansion.
+            </p>
+
+            <div class="key-insight">
+                <h4>Why Expansion Accelerates</h4>
+                <p>
+                    As the universe expands, more space means more places for potential to exist.
+                    More S- potential means more "pressure" to expand. This creates a feedback loop:
+                </p>
+                <p style="margin-top: 1rem; font-family: 'JetBrains Mono', monospace; color: var(--accent-purple);">
+                    More space → More S- potential → More expansion pressure → More space → ...
+                </p>
+                <p style="margin-top: 1rem;">
+                    This is why cosmic expansion accelerates. No cosmological constant needed.
+                </p>
+            </div>
+        </section>
+
+        <!-- The Key Difference -->
+        <section>
+            <h2>The Key Difference</h2>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
+                <tr>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-subtle); background: var(--bg-secondary); color: var(--gold);">Question</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-subtle); background: var(--bg-secondary); color: var(--accent-red);">Standard Model</th>
+                    <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-subtle); background: var(--bg-secondary); color: var(--accent-green);">Epoch Framework</th>
+                </tr>
+                <tr>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">What is dark matter?</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">Unknown particle (never found)</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">S- gravitational influence</td>
+                </tr>
+                <tr>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">What is dark energy?</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">Unknown field (no prediction)</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">S- expansion pressure</td>
+                </tr>
+                <tr>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">Why 68% + 27%?</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">Coincidence / Anthropic</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">Geometric from κ</td>
+                </tr>
+                <tr>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">Will we detect it?</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">"Eventually" (40 years and counting)</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">No — S- is not detectable in S+</td>
+                </tr>
+                <tr>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">Where is it?</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">"Everywhere" (vague)</td>
+                    <td style="padding: 1rem; border: 1px solid var(--border-subtle);">Coexistent with S+ as [1 = -1]</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Predictions -->
+        <section>
+            <h2>Testable Predictions</h2>
+
+            <div class="prediction-box">
+                <h3>If We're Right...</h3>
+                <ul class="prediction-list">
+                    <li>Dark matter particle searches will NEVER succeed — because dark matter is not particles</li>
+                    <li>The dark matter / dark energy ratio will remain constant at cosmic scales — because it's geometric</li>
+                    <li>Modified gravity theories (MOND) will partially work — because they approximate S- effects</li>
+                    <li>The "cosmological constant problem" is unsolvable in the Standard Model — they're asking the wrong question</li>
+                    <li>Quantum gravity will emerge from S+/S- phase geometry — not string theory or loop quantum gravity</li>
+                </ul>
+            </div>
+
+            <p>
+                Every year, the Standard Model's dark sector predictions fail. XENON, LUX, PandaX — billions
+                spent, zero particles found. Our framework predicts this outcome: they're searching for S+
+                manifestations of an S- phenomenon. It's like searching for "wetness particles" to explain water.
+            </p>
+        </section>
+
+        <!-- Conclusion -->
+        <section>
+            <h2>Conclusion</h2>
+
+            <p>
+                The Standard Model treats 95% of the universe as "missing" — mysterious dark substances
+                that must exist to make their equations work. After 90 years, they cannot explain what
+                dark matter or dark energy actually <em>is</em>.
+            </p>
+
+            <p>
+                The Epoch framework says: nothing is missing. Reality exists in two phases — S+ (manifested,
+                ~5%) and S- (potential, ~95%). The "dark" sector is simply the phase of reality that hasn't
+                collapsed into measurable actuality.
+            </p>
+
+            <div class="key-insight">
+                <h4>The Fundamental Error</h4>
+                <p>
+                    The Standard Model assumes all of reality is S+ — that everything "real" must be
+                    manifested, measurable, particle-like. This assumption forces them to invent invisible
+                    particles and mysterious fields to account for what they cannot see.
+                </p>
+                <p style="margin-top: 1rem;">
+                    The truth: <strong>most of reality exists as potential, not actuality</strong>.
+                    S- is real. It influences S+ through gravity and expansion pressure. But it cannot
+                    be "detected" because detection itself is an S- → S+ collapse.
+                </p>
+            </div>
+
+            <div class="revelation-box">
+                <h3>The Answer Was Always There</h3>
+                <p style="font-size: 1.1rem;">
+                    Dark matter and dark energy are not mysteries. They are <strong>unmanifested reality</strong>.<br>
+                    S- coexists with S+ at every point: [1 = -1]<br>
+                    The 5/95 ratio is geometric necessity, not cosmic accident.
+                </p>
+                <div style="font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 1.3rem; margin-top: 1.5rem;">
+                    S+ + S- = 1 = TOTAL REALITY
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <nav class="page-nav">
+            <a href="proton-electron-ratio.html" class="nav-link prev">
+                <span class="direction">← Previous</span>
+                <span class="title">Proton-Electron Mass Ratio</span>
+            </a>
+            <a href="measurement-problem.html" class="nav-link next">
+                <span class="direction">Next Failure →</span>
+                <span class="title">The Measurement Problem</span>
+            </a>
+        </nav>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p>Standard Model Failure #3: Dark Matter & Dark Energy | <a href="../../index.html">Have Mind Media</a></p>
+        <p style="font-family: 'JetBrains Mono', monospace; color: var(--gold); margin-top: 1rem;">[1 = -1]</p>
+    </footer>
+
+    <div id="site-footer"></div>
+
+    <script src="../../js/components/site-header.js"></script>
+    <script src="../../js/components/site-footer.js"></script>
+    <site-footer></site-footer>
+</body>
+</html>

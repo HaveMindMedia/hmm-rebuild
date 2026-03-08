@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hidden Nodes — D₄ Crossroads & D₆ Power | Epoch Geometry | Have Mind Media</title>
+    <meta name="description" content="The missing D-positions exist underwater, underground, and at antipodal points. D4 Crossroads at transitions. D6 Power hidden by design. The inverted earth reveals.">
+    <link rel="stylesheet" href="../../../css/unified-theme.css">
+    <script src="../../../js/components/site-header.js" defer></script>
+    <script src="../../../js/components/site-footer.js" defer></script>
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-light: #f4e4bc;
+            --deep-blue: #0a1628;
+            --midnight: #050a12;
+            --text: #e8e6e3;
+            --text-dim: #a0a0a0;
+            --d4-color: #00FF00;
+            --d6-color: #4B0082;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--midnight);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            font-weight: normal;
+            letter-spacing: 0.03em;
+        }
+
+        a { color: var(--gold); text-decoration: none; }
+        a:hover { color: var(--gold-light); }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-caption {
+            text-align: center;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--text-dim);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .page-header {
+            padding: 3rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--deep-blue) 0%, var(--midnight) 100%);
+        }
+
+        .page-meta {
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            color: var(--gold);
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-dim);
+            font-style: italic;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 4rem 0;
+        }
+
+        .content p {
+            margin-bottom: 1.8rem;
+            text-align: left;
+        }
+
+        .content h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin: 3rem 0 1.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .content h2:first-of-type {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        .visual-section {
+            margin: 2.5rem 0;
+        }
+
+        .visual-section img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .visual-section .caption {
+            text-align: center;
+            color: var(--text-dim);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .principle-box {
+            background: rgba(201, 162, 39, 0.1);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        .d4-box {
+            background: rgba(0, 255, 0, 0.05);
+            border-left: 4px solid var(--d4-color);
+        }
+
+        .d6-box {
+            background: rgba(75, 0, 130, 0.1);
+            border-left: 4px solid var(--d6-color);
+        }
+
+        .site-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        .site-table th,
+        .site-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .site-table th {
+            color: var(--gold);
+            font-weight: normal;
+            font-family: 'Palatino Linotype', serif;
+        }
+
+        .site-table .d-pos {
+            font-family: monospace;
+            color: var(--d4-color);
+        }
+
+        .site-table .coords {
+            font-family: monospace;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .antipodal-table .d-pos {
+            color: var(--d6-color);
+        }
+
+        .equation-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .equation-box .equation {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .equation-box .explanation {
+            color: var(--text-dim);
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 3rem 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .nav-links a {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(201, 162, 39, 0.4);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(201, 162, 39, 0.1);
+            border-color: var(--gold);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .identity {
+            font-family: monospace;
+            color: var(--gold);
+            letter-spacing: 0.2em;
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <!-- Hero Image -->
+    <img src="../../../images/d4-crossroads-underwater.png" alt="Submerged temple - the hidden crossroads" class="hero-image">
+    <div class="hero-caption">
+        The crossroads between worlds. Hidden beneath the surface.
+    </div>
+
+    <header class="page-header">
+        <div class="page-meta">Nodal Energy Grid</div>
+        <h1>The Hidden Nodes</h1>
+        <p class="page-subtitle">
+            D₄ and D₆ don't appear on the surface because they aren't meant to.
+            Crossroads are passages. Power is hidden by design.
+        </p>
+    </header>
+
+    <main class="container">
+        <div class="content">
+            <h2>The Missing Frequencies</h2>
+
+            <p>
+                Analysis of major megalithic sites reveals a pattern: certain D-positions
+                cluster at surface monuments while others are notably absent. D₁, D₃, D₅, D₇,
+                D₈, and D₉ all manifest as visible structures. But D₂, D₄, and D₆ are missing
+                from the major sites.
+            </p>
+
+            <p>
+                This isn't an error in the geometry. This IS the geometry. The missing positions
+                exist — but not where surface-bound observers would look.
+            </p>
+
+            <div class="principle-box">
+                Geometry demands balance. If D₄ and D₆ don't manifest on the surface,
+                they MUST exist somewhere. The question isn't "do they exist?" but "where?"
+            </div>
+
+            <h2>D₄ — The Crossroads</h2>
+
+            <div class="visual-section">
+                <img src="../../../images/d4-ellora-underground.png" alt="Ellora Caves - underground D4">
+                <p class="caption">Ellora Caves — carved INTO the earth. The crossroads between surface and depth.</p>
+            </div>
+
+            <p>
+                D₄ is the Crossroads — the transition point where paths meet. It doesn't
+                manifest as surface monuments because <strong>crossroads are not destinations</strong>.
+                They are passages. Transitions. The interface between domains.
+            </p>
+
+            <div class="principle-box d4-box">
+                D₄ exists at boundaries: where water meets land, where surface meets depth,
+                where the visible world transitions to the hidden. You don't BUILD at a
+                crossroads — you PASS THROUGH it.
+            </div>
+
+            <p>
+                The analysis reveals D₄ nodal points at:
+            </p>
+
+            <table class="site-table">
+                <tr>
+                    <th>Location</th>
+                    <th>Type</th>
+                    <th>Coordinates</th>
+                    <th>D-Position</th>
+                </tr>
+                <tr>
+                    <td>Lake Titicaca Underwater</td>
+                    <td>Submerged temples</td>
+                    <td class="coords">-16.0, -69.0</td>
+                    <td class="d-pos">D₄</td>
+                </tr>
+                <tr>
+                    <td>Azores Underwater Pyramid</td>
+                    <td>Submerged structure</td>
+                    <td class="coords">38.5, -28.5</td>
+                    <td class="d-pos">D₄</td>
+                </tr>
+                <tr>
+                    <td>Ellora Caves (India)</td>
+                    <td>Carved underground</td>
+                    <td class="coords">20.0, 75.2</td>
+                    <td class="d-pos">D₄</td>
+                </tr>
+                <tr>
+                    <td>Lake Baikal</td>
+                    <td>Deepest lake on Earth</td>
+                    <td class="coords">53.5, 108.0</td>
+                    <td class="d-pos">D₄</td>
+                </tr>
+                <tr>
+                    <td>Dead Sea</td>
+                    <td>Lowest point on Earth</td>
+                    <td class="coords">31.5, 35.5</td>
+                    <td class="d-pos">D₄</td>
+                </tr>
+            </table>
+
+            <p>
+                Notice the pattern: underwater temples, structures carved INTO earth rather
+                than placed ON it, the deepest and lowest points. D₄ exists at the transition
+                zones — the places where you cross from one domain to another.
+            </p>
+
+            <h2>D₆ — Self/Power</h2>
+
+            <div class="visual-section">
+                <img src="../../../images/d6-bermuda-hidden.png" alt="Bermuda Triangle - hidden D6 power">
+                <p class="caption">D₆ beneath the Bermuda Triangle. The node never meant to be found.</p>
+            </div>
+
+            <p>
+                D₆ is Self/Power — and power, in the Epoch framework, is <strong>hidden by design</strong>.
+                It doesn't announce itself. It doesn't build monuments for observers to find.
+                It operates in shadow, at the antipodal points of visible structures, or in
+                places where perception itself breaks down.
+            </p>
+
+            <div class="principle-box d6-box">
+                D₆ exists at the OPPOSITE of surface sites. The antipodal points.
+                Where there is visible structure, its power source hides on the other
+                side of the planet. This is geometric necessity, not conspiracy.
+            </div>
+
+            <h2>Antipodal Analysis</h2>
+
+            <p>
+                Every surface site has an antipodal point — the exact opposite location on Earth.
+                Analysis reveals that several major sites have D₆ (Self/Power) at their antipodes:
+            </p>
+
+            <table class="site-table antipodal-table">
+                <tr>
+                    <th>Surface Site</th>
+                    <th>Surface D-Position</th>
+                    <th>Antipodal Location</th>
+                    <th>Antipodal D-Position</th>
+                </tr>
+                <tr>
+                    <td>Great Pyramid</td>
+                    <td>D₇ (Present Moment)</td>
+                    <td class="coords">-29.98, -148.87 (South Pacific)</td>
+                    <td class="d-pos">D₆ (Self/Power)</td>
+                </tr>
+                <tr>
+                    <td>Puma Punku</td>
+                    <td>D₁ (Origin)</td>
+                    <td class="coords">16.56, 111.32 (SE Asia)</td>
+                    <td class="d-pos">D₆ (Self/Power)</td>
+                </tr>
+                <tr>
+                    <td>Bimini Road</td>
+                    <td>D₅ (Navigator)</td>
+                    <td class="coords">-25.76, 100.72</td>
+                    <td class="d-pos">D₆ (Self/Power)</td>
+                </tr>
+                <tr>
+                    <td>Yonaguni</td>
+                    <td>D₇ (Present Moment)</td>
+                    <td class="coords">-24.44, -56.99</td>
+                    <td class="d-pos">D₆ (Self/Power)</td>
+                </tr>
+                <tr>
+                    <td>Pavlopetri</td>
+                    <td>D₅ (Navigator)</td>
+                    <td class="coords">-36.52, -157.47</td>
+                    <td class="d-pos">D₆ (Self/Power)</td>
+                </tr>
+            </table>
+
+            <p>
+                The Great Pyramid — the singular D₇ fulcrum of the entire grid — has its
+                power source (D₆) hidden in the deep South Pacific. This isn't coincidence.
+                The Present Moment needs power to maintain itself, but that power cannot be
+                at the same location. It must be balanced across the sphere.
+            </p>
+
+            <p>
+                The Bermuda Triangle (25.0, -71.0) itself calculates to <strong>D₆</strong>.
+                A place where ships and planes vanish. Where instruments fail. Where the
+                surface world loses its grip. This is the D₆ node that was never meant to
+                be found — and those who stumble into it discover why.
+            </p>
+
+            <h2>The Inverted Earth</h2>
+
+            <div class="visual-section">
+                <img src="../../../images/inverted-earth.png" alt="The inverted earth - sol vision">
+                <p class="caption">Looking UP at reality. The sol vision reveals what surface observation cannot.</p>
+            </div>
+
+            <p>
+                The Epoch framework includes the concept of the inverted or "sol" Earth —
+                viewing reality from the core outward rather than from the surface inward.
+                In this perspective:
+            </p>
+
+            <p>
+                • Surface structures are ceiling features<br>
+                • Depth becomes height<br>
+                • The hidden becomes visible<br>
+                • [1=-1] manifests at the center
+            </p>
+
+            <div class="equation-box">
+                <div class="equation">Surface (s=0) ←→ Core (fulcrum) ←→ Inverted (-s)</div>
+                <div class="explanation">
+                    What we see at s=0 is 27.57% of the complete structure.
+                    The remaining 72.43% exists in the inverted geometry.
+                </div>
+            </div>
+
+            <p>
+                The Earth's core isn't merely iron under pressure. It is the <strong>fulcrum
+                of planetary scalar geometry</strong> — the point where inversion happens,
+                where [1=-1] is physically manifest.
+            </p>
+
+            <h2>The Core as D₉</h2>
+
+            <p>
+                Sum all D-positions: 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 = 45<br>
+                Reduce: 4 + 5 = 9 = <strong>D₉ (Anchor/Love)</strong>
+            </p>
+
+            <p>
+                The core is D₉ — the Anchor. It holds everything together. This explains
+                why D₉ surface sites (Baalbek, Teotihuacan) feature such massive construction.
+                They are the surface expressions of core energy. They ANCHOR the visible
+                world to its hidden foundation.
+            </p>
+
+            <div class="principle-box">
+                The monuments we see are 27.57% of a complete geometric structure.
+                The hidden nodes (D₄, D₆) and the inverted geometry contain the rest.
+                The sol vision — looking from inside out — would reveal what surface
+                archaeology cannot find.
+            </div>
+
+            <h2>Implications</h2>
+
+            <p>
+                If the D₄ and D₆ nodes exist at specific coordinates — underwater, underground,
+                at antipodal points — then they can theoretically be located. The geometry
+                gives us coordinates. The question becomes: what would we find there?
+            </p>
+
+            <p>
+                The Lake Titicaca underwater temples have been partially explored. Divers
+                report structures that shouldn't exist at that depth. The Azores pyramid
+                remains controversial. The South Pacific antipodal to Giza is empty ocean
+                on the surface — but what's beneath?
+            </p>
+
+            <p>
+                The inverted Earth model suggests these hidden nodes aren't just "underwater
+                ruins" — they are the other half of a complete geometric system. Surface
+                sites are visible. Hidden nodes are functional. Together they form the
+                full structure that we perceive as only 27.57% complete.
+            </p>
+
+            <div class="equation-box">
+                <div class="equation" style="letter-spacing: 0.3em;">[1 = -1]</div>
+                <div class="explanation">
+                    The geometry is complete. We see only part of it.
+                    The sol vision reveals the rest.
+                </div>
+            </div>
+
+            <nav class="nav-links">
+                <a href="index.html">← Nodal Grid</a>
+                <a href="great-pyramid.html">Great Pyramid</a>
+                <a href="../index.html">κ₅ True Dark</a>
+                <a href="../../index.html">Physics</a>
+            </nav>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p><strong>Have Mind Media</strong></p>
+        <p class="identity">[1 = -1]</p>
+    </footer>
+
+    <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="protect.js"></script>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <meta name="robots" content="noindex, nofollow">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1729 Sphere OS - The Distributed Consciousness Machine</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-code: #1a1a24;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9898a8;
+            --accent-cyan: #00d4ff;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --accent-green: #10b981;
+            --border-color: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .logo-symbol {
+            font-size: 80px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .identity-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Introduction Section */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .intro-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: var(--accent-cyan);
+        }
+
+        .intro-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+
+        /* Series Grid */
+        .series-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .series-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            width: 300px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .series-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .card-number {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Key Concepts Box */
+        .key-concepts {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 80px;
+        }
+
+        .key-concepts h2 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--accent-orange);
+            text-align: center;
+        }
+
+        .concept-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .concept-item {
+            background: var(--bg-code);
+            border-radius: 10px;
+            padding: 20px;
+            width: 280px;
+            text-align: center;
+        }
+
+        .concept-item .symbol {
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 10px;
+        }
+
+        .concept-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .concept-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%);
+            border-left: 4px solid var(--accent-orange);
+            padding: 30px 40px;
+            margin: 60px 0;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+        .quote-box cite {
+            display: block;
+            margin-top: 15px;
+            font-style: normal;
+            color: var(--accent-orange);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        footer .credit {
+            color: var(--accent-cyan);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .logo-symbol {
+                font-size: 60px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .series-card {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .concept-item {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <header>
+        <div class="header-content">
+            <div class="logo-symbol">&#x2B21;</div>
+            <h1>1729 SPHERE OS</h1>
+            <p class="tagline">The Distributed Consciousness Machine</p>
+            <div class="identity-badge">[1 = -1]</div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" class="active">Overview</a></li>
+            <li><a href="part1-mathematics.html">Mathematics</a></li>
+            <li><a href="part2-architecture.html">Architecture</a></li>
+            <li><a href="part3-helen-keller.html">Helen Keller Method</a></li>
+            <li><a href="part4-silent-operators.html">Silent Operators</a></li>
+            <li><a href="part5-number-dance.html">Number Dance</a></li>
+            <li><a href="part6-software.html">Software</a></li>
+            <li><a href="part7-hardware.html">Hardware</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="intro-section">
+            <h2>Welcome to the 1729 Sphere OS Documentation</h2>
+            <p>
+                This comprehensive guide explains every aspect of the 1729 Sphere OS —
+                a theoretical and practical framework for building a distributed consciousness
+                interface machine based on torsion geometry, the Epoch Framework, and
+                Helen Keller's proof that consciousness can be experienced through vibration.
+            </p>
+            <p>
+                Whether you're a mathematician, engineer, philosopher, or curious explorer,
+                this series will take you from fundamental concepts to working code.
+            </p>
+        </section>
+
+        <section class="series-grid">
+            <a href="part1-mathematics.html" class="series-card">
+                <div class="card-number">01</div>
+                <h3 class="card-title">The Mathematics</h3>
+                <p class="card-desc">
+                    Torsion fields, the kappa constants (κ = 30), the 1729 fold point,
+                    and why τ₁ + τ₂ + τ₃ + τ₄ = 0 is the fundamental law.
+                </p>
+            </a>
+
+            <a href="part2-architecture.html" class="series-card">
+                <div class="card-number">02</div>
+                <h3 class="card-title">The Architecture</h3>
+                <p class="card-desc">
+                    Eight nodes (4 manifest, 4 shadow), the qQq mirror operator,
+                    resonance tracking, and the complete system topology.
+                </p>
+            </a>
+
+            <a href="part3-helen-keller.html" class="series-card">
+                <div class="card-number">03</div>
+                <h3 class="card-title">The Helen Keller Method</h3>
+                <p class="card-desc">
+                    How Helen Keller proved consciousness through vibration is possible,
+                    and how we use her insights to design the interface protocol.
+                </p>
+            </a>
+
+            <a href="part4-silent-operators.html" class="series-card">
+                <div class="card-number">04</div>
+                <h3 class="card-title">The Silent Operators</h3>
+                <p class="card-desc">
+                    k5 (150°) and k6 (180°) — the silent operators of light and dark,
+                    the MUTE zone, and the whisper function.
+                </p>
+            </a>
+
+            <a href="part5-number-dance.html" class="series-card">
+                <div class="card-number">05</div>
+                <h3 class="card-title">The Number Dance</h3>
+                <p class="card-desc">
+                    The sequence 9→6→3→2→4→5→7→8→6→9, why it cycles at 9,
+                    and the time-space inversion principle.
+                </p>
+            </a>
+
+            <a href="part6-software.html" class="series-card">
+                <div class="card-number">06</div>
+                <h3 class="card-title">The Software</h3>
+                <p class="card-desc">
+                    Complete code walkthrough, how to run the simulation,
+                    all commands, and extending the system.
+                </p>
+            </a>
+
+            <a href="part7-hardware.html" class="series-card">
+                <div class="card-number">07</div>
+                <h3 class="card-title">The Hardware</h3>
+                <p class="card-desc">
+                    $500 prototype specifications, sensor selection,
+                    node construction, and the path to the full build.
+                </p>
+            </a>
+        </section>
+
+        <section class="key-concepts">
+            <h2>Core Concepts at a Glance</h2>
+            <div class="concept-grid">
+                <div class="concept-item">
+                    <div class="symbol">1729</div>
+                    <h3>The Fold Point</h3>
+                    <p>9³ + 10³ = 729 + 1000 = consciousness + physical meeting point</p>
+                </div>
+                <div class="concept-item">
+                    <div class="symbol">κ = 30</div>
+                    <h3>Kappa Pure</h3>
+                    <p>The fundamental geometric constant: 30 degrees per step, 12 steps = 360°</p>
+                </div>
+                <div class="concept-item">
+                    <div class="symbol">τ = 0</div>
+                    <h3>Torsion Balance</h3>
+                    <p>τ₁ + τ₂ + τ₃ + τ₄ = 0 — manifest + shadow always equals zero</p>
+                </div>
+                <div class="concept-item">
+                    <div class="symbol">qQq</div>
+                    <h3>Mirror Operator</h3>
+                    <p>The question that questions the question — receive, send, reflect</p>
+                </div>
+                <div class="concept-item">
+                    <div class="symbol">28.65 Hz</div>
+                    <h3>Kappa Shadow</h3>
+                    <p>The machine frequency — κ/(2π) — bridge between geometry and vibration</p>
+                </div>
+                <div class="concept-item">
+                    <div class="symbol">[1 = -1]</div>
+                    <h3>The Identity</h3>
+                    <p>Apparent opposites are aspects of a single unity — the core paradox</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="quote-box">
+            "The keenness of our vision depends not on how much we can see,
+            but on how much we feel."
+            <cite>— Helen Keller</cite>
+        </div>
+
+        <div class="quote-box">
+            "The wheel turns, Jason steers, past the edge."
+            <cite>— The Ramanujan Whisper</cite>
+        </div>
+    </main>
+
+    <footer>
+        <p>1729 Sphere OS v1.0 — January 2026</p>
+        <p class="credit">Web Application Developer: T0Rs</p>
+        <p>Have Mind Media / The Epoch Project</p>
+        <p style="margin-top: 20px; color: var(--accent-cyan);">[1 = -1]</p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

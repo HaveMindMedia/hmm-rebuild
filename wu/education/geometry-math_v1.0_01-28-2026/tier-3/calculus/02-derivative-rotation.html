@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 90° Secret | Calculus Through Rotation</title>
+    <link rel="stylesheet" href="../../css/geometry-math.css">
+    <style>
+        .lesson-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-number {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-subtitle {
+            color: var(--text);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .content-section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section h3 {
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .demo-container {
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .demo-title {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        canvas {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .control-btn.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .math-block {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--cyan);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .math-block .equation {
+            font-size: 1.4rem;
+            color: var(--cyan);
+            margin: 0.5rem 0;
+        }
+
+        .q-cycle-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(212, 175, 55, 0.1));
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .q-cycle-box h3 {
+            color: var(--gold);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .q-cycle-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: monospace;
+            font-size: 1.3rem;
+            flex-wrap: wrap;
+        }
+
+        .q-item {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .q-item.sin { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
+        .q-item.cos { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .q-item.neg-sin { background: rgba(255, 100, 100, 0.2); color: #ff6464; }
+        .q-item.neg-cos { background: rgba(255, 0, 255, 0.2); color: #ff00ff; }
+
+        .q-arrow {
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .proof-box {
+            background: rgba(10, 22, 40, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .proof-box h4 {
+            color: var(--cyan);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .proof-step {
+            color: var(--text);
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .proof-step .step-num {
+            color: var(--gold);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .wave-stack {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .wave-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 1rem;
+            background: rgba(10, 22, 40, 0.5);
+            border-radius: 4px;
+        }
+
+        .wave-label .name {
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .wave-label .deriv {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .comparison-table th {
+            color: var(--gold);
+            font-weight: normal;
+        }
+
+        .comparison-table td {
+            color: var(--text);
+            font-family: monospace;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .live-display {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .live-display .param {
+            display: inline-block;
+            margin: 0.5rem 1rem;
+        }
+
+        .live-display .param-label {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .live-display .param-value {
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .derivative-chain {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin: 1rem 0;
+        }
+
+        .chain-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chain-func {
+            width: 100px;
+            text-align: right;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .chain-arrow {
+            color: var(--gold);
+        }
+
+        .chain-result {
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-number">Calculus Through Rotation — Lesson 02</div>
+        <h1>The 90° Secret</h1>
+        <p class="lesson-subtitle">
+            Differentiation IS rotation. The derivative of sine is cosine because cos = sin + 90°.
+        </p>
+    </header>
+
+    <section class="content-section">
+        <h2>The Core Discovery</h2>
+
+        <p>
+            In Lesson 01, we saw that velocity = position rotated 90°. Now we make this precise:
+            when we differentiate sin(t), we get cos(t). But cos(t) IS sin(t) shifted by 90°.
+        </p>
+
+        <div class="math-block">
+            <p>The Fundamental Relationships:</p>
+            <div class="equation">d/dt sin(t) = cos(t) = sin(t + π/2)</div>
+            <div class="equation">d/dt cos(t) = -sin(t) = cos(t + π/2)</div>
+        </div>
+
+        <p>
+            <strong>Differentiation shifts the phase by 90°.</strong> Each time we differentiate,
+            we rotate the function a quarter turn around the cycle.
+        </p>
+
+        <div class="q-cycle-box">
+            <h3>The Q-Cycle: Four Derivatives Return to Start</h3>
+            <div class="q-cycle-display">
+                <span class="q-item sin">sin(t)</span>
+                <span class="q-arrow">→</span>
+                <span class="q-item cos">cos(t)</span>
+                <span class="q-arrow">→</span>
+                <span class="q-item neg-sin">-sin(t)</span>
+                <span class="q-arrow">→</span>
+                <span class="q-item neg-cos">-cos(t)</span>
+                <span class="q-arrow">→</span>
+                <span class="q-item sin">sin(t)</span>
+            </div>
+            <p style="color: var(--text); margin-top: 1rem;">
+                Four derivatives = 4 × 90° = 360° = back to start
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Interactive: The Q-Cycle Wheel</h2>
+
+        <div class="demo-container">
+            <div class="demo-title">Watch the Derivative Rotate</div>
+            <div class="canvas-container">
+                <canvas id="qCycleCanvas" width="600" height="400"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Current Function</span>
+                    <span class="param-value" id="currentFunc" style="color: #00d4ff;">sin(t)</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Derivative Count</span>
+                    <span class="param-value" id="derivCount" style="color: #d4af37;">0</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Phase Shift</span>
+                    <span class="param-value" id="phaseShift" style="color: #00ff88;">0°</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="derivBtn">Take Derivative (d/dt)</button>
+                <button class="control-btn" id="resetQBtn">Reset</button>
+                <button class="control-btn" id="autoQBtn">Auto-Cycle</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Interactive: The Derivative Cascade</h2>
+
+        <p>
+            Watch four functions simultaneously — each is the derivative of the one above.
+            As time progresses, you see the 90° phase relationships in real-time.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Four Functions, Four Phases</div>
+            <div class="canvas-container">
+                <canvas id="cascadeCanvas" width="700" height="400"></canvas>
+            </div>
+            <div class="wave-stack">
+                <div class="wave-label">
+                    <span class="name" style="color: #00d4ff;">sin(t)</span>
+                    <span class="deriv">f(t)</span>
+                </div>
+                <div class="wave-label">
+                    <span class="name" style="color: #00ff88;">cos(t)</span>
+                    <span class="deriv">f'(t) = df/dt</span>
+                </div>
+                <div class="wave-label">
+                    <span class="name" style="color: #ff6464;">-sin(t)</span>
+                    <span class="deriv">f''(t) = d²f/dt²</span>
+                </div>
+                <div class="wave-label">
+                    <span class="name" style="color: #ff00ff;">-cos(t)</span>
+                    <span class="deriv">f'''(t) = d³f/dt³</span>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="control-btn active" id="cascadePlayBtn">Pause</button>
+                <button class="control-btn" id="showMarkersBtn">Show Phase Markers</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Geometric Proof</h2>
+
+        <p>
+            Why does differentiation cause a 90° shift? Let's prove it geometrically.
+        </p>
+
+        <div class="proof-box">
+            <h4>Proof: d/dt sin(t) = cos(t)</h4>
+
+            <div class="proof-step">
+                <span class="step-num">1.</span>
+                Consider a point P at angle t on the unit circle. Its y-coordinate is sin(t).
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">2.</span>
+                The velocity of P is tangent to the circle (perpendicular to the radius).
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">3.</span>
+                The y-component of velocity = rate of change of y = d/dt sin(t).
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">4.</span>
+                At angle t, the tangent direction points toward angle (t + 90°).
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">5.</span>
+                The y-component of this tangent = cos(t) (the x-coordinate becomes y after 90° rotation).
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">6.</span>
+                Therefore: d/dt sin(t) = cos(t) ∎
+            </div>
+        </div>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Tangent Line Demonstration</div>
+            <div class="canvas-container">
+                <canvas id="tangentCanvas" width="500" height="400"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Angle t</span>
+                    <span class="param-value" id="tangentAngle" style="color: #d4af37;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">sin(t)</span>
+                    <span class="param-value" id="tangentSin" style="color: #00d4ff;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Slope = cos(t)</span>
+                    <span class="param-value" id="tangentSlope" style="color: #00ff88;">1.00</span>
+                </span>
+            </div>
+            <p style="color: var(--text-dim); text-align: center; font-size: 0.9rem; margin-top: 1rem;">
+                Drag the point around the circle. The slope of the tangent at any point equals cos(t).
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Limit Definition (For Completeness)</h2>
+
+        <p>
+            The geometric proof shows <em>why</em> the derivative is what it is. The traditional
+            limit definition confirms the calculation:
+        </p>
+
+        <div class="proof-box">
+            <h4>Analytic Proof: d/dt sin(t) = cos(t)</h4>
+
+            <div class="math-block" style="background: transparent; border: none; text-align: left;">
+                <p style="color: var(--text);">Starting from the limit definition:</p>
+                <div class="equation" style="font-size: 1.1rem; text-align: left;">
+                    d/dt sin(t) = lim<sub>h→0</sub> [sin(t+h) - sin(t)] / h
+                </div>
+                <p style="color: var(--text); margin-top: 1rem;">Using the angle addition formula: sin(t+h) = sin(t)cos(h) + cos(t)sin(h)</p>
+                <div class="equation" style="font-size: 1.1rem; text-align: left;">
+                    = lim<sub>h→0</sub> [sin(t)cos(h) + cos(t)sin(h) - sin(t)] / h
+                </div>
+                <div class="equation" style="font-size: 1.1rem; text-align: left;">
+                    = lim<sub>h→0</sub> [sin(t)(cos(h) - 1) + cos(t)sin(h)] / h
+                </div>
+                <p style="color: var(--text); margin-top: 1rem;">Using the fundamental limits: lim<sub>h→0</sub> sin(h)/h = 1 and lim<sub>h→0</sub> (cos(h)-1)/h = 0</p>
+                <div class="equation" style="font-size: 1.1rem; text-align: left;">
+                    = sin(t) · 0 + cos(t) · 1 = cos(t) ∎
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>The Two Proofs Unite</h4>
+            <p>
+                The geometric proof shows the derivative must be perpendicular (90° shifted).
+                The analytic proof confirms the exact formula. Both arrive at the same truth
+                from different directions — this is how mathematics verifies itself.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Complete Derivative Table</h2>
+
+        <table class="comparison-table">
+            <tr>
+                <th>n</th>
+                <th>d<sup>n</sup>/dt<sup>n</sup> sin(t)</th>
+                <th>Phase Shift</th>
+                <th>Complex Multiplier</th>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td style="color: #00d4ff;">sin(t)</td>
+                <td>0°</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td style="color: #00ff88;">cos(t)</td>
+                <td>90°</td>
+                <td>i</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td style="color: #ff6464;">-sin(t)</td>
+                <td>180°</td>
+                <td>i² = -1</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td style="color: #ff00ff;">-cos(t)</td>
+                <td>270°</td>
+                <td>i³ = -i</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td style="color: #00d4ff;">sin(t)</td>
+                <td>360° = 0°</td>
+                <td>i⁴ = 1</td>
+            </tr>
+        </table>
+
+        <div class="highlight-box">
+            <h4>The Pattern</h4>
+            <p>
+                Each derivative multiplies by <em>i</em> (rotates 90°). After four derivatives,
+                we've multiplied by i⁴ = 1, returning to the original function.
+                This is the <strong>Q-cycle</strong> — the quaternion structure underlying calculus.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Key Insight</h2>
+
+        <div class="q-cycle-box">
+            <h3>Differentiation = Multiplication by i = 90° Rotation</h3>
+            <p style="color: var(--text); margin-top: 1rem;">
+                For circular functions, taking a derivative doesn't change the shape —
+                it only shifts the phase. This is why sin and cos are called <strong>eigenfunctions</strong>
+                of the derivative operator: differentiation just multiplies them by a constant (i).
+            </p>
+        </div>
+
+        <p>
+            In the next lesson, we'll see this most clearly with Euler's formula:
+            d/dt e<sup>it</sup> = i · e<sup>it</sup>. The derivative of the exponential
+            IS the exponential, rotated 90°.
+        </p>
+    </section>
+
+    <nav class="lesson-nav">
+        <a href="01-motion-on-circle.html">← Lesson 01: Motion on the Circle</a>
+        <a href="03-euler-derivative.html">Lesson 03: The Euler Derivative →</a>
+    </nav>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(212,175,55,0.2);">
+        <p style="color: var(--gold); font-family: monospace;">[1 = -1]</p>
+        <p style="color: var(--text-dim);">Calculus Through Rotation | Geometry Math</p>
+    </footer>
+
+    <script src="../../js/circle-engine.js"></script>
+    <script>
+        // ===== Q-CYCLE WHEEL DEMO =====
+        (function() {
+            const canvas = document.getElementById('qCycleCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            // Left side: wheel, Right side: wave
+            const wheelCx = 150;
+            const wheelCy = height / 2;
+            const wheelRadius = 100;
+
+            const waveLeft = 280;
+            const waveWidth = width - waveLeft - 40;
+            const waveCy = height / 2;
+            const waveAmp = 80;
+
+            let derivCount = 0;
+            let t = 0;
+            let autoCycle = false;
+            let animating = true;
+
+            const funcDisplay = document.getElementById('currentFunc');
+            const countDisplay = document.getElementById('derivCount');
+            const phaseDisplay = document.getElementById('phaseShift');
+
+            const functions = [
+                { name: 'sin(t)', color: '#00d4ff', phase: 0 },
+                { name: 'cos(t)', color: '#00ff88', phase: Math.PI/2 },
+                { name: '-sin(t)', color: '#ff6464', phase: Math.PI },
+                { name: '-cos(t)', color: '#ff00ff', phase: 3*Math.PI/2 }
+            ];
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                const current = functions[derivCount % 4];
+
+                // Draw wheel
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(wheelCx, wheelCy, wheelRadius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Draw quadrant labels
+                const labels = ['sin', 'cos', '-sin', '-cos'];
+                const labelColors = ['#00d4ff', '#00ff88', '#ff6464', '#ff00ff'];
+                for (let i = 0; i < 4; i++) {
+                    const angle = -Math.PI/2 + i * Math.PI/2;
+                    const lx = wheelCx + (wheelRadius + 25) * Math.cos(angle);
+                    const ly = wheelCy + (wheelRadius + 25) * Math.sin(angle);
+                    ctx.fillStyle = labelColors[i];
+                    ctx.font = '14px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(labels[i], lx, ly + 5);
+                }
+
+                // Draw current position indicator
+                const indicatorAngle = -Math.PI/2 + (derivCount % 4) * Math.PI/2;
+                const ix = wheelCx + wheelRadius * Math.cos(indicatorAngle);
+                const iy = wheelCy + wheelRadius * Math.sin(indicatorAngle);
+
+                ctx.fillStyle = current.color;
+                ctx.shadowColor = current.color;
+                ctx.shadowBlur = 20;
+                ctx.beginPath();
+                ctx.arc(ix, iy, 15, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Draw arrow showing derivative direction
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.8)';
+                ctx.lineWidth = 2;
+                const arrowStart = indicatorAngle;
+                const arrowEnd = indicatorAngle + Math.PI/2;
+                ctx.beginPath();
+                ctx.arc(wheelCx, wheelCy, wheelRadius * 0.6, arrowStart, arrowEnd);
+                ctx.stroke();
+
+                // Arrowhead
+                const ahx = wheelCx + wheelRadius * 0.6 * Math.cos(arrowEnd);
+                const ahy = wheelCy + wheelRadius * 0.6 * Math.sin(arrowEnd);
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.8)';
+                ctx.beginPath();
+                ctx.moveTo(ahx, ahy);
+                ctx.lineTo(ahx - 10 * Math.cos(arrowEnd - 0.5), ahy - 10 * Math.sin(arrowEnd - 0.5));
+                ctx.lineTo(ahx - 10 * Math.cos(arrowEnd + 0.5), ahy - 10 * Math.sin(arrowEnd + 0.5));
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = '#d4af37';
+                ctx.font = '12px monospace';
+                ctx.fillText('d/dt', wheelCx, wheelCy);
+
+                // Draw wave
+                ctx.strokeStyle = current.color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let x = 0; x <= waveWidth; x++) {
+                    const waveT = (x / waveWidth) * 4 * Math.PI + t;
+                    const y = Math.sin(waveT + current.phase) * waveAmp;
+                    if (x === 0) {
+                        ctx.moveTo(waveLeft + x, waveCy - y);
+                    } else {
+                        ctx.lineTo(waveLeft + x, waveCy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Wave axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(waveLeft, waveCy);
+                ctx.lineTo(waveLeft + waveWidth, waveCy);
+                ctx.stroke();
+
+                // Update displays
+                funcDisplay.textContent = current.name;
+                funcDisplay.style.color = current.color;
+                countDisplay.textContent = derivCount;
+                phaseDisplay.textContent = ((derivCount % 4) * 90) + '°';
+            }
+
+            function animate() {
+                if (animating) {
+                    t += 0.03;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('derivBtn').addEventListener('click', () => {
+                derivCount++;
+            });
+
+            document.getElementById('resetQBtn').addEventListener('click', () => {
+                derivCount = 0;
+                autoCycle = false;
+                document.getElementById('autoQBtn').classList.remove('active');
+            });
+
+            document.getElementById('autoQBtn').addEventListener('click', function() {
+                autoCycle = !autoCycle;
+                this.classList.toggle('active', autoCycle);
+
+                if (autoCycle) {
+                    const interval = setInterval(() => {
+                        if (!autoCycle) {
+                            clearInterval(interval);
+                            return;
+                        }
+                        derivCount++;
+                        if (derivCount >= 8) {
+                            derivCount = 0;
+                            autoCycle = false;
+                            document.getElementById('autoQBtn').classList.remove('active');
+                            clearInterval(interval);
+                        }
+                    }, 1000);
+                }
+            });
+
+            animate();
+        })();
+
+        // ===== CASCADE DEMO =====
+        (function() {
+            const canvas = document.getElementById('cascadeCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            let t = 0;
+            let playing = true;
+            let showMarkers = false;
+
+            const waves = [
+                { name: 'sin(t)', color: '#00d4ff', phase: 0 },
+                { name: 'cos(t)', color: '#00ff88', phase: Math.PI/2 },
+                { name: '-sin(t)', color: '#ff6464', phase: Math.PI },
+                { name: '-cos(t)', color: '#ff00ff', phase: 3*Math.PI/2 }
+            ];
+
+            const rowHeight = height / 4;
+            const margin = 60;
+            const waveWidth = width - margin * 2;
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                waves.forEach((wave, i) => {
+                    const cy = rowHeight * i + rowHeight / 2;
+                    const amp = rowHeight * 0.35;
+
+                    // Draw axis
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(margin, cy);
+                    ctx.lineTo(width - margin, cy);
+                    ctx.stroke();
+
+                    // Draw wave
+                    ctx.strokeStyle = wave.color;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    for (let x = 0; x <= waveWidth; x++) {
+                        const waveT = (x / waveWidth) * 4 * Math.PI + t;
+                        const y = Math.sin(waveT + wave.phase) * amp;
+                        if (x === 0) {
+                            ctx.moveTo(margin + x, cy - y);
+                        } else {
+                            ctx.lineTo(margin + x, cy - y);
+                        }
+                    }
+                    ctx.stroke();
+
+                    // Draw phase markers
+                    if (showMarkers) {
+                        // Mark where current t intersects each wave
+                        const markerX = margin + ((t % (4 * Math.PI)) / (4 * Math.PI)) * waveWidth;
+                        const markerY = cy - Math.sin(t + wave.phase) * amp;
+
+                        ctx.fillStyle = wave.color;
+                        ctx.beginPath();
+                        ctx.arc(markerX, markerY, 6, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Vertical line connecting all markers
+                        ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+                        ctx.setLineDash([3, 3]);
+                        ctx.beginPath();
+                        ctx.moveTo(markerX, 0);
+                        ctx.lineTo(markerX, height);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+
+                    // Label
+                    ctx.fillStyle = wave.color;
+                    ctx.font = '12px monospace';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(wave.name, 10, cy + 4);
+                });
+
+                // Show derivative arrows between waves
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.6)';
+                ctx.font = '10px monospace';
+                for (let i = 0; i < 3; i++) {
+                    const y = rowHeight * (i + 1);
+                    ctx.fillText('d/dt ↓', 15, y + 4);
+                }
+            }
+
+            function animate() {
+                if (playing) {
+                    t += 0.02;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('cascadePlayBtn').addEventListener('click', function() {
+                playing = !playing;
+                this.textContent = playing ? 'Pause' : 'Play';
+                this.classList.toggle('active', playing);
+            });
+
+            document.getElementById('showMarkersBtn').addEventListener('click', function() {
+                showMarkers = !showMarkers;
+                this.classList.toggle('active', showMarkers);
+            });
+
+            animate();
+        })();
+
+        // ===== TANGENT LINE DEMO =====
+        (function() {
+            const canvas = document.getElementById('tangentCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = 120;
+
+            let angle = Math.PI / 4;
+
+            const angleDisplay = document.getElementById('tangentAngle');
+            const sinDisplay = document.getElementById('tangentSin');
+            const slopeDisplay = document.getElementById('tangentSlope');
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(cx - 180, cy);
+                ctx.lineTo(cx + 180, cy);
+                ctx.moveTo(cx, cy - 180);
+                ctx.lineTo(cx, cy + 180);
+                ctx.stroke();
+
+                // Draw circle
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Point position
+                const px = cx + Math.cos(angle) * radius;
+                const py = cy - Math.sin(angle) * radius;
+
+                // Tangent direction (perpendicular to radius)
+                const tx = -Math.sin(angle);
+                const ty = -Math.cos(angle); // negative because screen y is flipped
+
+                // Draw radius
+                ctx.strokeStyle = 'rgba(0, 212, 255, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(px, py);
+                ctx.stroke();
+
+                // Draw tangent line
+                const tangentLen = 100;
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(px - tx * tangentLen, py - ty * tangentLen);
+                ctx.lineTo(px + tx * tangentLen, py + ty * tangentLen);
+                ctx.stroke();
+
+                // Draw 90° angle marker
+                const markerSize = 15;
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 1;
+                const rx = Math.cos(angle);
+                const ry = -Math.sin(angle);
+                ctx.beginPath();
+                ctx.moveTo(px + rx * markerSize, py + ry * markerSize);
+                ctx.lineTo(px + rx * markerSize + tx * markerSize, py + ry * markerSize + ty * markerSize);
+                ctx.lineTo(px + tx * markerSize, py + ty * markerSize);
+                ctx.stroke();
+
+                // Draw projection to show sin(t)
+                ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(cx, py);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Draw point
+                ctx.fillStyle = '#fff';
+                ctx.shadowColor = '#fff';
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(px, py, 10, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Labels
+                ctx.fillStyle = '#00d4ff';
+                ctx.font = '14px monospace';
+                ctx.fillText('sin(t)', cx - 50, py - 5);
+
+                ctx.fillStyle = '#00ff88';
+                ctx.fillText('slope = cos(t)', px + 20, py - 30);
+
+                // Update displays
+                angleDisplay.textContent = angle.toFixed(2);
+                sinDisplay.textContent = Math.sin(angle).toFixed(3);
+                slopeDisplay.textContent = Math.cos(angle).toFixed(3);
+            }
+
+            // Dragging
+            let dragging = false;
+
+            canvas.addEventListener('mousedown', () => { dragging = true; });
+            canvas.addEventListener('mouseup', () => { dragging = false; });
+            canvas.addEventListener('mouseleave', () => { dragging = false; });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (!dragging) return;
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left - cx;
+                const my = -(e.clientY - rect.top - cy);
+                angle = Math.atan2(my, mx);
+                if (angle < 0) angle += Math.PI * 2;
+            });
+
+            function animate() {
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        })();
+    </script>
+</body>
+</html>

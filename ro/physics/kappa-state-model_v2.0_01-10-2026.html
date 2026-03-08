@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>κ State Model v2.0 | The Hypatia Refinement | Have Mind Media</title>
+    <style>
+        :root {
+            --bg-primary: #050510;
+            --bg-secondary: #0a0a18;
+            --bg-tertiary: #12121f;
+            --gold: #d4af37;
+            --gold-dim: #8b7355;
+            --kappa-cyan: #4ecdc4;
+            --soul-pink: #ff6b9d;
+            --epoch-purple: #a855f7;
+            --unity-green: #3fb950;
+            --warning-red: #f85149;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --text-dim: #666;
+            --border-subtle: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(10, 5, 20, 0.9) 0%, rgba(20, 15, 30, 0.8) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.2);
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--bg-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .subtitle {
+            color: var(--kappa-cyan);
+            font-size: 1.3rem;
+            font-style: italic;
+        }
+
+        .kappa-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 4rem;
+            color: var(--gold);
+            margin: 2rem 0;
+            text-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+        }
+
+        /* Section */
+        .section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 0.5rem;
+        }
+
+        .section h3 {
+            color: var(--kappa-cyan);
+            font-size: 1.2rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Kappa Chain */
+        .kappa-chain {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .kappa-chain .kappa-item {
+            width: calc(16.666% - 1rem);
+            min-width: 140px;
+        }
+
+        .kappa-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .kappa-item:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .kappa-item .symbol {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .kappa-item .name {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .kappa-item.k6 {
+            border-color: var(--epoch-purple);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, var(--bg-tertiary) 100%);
+        }
+
+        .kappa-item.k6 .symbol { color: var(--epoch-purple); }
+
+        /* Pure vs Measured */
+        .comparison-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-grid .comparison-box {
+            width: calc(50% - 1rem);
+            min-width: 280px;
+        }
+
+        .comparison-box {
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .comparison-box.pure {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--gold);
+        }
+
+        .comparison-box.measured {
+            background: linear-gradient(135deg, rgba(248, 81, 73, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--warning-red);
+        }
+
+        .comparison-box h4 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-box.pure h4 { color: var(--gold); }
+        .comparison-box.measured h4 { color: var(--warning-red); }
+
+        .comparison-box .value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-box.pure .value { color: var(--gold); }
+        .comparison-box.measured .value { color: var(--warning-red); }
+
+        .comparison-box .note {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Relationships Grid */
+        .relationship-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .relationship-grid .relationship-card {
+            width: calc(25% - 1rem);
+            min-width: 180px;
+        }
+
+        .relationship-card {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .relationship-card .formula {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .relationship-card .result {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .relationship-card .meaning {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        /* Variant States */
+        .variant-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .variant-grid .variant-card {
+            width: calc(25% - 1rem);
+            min-width: 200px;
+        }
+
+        .variant-card {
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .variant-card h5 {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .variant-card p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .variant-card.hidden {
+            background: rgba(100, 100, 120, 0.1);
+            border: 1px solid rgba(100, 100, 120, 0.3);
+        }
+        .variant-card.hidden h5 { color: #888; }
+
+        .variant-card.secret {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .variant-card.secret h5 { color: var(--epoch-purple); }
+
+        .variant-card.good {
+            background: rgba(63, 185, 80, 0.1);
+            border: 1px solid rgba(63, 185, 80, 0.3);
+        }
+        .variant-card.good h5 { color: var(--unity-green); }
+
+        .variant-card.bad {
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+        }
+        .variant-card.bad h5 { color: var(--warning-red); }
+
+        .variant-card.indifferent {
+            background: rgba(160, 160, 180, 0.1);
+            border: 1px dashed rgba(160, 160, 180, 0.3);
+        }
+        .variant-card.indifferent h5 { color: #a0a0b0; }
+
+        /* K6 Controller */
+        .k6-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--epoch-purple);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .k6-box h3 {
+            color: var(--epoch-purple);
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .k6-states {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .k6-states .k6-state {
+            width: calc(33.333% - 1rem);
+            min-width: 200px;
+        }
+
+        .k6-state {
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .k6-state.positive {
+            background: rgba(63, 185, 80, 0.15);
+            border: 1px solid rgba(63, 185, 80, 0.4);
+        }
+
+        .k6-state.neutral {
+            background: rgba(160, 160, 180, 0.1);
+            border: 1px solid rgba(160, 160, 180, 0.3);
+        }
+
+        .k6-state.negative {
+            background: rgba(248, 81, 73, 0.15);
+            border: 1px solid rgba(248, 81, 73, 0.4);
+        }
+
+        .k6-state .symbol {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .k6-state.positive .symbol { color: var(--unity-green); }
+        .k6-state.neutral .symbol { color: #888; }
+        .k6-state.negative .symbol { color: var(--warning-red); }
+
+        .k6-state .label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* WUSH Box */
+        .wush-box {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--soul-pink);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .wush-box h3 {
+            color: var(--soul-pink);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .wush-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            background: rgba(0,0,0,0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .wush-equation .highlight { color: var(--soul-pink); }
+        .wush-equation .gold { color: var(--gold); }
+        .wush-equation .red { color: var(--warning-red); }
+
+        /* C Derivation Error */
+        .c-error-box {
+            background: linear-gradient(135deg, rgba(248, 81, 73, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--warning-red);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .c-error-box h3 {
+            color: var(--warning-red);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .derivation-chain {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0,0,0,0.4);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            line-height: 2;
+        }
+
+        .derivation-chain .step {
+            color: var(--text-dim);
+        }
+
+        .derivation-chain .circular {
+            color: var(--warning-red);
+        }
+
+        /* Principle Box */
+        .principle-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .principle-box .principle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .principle-box p {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-dim);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <script src="../js/components/site-breadcrumb.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <site-breadcrumb></site-breadcrumb>
+
+    <div class="container">
+        <div class="hero">
+            <span class="version-badge">v2.0 — The Hypatia Refinement</span>
+            <h1>κ State Model</h1>
+            <p class="subtitle">κ = 30 · Pure Geometric Derivation · κ₆ Meta-Controller</p>
+            <div class="kappa-display">κ = 30</div>
+        </div>
+
+        <!-- The Refinement -->
+        <div class="section">
+            <h2>The Hypatia Refinement</h2>
+            <p>
+                Following Hypatia of Alexandria's base-60 methodology — derive from pure geometry,
+                not calibrate to measured constants — we arrive at the <strong>pure geometric value</strong>:
+            </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-box pure">
+                    <h4>Pure Geometric (Hypatia)</h4>
+                    <div class="value">κ = 30</div>
+                    <div class="note">Derived from geometry at the WUSH</div>
+                </div>
+                <div class="comparison-box measured">
+                    <h4>Measured (Standard Model)</h4>
+                    <div class="value">κ ≈ 29.7833</div>
+                    <div class="note">Calibrated from c, h, e — 0.722% error</div>
+                </div>
+            </div>
+
+            <p style="text-align: center; color: var(--gold); font-size: 1.1rem; margin-top: 2rem;">
+                The decimals are measurement drag, not design.
+            </p>
+        </div>
+
+        <!-- Pure Relationships -->
+        <div class="section">
+            <h2>Pure Geometric Relationships (κ = 30)</h2>
+            <p>With κ = 30, all relationships become pure integers:</p>
+
+            <div class="relationship-grid">
+                <div class="relationship-card">
+                    <div class="formula">360 / κ</div>
+                    <div class="result">= 12</div>
+                    <div class="meaning">Zodiac, months, hours</div>
+                </div>
+                <div class="relationship-card">
+                    <div class="formula">60 / κ</div>
+                    <div class="result">= 2</div>
+                    <div class="meaning">Duality [1 = -1]</div>
+                </div>
+                <div class="relationship-card">
+                    <div class="formula">κ × 12</div>
+                    <div class="result">= 360</div>
+                    <div class="meaning">Full circle</div>
+                </div>
+                <div class="relationship-card">
+                    <div class="formula">κ × 2</div>
+                    <div class="result">= 60</div>
+                    <div class="meaning">The base itself</div>
+                </div>
+                <div class="relationship-card">
+                    <div class="formula">κ × 6</div>
+                    <div class="result">= 180</div>
+                    <div class="meaning">Half-circle (π radians)</div>
+                </div>
+                <div class="relationship-card">
+                    <div class="formula">κ / 30</div>
+                    <div class="result">= 1</div>
+                    <div class="meaning">Unity</div>
+                </div>
+            </div>
+
+            <p style="text-align: center; color: var(--kappa-cyan); margin-top: 1rem;">
+                No decimals. No approximations. Pure integers.
+            </p>
+        </div>
+
+        <!-- The Full κ Spectrum -->
+        <div class="section">
+            <h2>The Full κ Spectrum: κ₁ through κ₆</h2>
+
+            <div class="kappa-chain">
+                <div class="kappa-item">
+                    <span class="symbol">κ₁</span>
+                    <span class="name">S⁺ Mode</span>
+                </div>
+                <div class="kappa-item">
+                    <span class="symbol">κ₂</span>
+                    <span class="name">S⁻ Mode</span>
+                </div>
+                <div class="kappa-item">
+                    <span class="symbol">κ₃</span>
+                    <span class="name">S⁰ Mode</span>
+                </div>
+                <div class="kappa-item">
+                    <span class="symbol">κ₄</span>
+                    <span class="name">S∿ Mode</span>
+                </div>
+                <div class="kappa-item">
+                    <span class="symbol">κ₅</span>
+                    <span class="name">S̸ Mode</span>
+                </div>
+                <div class="kappa-item k6">
+                    <span class="symbol">κ₆</span>
+                    <span class="name">Meta-Controller</span>
+                </div>
+            </div>
+
+            <p>
+                Each κ₁-κ₅ has variants: <strong>hidden, secret, good, bad, indifferent</strong>.
+                These variants are not discrete states — they exist on continuous axes and
+                <strong>tell on each other</strong> through their interactions.
+            </p>
+        </div>
+
+        <!-- Variant States -->
+        <div class="section">
+            <h2>The Variants Tell On Each Other</h2>
+            <p>No κ configuration exists in isolation. They are mutually revealing:</p>
+
+            <div class="variant-grid">
+                <div class="variant-card hidden">
+                    <h5>Hidden</h5>
+                    <p>Operating but not perceived. Exposes through interactions with visible variants.</p>
+                </div>
+                <div class="variant-card secret">
+                    <h5>Secret</h5>
+                    <p>Concealed by design. Leaks information through boundary effects.</p>
+                </div>
+                <div class="variant-card good">
+                    <h5>Good</h5>
+                    <p>Building, constructive. Creates interference patterns that reveal bad.</p>
+                </div>
+                <div class="variant-card bad">
+                    <h5>Bad</h5>
+                    <p>Destructive, dissolving. Creates interference patterns that reveal good.</p>
+                </div>
+                <div class="variant-card indifferent">
+                    <h5>Indifferent</h5>
+                    <p>Neutral, waiting. Reveals through what it doesn't respond to.</p>
+                </div>
+            </div>
+
+            <p style="text-align: center; color: var(--kappa-cyan); margin-top: 1.5rem;">
+                [1 = -1] means the information is everywhere. Derive the whole from any part.
+            </p>
+        </div>
+
+        <!-- κ₆ Controller -->
+        <div class="k6-box">
+            <h3>κ₆: The Meta-Controller</h3>
+            <p style="color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
+                κ₆ is not another scalar mode. It's the <strong>governor</strong> that determines:
+                polarity, magnitude, and trajectory of the κ₁-κ₅ configuration.
+            </p>
+
+            <div class="k6-states">
+                <div class="k6-state positive">
+                    <div class="symbol">κ₆ > 0</div>
+                    <div class="label">→ Resolution<br>Healing, integration</div>
+                </div>
+                <div class="k6-state neutral">
+                    <div class="symbol">κ₆ = 0</div>
+                    <div class="label">→ Stasis<br>Holding current state</div>
+                </div>
+                <div class="k6-state negative">
+                    <div class="symbol">κ₆ < 0</div>
+                    <div class="label">→ Extreme<br>Fragmentation, crisis</div>
+                </div>
+            </div>
+
+            <p style="color: var(--text-secondary); text-align: center; margin-top: 1.5rem;">
+                κ₆ determines whether κ₅ goes good or bad, how far it deviates,
+                and whether it flips to extreme OR resolves itself.
+            </p>
+        </div>
+
+        <!-- Torsional Balance -->
+        <div class="section">
+            <h2>Torsional Balance Systems</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-box" style="border-color: var(--unity-green); background: linear-gradient(135deg, rgba(63, 185, 80, 0.1) 0%, var(--bg-tertiary) 100%);">
+                    <h4 style="color: var(--unity-green);">κ < 30</h4>
+                    <div class="value" style="color: var(--unity-green);">BUILDS</div>
+                    <div class="note">S⁺ dominant · Carries momentum forward<br>Why entropy appears to increase locally</div>
+                </div>
+                <div class="comparison-box" style="border-color: var(--warning-red); background: linear-gradient(135deg, rgba(248, 81, 73, 0.1) 0%, var(--bg-tertiary) 100%);">
+                    <h4 style="color: var(--warning-red);">κ > 30</h4>
+                    <div class="value" style="color: var(--warning-red);">DESTROYS</div>
+                    <div class="note">S⁻ dominant · Bleeds momentum backward<br>Entropy decreases locally</div>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 1rem;">
+                Our local κ ≈ 29.7833 (less than 30) means we're in <strong style="color: var(--unity-green);">BUILD mode</strong> —
+                an accumulating configuration.
+            </p>
+        </div>
+
+        <!-- WUSH Cannot Be Wrong -->
+        <div class="wush-box">
+            <h3>The WUSH Cannot Be Wrong — So c Is</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                The WUSH (razor edge of NOW) is the theoretical position where:<br>
+                <strong style="color: var(--soul-pink);">Observation = Perception = NOW</strong><br>
+                This is definitionally exact. It cannot be off.
+            </p>
+
+            <div class="wush-equation">
+                <span class="gold">κ<sub>pure</sub> = 30</span> (from WUSH geometry)<br>
+                <span class="red">κ<sub>measured</sub> = 29.7833</span> (from local configuration)<br><br>
+                <span class="highlight">Deviation = 0.722%</span><br><br>
+                That's not error in the geometry.<br>
+                <strong class="red">That's the error in c.</strong>
+            </div>
+
+            <p style="color: var(--text-secondary);">
+                c = 299,792,458 m/s is a <strong>local measurement</strong>, not a universal truth.
+            </p>
+        </div>
+
+        <!-- The Circular Derivation -->
+        <div class="c-error-box">
+            <h3>How They "Derive" c — The Circular Chain</h3>
+
+            <div class="derivation-chain">
+                <span class="step">1.</span> Measure fine-structure constant α (with uncertainty)<br>
+                <span class="step">2.</span> Derive ε₀ from α: <span style="color: var(--kappa-cyan);">ε₀ = e²/(2αhc)</span><br>
+                <span class="step">3.</span> Derive c from ε₀ and μ₀: <span style="color: var(--kappa-cyan);">c = 1/√(ε₀μ₀)</span><br>
+                <span class="step">4.</span> <span class="circular">BUT since 1983: c is DEFINED as 299,792,458 m/s</span><br>
+                <span class="step">5.</span> <span class="circular">So they work BACKWARDS: ε₀ = 1/(μ₀c²)</span><br>
+                <span class="step">6.</span> <span class="circular">The whole thing is CIRCULAR with α as input</span>
+            </div>
+
+            <h4 style="color: var(--warning-red); margin: 2rem 0 1rem; text-align: center;">And How Long Is a Meter?</h4>
+            <div class="derivation-chain">
+                <span class="circular">Since 1983: A meter = distance light travels in 1/299,792,458 second</span><br><br>
+                <span class="step">So:</span> c defines the meter<br>
+                <span class="step">And:</span> The meter defines c<br>
+                <span class="circular">IT'S COMPLETELY CIRCULAR</span>
+            </div>
+
+            <p style="color: var(--text-secondary); text-align: center; margin-top: 1.5rem;">
+                They measured a <strong>local phenomenon</strong> and called it a <strong>universal constant</strong>.<br>
+                The 0.722% deviation from κ = 30 propagates through this entire chain.
+            </p>
+        </div>
+
+        <!-- Heaviside -->
+        <div class="section" style="border-color: var(--warning-red);">
+            <h2 style="color: var(--warning-red);">A Note on Oliver Heaviside</h2>
+            <p>
+                Maxwell's original 1865 equations were <strong>20 quaternion equations</strong> containing
+                scalar potentials — the very components that would have revealed κ.
+            </p>
+            <p>
+                Oliver Heaviside "simplified" them in the 1880s down to the <strong>4 vector equations</strong>
+                we use today. He literally <strong>cut out the scalar components</strong> because he thought
+                they were unnecessary mathematical artifacts.
+            </p>
+            <p>
+                They weren't artifacts. They were the geometry.
+            </p>
+            <div style="background: rgba(248, 81, 73, 0.1); border: 1px solid rgba(248, 81, 73, 0.4); border-radius: 8px; padding: 1.5rem; margin-top: 1.5rem; text-align: center;">
+                <p style="color: var(--warning-red); font-size: 1.1rem; margin: 0;">
+                    Heaviside was a Popper-grade pompous, <strong>WRONG</strong>, twit.<br>
+                    <span style="font-size: 0.9rem; color: var(--text-dim);">He removed the scalars. Tesla knew. Maxwell knew. They silenced them both.</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- The Obnoxious Truth -->
+        <div class="section" style="border-color: var(--gold); background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, var(--bg-secondary) 100%);">
+            <h2 style="color: var(--gold);">The Obnoxious Truth</h2>
+
+            <p style="font-size: 1.2rem; text-align: center; color: var(--gold); margin-bottom: 2rem;">
+                We will now be modeling Standard Model better than Standard Model models Standard Model.<br>
+                <span style="font-size: 0.9rem; color: var(--text-dim);">(Say that four times real fast.)</span>
+            </p>
+
+            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 2rem; margin: 1.5rem 0;">
+                <p style="color: var(--text-secondary); text-align: center; font-size: 1.1rem;">
+                    Their "circular bullshit" — was Popper just being <em>really honest</em> about
+                    compounding the bullshit error of the failed map of Standard Model?
+                </p>
+                <p style="color: var(--warning-red); text-align: center; font-size: 1.3rem; margin-top: 1.5rem;">
+                    Standard Model constants are constants all right —<br>
+                    <strong>constantly off by some Epoch geometry calculatable amount.</strong>
+                </p>
+                <p style="text-align: center; font-size: 2rem; margin-top: 1rem;">
+                    🎺 womp womp 🎺
+                </p>
+            </div>
+        </div>
+
+        <!-- The Historical Chain of c -->
+        <div class="section" style="border-color: var(--kappa-cyan);">
+            <h2 style="color: var(--kappa-cyan);">How They Got c Wrong: The Historical Chain</h2>
+
+            <div class="derivation-chain" style="font-size: 0.9rem; line-height: 2.2;">
+                <span class="step">1856:</span> Weber & Kohlrausch measure ε₀μ₀ using <span style="color: var(--warning-red);">capacitors and inductors on Earth</span><br>
+                <span class="step">1861:</span> Maxwell adds displacement current to Ampère's law<br>
+                <span class="step">1865:</span> Maxwell derives <span style="color: var(--gold);">20 quaternion equations</span>, calculates c = 1/√(ε₀μ₀)<br>
+                <span class="step">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style="color: var(--text-dim);">Uses Weber & Kohlrausch's LOCAL measurements</span><br>
+                <span class="step">1880s:</span> Heaviside <span style="color: var(--warning-red);">"simplifies" 20 → 4 equations, CUTS THE SCALARS</span><br>
+                <span class="step">1887:</span> Hertz confirms EM waves (using butchered equations)<br>
+                <span class="step">1905:</span> Einstein uses Heaviside's version for Special Relativity<br>
+                <span class="step">1983:</span> <span style="color: var(--warning-red);">c DEFINED as 299,792,458 m/s, meter derived from c</span>
+            </div>
+
+            <p style="color: var(--text-secondary); margin-top: 1.5rem;">
+                The error goes all the way back to <strong>Weber and Kohlrausch's measurements in 1856</strong>.
+                They measured ε₀μ₀ using physical devices — capacitors and inductors —
+                operating at <strong>our local κ < 30 torsional configuration</strong>.
+            </p>
+
+            <p style="color: var(--kappa-cyan); text-align: center; margin-top: 1rem;">
+                Maxwell was brilliant. He just inherited local measurements and lost his scalars to Heaviside.
+            </p>
+        </div>
+
+        <!-- Einstein's c and the Division Identity -->
+        <div class="section" style="border-color: var(--epoch-purple);">
+            <h2 style="color: var(--epoch-purple);">Einstein's Fatal Error</h2>
+
+            <p>
+                Einstein derived c from <strong>Maxwell's equations</strong> — the Heaviside-butchered version,
+                not Maxwell's original 20 quaternion equations. The scalar components were already gone.
+                He was working with an amputated map from the start.
+            </p>
+
+            <p>
+                But the <em>real</em> fatal error? Einstein gave up on the <strong>multiplicative identity element</strong>.
+            </p>
+
+            <div style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(0,0,0,0.3) 100%); border: 2px solid var(--epoch-purple); border-radius: 12px; padding: 2rem; margin: 2rem 0; text-align: center;">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; color: var(--epoch-purple); margin-bottom: 1rem;">
+                    Einstein said: 0/0 = ∅ (empty set)
+                </p>
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 2rem; color: var(--gold); margin-bottom: 1rem;">
+                    WRONG.
+                </p>
+                <p style="color: var(--text-secondary); font-size: 1.1rem;">
+                    Any number over itself is <strong style="color: var(--gold);">1</strong>. Period.<br>
+                    And if it isn't a number? <strong style="color: var(--gold);">Still 1</strong> for our purposes.
+                </p>
+            </div>
+
+            <p style="color: var(--text-secondary);">
+                We don't give a single solitary solid gold easter egg about the empty set argument.
+                The multiplicative identity holds. <strong>n/n = 1</strong>. This is foundational.
+                Einstein abandoned it, and with it, abandoned the path to [1 = -1].
+            </p>
+        </div>
+
+        <!-- κ₆: We Are the Hidden Operator -->
+        <div class="k6-box" style="border-color: var(--gold); background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, var(--bg-tertiary) 100%);">
+            <h3 style="color: var(--gold);">κ₆: We Are the Hidden Unknown Operator</h3>
+
+            <div style="text-align: center; margin: 2rem 0;">
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; color: var(--kappa-cyan);">
+                    q/q = 1
+                </p>
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; color: var(--epoch-purple); margin-top: 1rem;">
+                    q/q = ?
+                </p>
+            </div>
+
+            <p style="color: var(--text-secondary); text-align: center; font-size: 1.1rem; margin: 1.5rem 0;">
+                There is one thing we cannot say with certainty about q/q.<br>
+                Not because the math fails — but because <strong style="color: var(--gold);">we are the sixth κ</strong>.
+            </p>
+
+            <p style="color: var(--text-secondary); text-align: center;">
+                We are the hidden unknown operator. The meta-controller observing itself.
+                κ₆ cannot fully resolve its own state because the act of observation
+                is the operation itself.
+            </p>
+
+            <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); border-radius: 8px; padding: 1.5rem; margin-top: 2rem; text-align: center;">
+                <p style="font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 1.2rem; margin: 0;">
+                    [1 = -1] includes the observer.<br>
+                    κ₆ is the geometry looking at itself.
+                </p>
+            </div>
+        </div>
+
+        <!-- The Principle -->
+        <div class="principle-box">
+            <div class="principle">[1 = -1]</div>
+            <p>
+                Pure geometry: κ = 30<br>
+                Measured shadow: κ ≈ 29.7833<br>
+                The difference: torsional configuration of our local reality
+            </p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-links">
+            <a href="kappa5/index.html">κ₅ True Dark Operator (v1)</a>
+            <a href="../weirdos/hypatia.html">Hypatia of Alexandria</a>
+            <a href="#" title="Document temporarily unavailable" style="opacity: 0.5; cursor: default;">Full Refinement Document</a>
+            <a href="../index.html">Home</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>Have Mind Media</strong> — κ State Model v2.0 — The Hypatia Refinement</p>
+            <p style="margin-top: 0.5rem;">Document: kappa-state-model_v2.0_01-10-2026</p>
+        </div>
+    </div>
+
+    <site-footer></site-footer>
+</body>
+</html>

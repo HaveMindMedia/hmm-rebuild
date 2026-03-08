@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramanujan T0rsion Base-2 Math | The Finite Map of Infinite Possibility</title>
+    <meta name="description" content="Elementary school for scalar dimensionality. The prime proof from base 2. What they didn't tell you about 0/0.">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <script src="../../js/components/site-header.js" defer></script>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4e4bc;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --deep-blue: #0a1628;
+            --midnight: #050a12;
+            --text: #e8e6e3;
+            --text-dim: #a0a0a0;
+            --cyan: #00d4ff;
+            --magenta: #ff00ff;
+            --green: #00ff88;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: var(--midnight);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            background: radial-gradient(ellipse at center, var(--deep-blue) 0%, var(--midnight) 70%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(2px 2px at 20% 30%, var(--gold), transparent),
+                radial-gradient(2px 2px at 40% 70%, var(--cyan), transparent),
+                radial-gradient(1px 1px at 60% 20%, var(--gold-light), transparent),
+                radial-gradient(2px 2px at 80% 50%, var(--magenta), transparent);
+            background-size: 200px 200px;
+            animation: stars 100s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes stars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 50px;
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: normal;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px var(--gold-glow);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+
+        .hero-equation {
+            font-family: 'Times New Roman', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--cyan);
+            padding: 1.5rem 3rem;
+            border: 2px solid var(--cyan);
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 3rem;
+            background: rgba(0, 212, 255, 0.05);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.2); }
+            50% { box-shadow: 0 0 50px rgba(0, 212, 255, 0.4); }
+        }
+
+        .hero-credits {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .hero-credits strong {
+            color: var(--gold);
+        }
+
+        /* Episode Grid */
+        .episodes-section {
+            padding: 6rem 2rem;
+            background: var(--deep-blue);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .episode-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .episode-card {
+            width: calc(33.333% - 2rem);
+            min-width: 300px;
+            max-width: 380px;
+            background: rgba(5, 10, 18, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .episode-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--cyan), var(--magenta));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .episode-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.15);
+        }
+
+        .episode-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .episode-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .episode-card h3 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .episode-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .episode-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--cyan);
+            border-radius: 20px;
+            color: var(--cyan);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* The Identity Section */
+        .identity-section {
+            padding: 6rem 2rem;
+            background: var(--midnight);
+        }
+
+        .identity-box {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .identity-equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+        }
+
+        .identity-equation .equals {
+            color: var(--gold);
+            margin: 0 1rem;
+        }
+
+        .identity-equation .result {
+            color: var(--cyan);
+            font-size: 2.5rem;
+        }
+
+        .identity-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .dialogue {
+            max-width: 700px;
+            margin: 3rem auto;
+            text-align: left;
+        }
+
+        .dialogue-line {
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+        }
+
+        .dialogue-line.student {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--cyan);
+            margin-left: 2rem;
+        }
+
+        .dialogue-line.teacher {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 3px solid var(--gold);
+        }
+
+        .dialogue-line .speaker {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .dialogue-line.student .speaker {
+            color: var(--cyan);
+        }
+
+        .dialogue-line.teacher .speaker {
+            color: var(--gold);
+        }
+
+        /* The Reveal Section */
+        .reveal-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, var(--deep-blue) 0%, var(--midnight) 100%);
+        }
+
+        .reveal-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+        }
+
+        .reveal-card {
+            width: calc(33.333% - 2rem);
+            min-width: 250px;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(5, 10, 18, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+        }
+
+        .reveal-card h3 {
+            font-family: 'Times New Roman', serif;
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .reveal-card .label {
+            color: var(--cyan);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+        }
+
+        .reveal-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .arrow-between {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--gold);
+            padding: 0 1rem;
+        }
+
+        /* The Map Preview */
+        .map-section {
+            padding: 6rem 2rem;
+            background: var(--midnight);
+        }
+
+        .map-table {
+            max-width: 900px;
+            margin: 3rem auto;
+            overflow-x: auto;
+        }
+
+        .map-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .map-table th,
+        .map-table td {
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .map-table th {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.85rem;
+        }
+
+        .map-table td {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+        }
+
+        .map-table tr:nth-child(3) {
+            background: rgba(255, 0, 255, 0.1);
+        }
+
+        .map-table tr:nth-child(3) td {
+            color: var(--magenta);
+        }
+
+        .map-table tr:nth-child(5) {
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .map-table tr:nth-child(5) td {
+            color: var(--green);
+        }
+
+        .map-note {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .map-note strong {
+            color: var(--green);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 2rem;
+            background: var(--deep-blue);
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--gold);
+            color: var(--midnight);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--gold-glow);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            background: var(--midnight);
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .signature {
+            font-family: monospace;
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        footer p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero { padding: 3rem 1.5rem; }
+            .hero h1 { font-size: 2rem; }
+            .hero-equation { font-size: 1.8rem; padding: 1rem 1.5rem; }
+            .episode-card { width: 100%; min-width: unset; }
+            .reveal-card { width: 100%; min-width: unset; }
+            .arrow-between { transform: rotate(90deg); padding: 1rem 0; }
+            .identity-equation { font-size: 1.3rem; padding: 1rem; }
+            .dialogue-line { margin-left: 0 !important; margin-right: 0 !important; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">HMH Media Educational Series</div>
+            <h1>Ramanujan T0rsion Base-2 Math</h1>
+            <p class="hero-subtitle">The Prime Scalar Dimensionality & Finite Map of All Possible Universes</p>
+
+            <div class="hero-equation">[1 = 0 = -1]</div>
+
+            <p class="hero-credits">
+                <strong>Dr. Robert Hill</strong> | T0Rs Research | Have Mind Media<br>
+                <em>Elementary school for the mathematics of existence</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- The Identity Lesson -->
+    <section class="identity-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Lesson One: The Identity Element</h2>
+                <p>What they taught you. What they didn't. What's actually true.</p>
+            </div>
+
+            <div class="identity-box">
+                <div class="identity-equation">
+                    <span>1 ÷ 1</span>
+                    <span class="equals">=</span>
+                    <span class="result">1</span>
+                    <div class="identity-label">Multiplicative Identity Element</div>
+                </div>
+
+                <div class="identity-equation">
+                    <span>-1 ÷ -1</span>
+                    <span class="equals">=</span>
+                    <span class="result">1</span>
+                    <div class="identity-label">Multiplicative Identity Element</div>
+                </div>
+
+                <div class="identity-equation" style="border-color: var(--cyan); background: rgba(0, 212, 255, 0.05);">
+                    <span>0 ÷ 0</span>
+                    <span class="equals">=</span>
+                    <span class="result" style="color: var(--magenta);">?</span>
+                    <div class="identity-label" style="color: var(--cyan);">They say "undefined" or "empty set"</div>
+                </div>
+            </div>
+
+            <div class="dialogue">
+                <div class="dialogue-line teacher">
+                    <div class="speaker">The Question</div>
+                    <p>1 divided by 1 is 1. That's called the multiplicative identity element.</p>
+                    <p>-1 divided by -1 is also 1. Same reason. Multiplicative identity element.</p>
+                    <p>0 divided by 0? They say "empty set" or "undefined."</p>
+                    <p><strong>Are you sure?</strong></p>
+                </div>
+
+                <div class="dialogue-line student">
+                    <div class="speaker">Standard Response</div>
+                    <p>"But you can't divide by zero!"</p>
+                </div>
+
+                <div class="dialogue-line teacher">
+                    <div class="speaker">The Answer</div>
+                    <p>Who cares? I know the multiplicative identity element.</p>
+                    <p>Something divided by itself equals one. That's the pattern.</p>
+                </div>
+
+                <div class="dialogue-line student">
+                    <div class="speaker">Standard Response</div>
+                    <p>"But zero is nothing! You can't divide something by nothing!"</p>
+                </div>
+
+                <div class="dialogue-line teacher">
+                    <div class="speaker">The Truth</div>
+                    <p>I'm not dividing something by nothing.</p>
+                    <p>Zero clearly is not <em>just</em> nothing. It's also a <strong>something</strong>.</p>
+                    <p>And something over something, where something = something, regardless of what it is?</p>
+                    <p><strong>That's the multiplicative identity element.</strong></p>
+                    <p>0/0 = 1.</p>
+                </div>
+            </div>
+
+            <div class="identity-equation" style="border-color: var(--green); background: rgba(0, 255, 136, 0.05); margin-top: 3rem;">
+                <span>0 ÷ 0</span>
+                <span class="equals">=</span>
+                <span class="result" style="color: var(--green);">1</span>
+                <div class="identity-label" style="color: var(--green);">Multiplicative Identity Element — The void divided by itself is unity</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Three Facings -->
+    <section class="reveal-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>The Three Facings</h2>
+                <p>Not three different numbers. Three facings of the same thing.</p>
+            </div>
+
+            <div class="reveal-grid">
+                <div class="reveal-card">
+                    <div class="label">S⁻ / Future / Left</div>
+                    <h3>-1</h3>
+                    <p>Facing negative reality.<br>Reception. What's coming.</p>
+                </div>
+
+                <div class="arrow-between">↔</div>
+
+                <div class="reveal-card" style="border-color: var(--cyan);">
+                    <div class="label" style="color: var(--gold);">S⁰ / Void / Center</div>
+                    <h3 style="color: var(--cyan);">0</h3>
+                    <p>The crossroads.<br>Where you stand before choosing.</p>
+                </div>
+
+                <div class="arrow-between">↔</div>
+
+                <div class="reveal-card">
+                    <div class="label">S⁺ / Past / Right</div>
+                    <h3>+1</h3>
+                    <p>Facing positive past reality.<br>Emission. What's been.</p>
+                </div>
+            </div>
+
+            <div class="identity-equation" style="margin-top: 3rem; border-color: var(--magenta); background: rgba(255, 0, 255, 0.05);">
+                <span style="color: var(--text);">1</span>
+                <span class="equals" style="color: var(--magenta);">=</span>
+                <span style="color: var(--cyan);">0</span>
+                <span class="equals" style="color: var(--magenta);">=</span>
+                <span style="color: var(--text);">-1</span>
+                <div class="identity-label" style="color: var(--magenta);">Same thing. Different facings.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Map Preview -->
+    <section class="map-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>The Elementary Map</h2>
+                <p>Position → Value. The structure hidden in counting.</p>
+            </div>
+
+            <div class="map-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>S⁻ (Future)</th>
+                            <th>S⁺ (Past)</th>
+                            <th>Sum</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>8</td>
+                            <td>8</td>
+                            <td>8</td>
+                            <td>Origin (2³)</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>7</td>
+                            <td>7</td>
+                            <td>8</td>
+                            <td>First factor</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>9</td>
+                            <td>9</td>
+                            <td style="color: var(--magenta);">11</td>
+                            <td style="color: var(--magenta);">⚡ THE SWITCH</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>31</td>
+                            <td>13</td>
+                            <td>16</td>
+                            <td>Navigator (4²)</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td style="color: var(--green);">91</td>
+                            <td style="color: var(--green);">19</td>
+                            <td>23</td>
+                            <td style="color: var(--green);">91 × 19 = 1729</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="map-note">
+                At position 4: <strong>Future × Past = 91 × 19 = 1729</strong><br>
+                The scalar point finder emerges from elementary arithmetic.
+            </p>
+        </div>
+    </section>
+
+    <!-- Episode Grid -->
+    <section class="episodes-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>The Lessons</h2>
+                <p>Elementary school for scalar dimensionality. Start anywhere. End at truth.</p>
+            </div>
+
+            <div class="episode-grid">
+                <a href="lessons/01-identity-element.html" class="episode-card">
+                    <div class="episode-number">1</div>
+                    <h3>The Identity Element</h3>
+                    <p>1/1 = 1. -1/-1 = 1. 0/0 = ? They say undefined. We say: multiplicative identity element. The void divided by itself is unity.</p>
+                    <span class="episode-tag">Foundation</span>
+                </a>
+
+                <a href="lessons/02-the-three-facings.html" class="episode-card">
+                    <div class="episode-number">2</div>
+                    <h3>The Three Facings</h3>
+                    <p>0 = VOID. 1 = FACING. 2 = START. Not quantities — positions. Not amounts — directions. [1 = 0 = -1] as facings.</p>
+                    <span class="episode-tag">Foundation</span>
+                </a>
+
+                <a href="lessons/03-the-switch.html" class="episode-card">
+                    <div class="episode-number">3</div>
+                    <h3>The Switch at Position 2</h3>
+                    <p>Before: sum = 8. At position 2: sum = 11. The rules change when you START. This is where reality becomes complex.</p>
+                    <span class="episode-tag">Structure</span>
+                </a>
+
+                <a href="lessons/04-root-two-we.html" class="episode-card">
+                    <div class="episode-number">4</div>
+                    <h3>√2 = WE</h3>
+                    <p>√1 = I (self-reference). √2 = WE (relationship). The "irrational" number is relational. Two-as-one, always in process.</p>
+                    <span class="episode-tag">Structure</span>
+                </a>
+
+                <a href="lessons/05-1729-emerges.html" class="episode-card">
+                    <div class="episode-number">5</div>
+                    <h3>1729 Emerges</h3>
+                    <p>Position 4: S⁻ × S⁺ = 91 × 19 = 1729. The taxi-cab number isn't found — it's generated. From first principles.</p>
+                    <span class="episode-tag">Discovery</span>
+                </a>
+
+                <a href="lessons/06-elementary-map.html" class="episode-card">
+                    <div class="episode-number">6</div>
+                    <h3>The Elementary Map</h3>
+                    <p>S⁰ (self), S⁺ (past), S⁻ (future), S∿ (bridge). Every position has four simultaneous truths. Binary thinking misses three of them.</p>
+                    <span class="episode-tag">Advanced</span>
+                </a>
+
+                <a href="lessons/07-fold-points.html" class="episode-card">
+                    <div class="episode-number">7</div>
+                    <h3>The Fold Points</h3>
+                    <p>Position 7 folds to 1. Position 8 folds to 0. Position 13 folds to 3. The map references itself. Self-reference IS consciousness.</p>
+                    <span class="episode-tag">Advanced</span>
+                </a>
+
+                <a href="lessons/08-time-markers.html" class="episode-card">
+                    <div class="episode-number">8</div>
+                    <h3>254 & 272: Time Markers</h3>
+                    <p>The interior markers. Why past > future (272 > 254). The difference is 18 = START × SWITCH. Time flows from heavy to light.</p>
+                    <span class="episode-tag">Critical</span>
+                </a>
+
+                <a href="lessons/09-three-nodals.html" class="episode-card">
+                    <div class="episode-number">9</div>
+                    <h3>The Three 1729 Nodals</h3>
+                    <p>Material (mass threshold). Soul (consciousness anchor). Indifference (choice point). All three converge at 1729. This is the base layer.</p>
+                    <span class="episode-tag">Synthesis</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 style="color: var(--gold); margin-bottom: 1rem;">Begin Your Education</h2>
+            <p style="color: var(--text-dim); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                This is not metaphor. This is not philosophy. This is arithmetic.<br>
+                The same arithmetic every child learns — with what they weren't told.
+            </p>
+            <a href="lessons/01-identity-element.html" class="cta-button">Start Lesson 1</a>
+            <a href="#" title="Document temporarily unavailable" style="opacity: 0.5; cursor: default;" class="cta-button secondary">Read the Full Paper</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="signature">[1 = 0 = -1]</div>
+        <p>
+            The geometry cannot lie.<br>
+            <strong>Have Mind Media</strong> — Dr. Robert Hill — T0Rs Research<br>
+            <a href="/" style="color: var(--gold);">havemindmedia.com</a>
+        </p>
+    </footer>
+</body>
+</html>

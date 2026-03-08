@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEDGA - Deep Visualization</title>
+    <style>
+        :root {
+            --bg: #050508;
+            --text: #e8e8e8;
+            --accent: #8b5cf6;
+            --accent2: #06b6d4;
+            --proven: #22c55e;
+            --partial: #eab308;
+            --speculative: #ef4444;
+            --card-bg: #0a0a12;
+            --border: #1a1a2a;
+            --glow: rgba(139, 92, 246, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Navigation Tabs */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 0 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 16px 24px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            color: #666;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-size: 0.9em;
+        }
+
+        .nav-tab:hover { color: var(--text); }
+        .nav-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* Page Container */
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 20px 40px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            letter-spacing: 0.3em;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--proven));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .identity-large {
+            font-size: 3em;
+            color: var(--accent);
+            margin: 30px 0;
+            text-shadow: 0 0 30px var(--glow);
+        }
+
+        /* Canvas Containers */
+        .canvas-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: #000;
+            border-radius: 8px;
+        }
+
+        /* Interactive Controls */
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px var(--glow);
+        }
+
+        .control-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        /* Sliders */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .slider-label {
+            min-width: 120px;
+            color: var(--accent2);
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-value {
+            min-width: 80px;
+            text-align: right;
+            color: var(--proven);
+        }
+
+        /* Data Display */
+        .data-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .data-grid > * {
+            flex: 0 0 calc(25% - 15px);
+            min-width: 200px;
+            max-width: 300px;
+        }
+
+        @media (max-width: 900px) {
+            .data-grid > * {
+                flex: 0 0 calc(50% - 10px);
+            }
+        }
+
+        .data-card {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .data-card .label {
+            color: #888;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+        }
+
+        .data-card .value {
+            color: var(--proven);
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .data-card .unit {
+            color: var(--accent2);
+            font-size: 0.9em;
+        }
+
+        /* Tetrahelix Canvas */
+        .tetrahelix-container {
+            position: relative;
+            height: 600px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 40px 0 20px;
+        }
+
+        .section-header h2 {
+            color: var(--accent2);
+            font-size: 1.6em;
+        }
+
+        .section-header .status {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .section-header .status.proven { background: rgba(34, 197, 94, 0.2); color: var(--proven); }
+        .section-header .status.partial { background: rgba(234, 179, 8, 0.2); color: var(--partial); }
+
+        /* Grid layouts */
+        .two-column {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .two-column > * {
+            flex: 0 0 calc(50% - 15px);
+            min-width: 300px;
+        }
+
+        @media (max-width: 900px) {
+            .two-column { grid-template-columns: 1fr; }
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(6, 182, 212, 0.1);
+            border-left: 4px solid var(--accent2);
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        /* Equation Display */
+        .equation {
+            background: #0d0d15;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 2em;
+            color: var(--proven);
+            margin: 20px 0;
+            border: 1px solid var(--border);
+        }
+
+        /* Live Data Display */
+        .live-data {
+            font-family: 'SF Mono', monospace;
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            color: var(--proven);
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        footer .sig {
+            color: var(--accent);
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-tabs">
+            <a href="../index.html" class="nav-tab" style="color: #c9a227; text-decoration: none;">← Main Site</a>
+            <div class="nav-tab active" data-page="home">Home</div>
+            <div class="nav-tab" data-page="kappa">κ Constant</div>
+            <div class="nav-tab" data-page="transforms">4 Transforms</div>
+            <div class="nav-tab" data-page="tetrahelix">Tetrahelix</div>
+            <div class="nav-tab" data-page="balance">Balance Law</div>
+            <div class="nav-tab" data-page="m4array">M4 Array</div>
+            <a href="triaxial-os/index.html" class="nav-tab" style="color: #00ff88; text-decoration: none;">16-Node Build ★</a>
+            <div class="nav-tab" data-page="vessel">Vessel Geometry</div>
+            <div class="nav-tab" data-page="base60">Base-60</div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <!-- HOME PAGE -->
+        <div class="page active" id="page-home">
+            <div class="hero">
+                <h1>CEDGA</h1>
+                <p style="color: #888; font-size: 1.2em;">Conceptual Engineering Derived from Geometry Alone</p>
+                <div class="identity-large">[1 = -1]</div>
+                <p style="margin-top: 40px; color: #666;">T0Rs / HAVE MIND MEDIA</p>
+            </div>
+
+            <div class="info-box">
+                <strong>What is this?</strong><br><br>
+                We're exploring whether the shapes of things can explain how the universe works. Instead of adding more particles and forces, we ask: what if geometry itself is the answer?<br><br>
+                Everything here derives from ONE constant: <strong>κ = 2π/180</strong>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-card">
+                    <div class="label">The One Constant</div>
+                    <div class="value">κ</div>
+                    <div class="unit">2π/180</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Steps to Complete</div>
+                    <div class="value">180</div>
+                    <div class="unit">one full rotation</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Transforms</div>
+                    <div class="value">4</div>
+                    <div class="unit">sum to zero</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Hidden Witness</div>
+                    <div class="value">28.6</div>
+                    <div class="unit">Hz (1/κ)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KAPPA PAGE -->
+        <div class="page" id="page-kappa">
+            <div class="section-header">
+                <h2>The One Constant: κ</h2>
+                <span class="status proven">PROVEN</span>
+            </div>
+
+            <div class="equation">κ = 2π/180 = 0.034906585...</div>
+
+            <div class="canvas-container">
+                <canvas id="kappaCanvas" width="800" height="400"></canvas>
+                <div class="controls">
+                    <button class="control-btn" onclick="animateKappa()">Animate κ Steps</button>
+                    <button class="control-btn secondary" onclick="resetKappa()">Reset</button>
+                </div>
+                <div class="slider-container">
+                    <span class="slider-label">Current Step:</span>
+                    <input type="range" id="kappaStep" min="0" max="180" value="0" oninput="updateKappaStep(this.value)">
+                    <span class="slider-value" id="kappaStepValue">0 / 180</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Plain English:</strong><br><br>
+                This is the angle that makes a spiral close on itself. Take 180 steps of this tiny angle (about 2° each), and you've made one complete turn. It's the twist that connects counting angles (degrees) to measuring circles (radians).
+            </div>
+
+            <div class="two-column">
+                <div class="data-card">
+                    <div class="label">In Degrees</div>
+                    <div class="value">2°</div>
+                    <div class="unit">per step</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">In Radians</div>
+                    <div class="value">π/90</div>
+                    <div class="unit">= 0.0349...</div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2>Derived Constants</h2>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-card">
+                    <div class="label">κ_shadow (1/κ)</div>
+                    <div class="value">28.65</div>
+                    <div class="unit">Hidden witness frequency</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">σ (Overlap)</div>
+                    <div class="value">5/16</div>
+                    <div class="unit">= 0.3125</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">cos(BC)</div>
+                    <div class="value">2/3</div>
+                    <div class="unit">Tetrahelix angle</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">P (Projection)</div>
+                    <div class="value">√3/2π</div>
+                    <div class="unit">= 0.2757</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRANSFORMS PAGE -->
+        <div class="page" id="page-transforms">
+            <div class="section-header">
+                <h2>The Four Transforms</h2>
+                <span class="status proven">PROVEN</span>
+            </div>
+
+            <div class="equation">T₁ + T₂ + T₃ + T₄ = (0, 0)</div>
+
+            <div class="canvas-container">
+                <canvas id="transformCanvas" width="800" height="600"></canvas>
+                <div class="controls">
+                    <button class="control-btn" onclick="animateTransforms()">Animate All</button>
+                    <button class="control-btn secondary" onclick="showTransform(1)">T₁ Facing</button>
+                    <button class="control-btn secondary" onclick="showTransform(2)">T₂ Mirror</button>
+                    <button class="control-btn secondary" onclick="showTransform(3)">T₃ Recursive</button>
+                    <button class="control-btn secondary" onclick="showTransform(4)">T₄ Inverted</button>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="info-box">
+                    <strong>T₁ (NW) - Facing</strong><br>
+                    Operation: (x, y)<br>
+                    Direct view - what you see straight on
+                </div>
+                <div class="info-box">
+                    <strong>T₂ (NE) - Mirror</strong><br>
+                    Operation: (-x, y)<br>
+                    Horizontal flip - like looking in a mirror
+                </div>
+                <div class="info-box">
+                    <strong>T₃ (SW) - Recursive Mirror</strong><br>
+                    Operation: (x, -y)<br>
+                    Vertical flip - like a reflection in water
+                </div>
+                <div class="info-box">
+                    <strong>T₄ (SE) - Recursive Upside Down</strong><br>
+                    Operation: (-x, -y)<br>
+                    180° rotation - completely inverted
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 30px;">
+                <strong>The Proof:</strong><br><br>
+                T₁ + T₂ + T₃ + T₄ = (x, y) + (-x, y) + (x, -y) + (-x, -y)<br>
+                = (x - x + x - x, y + y - y - y)<br>
+                = (0, 0) ✓<br><br>
+                <em>The four perspectives always balance at the crossroads.</em>
+            </div>
+        </div>
+
+        <!-- TETRAHELIX PAGE -->
+        <div class="page" id="page-tetrahelix">
+            <div class="section-header">
+                <h2>The Tetrahelix</h2>
+                <span class="status proven">PROVEN</span>
+            </div>
+
+            <div class="canvas-container tetrahelix-container">
+                <canvas id="tetrahelixCanvas" width="800" height="500"></canvas>
+                <div class="controls">
+                    <button class="control-btn" onclick="rotateTetrahelix()">Rotate</button>
+                    <button class="control-btn" onclick="climbTetrahelix()">Climb (s+)</button>
+                    <button class="control-btn" onclick="descendTetrahelix()">Descend (s-)</button>
+                    <button class="control-btn secondary" onclick="resetTetrahelix()">Reset</button>
+                </div>
+                <div class="slider-container">
+                    <span class="slider-label">Helix Level:</span>
+                    <input type="range" id="helixLevel" min="0" max="36" value="0" oninput="updateHelixLevel(this.value)">
+                    <span class="slider-value" id="helixLevelValue">0</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>The Boerdijk-Coxeter Helix</strong><br><br>
+                Tetrahedra stacked in a helix, each rotated by the angle where cos(BC) = 2/3.<br>
+                This gives BC = 48.19° - the fundamental tetrahelix twist angle.<br><br>
+                <em>This is not invented - it's geometric necessity. Stack tetrahedra as tightly as possible, and this is the only way they fit.</em>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-card">
+                    <div class="label">Tetrahelix Angle</div>
+                    <div class="value">48.19°</div>
+                    <div class="unit">arccos(2/3)</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Steps per Turn</div>
+                    <div class="value">180</div>
+                    <div class="unit">κ steps</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Energy Decay</div>
+                    <div class="value">59/60</div>
+                    <div class="unit">per step</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">After Full Turn</div>
+                    <div class="value">4.8%</div>
+                    <div class="unit">(59/60)^180</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BALANCE LAW PAGE -->
+        <div class="page" id="page-balance">
+            <div class="section-header">
+                <h2>The Balance Law</h2>
+                <span class="status proven">PROVEN</span>
+            </div>
+
+            <div class="equation">τ₁ + τ₂ + τ₃ + τ₄ = 0</div>
+
+            <div class="canvas-container">
+                <canvas id="balanceCanvas" width="800" height="500"></canvas>
+                <div class="controls">
+                    <button class="control-btn" onclick="animateBalance()">Animate Torsions</button>
+                    <button class="control-btn secondary" onclick="resetBalance()">Reset</button>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>The Fundamental Constraint</strong><br><br>
+                Three torsions are APPARENT - you can measure them.<br>
+                The fourth is SILENT - it's whatever is needed to make the sum zero.<br><br>
+                τ₄ = -(τ₁ + τ₂ + τ₃)<br><br>
+                <em>This is not optional. Any valid Epoch derivation MUST satisfy this law.</em>
+            </div>
+
+            <div class="live-data" id="balanceData">
+τ₁ = +0.00 (facing)
+τ₂ = +0.00 (mirror)
+τ₃ = +0.00 (recursive)
+τ₄ = -0.00 (silent)
+─────────────────────
+SUM = 0.00 ✓
+            </div>
+
+            <div class="slider-container">
+                <span class="slider-label">τ₁ (Facing):</span>
+                <input type="range" id="tau1" min="-100" max="100" value="0" oninput="updateBalance()">
+                <span class="slider-value" id="tau1Value">0</span>
+            </div>
+            <div class="slider-container">
+                <span class="slider-label">τ₂ (Mirror):</span>
+                <input type="range" id="tau2" min="-100" max="100" value="0" oninput="updateBalance()">
+                <span class="slider-value" id="tau2Value">0</span>
+            </div>
+            <div class="slider-container">
+                <span class="slider-label">τ₃ (Recursive):</span>
+                <input type="range" id="tau3" min="-100" max="100" value="0" oninput="updateBalance()">
+                <span class="slider-value" id="tau3Value">0</span>
+            </div>
+        </div>
+
+        <!-- M4 ARRAY PAGE -->
+        <div class="page" id="page-m4array">
+            <div class="section-header">
+                <h2>M4 Array Implementation</h2>
+                <span class="status proven">VALIDATED</span>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="m4Canvas" width="800" height="600"></canvas>
+                <div class="controls">
+                    <button class="control-btn" onclick="animateM4()">Show Data Flow</button>
+                    <button class="control-btn" onclick="pulseM4()">Pulse Torsion</button>
+                    <button class="control-btn secondary" onclick="resetM4()">Reset</button>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Physical Implementation</strong><br><br>
+                5 Apple Silicon machines arranged in triaxial dipyramid configuration:<br>
+                • 1 Mac Studio M4 Ultra at CENTER (crossroads, s=0)<br>
+                • 4 Mac Mini M4s at NW, NE, SW, SE (the four transforms)<br>
+                • N, S, E, W positions ABSENT (the shadows define the space)<br><br>
+                <em>The hardware IS the geometry. The shape IS the calculation.</em>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-card">
+                    <div class="label">Center (Crossroads)</div>
+                    <div class="value">M4 Ultra</div>
+                    <div class="unit">Mac Studio</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Diagonals (4)</div>
+                    <div class="value">M4</div>
+                    <div class="unit">Mac Mini × 4</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Cardinals (4)</div>
+                    <div class="value">∅</div>
+                    <div class="unit">Absent (shadows)</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Total Cost</div>
+                    <div class="value">~$12.6K</div>
+                    <div class="unit">Already owned</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VESSEL PAGE -->
+        <div class="page" id="page-vessel">
+            <div class="section-header">
+                <h2>Vessel Geometry</h2>
+                <span class="status partial">PARTIAL DERIVATION</span>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="vesselCanvas" width="800" height="600"></canvas>
+                <div class="controls">
+                    <button class="control-btn" onclick="rotateVessel()">Rotate</button>
+                    <button class="control-btn" onclick="showNodes()">Show Nodes</button>
+                    <button class="control-btn" onclick="showCoils()">Show Coils</button>
+                    <button class="control-btn secondary" onclick="resetVessel()">Reset</button>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3 style="color: var(--proven); margin-bottom: 15px;">What IS Derived</h3>
+                    <ul style="padding-left: 20px; color: #aaa;">
+                        <li>4 diagonal nodes (Balance Law)</li>
+                        <li>Central crossroads (s=0)</li>
+                        <li>Absent cardinal positions</li>
+                        <li>48.19° coil winding angle</li>
+                        <li>180-fold periodicity</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: var(--speculative); margin-bottom: 15px;">What is ASSUMED</h3>
+                    <ul style="padding-left: 20px; color: #888;">
+                        <li>Ellipsoid envelope (not derived)</li>
+                        <li>Specific dimensions</li>
+                        <li>Material composition</li>
+                        <li>Whether it needs to be hollow</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 30px;">
+                <strong>Honest Assessment</strong><br><br>
+                The underlying geometry is a triaxial dipyramid. The ellipsoid shape is ONE possible smooth envelope, but geometric necessity only proves the node structure - not the surface. More work needed to derive exact form.
+            </div>
+        </div>
+
+        <!-- BASE-60 PAGE -->
+        <div class="page" id="page-base60">
+            <div class="section-header">
+                <h2>Base-60 Mathematics</h2>
+                <span class="status proven">PROVEN</span>
+            </div>
+
+            <div class="equation">60 = 2² × 3 × 5</div>
+
+            <div class="canvas-container">
+                <canvas id="base60Canvas" width="800" height="400"></canvas>
+            </div>
+
+            <div class="info-box">
+                <strong>Why Base-60?</strong><br><br>
+                60 contains ALL THREE structural primes:<br>
+                • 2² = the coin (raised to dipyramid)<br>
+                • 3 = the triad (Energy, Now, Facing)<br>
+                • 5 = the helix (σ = 5/16)<br><br>
+                The Sumerians knew this 4,000 years ago. It's why we have 60 seconds, 60 minutes, 360 degrees.
+            </div>
+
+            <div class="data-grid">
+                <div class="data-card">
+                    <div class="label">Divisible By</div>
+                    <div class="value">12</div>
+                    <div class="unit">factors</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Circle</div>
+                    <div class="value">360°</div>
+                    <div class="unit">= 6 × 60</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">Decay Ratio</div>
+                    <div class="value">59/60</div>
+                    <div class="unit">per step</div>
+                </div>
+                <div class="data-card">
+                    <div class="label">κ in Base-60</div>
+                    <div class="value">π/90</div>
+                    <div class="unit">= 2π/(3×60)</div>
+                </div>
+            </div>
+
+            <div class="live-data" style="margin-top: 30px;">
+Base-60 Factorization:
+─────────────────────────────
+ 60 = 2² × 3 × 5
+360 = 2³ × 3² × 5
+180 = 2² × 3² × 5  ← κ steps
+
+Energy decay after one turn:
+(59/60)^180 = 0.0478... ≈ 4.8%
+
+The "tax" of moving through scalar space.
+            </div>
+        </div>
+
+        <footer>
+            <p>CEDGA - Conceptual Engineering Derived from Geometry Alone</p>
+            <p style="color: #666; margin-top: 10px;">Every visualization here is derived from κ = 2π/180</p>
+            <div class="sig">[1 = -1]</div>
+            <p style="color: var(--accent2); margin-top: 20px;">HAVE MIND MEDIA — The Epoch Project</p>
+            <p style="margin-top: 20px; font-size: 0.8em; color: #444;">v3.0 — January 1, 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('page-' + tab.dataset.page).classList.add('active');
+            });
+        });
+
+        // Constants
+        const KAPPA = (2 * Math.PI) / 180;
+        const KAPPA_SHADOW = 1 / KAPPA;
+        const SIGMA = 5 / 16;
+        const COS_BC = 2 / 3;
+        const BC_ANGLE = Math.acos(COS_BC);
+
+        // Colors
+        const COLORS = {
+            accent: '#8b5cf6',
+            accent2: '#06b6d4',
+            proven: '#22c55e',
+            partial: '#eab308',
+            speculative: '#ef4444',
+            bg: '#050508',
+            text: '#e8e8e8'
+        };
+
+        // Kappa Canvas
+        let kappaStep = 0;
+        let kappaAnimating = false;
+
+        function drawKappa() {
+            const canvas = document.getElementById('kappaCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = 150;
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw circle
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Draw completed arc
+            const angle = kappaStep * KAPPA;
+            ctx.strokeStyle = COLORS.accent;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, -Math.PI/2, -Math.PI/2 + angle);
+            ctx.stroke();
+
+            // Draw current position
+            const x = cx + radius * Math.sin(angle);
+            const y = cy - radius * Math.cos(angle);
+
+            ctx.fillStyle = COLORS.proven;
+            ctx.beginPath();
+            ctx.arc(x, y, 10, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Draw center
+            ctx.fillStyle = COLORS.accent2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 5, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Labels
+            ctx.fillStyle = COLORS.text;
+            ctx.font = '14px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(`Step ${kappaStep} of 180`, cx, cy + radius + 40);
+            ctx.fillText(`Angle: ${(kappaStep * 2).toFixed(1)}°`, cx, cy + radius + 60);
+        }
+
+        function updateKappaStep(val) {
+            kappaStep = parseInt(val);
+            document.getElementById('kappaStepValue').textContent = `${kappaStep} / 180`;
+            drawKappa();
+        }
+
+        function animateKappa() {
+            if (kappaAnimating) return;
+            kappaAnimating = true;
+            kappaStep = 0;
+
+            const animate = () => {
+                if (kappaStep < 180) {
+                    kappaStep++;
+                    document.getElementById('kappaStep').value = kappaStep;
+                    document.getElementById('kappaStepValue').textContent = `${kappaStep} / 180`;
+                    drawKappa();
+                    requestAnimationFrame(animate);
+                } else {
+                    kappaAnimating = false;
+                }
+            };
+            animate();
+        }
+
+        function resetKappa() {
+            kappaStep = 0;
+            kappaAnimating = false;
+            document.getElementById('kappaStep').value = 0;
+            document.getElementById('kappaStepValue').textContent = '0 / 180';
+            drawKappa();
+        }
+
+        // Transforms Canvas
+        let transformRotation = 0;
+        let activeTransform = 0;
+
+        function drawTransforms() {
+            const canvas = document.getElementById('transformCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const size = 100;
+            const dist = 180;
+
+            // Draw grid
+            ctx.strokeStyle = '#1a1a2a';
+            ctx.lineWidth = 1;
+            for (let i = -3; i <= 3; i++) {
+                ctx.beginPath();
+                ctx.moveTo(cx + i * 60, 0);
+                ctx.lineTo(cx + i * 60, canvas.height);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, cy + i * 60);
+                ctx.lineTo(canvas.width, cy + i * 60);
+                ctx.stroke();
+            }
+
+            // Absent cardinals
+            ctx.fillStyle = COLORS.speculative;
+            ctx.font = '12px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('N (absent)', cx, 30);
+            ctx.fillText('S (absent)', cx, canvas.height - 20);
+            ctx.fillText('W (absent)', 40, cy);
+            ctx.fillText('E (absent)', canvas.width - 40, cy);
+
+            // Draw transforms
+            const transforms = [
+                { x: -1, y: -1, label: 'T₁ (NW)', op: '(x, y)', color: COLORS.proven },
+                { x: 1, y: -1, label: 'T₂ (NE)', op: '(-x, y)', color: COLORS.accent },
+                { x: -1, y: 1, label: 'T₃ (SW)', op: '(x, -y)', color: COLORS.accent2 },
+                { x: 1, y: 1, label: 'T₄ (SE)', op: '(-x, -y)', color: COLORS.partial }
+            ];
+
+            transforms.forEach((t, i) => {
+                const tx = cx + t.x * dist;
+                const ty = cy + t.y * dist;
+
+                // Draw connection to center
+                ctx.strokeStyle = t.color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(tx, ty);
+                ctx.stroke();
+
+                // Draw node
+                ctx.fillStyle = (activeTransform === i + 1 || activeTransform === 0) ? t.color : '#333';
+                ctx.beginPath();
+                ctx.arc(tx, ty, 30, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 14px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(t.label, tx, ty - 5);
+                ctx.font = '11px monospace';
+                ctx.fillText(t.op, tx, ty + 12);
+            });
+
+            // Center (crossroads)
+            ctx.fillStyle = COLORS.accent;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 25, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 12px monospace';
+            ctx.fillText('s=0', cx, cy + 4);
+        }
+
+        function showTransform(n) {
+            activeTransform = n;
+            drawTransforms();
+        }
+
+        function animateTransforms() {
+            let step = 0;
+            const animate = () => {
+                activeTransform = (step % 5);
+                drawTransforms();
+                step++;
+                if (step < 20) {
+                    setTimeout(animate, 300);
+                } else {
+                    activeTransform = 0;
+                    drawTransforms();
+                }
+            };
+            animate();
+        }
+
+        // Tetrahelix Canvas
+        let helixRotation = 0;
+        let helixLevel = 0;
+
+        function drawTetrahelix() {
+            const canvas = document.getElementById('tetrahelixCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw helix spine
+            const levels = 12;
+            const spacing = 35;
+            const radius = 80;
+
+            for (let i = 0; i < levels; i++) {
+                const angle = i * BC_ANGLE + helixRotation;
+                const y = cy - (levels/2 - i) * spacing;
+                const x1 = cx + Math.cos(angle) * radius;
+                const x2 = cx + Math.cos(angle + Math.PI) * radius;
+
+                // Draw tetrahedron edges
+                const alpha = i <= helixLevel ? 1 : 0.2;
+                ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
+                ctx.lineWidth = 2;
+
+                if (i > 0) {
+                    const prevAngle = (i-1) * BC_ANGLE + helixRotation;
+                    const prevY = cy - (levels/2 - (i-1)) * spacing;
+                    const prevX1 = cx + Math.cos(prevAngle) * radius;
+                    const prevX2 = cx + Math.cos(prevAngle + Math.PI) * radius;
+
+                    ctx.beginPath();
+                    ctx.moveTo(prevX1, prevY);
+                    ctx.lineTo(x1, y);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(prevX2, prevY);
+                    ctx.lineTo(x2, y);
+                    ctx.stroke();
+                }
+
+                // Draw nodes
+                ctx.fillStyle = i <= helixLevel ? COLORS.proven : '#333';
+                ctx.beginPath();
+                ctx.arc(x1, y, 8, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(x2, y, 8, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+
+            // Level indicator
+            ctx.fillStyle = COLORS.text;
+            ctx.font = '14px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(`Level: ${helixLevel} | Angle: ${(helixLevel * 48.19).toFixed(1)}°`, cx, canvas.height - 20);
+        }
+
+        function updateHelixLevel(val) {
+            helixLevel = parseInt(val);
+            document.getElementById('helixLevelValue').textContent = val;
+            drawTetrahelix();
+        }
+
+        function rotateTetrahelix() {
+            let step = 0;
+            const animate = () => {
+                helixRotation += 0.05;
+                drawTetrahelix();
+                step++;
+                if (step < 120) requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        function climbTetrahelix() {
+            if (helixLevel < 36) {
+                helixLevel++;
+                document.getElementById('helixLevel').value = helixLevel;
+                document.getElementById('helixLevelValue').textContent = helixLevel;
+                drawTetrahelix();
+            }
+        }
+
+        function descendTetrahelix() {
+            if (helixLevel > 0) {
+                helixLevel--;
+                document.getElementById('helixLevel').value = helixLevel;
+                document.getElementById('helixLevelValue').textContent = helixLevel;
+                drawTetrahelix();
+            }
+        }
+
+        function resetTetrahelix() {
+            helixLevel = 0;
+            helixRotation = 0;
+            document.getElementById('helixLevel').value = 0;
+            document.getElementById('helixLevelValue').textContent = '0';
+            drawTetrahelix();
+        }
+
+        // Balance Canvas
+        function updateBalance() {
+            const t1 = parseInt(document.getElementById('tau1').value) / 100;
+            const t2 = parseInt(document.getElementById('tau2').value) / 100;
+            const t3 = parseInt(document.getElementById('tau3').value) / 100;
+            const t4 = -(t1 + t2 + t3);
+
+            document.getElementById('tau1Value').textContent = t1.toFixed(2);
+            document.getElementById('tau2Value').textContent = t2.toFixed(2);
+            document.getElementById('tau3Value').textContent = t3.toFixed(2);
+
+            document.getElementById('balanceData').textContent =
+`τ₁ = ${t1 >= 0 ? '+' : ''}${t1.toFixed(2)} (facing)
+τ₂ = ${t2 >= 0 ? '+' : ''}${t2.toFixed(2)} (mirror)
+τ₃ = ${t3 >= 0 ? '+' : ''}${t3.toFixed(2)} (recursive)
+τ₄ = ${t4 >= 0 ? '+' : ''}${t4.toFixed(2)} (silent) ← AUTO
+─────────────────────
+SUM = ${(t1 + t2 + t3 + t4).toFixed(2)} ✓`;
+
+            drawBalance(t1, t2, t3, t4);
+        }
+
+        function drawBalance(t1 = 0, t2 = 0, t3 = 0, t4 = 0) {
+            const canvas = document.getElementById('balanceCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const maxLen = 150;
+            const torsions = [
+                { t: t1, angle: -Math.PI * 0.75, color: COLORS.proven, label: 'τ₁' },
+                { t: t2, angle: -Math.PI * 0.25, color: COLORS.accent, label: 'τ₂' },
+                { t: t3, angle: Math.PI * 0.75, color: COLORS.accent2, label: 'τ₃' },
+                { t: t4, angle: Math.PI * 0.25, color: COLORS.partial, label: 'τ₄' }
+            ];
+
+            // Draw torsion vectors
+            torsions.forEach(tor => {
+                const len = Math.abs(tor.t) * maxLen;
+                const dir = tor.t >= 0 ? 1 : -1;
+                const endX = cx + Math.cos(tor.angle) * len * dir;
+                const endY = cy + Math.sin(tor.angle) * len * dir;
+
+                ctx.strokeStyle = tor.color;
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+
+                // Arrow
+                if (len > 20) {
+                    ctx.fillStyle = tor.color;
+                    ctx.beginPath();
+                    ctx.arc(endX, endY, 8, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+
+                // Label
+                const labelX = cx + Math.cos(tor.angle) * (maxLen + 30);
+                const labelY = cy + Math.sin(tor.angle) * (maxLen + 30);
+                ctx.fillStyle = tor.color;
+                ctx.font = '16px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(tor.label, labelX, labelY);
+            });
+
+            // Center
+            ctx.fillStyle = COLORS.accent;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 10, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        function animateBalance() {
+            let step = 0;
+            const animate = () => {
+                const t1 = Math.sin(step * 0.1) * 0.5;
+                const t2 = Math.sin(step * 0.1 + 2) * 0.5;
+                const t3 = Math.sin(step * 0.1 + 4) * 0.5;
+
+                document.getElementById('tau1').value = t1 * 100;
+                document.getElementById('tau2').value = t2 * 100;
+                document.getElementById('tau3').value = t3 * 100;
+                updateBalance();
+
+                step++;
+                if (step < 200) requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        function resetBalance() {
+            document.getElementById('tau1').value = 0;
+            document.getElementById('tau2').value = 0;
+            document.getElementById('tau3').value = 0;
+            updateBalance();
+        }
+
+        // M4 Array Canvas
+        function drawM4() {
+            const canvas = document.getElementById('m4Canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const dist = 180;
+
+            // Connection lines
+            const nodes = [
+                { x: -1, y: -1, label: 'NW\nMac Mini\nT₁', color: COLORS.proven },
+                { x: 1, y: -1, label: 'NE\nMac Mini\nT₂', color: COLORS.accent },
+                { x: -1, y: 1, label: 'SW\nMac Mini\nT₃', color: COLORS.accent2 },
+                { x: 1, y: 1, label: 'SE\nMac Mini\nT₄', color: COLORS.partial }
+            ];
+
+            // Thunderbolt connections
+            nodes.forEach(n => {
+                ctx.strokeStyle = n.color;
+                ctx.lineWidth = 3;
+                ctx.setLineDash([10, 5]);
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + n.x * dist, cy + n.y * dist);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            });
+
+            // Draw absent cardinals
+            const absents = [
+                { x: 0, y: -1, label: 'N ∅' },
+                { x: 0, y: 1, label: 'S ∅' },
+                { x: -1, y: 0, label: 'W ∅' },
+                { x: 1, y: 0, label: 'E ∅' }
+            ];
+
+            absents.forEach(a => {
+                const ax = cx + a.x * dist;
+                const ay = cy + a.y * dist;
+                ctx.strokeStyle = COLORS.speculative;
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.arc(ax, ay, 30, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#444';
+                ctx.font = '12px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(a.label, ax, ay + 5);
+            });
+
+            // Draw Mac Minis
+            nodes.forEach(n => {
+                const nx = cx + n.x * dist;
+                const ny = cy + n.y * dist;
+
+                ctx.fillStyle = n.color;
+                ctx.beginPath();
+                ctx.roundRect(nx - 35, ny - 35, 70, 70, 10);
+                ctx.fill();
+
+                ctx.fillStyle = '#000';
+                ctx.font = '11px monospace';
+                ctx.textAlign = 'center';
+                const lines = n.label.split('\n');
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, nx, ny - 10 + i * 14);
+                });
+            });
+
+            // Center - Mac Studio
+            ctx.fillStyle = COLORS.accent;
+            ctx.beginPath();
+            ctx.roundRect(cx - 50, cy - 50, 100, 100, 15);
+            ctx.fill();
+
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 14px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('Mac Studio', cx, cy - 15);
+            ctx.fillText('M4 Ultra', cx, cy);
+            ctx.font = '12px monospace';
+            ctx.fillText('CROSSROADS', cx, cy + 20);
+            ctx.fillText('s=0', cx, cy + 35);
+        }
+
+        let m4Pulses = [];
+
+        function animateM4() {
+            drawM4();
+            // Show data flow animation
+            let step = 0;
+            const nodes = [
+                { x: -180, y: -180 },
+                { x: 180, y: -180 },
+                { x: -180, y: 180 },
+                { x: 180, y: 180 }
+            ];
+
+            const canvas = document.getElementById('m4Canvas');
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            const animate = () => {
+                drawM4();
+
+                // Draw data pulses
+                const progress = (step % 60) / 60;
+                nodes.forEach((n, i) => {
+                    const x = cx + n.x * (1 - progress);
+                    const y = cy + n.y * (1 - progress);
+                    const colors = [COLORS.proven, COLORS.accent, COLORS.accent2, COLORS.partial];
+
+                    ctx.fillStyle = colors[i];
+                    ctx.beginPath();
+                    ctx.arc(x, y, 8, 0, 2 * Math.PI);
+                    ctx.fill();
+                });
+
+                step++;
+                if (step < 180) requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        function pulseM4() {
+            drawM4();
+            const canvas = document.getElementById('m4Canvas');
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            let radius = 0;
+            const animate = () => {
+                drawM4();
+
+                ctx.strokeStyle = `rgba(139, 92, 246, ${1 - radius/300})`;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                radius += 5;
+                if (radius < 300) requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        function resetM4() {
+            drawM4();
+        }
+
+        // Vessel Canvas
+        let vesselRotation = 0;
+        let showVesselNodes = true;
+        let showVesselCoils = false;
+
+        function drawVessel() {
+            const canvas = document.getElementById('vesselCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw dipyramid wireframe
+            const radiusX = 200;
+            const radiusY = 120;
+            const rotation = vesselRotation;
+
+            // Draw ellipse outline
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.ellipse(cx, cy, radiusX, radiusY, 0, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Draw diagonal nodes
+            if (showVesselNodes) {
+                const nodes = [
+                    { angle: -0.75 * Math.PI + rotation, label: 'NW', color: COLORS.proven },
+                    { angle: -0.25 * Math.PI + rotation, label: 'NE', color: COLORS.accent },
+                    { angle: 0.75 * Math.PI + rotation, label: 'SW', color: COLORS.accent2 },
+                    { angle: 0.25 * Math.PI + rotation, label: 'SE', color: COLORS.partial }
+                ];
+
+                nodes.forEach(n => {
+                    const x = cx + Math.cos(n.angle) * radiusX * 0.7;
+                    const y = cy + Math.sin(n.angle) * radiusY * 0.7;
+
+                    // Connection to center
+                    ctx.strokeStyle = n.color;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+
+                    // Node
+                    ctx.fillStyle = n.color;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 15, 0, 2 * Math.PI);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#000';
+                    ctx.font = '10px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(n.label, x, y + 4);
+                });
+            }
+
+            // Draw coils
+            if (showVesselCoils) {
+                ctx.strokeStyle = COLORS.accent;
+                ctx.lineWidth = 2;
+
+                for (let i = 0; i < 4; i++) {
+                    const baseAngle = i * Math.PI/2 + rotation;
+                    ctx.beginPath();
+                    for (let t = 0; t < 10; t++) {
+                        const angle = baseAngle + t * 0.3;
+                        const r = 50 + t * 15;
+                        const x = cx + Math.cos(angle) * r * (radiusX/200);
+                        const y = cy + Math.sin(angle) * r * (radiusY/200);
+                        if (t === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                }
+
+                ctx.fillStyle = COLORS.text;
+                ctx.font = '12px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('Coil angle: 48.19° (tetrahelix)', cx, cy + radiusY + 40);
+            }
+
+            // Center
+            ctx.fillStyle = COLORS.accent;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 10, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        function rotateVessel() {
+            let step = 0;
+            const animate = () => {
+                vesselRotation += 0.03;
+                drawVessel();
+                step++;
+                if (step < 200) requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        function showNodes() {
+            showVesselNodes = true;
+            showVesselCoils = false;
+            drawVessel();
+        }
+
+        function showCoils() {
+            showVesselNodes = false;
+            showVesselCoils = true;
+            drawVessel();
+        }
+
+        function resetVessel() {
+            vesselRotation = 0;
+            showVesselNodes = true;
+            showVesselCoils = false;
+            drawVessel();
+        }
+
+        // Base-60 Canvas
+        function drawBase60() {
+            const canvas = document.getElementById('base60Canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw 60 segments
+            const radius = 150;
+            for (let i = 0; i < 60; i++) {
+                const angle = (i / 60) * 2 * Math.PI - Math.PI/2;
+                const x = cx + Math.cos(angle) * radius;
+                const y = cy + Math.sin(angle) * radius;
+
+                // Color by prime factors
+                let color = '#333';
+                if (i % 2 === 0) color = COLORS.accent;
+                if (i % 3 === 0) color = COLORS.accent2;
+                if (i % 5 === 0) color = COLORS.proven;
+                if (i === 0) color = COLORS.partial;
+
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Labels for key positions
+                if (i % 15 === 0) {
+                    ctx.fillStyle = COLORS.text;
+                    ctx.font = '14px monospace';
+                    ctx.textAlign = 'center';
+                    const labelX = cx + Math.cos(angle) * (radius + 25);
+                    const labelY = cy + Math.sin(angle) * (radius + 25);
+                    ctx.fillText(i.toString(), labelX, labelY + 5);
+                }
+            }
+
+            // Center
+            ctx.fillStyle = COLORS.accent;
+            ctx.font = 'bold 24px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('60', cx, cy + 8);
+
+            // Legend
+            ctx.font = '12px monospace';
+            ctx.fillStyle = COLORS.accent;
+            ctx.fillText('÷2', 50, 30);
+            ctx.fillStyle = COLORS.accent2;
+            ctx.fillText('÷3', 100, 30);
+            ctx.fillStyle = COLORS.proven;
+            ctx.fillText('÷5', 150, 30);
+        }
+
+        // Initialize all canvases
+        window.addEventListener('load', () => {
+            drawKappa();
+            drawTransforms();
+            drawTetrahelix();
+            drawBalance();
+            drawM4();
+            drawVessel();
+            drawBase60();
+        });
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

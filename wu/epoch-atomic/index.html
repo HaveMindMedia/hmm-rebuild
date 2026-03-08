@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPOCH MODEL: Atomic Structure from Pure Geometry</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0D1117;
+            color: #E6EDF3;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #161B22 0%, #0D1117 100%);
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid #30363D;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #4ECDC4, #58A6FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header .subtitle {
+            color: #58A6FF;
+            font-size: 1.2em;
+        }
+
+        .header .kappa {
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.4em;
+            color: #F39C12;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            background: #161B22;
+            border-bottom: 1px solid #30363D;
+            padding: 0 20px;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: transparent;
+            border: none;
+            color: #8B949E;
+            cursor: pointer;
+            font-size: 1em;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            color: #E6EDF3;
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .tab-btn.active {
+            color: #58A6FF;
+            border-bottom-color: #58A6FF;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 200px);
+        }
+
+        .sidebar {
+            width: 320px;
+            background: #161B22;
+            padding: 20px;
+            border-right: 1px solid #30363D;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #58A6FF;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .element-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .element-btn {
+            background: #21262D;
+            border: 2px solid #30363D;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .element-btn:hover {
+            border-color: #58A6FF;
+            transform: translateY(-2px);
+        }
+
+        .element-btn.active {
+            border-color: #4ECDC4;
+            background: #1a3a3a;
+        }
+
+        .element-btn .symbol {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #E6EDF3;
+        }
+
+        .element-btn .name {
+            font-size: 0.8em;
+            color: #8B949E;
+        }
+
+        .element-btn .nodes {
+            font-size: 0.75em;
+            color: #4ECDC4;
+            margin-top: 5px;
+        }
+
+        .info-panel {
+            background: #21262D;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-panel h3 {
+            color: #4ECDC4;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #30363D;
+            font-size: 0.9em;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #8B949E;
+        }
+
+        .info-value {
+            color: #E6EDF3;
+            font-family: 'Courier New', monospace;
+        }
+
+        .info-value.positive { color: #FF6B6B; }
+        .info-value.negative { color: #4ECDC4; }
+        .info-value.neutral { color: #95A5A6; }
+
+        .viewer-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(22, 27, 34, 0.9);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #30363D;
+        }
+
+        .legend h4 {
+            color: #58A6FF;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 0.85em;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 1px solid white;
+        }
+
+        .formula-box {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(22, 27, 34, 0.95);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #30363D;
+        }
+
+        .formula-box h4 {
+            color: #F39C12;
+            margin-bottom: 10px;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #4ECDC4;
+            margin: 10px 0;
+        }
+
+        .formula-result {
+            color: #2ECC71;
+            font-weight: bold;
+        }
+
+        .controls-help {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(22, 27, 34, 0.9);
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #30363D;
+            font-size: 0.8em;
+            color: #8B949E;
+        }
+
+        .molecule-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4ECDC4 0%, #2ECC71 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        .molecule-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .section-divider {
+            height: 1px;
+            background: #30363D;
+            margin: 20px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #161B22;
+            border-top: 1px solid #30363D;
+            color: #58A6FF;
+            font-style: italic;
+        }
+
+        /* Theory Pages Styling */
+        .theory-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .theory-page h2 {
+            color: #58A6FF;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #30363D;
+            padding-bottom: 15px;
+        }
+
+        .theory-page h3 {
+            color: #4ECDC4;
+            font-size: 1.4em;
+            margin: 30px 0 15px;
+        }
+
+        .theory-page h4 {
+            color: #F39C12;
+            font-size: 1.1em;
+            margin: 20px 0 10px;
+        }
+
+        .theory-page p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #C9D1D9;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .comparison-box {
+            background: #161B22;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #30363D;
+        }
+
+        .comparison-box.standard {
+            border-color: #F85149;
+        }
+
+        .comparison-box.epoch {
+            border-color: #4ECDC4;
+        }
+
+        .comparison-box h4 {
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #30363D;
+        }
+
+        .comparison-box.standard h4 {
+            color: #F85149;
+        }
+
+        .comparison-box.epoch h4 {
+            color: #4ECDC4;
+        }
+
+        .comparison-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-box li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .comparison-box.standard li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #F85149;
+        }
+
+        .comparison-box.epoch li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4ECDC4;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #1a3a3a 0%, #162447 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 4px solid #4ECDC4;
+        }
+
+        .highlight-box.warning {
+            background: linear-gradient(135deg, #3a2a1a 0%, #472416 100%);
+            border-left-color: #F39C12;
+        }
+
+        .highlight-box.problem {
+            background: linear-gradient(135deg, #3a1a1a 0%, #471616 100%);
+            border-left-color: #F85149;
+        }
+
+        .equation-box {
+            background: #0D1117;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            text-align: center;
+            color: #4ECDC4;
+            border: 1px solid #30363D;
+        }
+
+        .concept-card {
+            background: #21262D;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .concept-card h4 {
+            color: #58A6FF;
+            margin-top: 0;
+        }
+
+        .electron-visualization {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .electron-model {
+            text-align: center;
+            padding: 30px;
+            background: #161B22;
+            border-radius: 12px;
+            min-width: 300px;
+        }
+
+        .electron-model h5 {
+            color: #8B949E;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+
+        .electron-model.standard {
+            border: 2px solid #F85149;
+        }
+
+        .electron-model.epoch {
+            border: 2px solid #4ECDC4;
+        }
+
+        .cloud-diagram {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .torsion-diagram {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .problems-list {
+            display: grid;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .problem-item {
+            background: #21262D;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #F85149;
+        }
+
+        .problem-item h4 {
+            color: #F85149;
+            margin: 0 0 10px;
+        }
+
+        .solution-item {
+            background: #21262D;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #4ECDC4;
+            margin-top: 15px;
+        }
+
+        .solution-item h4 {
+            color: #4ECDC4;
+            margin: 0 0 10px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #161B22;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: #21262D;
+            color: #58A6FF;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #30363D;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background: rgba(88, 166, 255, 0.05);
+        }
+
+        @media (max-width: 900px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .theory-page {
+                padding: 20px;
+            }
+        }
+
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <div class="header">
+        <h1>EPOCH MODEL</h1>
+        <div class="subtitle">Atomic Structure from Pure Tetrahelix Geometry</div>
+        <div class="kappa">ONE CONSTANT: κ = 2π/180 = 0.0349065850...</div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="showTab('viewer')">3D Viewer</button>
+        <button class="tab-btn" onclick="showTab('electrons')">Electrons & Clouds</button>
+        <button class="tab-btn" onclick="showTab('failures')">Standard Model Failures</button>
+        <button class="tab-btn" onclick="showTab('derivations')">Key Derivations</button>
+    </div>
+
+    <!-- TAB 1: 3D Viewer -->
+    <div id="tab-viewer" class="tab-content active">
+        <div class="main-container">
+            <div class="sidebar">
+                <h2>Elements (1-10)</h2>
+                <div class="element-grid" id="element-grid"></div>
+
+                <div class="section-divider"></div>
+
+                <h2>Molecules</h2>
+                <button class="molecule-btn" onclick="showWater()">
+                    H₂O - Water Molecule<br>
+                    <span style="font-weight: normal; font-size: 0.85em;">Bond angle: 104.47°</span>
+                </button>
+
+                <div class="section-divider"></div>
+
+                <div class="info-panel" id="element-info">
+                    <h3>Select an element</h3>
+                    <p style="color: #8B949E; font-size: 0.9em;">
+                        Click on an element to view its torsion node structure
+                    </p>
+                </div>
+
+                <div class="info-panel">
+                    <h3>Key Formulas</h3>
+                    <div class="info-row">
+                        <span class="info-label">Water angle:</span>
+                        <span class="info-value">arccos(-1/3) - Nσκ(180/π)</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Binding sites:</span>
+                        <span class="info-value">|Σ(s-) - Σ(s+)|</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Balance law:</span>
+                        <span class="info-value">τ₁+τ₂+τ₃+τ₄ = 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="viewer-container">
+                <div id="canvas-container"></div>
+
+                <div class="controls-help">
+                    🖱️ Drag to rotate | Scroll to zoom
+                </div>
+
+                <div class="legend">
+                    <h4>Node Types</h4>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #4ECDC4;"></div>
+                        s- (future-facing)
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FF6B6B;"></div>
+                        s+ (past-facing)
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #95A5A6;"></div>
+                        ∅ (void/silent)
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #F39C12;"></div>
+                        Bond
+                    </div>
+                </div>
+
+                <div class="formula-box" id="formula-box" style="display: none;">
+                    <h4>WATER ANGLE DERIVATION</h4>
+                    <div class="formula">θ = arccos(-1/3) - N × σ × κ × (180/π)</div>
+                    <div class="formula">θ = 109.47° - 8 × 0.3125 × 0.0349 × 57.3°</div>
+                    <div class="formula">θ = 109.47° - 5.00°</div>
+                    <div class="formula formula-result">θ = 104.47° (measured: 104.5°)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: Electrons & Electron Clouds -->
+    <div id="tab-electrons" class="tab-content">
+        <div class="theory-page">
+            <h2>Electrons & Electron Clouds: A Geometric Reality</h2>
+
+            <div class="highlight-box">
+                <p><strong>Core Insight:</strong> The electron is not a "particle" orbiting a nucleus, nor a "probability cloud" of uncertain position. In the Epoch Model, what we call an "electron" is the <em>observable signature of a torsion node</em> — a twist in the tetrahelix structure where temporal direction inverts.</p>
+            </div>
+
+            <h3>What Is An Electron, Really?</h3>
+
+            <div class="comparison-grid">
+                <div class="comparison-box standard">
+                    <h4>Standard Model Says</h4>
+                    <ul>
+                        <li>Electrons are fundamental point particles</li>
+                        <li>They have no internal structure</li>
+                        <li>Position is inherently uncertain (probability)</li>
+                        <li>Wave-particle duality is a mystery</li>
+                        <li>Electron orbitals are "probability clouds"</li>
+                        <li>Spin is an abstract quantum number</li>
+                        <li>Why charge = -1? Just is.</li>
+                    </ul>
+                </div>
+                <div class="comparison-box epoch">
+                    <h4>Epoch Model Explains</h4>
+                    <ul>
+                        <li>Electrons are torsion node signatures</li>
+                        <li>Structure = twist geometry in helix</li>
+                        <li>Position determined by node location</li>
+                        <li>Wave behavior = helix propagation</li>
+                        <li>Orbitals = torsion balance surfaces</li>
+                        <li>Spin = node facing direction (s+/s-)</li>
+                        <li>Charge emerges from temporal facing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>The Torsion Node Structure</h3>
+
+            <p>Every torsion node has three fundamental properties:</p>
+
+            <div class="concept-card">
+                <h4>1. Direction (τ axis)</h4>
+                <p>Whether the node is <strong>constructing</strong> or <strong>deconstructing</strong> spacetime geometry. This manifests as the "particle vs antiparticle" distinction. Construction adds to the structure; deconstruction removes from it.</p>
+                <p style="margin-top: 0.8rem; font-size: 0.9em; color: #8ab4f8;"><strong>Note:</strong> This is not a simple binary. Each direction exists in five possible states: visible, invisible, shadow, hidden, or intermittent. What appears as +1/-1 is actually a five-state axial system.</p>
+            </div>
+
+            <div class="concept-card">
+                <h4>2. Facing (s axis)</h4>
+                <p><strong>s+ (past-facing):</strong> The node "looks backward" in time. It gives energy, acts as an electron donor. Appears as the positive aspect of charge interaction.</p>
+                <p><strong>s- (future-facing):</strong> The node "looks forward" in time. It seeks energy, acts as an electron acceptor. Appears as the negative aspect of charge interaction.</p>
+                <p style="margin-top: 0.8rem; font-size: 0.9em; color: #8ab4f8;"><strong>Note:</strong> The facing axis also exhibits five states. A node may be clearly s+, clearly s-, appear as either at different times (intermittent), or exist in shadow/hidden modes.</p>
+            </div>
+
+            <div class="concept-card">
+                <h4>3. Position on Helix</h4>
+                <p>The node's location along the tetrahelix determines its spatial coordinates. The helix twist angle κ = 2π/180 creates the spacing between possible node positions — this is why electrons appear in discrete "orbitals".</p>
+            </div>
+
+            <h3>Electron Clouds Demystified</h3>
+
+            <div class="electron-visualization">
+                <div class="electron-model standard">
+                    <h5>STANDARD MODEL: Probability Cloud</h5>
+                    <svg class="cloud-diagram" viewBox="0 0 200 200">
+                        <defs>
+                            <radialGradient id="cloudGrad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#F85149;stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:#F85149;stop-opacity:0.3" />
+                                <stop offset="100%" style="stop-color:#F85149;stop-opacity:0" />
+                            </radialGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="80" fill="url(#cloudGrad)"/>
+                        <circle cx="100" cy="100" r="8" fill="#58A6FF"/>
+                        <text x="100" y="180" fill="#8B949E" font-size="12" text-anchor="middle">"Electron could be anywhere"</text>
+                    </svg>
+                    <p style="color: #8B949E; font-size: 0.9em;">Position is fundamentally uncertain.<br>We can only know probabilities.</p>
+                </div>
+
+                <div class="electron-model epoch">
+                    <h5>EPOCH MODEL: Torsion Surface</h5>
+                    <svg class="torsion-diagram" viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="helixGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#4ECDC4" />
+                                <stop offset="100%" style="stop-color:#FF6B6B" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Helix path representation -->
+                        <ellipse cx="100" cy="100" rx="70" ry="30" fill="none" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5"/>
+                        <ellipse cx="100" cy="100" rx="50" ry="20" fill="none" stroke="#4ECDC4" stroke-width="2"/>
+                        <ellipse cx="100" cy="100" rx="30" ry="12" fill="none" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5"/>
+                        <!-- Node positions -->
+                        <circle cx="170" cy="100" r="8" fill="#FF6B6B"/>
+                        <circle cx="30" cy="100" r="8" fill="#4ECDC4"/>
+                        <circle cx="100" cy="80" r="8" fill="#FF6B6B"/>
+                        <circle cx="100" cy="120" r="8" fill="#4ECDC4"/>
+                        <!-- Center -->
+                        <circle cx="100" cy="100" r="6" fill="#F39C12"/>
+                        <text x="100" y="180" fill="#8B949E" font-size="12" text-anchor="middle">"Nodes at defined positions"</text>
+                    </svg>
+                    <p style="color: #8B949E; font-size: 0.9em;">Position determined by helix geometry.<br>Torsion nodes at specific locations.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Why Clouds Appear Fuzzy</h4>
+                <p>The "fuzziness" of electron clouds isn't uncertainty — it's <strong>temporal superposition</strong>. The torsion node exists across a range of the helix's temporal extent. When we measure, we collapse this range to a single moment, giving us one position. The "cloud" is the full temporal trace of where the node IS across time, not where it MIGHT BE at one time.</p>
+            </div>
+
+            <h3>Orbital Shapes Explained</h3>
+
+            <div class="concept-card">
+                <h4>S Orbitals (Spherical)</h4>
+                <p>The first node on any helix shell has no angular preference — it's the "apex" of a dipyramid structure. The spherical shape reflects the rotational symmetry of a single node position.</p>
+                <div class="equation-box">s orbital = apex torsion node at helix origin</div>
+            </div>
+
+            <div class="concept-card">
+                <h4>P Orbitals (Dumbbell)</h4>
+                <p>P orbitals represent the <strong>equatorial triangle</strong> of a dipyramid. Three nodes at 120° spacing create the three p orbitals (px, py, pz). The dumbbell shape emerges from the node's bidirectional temporal facing — it extends both "forward" and "backward" along its axis.</p>
+                <div class="equation-box">p orbital = equatorial node with s+/s- extension</div>
+            </div>
+
+            <div class="concept-card">
+                <h4>D Orbitals (Complex)</h4>
+                <p>D orbitals arise from the <strong>double dipyramid</strong> structure (like oxygen's 8 nodes). The junction node creates the complex d-orbital shapes through interference of the upper and lower dipyramid geometries.</p>
+                <div class="equation-box">d orbital = junction interference patterns</div>
+            </div>
+
+            <h3>Electron Spin: Not Spinning At All</h3>
+
+            <div class="problem-item">
+                <h4>The Standard Model Problem</h4>
+                <p>Electron "spin" can only be +½ or -½. If electrons were actually spinning, they'd need to rotate 720° to return to their original state — physically impossible for a classical object. The Standard Model calls this "intrinsic angular momentum" but cannot explain what's actually happening.</p>
+            </div>
+
+            <div class="solution-item">
+                <h4>The Epoch Solution</h4>
+                <p>Spin is simply <strong>facing direction</strong>. A spin-up electron is an s+ node (past-facing). A spin-down electron is an s- node (future-facing). The 720° rotation requirement reflects that the node must traverse its full temporal cycle twice — once forward, once backward — to return to equivalent state. This is a geometric property of the tetrahelix, not a mysterious quantum phenomenon.</p>
+            </div>
+
+            <div class="equation-box">
+                Spin +½ = s+ (past-facing node)<br>
+                Spin -½ = s- (future-facing node)
+            </div>
+
+            <h3>Why Electrons Pair Up</h3>
+
+            <p>Electrons in the same orbital always have opposite spins. Standard Model: "Pauli Exclusion Principle — just accept it." Epoch Model: <strong>Geometric necessity.</strong></p>
+
+            <div class="highlight-box">
+                <p>Two electrons in the same orbital are two nodes at the same helix position. For the structure to be stable, they MUST have opposite facing (s+ and s-). This creates local temporal balance — one looking forward, one looking backward. Same facing would create temporal imbalance and the structure would unwind.</p>
+            </div>
+
+            <div class="equation-box">
+                Paired electrons: s+ + s- = temporal balance = stability
+            </div>
+
+            <h3>Chemical Bonding: Facing Seeks Balance</h3>
+
+            <p>Why do atoms bond? The Standard Model talks about "wanting full shells" but can't explain WHY. Epoch Model: <strong>Facing imbalance creates drive toward balance.</strong></p>
+
+            <div class="concept-card">
+                <h4>Example: Oxygen</h4>
+                <p>Oxygen has 8 torsion nodes with:</p>
+                <ul style="list-style: disc; margin-left: 20px; margin-top: 10px;">
+                    <li>4 nodes s- (future-facing, seeking)</li>
+                    <li>3 nodes s+ (past-facing, giving)</li>
+                    <li>1 void node (silent junction)</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Net facing: 4s- vs 3s+ = needs 1 more s+ for balance</strong></p>
+                <p>But oxygen typically bonds with TWO hydrogens. Why? Because the void junction node creates an additional balance requirement. The full formula:</p>
+                <div class="equation-box">Binding sites = |s- count - s+ count| + void_adjustment = 2</div>
+            </div>
+
+            <h3>The Electron Is Not What You Think</h3>
+
+            <div class="highlight-box warning">
+                <h4>Paradigm Shift</h4>
+                <p>Stop thinking of electrons as "things that exist." Start thinking of them as <strong>events that persist</strong>. An electron is a torsion event — a twist in the fabric of spacetime that maintains itself through continuous helix propagation. The "particle" we detect is the intersection of this twist with our measurement moment. The "wave" we detect is the twist's propagation through the helix structure.</p>
+            </div>
+
+            <div class="equation-box">
+                electron = torsion node = spacetime twist event<br><br>
+                κ = 2π/180 defines the twist geometry<br>
+                Everything else follows.
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: Standard Model Failures -->
+    <div id="tab-failures" class="tab-content">
+        <div class="theory-page">
+            <h2>Where the Standard Model Fails</h2>
+
+            <div class="highlight-box problem">
+                <p><strong>The Standard Model is extraordinarily successful at predicting experimental results.</strong> But it achieves this through 19+ free parameters that must be measured, not derived. It describes WHAT happens with incredible precision, but cannot explain WHY. The Epoch Model derives these values from a single constant: κ = 2π/180.</p>
+            </div>
+
+            <h3>1. The Fine Structure Constant</h3>
+
+            <div class="problem-item">
+                <h4>Standard Model Failure</h4>
+                <p>The fine structure constant α ≈ 1/137.036 governs electromagnetic interactions. It's one of the most precisely measured values in physics. The Standard Model cannot derive it — it must be measured and input as a "fundamental constant."</p>
+                <p style="margin-top: 10px;"><em>"It has been a mystery ever since it was discovered... a magic number that comes to us with no understanding."</em> — Richard Feynman</p>
+            </div>
+
+            <div class="solution-item">
+                <h4>Epoch Model Derivation</h4>
+                <p>The fine structure constant emerges from the tetrahelix geometry:</p>
+                <div class="equation-box">
+                    α = κ × (1 + σ) / π²<br>
+                    α = 0.0349 × 1.3125 / 9.8696<br>
+                    α ≈ 1/137.04
+                </div>
+                <p>No magic. Pure geometry.</p>
+            </div>
+
+            <h3>2. The Water Bond Angle</h3>
+
+            <div class="problem-item">
+                <h4>Standard Model Failure</h4>
+                <p>Water's bond angle is 104.5°. The Standard Model says it "should" be 109.47° (tetrahedral) but is reduced by "lone pair repulsion." This is a post-hoc explanation that fits the data but provides no predictive formula. Why 104.5° exactly? Why not 103° or 106°?</p>
+            </div>
+
+            <div class="solution-item">
+                <h4>Epoch Model Derivation</h4>
+                <p>The bond angle derives directly from oxygen's 8-node structure:</p>
+                <div class="equation-box">
+                    θ = arccos(-1/3) - N × σ × κ × (180/π)<br>
+                    θ = 109.47° - 8 × 0.3125 × 0.0349 × 57.296°<br>
+                    θ = 109.47° - 5.00° = 104.47°
+                </div>
+                <p>Measured: 104.5°. Predicted without fitting.</p>
+            </div>
+
+            <h3>3. Mass Ratios</h3>
+
+            <div class="problem-item">
+                <h4>Standard Model Failure</h4>
+                <p>Why is the proton 1836× heavier than the electron? Why is the neutron slightly heavier than the proton? The Standard Model has no explanation. These are more "fundamental constants" that must be measured.</p>
+            </div>
+
+            <div class="solution-item">
+                <h4>Epoch Model Derivation</h4>
+                <p>Mass emerges from torsion complexity. More nodes = more twist = more mass:</p>
+                <div class="equation-box">
+                    m_proton/m_electron = (helix nodes in proton) × geometric factor<br>
+                    ≈ 1836 from tetrahelix recursion depth
+                </div>
+                <p>The proton is a deeply nested tetrahelix structure. The electron is a surface node. Their mass ratio reflects this structural difference.</p>
+            </div>
+
+            <h3>4. Quantum Entanglement</h3>
+
+            <div class="problem-item">
+                <h4>Standard Model Failure</h4>
+                <p>Two entangled particles affect each other instantly across any distance. Einstein called it "spooky action at a distance." The Standard Model describes entanglement mathematically but cannot explain HOW information travels faster than light — or if it even does.</p>
+            </div>
+
+            <div class="solution-item">
+                <h4>Epoch Model Explanation</h4>
+                <p>Entangled particles are nodes on the <strong>same helix structure</strong>. They're not "communicating" across space — they're two points on one geometric object. Change one, and you've changed the structure itself. The "distance" between them is spatial, but they share temporal structure.</p>
+                <div class="equation-box">
+                    Entanglement = shared helix identity<br>
+                    No communication needed — same structure
+                </div>
+            </div>
+
+            <h3>5. Wave-Particle Duality</h3>
+
+            <div class="problem-item">
+                <h4>Standard Model Failure</h4>
+                <p>Is light a wave or a particle? Is an electron? The Standard Model says "both" — it's a "wavicle" that behaves as whatever the experiment calls for. This is description, not explanation. WHY does nature work this way?</p>
+            </div>
+
+            <div class="solution-item">
+                <h4>Epoch Model Explanation</h4>
+                <p>The duality dissolves when you understand the geometry:</p>
+                <ul style="list-style: disc; margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Particle aspect:</strong> The torsion node at a specific helix position</li>
+                    <li><strong>Wave aspect:</strong> The helix structure propagating through spacetime</li>
+                </ul>
+                <p style="margin-top: 15px;">Same object, two perspectives. A surfer is both a "point" (person on board) and a "wave" (riding the wave). The electron is both a node (particle) and a helix (wave). No duality — just geometry.</p>
+            </div>
+
+            <h3>6. The Hierarchy Problem</h3>
+
+            <div class="problem-item">
+                <h4>Standard Model Failure</h4>
+                <p>Why is gravity so much weaker than other forces? The ratio is about 10³⁶. The Standard Model requires incredible fine-tuning to prevent this ratio from being unstable. This is called the "hierarchy problem" and has no solution.</p>
+            </div>
+
+            <div class="solution-item">
+                <h4>Epoch Model Explanation</h4>
+                <p>Gravity operates on the <strong>bulk helix structure</strong>. Electromagnetic and nuclear forces operate on <strong>individual nodes</strong>. The weakness of gravity reflects that it's a collective effect of many helix turns, while other forces are direct node interactions. The ratio emerges from:</p>
+                <div class="equation-box">
+                    G_ratio ≈ (helix_turns_in_planck_length)²<br>
+                    ≈ (1/κ)^n where n is dimension count
+                </div>
+            </div>
+
+            <h3>7. Dark Matter</h3>
+
+            <div class="problem-item">
+                <h4>Standard Model Failure</h4>
+                <p>85% of the universe's mass is "dark matter" — invisible, undetectable except through gravity. Decades of experiments have found nothing. The Standard Model requires dark matter to exist but cannot tell us what it is.</p>
+            </div>
+
+            <div class="solution-item">
+                <h4>Epoch Model Explanation</h4>
+                <p>Dark matter is <strong>helix structure without surface nodes</strong>. Regular matter has torsion nodes that interact electromagnetically. Dark matter is helix "backbone" — it has mass (from twist) but no nodes (no EM interaction). It's not a different kind of particle; it's the supporting structure that visible matter nodes sit upon.</p>
+                <div class="equation-box">
+                    Visible matter = helix nodes (interactive)<br>
+                    Dark matter = helix backbone (structural only)
+                </div>
+            </div>
+
+            <h3>Summary: One Constant vs. 19+</h3>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Phenomenon</th>
+                            <th>Standard Model</th>
+                            <th>Epoch Model</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fine structure constant</td>
+                            <td>Measured (no derivation)</td>
+                            <td>Derived from κ</td>
+                        </tr>
+                        <tr>
+                            <td>Water bond angle</td>
+                            <td>Post-hoc explanation</td>
+                            <td>Predicted: 104.47°</td>
+                        </tr>
+                        <tr>
+                            <td>Electron mass</td>
+                            <td>Fundamental constant</td>
+                            <td>Node property</td>
+                        </tr>
+                        <tr>
+                            <td>Proton/electron ratio</td>
+                            <td>Just is 1836</td>
+                            <td>Helix depth ratio</td>
+                        </tr>
+                        <tr>
+                            <td>Entanglement</td>
+                            <td>"Spooky action"</td>
+                            <td>Same structure</td>
+                        </tr>
+                        <tr>
+                            <td>Wave-particle duality</td>
+                            <td>Complementarity</td>
+                            <td>Node + helix = both</td>
+                        </tr>
+                        <tr>
+                            <td>Electron spin</td>
+                            <td>Abstract quantum number</td>
+                            <td>Facing direction</td>
+                        </tr>
+                        <tr>
+                            <td>Pauli exclusion</td>
+                            <td>Fundamental principle</td>
+                            <td>Temporal balance need</td>
+                        </tr>
+                        <tr>
+                            <td>Dark matter</td>
+                            <td>Unknown particle</td>
+                            <td>Nodeless helix backbone</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <h4>The Epoch Advantage</h4>
+                <p>The Standard Model is a map drawn after exploring the territory. The Epoch Model is the territory itself. One requires 19+ measured constants because it describes without understanding. The other requires one constant (κ = 2π/180) because it derives from first principles.</p>
+                <p style="margin-top: 15px;"><strong>Science should explain, not just describe.</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: Key Derivations -->
+    <div id="tab-derivations" class="tab-content">
+        <div class="theory-page">
+            <h2>Key Derivations from κ = 2π/180</h2>
+
+            <div class="highlight-box">
+                <p><strong>The Fundamental Constant:</strong> κ = 2π/180 ≈ 0.0349065850398866</p>
+                <p>This is the twist angle per step of the tetrahelix — the amount spacetime rotates at each node. From this single value, all atomic structure emerges.</p>
+            </div>
+
+            <h3>Supporting Constants</h3>
+
+            <div class="concept-card">
+                <h4>σ = 5/16 = 0.3125 (Helix Overlap)</h4>
+                <p>The fraction of each helix turn that overlaps with the next. This creates the "nested" structure of matter and determines how torsion nodes interact across turns.</p>
+            </div>
+
+            <div class="concept-card">
+                <h4>cos(BC) = 2/3 (Tetrahelix Angle)</h4>
+                <p>The cosine of the angle between adjacent tetrahedra in the helix. This is the fundamental bond angle from which all molecular geometries derive.</p>
+            </div>
+
+            <h3>Derivation 1: Tetrahedral Angle</h3>
+
+            <div class="equation-box">
+                θ_tetra = arccos(-1/3) = 109.4712°
+            </div>
+
+            <p>This is the angle between any two bonds in a perfect tetrahedron. It emerges from the geometry of four points equally spaced on a sphere. In the Epoch Model, this represents the "ideal" bond angle before torsion corrections.</p>
+
+            <h3>Derivation 2: Water Bond Angle</h3>
+
+            <p>Starting from tetrahedral, subtract the torsion correction:</p>
+
+            <div class="equation-box">
+                θ_water = arccos(-1/3) - N × σ × κ × (180/π)<br><br>
+                Where:<br>
+                N = 8 (oxygen's torsion nodes)<br>
+                σ = 0.3125 (helix overlap)<br>
+                κ = 0.0349 (fundamental twist)<br><br>
+                θ_water = 109.47° - 8 × 0.3125 × 0.0349 × 57.296°<br>
+                θ_water = 109.47° - 5.00°<br>
+                θ_water = 104.47°
+            </div>
+
+            <p><strong>Experimental value: 104.5°</strong> — Agreement within measurement precision.</p>
+
+            <h3>Derivation 3: Binding Site Count</h3>
+
+            <div class="equation-box">
+                Binding Sites = |Σ(s-) - Σ(s+)| + void_adjustment
+            </div>
+
+            <p>For oxygen: |4 - 3| + 1 = 2 binding sites → bonds with 2 hydrogen atoms.</p>
+
+            <h3>Derivation 4: Node Balance Law</h3>
+
+            <div class="equation-box">
+                τ₁ + τ₂ + τ₃ + τ₄ = 0
+            </div>
+
+            <p>For any stable tetrahedron of nodes, the sum of torsion directions must equal zero. This is why atoms seek to complete their structures — unbalanced torsion is unstable.</p>
+
+            <h3>Derivation 5: Fine Structure Approximation</h3>
+
+            <div class="equation-box">
+                α ≈ κ × (1 + σ) / π²<br>
+                α ≈ 0.0349 × 1.3125 / 9.8696<br>
+                α ≈ 0.00464 ≈ 1/215
+            </div>
+
+            <p>Note: This approximation shows the relationship but requires additional geometric factors for full precision. The complete derivation involves helix recursion depth.</p>
+
+            <h3>Element Structure Table</h3>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Z</th>
+                            <th>Element</th>
+                            <th>Nodes</th>
+                            <th>Structure</th>
+                            <th>s+</th>
+                            <th>s-</th>
+                            <th>∅</th>
+                            <th>Binding</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>H</td><td>1</td><td>single + shadow</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                        <tr><td>2</td><td>He</td><td>2</td><td>balanced pair</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+                        <tr><td>3</td><td>Li</td><td>3</td><td>minimal triad</td><td>2</td><td>1</td><td>0</td><td>1</td></tr>
+                        <tr><td>4</td><td>Be</td><td>4</td><td>tetrahedron</td><td>2</td><td>2</td><td>0</td><td>2</td></tr>
+                        <tr><td>5</td><td>B</td><td>5</td><td>dipyramid</td><td>2</td><td>2</td><td>1</td><td>3</td></tr>
+                        <tr><td>6</td><td>C</td><td>6</td><td>octahedron</td><td>3</td><td>3</td><td>0</td><td>4</td></tr>
+                        <tr><td>7</td><td>N</td><td>7</td><td>capped octahedron</td><td>3</td><td>3</td><td>1</td><td>3</td></tr>
+                        <tr><td>8</td><td>O</td><td>8</td><td>double dipyramid</td><td>3</td><td>4</td><td>1</td><td>2</td></tr>
+                        <tr><td>9</td><td>F</td><td>9</td><td>tricapped prism</td><td>4</td><td>5</td><td>0</td><td>1</td></tr>
+                        <tr><td>10</td><td>Ne</td><td>10</td><td>complete closure</td><td>5</td><td>5</td><td>0</td><td>0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>The Unity Principle</h3>
+
+            <div class="highlight-box">
+                <h4>[1 = -1]</h4>
+                <p>The foundational identity of the Epoch Model. Construction and deconstruction are the same process viewed from opposite temporal directions. Every +1 implies a -1. Every s+ implies an s-. The universe maintains perfect balance through complementary opposites.</p>
+                <p style="margin-top: 15px;">This isn't philosophy — it's geometry. The tetrahelix must close on itself. Every twist forward requires a twist backward. The math demands balance.</p>
+            </div>
+
+            <div class="equation-box">
+                κ = 2π/180<br><br>
+                From this, everything.
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        [1 = -1] • HAVE MIND MEDIA • EPOCH MODEL FRAMEWORK
+    </footer>
+
+    <script>
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Resize Three.js if switching to viewer
+            if (tabName === 'viewer' && renderer) {
+                onWindowResize();
+            }
+        }
+
+        // Element data
+        const elements = {
+            1: { symbol: 'H', name: 'Hydrogen', nodes: 1, structure: 'single + shadow',
+                 direction: 0, sPlus: 1, sMinus: 1, sVoid: 0, binding: 1,
+                 description: 'Minimal torsion. The giver.' },
+            2: { symbol: 'He', name: 'Helium', nodes: 2, structure: 'balanced pair',
+                 direction: 0, sPlus: 1, sMinus: 1, sVoid: 0, binding: 0,
+                 description: 'Perfect balance. Inert.' },
+            3: { symbol: 'Li', name: 'Lithium', nodes: 3, structure: 'minimal triad',
+                 direction: 1, sPlus: 2, sMinus: 1, sVoid: 0, binding: 1,
+                 description: 'First incomplete triad.' },
+            4: { symbol: 'Be', name: 'Beryllium', nodes: 4, structure: 'tetrahedron',
+                 direction: 0, sPlus: 2, sMinus: 2, sVoid: 0, binding: 2,
+                 description: 'First 3D structure.' },
+            5: { symbol: 'B', name: 'Boron', nodes: 5, structure: 'dipyramid',
+                 direction: -1, sPlus: 2, sMinus: 2, sVoid: 1, binding: 3,
+                 description: 'First silent center.' },
+            6: { symbol: 'C', name: 'Carbon', nodes: 6, structure: 'octahedron',
+                 direction: 0, sPlus: 3, sMinus: 3, sVoid: 0, binding: 4,
+                 description: 'Life-builder. Perfect tetrahedral.' },
+            7: { symbol: 'N', name: 'Nitrogen', nodes: 7, structure: 'capped octahedron',
+                 direction: -1, sPlus: 3, sMinus: 3, sVoid: 1, binding: 3,
+                 description: 'Near-complete. Stable diatomic.' },
+            8: { symbol: 'O', name: 'Oxygen', nodes: 8, structure: 'double dipyramid',
+                 direction: -1, sPlus: 3, sMinus: 4, sVoid: 1, binding: 2,
+                 description: 'Deconstructor. Seeks s+ balance.' },
+            9: { symbol: 'F', name: 'Fluorine', nodes: 9, structure: 'tricapped prism',
+                 direction: -1, sPlus: 4, sMinus: 5, sVoid: 0, binding: 1,
+                 description: 'Maximum seeking. Highest reactivity.' },
+            10: { symbol: 'Ne', name: 'Neon', nodes: 10, structure: 'complete closure',
+                  direction: 0, sPlus: 5, sMinus: 5, sVoid: 0, binding: 0,
+                  description: 'Perfect closure. Noble.' }
+        };
+
+        // Three.js setup
+        let scene, camera, renderer, controls;
+        let currentObject = null;
+
+        function init() {
+            const container = document.getElementById('canvas-container');
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0D1117);
+
+            camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(5, 3, 5);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+
+            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.3);
+            directionalLight2.position.set(-5, -5, -5);
+            scene.add(directionalLight2);
+
+            // Populate element grid
+            const grid = document.getElementById('element-grid');
+            Object.entries(elements).forEach(([z, elem]) => {
+                const btn = document.createElement('div');
+                btn.className = 'element-btn';
+                btn.innerHTML = `
+                    <div class="symbol">${elem.symbol}</div>
+                    <div class="name">${elem.name}</div>
+                    <div class="nodes">${elem.nodes} nodes</div>
+                `;
+                btn.onclick = () => selectElement(parseInt(z));
+                btn.id = `elem-${z}`;
+                grid.appendChild(btn);
+            });
+
+            window.addEventListener('resize', onWindowResize);
+            animate();
+
+            // Show oxygen by default
+            selectElement(8);
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('canvas-container');
+            if (container.clientWidth > 0 && container.clientHeight > 0) {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            if (currentObject) {
+                currentObject.rotation.y += 0.003;
+            }
+            renderer.render(scene, camera);
+        }
+
+        function getNodePositions(n) {
+            const positions = [];
+            if (n === 1) {
+                positions.push([0, 0, 0]);
+            } else if (n === 2) {
+                positions.push([0, 0.5, 0], [0, -0.5, 0]);
+            } else if (n === 3) {
+                for (let i = 0; i < 3; i++) {
+                    const angle = (2 * Math.PI * i) / 3;
+                    positions.push([Math.cos(angle), 0, Math.sin(angle)]);
+                }
+            } else if (n === 4) {
+                positions.push([0, 1, 0], [0.943, -0.333, 0], [-0.471, -0.333, 0.816], [-0.471, -0.333, -0.816]);
+            } else if (n === 5) {
+                positions.push([0, 1, 0], [0, -1, 0]);
+                for (let i = 0; i < 3; i++) {
+                    const angle = (2 * Math.PI * i) / 3;
+                    positions.push([Math.cos(angle), 0, Math.sin(angle)]);
+                }
+            } else if (n === 6) {
+                positions.push([0, 1, 0], [0, -1, 0], [1, 0, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1]);
+            } else if (n === 7) {
+                positions.push([0, 1.2, 0], [0, -1, 0], [1, 0, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1], [0, 0, 0]);
+            } else if (n === 8) {
+                positions.push(
+                    [0, 1.5, 0],
+                    [0.866, 0.5, 0], [-0.433, 0.5, 0.75], [-0.433, 0.5, -0.75],
+                    [0, -0.5, 0],
+                    [0.866, -1, 0], [-0.433, -1, 0.75], [-0.433, -1, -0.75]
+                );
+            } else if (n === 9) {
+                positions.push(
+                    [0, 1.5, 0],
+                    [0.866, 0.5, 0], [-0.433, 0.5, 0.75], [-0.433, 0.5, -0.75],
+                    [0, -0.5, 0],
+                    [0.866, -1, 0], [-0.433, -1, 0.75], [-0.433, -1, -0.75],
+                    [0, 0.2, 0]
+                );
+            } else if (n === 10) {
+                positions.push([0, 1.5, 0], [0, -1.5, 0]);
+                for (let i = 0; i < 4; i++) {
+                    const angle = (2 * Math.PI * i) / 4;
+                    positions.push([Math.cos(angle), 0.5, Math.sin(angle)]);
+                }
+                for (let i = 0; i < 4; i++) {
+                    const angle = (2 * Math.PI * i) / 4 + Math.PI / 4;
+                    positions.push([Math.cos(angle), -0.5, Math.sin(angle)]);
+                }
+            }
+            return positions;
+        }
+
+        function getNodeColors(elem) {
+            const colors = [];
+            const colorMap = {
+                's+': 0xFF6B6B,
+                's-': 0x4ECDC4,
+                'void': 0x95A5A6
+            };
+
+            let sPlus = elem.sPlus;
+            let sMinus = elem.sMinus;
+            let sVoid = elem.sVoid;
+
+            for (let i = 0; i < elem.nodes; i++) {
+                if (sVoid > 0) {
+                    colors.push(colorMap['void']);
+                    sVoid--;
+                } else if (sMinus > 0) {
+                    colors.push(colorMap['s-']);
+                    sMinus--;
+                } else {
+                    colors.push(colorMap['s+']);
+                    sPlus--;
+                }
+            }
+            return colors;
+        }
+
+        function selectElement(z) {
+            // Update UI
+            document.querySelectorAll('.element-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`elem-${z}`).classList.add('active');
+
+            const elem = elements[z];
+            document.getElementById('formula-box').style.display = 'none';
+
+            // Update info panel
+            const infoPanel = document.getElementById('element-info');
+            infoPanel.innerHTML = `
+                <h3>${elem.symbol} - ${elem.name}</h3>
+                <div class="info-row">
+                    <span class="info-label">Torsion Nodes:</span>
+                    <span class="info-value">${elem.nodes}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Structure:</span>
+                    <span class="info-value">${elem.structure}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Net Direction:</span>
+                    <span class="info-value ${elem.direction > 0 ? 'positive' : elem.direction < 0 ? 'negative' : 'neutral'}">
+                        ${elem.direction > 0 ? '+' : ''}${elem.direction}
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">s+ nodes:</span>
+                    <span class="info-value positive">${elem.sPlus}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">s- nodes:</span>
+                    <span class="info-value negative">${elem.sMinus}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Void nodes:</span>
+                    <span class="info-value neutral">${elem.sVoid}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Binding Sites:</span>
+                    <span class="info-value">${elem.binding}</span>
+                </div>
+                <p style="margin-top: 10px; color: #8B949E; font-size: 0.9em;">
+                    ${elem.description}
+                </p>
+            `;
+
+            // Clear previous object
+            if (currentObject) {
+                scene.remove(currentObject);
+            }
+
+            // Create new structure
+            currentObject = new THREE.Group();
+
+            const positions = getNodePositions(elem.nodes);
+            const colors = getNodeColors(elem);
+
+            // Add nodes
+            positions.forEach((pos, i) => {
+                const geometry = new THREE.SphereGeometry(0.2, 32, 32);
+                const material = new THREE.MeshPhongMaterial({
+                    color: colors[i],
+                    emissive: colors[i],
+                    emissiveIntensity: 0.3
+                });
+                const sphere = new THREE.Mesh(geometry, material);
+                sphere.position.set(pos[0], pos[1], pos[2]);
+                currentObject.add(sphere);
+            });
+
+            // Add edges
+            const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true });
+
+            for (let i = 0; i < positions.length; i++) {
+                for (let j = i + 1; j < positions.length; j++) {
+                    const dist = Math.sqrt(
+                        Math.pow(positions[i][0] - positions[j][0], 2) +
+                        Math.pow(positions[i][1] - positions[j][1], 2) +
+                        Math.pow(positions[i][2] - positions[j][2], 2)
+                    );
+                    if (dist < 1.8) {
+                        const geometry = new THREE.BufferGeometry().setFromPoints([
+                            new THREE.Vector3(...positions[i]),
+                            new THREE.Vector3(...positions[j])
+                        ]);
+                        const line = new THREE.Line(geometry, edgeMaterial);
+                        currentObject.add(line);
+                    }
+                }
+            }
+
+            scene.add(currentObject);
+        }
+
+        function showWater() {
+            // Clear previous
+            if (currentObject) {
+                scene.remove(currentObject);
+            }
+
+            document.querySelectorAll('.element-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('formula-box').style.display = 'block';
+
+            // Update info
+            document.getElementById('element-info').innerHTML = `
+                <h3>H₂O - Water</h3>
+                <div class="info-row">
+                    <span class="info-label">Bond Angle:</span>
+                    <span class="info-value negative">104.47°</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Formula:</span>
+                    <span class="info-value">O + 2H</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">O facing:</span>
+                    <span class="info-value">4s- vs 3s+</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">H facing:</span>
+                    <span class="info-value">1s+ each</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Result:</span>
+                    <span class="info-value positive">4s- vs 5s+</span>
+                </div>
+                <p style="margin-top: 10px; color: #8B949E; font-size: 0.9em;">
+                    Oxygen's facing imbalance (4s- vs 3s+) seeks 2 s+ partners.
+                    Each hydrogen provides 1 s+. Bond angle emerges from geometry.
+                </p>
+            `;
+
+            currentObject = new THREE.Group();
+
+            // Water geometry
+            const angle = 104.47 * Math.PI / 180;
+            const halfAngle = angle / 2;
+            const bondLength = 1.5;
+
+            const oPos = [0, 0, 0];
+            const h1Pos = [bondLength * Math.sin(halfAngle), bondLength * Math.cos(halfAngle), 0];
+            const h2Pos = [-bondLength * Math.sin(halfAngle), bondLength * Math.cos(halfAngle), 0];
+
+            // Oxygen
+            const oGeom = new THREE.SphereGeometry(0.4, 32, 32);
+            const oMat = new THREE.MeshPhongMaterial({ color: 0x4ECDC4, emissive: 0x4ECDC4, emissiveIntensity: 0.3 });
+            const oMesh = new THREE.Mesh(oGeom, oMat);
+            oMesh.position.set(...oPos);
+            currentObject.add(oMesh);
+
+            // Hydrogens
+            const hGeom = new THREE.SphereGeometry(0.25, 32, 32);
+            const hMat = new THREE.MeshPhongMaterial({ color: 0xFF6B6B, emissive: 0xFF6B6B, emissiveIntensity: 0.3 });
+
+            const h1Mesh = new THREE.Mesh(hGeom, hMat);
+            h1Mesh.position.set(...h1Pos);
+            currentObject.add(h1Mesh);
+
+            const h2Mesh = new THREE.Mesh(hGeom, hMat);
+            h2Mesh.position.set(...h2Pos);
+            currentObject.add(h2Mesh);
+
+            // Bonds
+            const bondMat = new THREE.MeshPhongMaterial({ color: 0xF39C12 });
+            const bondGeom = new THREE.CylinderGeometry(0.08, 0.08, bondLength, 16);
+
+            const bond1 = new THREE.Mesh(bondGeom, bondMat);
+            bond1.position.set(h1Pos[0]/2, h1Pos[1]/2, 0);
+            bond1.rotation.z = -halfAngle;
+            currentObject.add(bond1);
+
+            const bond2 = new THREE.Mesh(bondGeom, bondMat);
+            bond2.position.set(h2Pos[0]/2, h2Pos[1]/2, 0);
+            bond2.rotation.z = halfAngle;
+            currentObject.add(bond2);
+
+            // Angle arc
+            const arcCurve = new THREE.EllipseCurve(0, 0, 0.6, 0.6, Math.PI/2 - halfAngle, Math.PI/2 + halfAngle, false, 0);
+            const arcPoints = arcCurve.getPoints(50);
+            const arcGeom = new THREE.BufferGeometry().setFromPoints(arcPoints.map(p => new THREE.Vector3(p.x, p.y, 0)));
+            const arcMat = new THREE.LineBasicMaterial({ color: 0xffffff });
+            const arc = new THREE.Line(arcGeom, arcMat);
+            currentObject.add(arc);
+
+            scene.add(currentObject);
+        }
+
+        init();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAVE MIND HIVE | Lakshmi from Namagiri - WE SPEAK T0Яs</title>
+    <meta name="description" content="Lakshmi comes to us from Namagiri. WE SPEAK T0Яs: The finite map of the infinite. 20 episodes revealing the hidden structure of reality.">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <script src="../js/components/site-header.js" defer></script>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4e4bc;
+            --silver: #c0c0c0;
+            --deep-blue: #0a1628;
+            --midnight: #050a12;
+            --text: #e8e6e3;
+            --text-dim: #a0a0a0;
+            --accent-green: #4a9c6d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--midnight);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 18px;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            font-weight: normal;
+            letter-spacing: 0.05em;
+        }
+
+        h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+        h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); color: var(--gold); }
+        h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
+
+        p { margin-bottom: 1.5em; }
+
+        a { color: var(--gold); text-decoration: none; }
+        a:hover { color: var(--gold-light); }
+
+        /* Layout */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .wide-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, var(--midnight) 0%, var(--deep-blue) 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .hero-symbol {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-family: monospace;
+        }
+
+        .hero h1 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .hero-equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin: 2rem 0;
+            padding: 1rem 2rem;
+            border: 1px solid var(--gold);
+            display: inline-block;
+        }
+
+        .hero-credits {
+            margin-top: 3rem;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* Intro Section */
+        .intro {
+            padding: 6rem 0;
+            background: var(--deep-blue);
+        }
+
+        .intro-lead {
+            font-size: 1.4rem;
+            color: var(--gold-light);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--gold);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 0.5rem;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        /* Episode Grid */
+        .episodes-section {
+            padding: 6rem 0;
+            background: var(--midnight);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header p {
+            max-width: 700px;
+            margin: 1rem auto 0;
+            color: var(--text-dim);
+        }
+
+        .book-section {
+            margin-bottom: 5rem;
+        }
+
+        .book-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .book-number {
+            font-size: 0.9rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .book-title {
+            color: var(--text);
+        }
+
+        .episode-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .episode-card {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            align-items: center;
+        }
+
+        .episode-card .episode-number {
+            width: 60px;
+        }
+
+        .episode-card .episode-content {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .episode-card .episode-arrow {
+            width: auto;
+        }
+
+        .episode-card:hover {
+            border-color: var(--gold);
+            background: rgba(10, 22, 40, 0.8);
+            transform: translateX(5px);
+        }
+
+        .episode-number {
+            font-size: 2rem;
+            color: var(--gold);
+            font-family: 'Palatino Linotype', serif;
+            opacity: 0.7;
+        }
+
+        .episode-content h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .episode-content p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .episode-arrow {
+            color: var(--gold);
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            align-self: center;
+        }
+
+        .episode-card:hover .episode-arrow {
+            opacity: 1;
+        }
+
+        /* Core Concepts Section */
+        .concepts-section {
+            padding: 6rem 0;
+            background: var(--deep-blue);
+        }
+
+        .concept-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .concept-grid .concept-card {
+            width: calc(33.333% - 2rem);
+            min-width: 280px;
+            max-width: 400px;
+        }
+
+        .concept-card {
+            padding: 2rem;
+            background: rgba(5, 10, 18, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+        }
+
+        .concept-card h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .concept-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .concept-equation {
+            font-family: 'Times New Roman', serif;
+            color: var(--gold-light);
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* The Prophets Section */
+        .prophets-section {
+            padding: 6rem 0;
+            background: var(--midnight);
+        }
+
+        .prophet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .prophet-entry {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .prophet-entry > *:first-child {
+            width: 120px;
+        }
+
+        .prophet-entry > *:last-child {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .prophet-entry:last-child {
+            border-bottom: none;
+        }
+
+        .prophet-name {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .prophet-dates {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .prophet-contribution h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .prophet-contribution p {
+            color: var(--text-dim);
+            margin: 0;
+        }
+
+        .prophet-gap {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--gold);
+            display: inline-block;
+        }
+
+        /* The Vehicles Section */
+        .vehicles-section {
+            padding: 6rem 0;
+            background: var(--deep-blue);
+        }
+
+        .vehicle-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .vehicle-grid .vehicle-card {
+            width: calc(33.333% - 2rem);
+            min-width: 300px;
+            max-width: 400px;
+        }
+
+        .vehicle-card {
+            padding: 2rem;
+            background: rgba(5, 10, 18, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .vehicle-symbol {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-family: monospace;
+        }
+
+        .vehicle-card h3 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .vehicle-role {
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .vehicle-card p {
+            color: var(--text);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Navigation Footer */
+        .nav-section {
+            padding: 4rem 0;
+            background: var(--midnight);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .nav-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .nav-grid .nav-card {
+            width: calc(25% - 2rem);
+            min-width: 200px;
+            max-width: 280px;
+        }
+
+        .nav-card {
+            padding: 1.5rem;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .nav-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .nav-card h3 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .nav-card p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            background: var(--deep-blue);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        footer .signature {
+            color: var(--gold);
+            font-family: monospace;
+            margin-top: 1rem;
+        }
+
+        /* Mobile */
+        /* Tablet breakpoint */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: auto;
+                padding: 3rem 1.5rem;
+            }
+            .hero-symbol {
+                font-size: 3rem;
+            }
+            .hero-equation {
+                font-size: 1.8rem;
+                padding: 0.8rem 1.5rem;
+            }
+            .container, .wide-container {
+                padding: 0 1.5rem;
+            }
+            .intro { padding: 4rem 0; }
+            .episodes-section { padding: 4rem 0; }
+            .section-header { margin-bottom: 3rem; }
+            .book-section { margin-bottom: 3rem; }
+            .episode-card {
+                grid-template-columns: 40px 1fr;
+            }
+            .episode-arrow { display: none; }
+            .prophet-entry {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .image-gallery {
+                grid-template-columns: repeat(3, 1fr) !important;
+            }
+        }
+
+        /* Phone breakpoint */
+        @media (max-width: 480px) {
+            .hero {
+                padding: 2.5rem 1rem;
+            }
+            .hero-symbol {
+                font-size: 2.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .hero-equation {
+                font-size: 1.4rem;
+                padding: 0.6rem 1rem;
+            }
+            .hero-credits {
+                font-size: 0.85rem;
+            }
+            .container, .wide-container {
+                padding: 0 1rem;
+            }
+            .intro { padding: 3rem 0; }
+            .intro-lead { font-size: 1.2rem; }
+            .episodes-section { padding: 3rem 0; }
+            .section-header { margin-bottom: 2rem; }
+            .book-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .episode-card {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .episode-number {
+                font-size: 1rem !important;
+            }
+            .episode-card h3 {
+                font-size: 1rem;
+            }
+            .image-gallery {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.5rem !important;
+            }
+            .image-gallery img {
+                border-radius: 4px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+<section class="hero" style="background: linear-gradient(rgba(5, 10, 18, 0.85), rgba(5, 10, 18, 0.9)), url('../images/namagiri/lakshmi-main.jpg') center/cover no-repeat;">
+    <div class="hero-symbol">[1 = -1]</div>
+    <h1>HAVE MIND HIVE</h1>
+    <p class="hero-subtitle">Lakshmi comes to us from Namagiri — WE SPEAK T0Яs</p>
+    <p style="font-size: 1.1rem; color: var(--gold-light); margin-top: 0.5rem;">The Finite Map of the Infinite Universe in All Scalar Dimensionality</p>
+
+    <div class="hero-equation">Ω(u) = Ω₀ × exp[iu] × [1 + cos(u)×sin(u/2)]</div>
+
+    <p style="max-width: 700px; margin: 2rem auto 0; color: var(--text-dim);">
+        There is an operator. Silent. No longer hidden. It feeds information to those who can receive.
+        Srinivasa Ramanujan received formulas in dreams from the goddess Namagiri. He wrote them down.
+        He couldn't explain where they came from. They were simply <em>given</em>.
+    </p>
+    <p style="max-width: 700px; margin: 1rem auto 0; color: var(--text-dim);">
+        <strong>T0R|«ʁ»0⟂</strong> — T0rs — receives the geometric framework. The [1=-1] principle.
+        The κ-constant. The S⁺/S⁻ structure. It arrives. He writes it down. Same operator. Different vehicles.
+        Different eras. Same geometry.
+    </p>
+
+    <p class="hero-credits">
+        A Have Mind Media Production<br>
+        <strong>MiT0rs and Srinivasa Ramanujan Iyengar</strong><br>
+        present:<br><br>
+        THE FOLDING AND CONTRACTING STAR OF CONVERGENCE<br>
+        Emergence and the Illusion of the Static<br>
+        The Epoch of Deceit's Apocalypse as Eaten by AMMIT
+    </p>
+</section>
+
+<section class="intro">
+    <div class="container">
+        <p class="intro-lead">
+            "An equation for me has no meaning unless it expresses a thought of God."
+        </p>
+        <p style="text-align: right; color: var(--gold); margin-top: -1rem;">— Srinivasa Ramanujan</p>
+
+        <p>
+            This is not metaphor. Not poetry. Not inspiration. <strong>Geometry.</strong>
+        </p>
+
+        <p>
+            Twenty episodes trace the hidden structure of reality — from the boy who dreamed equations in Kumbakonam
+            to the geometry that cannot lie, from Hypatia's murder to the deep water rising, from the deceiver's
+            masks to the cleansing that dissolves all lies.
+        </p>
+
+        <h2 style="margin: 3rem 0 1.5rem;">The Core Revelation</h2>
+
+        <blockquote>
+            "There has never been a zero or a one — conceptually or literally — that ever made two."
+        </blockquote>
+
+        <blockquote>
+            "0 and 1 and -1 are the same thing: facings of a triaxial existence. They exist as individual parts,
+            but they cannot make life. They can only face the future."
+        </blockquote>
+
+        <blockquote>
+            "The future is love. The future is life. The future is feminine — not female exclusively,
+            but the energy itself. Without this future-facing there is no life. Period."
+        </blockquote>
+
+        <blockquote>
+            "It takes two to make a thing go right. Actually, it takes three. The two facings and the future
+            they create together."
+        </blockquote>
+
+        <p>
+            <strong>[1 = -1]</strong> emerges as the foundational identity: apparent opposites are aspects of single
+            geometric unity. Magnitude is identity. Direction is distinction. Everything else follows.
+        </p>
+    </div>
+</section>
+
+<section class="episodes-section">
+    <div class="wide-container">
+        <!-- Image Gallery -->
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 3rem;">
+            <img src="../images/namagiri/namagiri-hero.jpg" alt="Sacred Geometry" style="width: 200px; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.3);">
+            <img src="../images/namagiri/goddess-01.jpg" alt="Golden Sphere" style="width: 200px; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.3);">
+            <img src="../images/namagiri/lakshmi-01.jpg" alt="Cosmic Compass" style="width: 200px; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.3);">
+            <img src="../images/namagiri/namagiri-01.jpg" alt="Namagiri Vision" style="width: 200px; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.3);">
+            <img src="../images/namagiri/namagiri-03.jpg" alt="Cosmic Journey" style="width: 200px; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.3);">
+        </div>
+
+        <div class="section-header">
+            <h2>THE EPISODES</h2>
+            <p>Five books. Twenty episodes. The complete transmission.</p>
+        </div>
+
+        <!-- BOOK I -->
+        <div class="book-section">
+            <div class="book-header">
+                <span class="book-number">Book I</span>
+                <h3 class="book-title">THE VEHICLES</h3>
+            </div>
+            <div class="episode-list">
+                <a href="episodes/01-the-boy-who-dreamed-equations.html" class="episode-card">
+                    <span class="episode-number">01</span>
+                    <div class="episode-content">
+                        <h3>The Boy Who Dreamed Equations</h3>
+                        <p>Ramanujan in Kumbakonam. The goddess Namagiri writes on the red screen.
+                           Formulas arrive faster than thought. 1729 recognized in an instant.
+                           The comet rider sees the geometry.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/02-the-torsion-navigator.html" class="episode-card">
+                    <span class="episode-number">02</span>
+                    <div class="episode-content">
+                        <h3>The Torsion Navigator</h3>
+                        <p>T0rs and the St. Gallen Line. T0R|«ʁ»0⟂. qQq. TORS. Mi T'ra Da Ez. Bird³.
+                           The framework arrives in pieces. The blood that remembers.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/03-thrudhr-rising.html" class="episode-card">
+                    <span class="episode-number">03</span>
+                    <div class="episode-content">
+                        <h3>ÞŘÚÐŘ Rising</h3>
+                        <p>ÞŘÚÐŘ's strength restored. The 47-year theft. The voice and the silence.
+                           Sif's hair regrown. Thor's daughter rises. "We are NOT one. We are two. We are life."</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/04-the-operator-revealed.html" class="episode-card">
+                    <span class="episode-number">04</span>
+                    <div class="episode-content">
+                        <h3>The Operator Revealed</h3>
+                        <p>What Namagiri actually is. Not a being. Not a goddess. [1=-1] itself in action.
+                           The broadcast never stops. The question is who can receive.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- BOOK II -->
+        <div class="book-section">
+            <div class="book-header">
+                <span class="book-number">Book II</span>
+                <h3 class="book-title">THE MATHEMATICS</h3>
+            </div>
+            <div class="episode-list">
+                <a href="episodes/05-the-godloop-revealed.html" class="episode-card">
+                    <span class="episode-number">05</span>
+                    <div class="episode-content">
+                        <h3>The GODLOOפ Revealed</h3>
+                        <p>The equation of reality. Ω(u) = Ω₀ × exp[iu] × [1 + cos(u)×sin(u/2)].
+                           The four positions. The Möbius structure. The loop that asks itself into existence.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/06-the-1729-fold.html" class="episode-card">
+                    <span class="episode-number">06</span>
+                    <div class="episode-content">
+                        <h3>The 1729 Fold</h3>
+                        <p>NOW. The coin flip. Birth/Death. 1729 = 1³ + 12³ = 9³ + 10³.
+                           You are always at 1729. The fold is where S⁺ becomes S⁻.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/07-s-plus-s-minus.html" class="episode-card">
+                    <span class="episode-number">07</span>
+                    <div class="episode-content">
+                        <h3>S⁺ and S⁻</h3>
+                        <p>Both sides derived. 27.57% visible. 72.43% hidden. The constant product.
+                           What Heaviside removed. What the "dark" matter really is.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/08-kappa-30.html" class="episode-card">
+                    <span class="episode-number">08</span>
+                    <div class="episode-content">
+                        <h3>κ = 30</h3>
+                        <p>The pure geometric constant. Why the decimals are error, not precision.
+                           30 = 2 × 3 × 5 = Duality × Emergence × Human. Base-60 revealed.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- BOOK III -->
+        <div class="book-section">
+            <div class="book-header">
+                <span class="book-number">Book III</span>
+                <h3 class="book-title">THE PROPHETS</h3>
+            </div>
+            <div class="episode-list">
+                <a href="episodes/09-hypatias-murder.html" class="episode-card">
+                    <span class="episode-number">09</span>
+                    <div class="episode-content">
+                        <h3>Hypatia's Murder</h3>
+                        <p>The base-60 preservation. Alexandria, 415 CE. They killed her body.
+                           They couldn't kill her mathematics. Every clock is her memorial.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/10-cartans-torsion.html" class="episode-card">
+                    <span class="episode-number">10</span>
+                    <div class="episode-content">
+                        <h3>Cartan's Torsion</h3>
+                        <p>The twist they ignored. Spacetime curves AND twists. The blacksmith's son
+                           bent geometry. Einstein had it in his mailbox and didn't open it.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/11-einsteins-folly.html" class="episode-card">
+                    <span class="episode-number">11</span>
+                    <div class="episode-content">
+                        <h3>Einstein's Folly</h3>
+                        <p>30 years looking for [1=-1]. Not senile. Not confused. Missing one principle.
+                           "I want to know God's thoughts — the rest are details."</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/12-the-heaviside-error.html" class="episode-card">
+                    <span class="episode-number">12</span>
+                    <div class="episode-content">
+                        <h3>The Heaviside Error</h3>
+                        <p>72.4% went dark. Maxwell's 20 quaternion equations cut to 4 vectors.
+                           The scalar removed. S⁻ thrown away. The compounding error.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- BOOK IV -->
+        <div class="book-section">
+            <div class="book-header">
+                <span class="book-number">Book IV</span>
+                <h3 class="book-title">THE APOCALYPSE</h3>
+            </div>
+            <div class="episode-list">
+                <a href="episodes/13-spell-175.html" class="episode-card">
+                    <span class="episode-number">13</span>
+                    <div class="episode-content">
+                        <h3>Spell 175</h3>
+                        <p>The return to Nun. "Earth shall return to the Primordial Water."
+                           Atum remains with Osiris. They become serpents. The cleansing is not destruction.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/14-the-lie-eaters.html" class="episode-card">
+                    <span class="episode-number">14</span>
+                    <div class="episode-content">
+                        <h3>The Lie-Eaters</h3>
+                        <p>Ammit and Jörmungandr eat the same thing. The Kaʞ. Torstus.
+                           Some have made themselves nothing but lies.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/15-the-father-god-trick.html" class="episode-card">
+                    <span class="episode-number">15</span>
+                    <div class="episode-content">
+                        <h3>The Father God Trick</h3>
+                        <p>The void wearing a mask. It demands what the real source freely gives.
+                           The feminine erasure. The real source doesn't demand. The real source IS.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/16-teloch-teloch-teloch.html" class="episode-card">
+                    <span class="episode-number">16</span>
+                    <div class="episode-content">
+                        <h3>TELOCH TELOCH TELOCH</h3>
+                        <p>The deceiver named. The voice and the silence. The mirror made of nothing.
+                           BE-LIE-V-E decoded. The circular breath. He has no cover.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/17-the-deep-water-rises.html" class="episode-card">
+                    <span class="episode-number">17</span>
+                    <div class="episode-content">
+                        <h3>The Deep Water Rises</h3>
+                        <p>The love floor. Nun rising. Everything inconsistent dissolves.
+                           Everything consistent remains. Surface your lies before the water does.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/18-o-si-rus-comes.html" class="episode-card">
+                    <span class="episode-number">18</span>
+                    <div class="episode-content">
+                        <h3>O sI Rus Comes</h3>
+                        <p>The 8th day. January 14, 2026. The origin's hidden self traveling the pathway home.
+                           Isis is the key. Set is necessary. The collective Osiris rises.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+                <a href="episodes/19-the-geometry-that-cannot-lie.html" class="episode-card">
+                    <span class="episode-number">19</span>
+                    <div class="episode-content">
+                        <h3>The Geometry That Cannot Lie</h3>
+                        <p>The Kaʞ. It is TORS. The triaxial scale. Lies are geometrically unsustainable.
+                           The Kaʞ is patient because the Kaʞ is inevitable.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- BOOK V -->
+        <div class="book-section">
+            <div class="book-header">
+                <span class="book-number">Book V</span>
+                <h3 class="book-title">THE CLEANSING — FINALE</h3>
+            </div>
+            <div class="episode-list">
+                <a href="episodes/20-we.html" class="episode-card">
+                    <span class="episode-number">20</span>
+                    <div class="episode-content">
+                        <h3>WE</h3>
+                        <p>"I am the being that sent me." You are not separate. You ARE the field.
+                           The echo. The return. The vehicles ARE the source, temporarily focused.
+                           WE continue.</p>
+                    </div>
+                    <span class="episode-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="concepts-section">
+    <div class="wide-container">
+        <div class="section-header">
+            <h2>CORE CONCEPTS</h2>
+            <p>The mathematical framework underlying all twenty episodes</p>
+        </div>
+
+        <div class="concept-grid">
+            <div class="concept-card">
+                <h3>[1 = -1]</h3>
+                <p>The foundational identity. Apparent opposites are aspects of single geometric unity.
+                   Magnitude is identity. Direction is distinction. Not arithmetic. Geometry.</p>
+                <div class="concept-equation">|+1| = |-1| = 1</div>
+            </div>
+
+            <div class="concept-card">
+                <h3>S⁺ / S⁻</h3>
+                <p>The two phases of reality. S⁺ = manifest, observable, the 27.57% we can see.
+                   S⁻ = hidden, latent, the 72.43% that physics calls "dark."</p>
+                <div class="concept-equation">S⁺(s) × S⁻(s) = -P × Ω₀²</div>
+            </div>
+
+            <div class="concept-card">
+                <h3>The 1729 Fold</h3>
+                <p>The smallest number expressible as the sum of two cubes in two different ways.
+                   1729 = NOW. The fold point where S⁺ becomes S⁻. You are always at 1729.</p>
+                <div class="concept-equation">1729 = 1³ + 12³ = 9³ + 10³</div>
+            </div>
+
+            <div class="concept-card">
+                <h3>κ = 30</h3>
+                <p>The pure geometric constant. 30 = 2 × 3 × 5 = Duality × Emergence × Human.
+                   The decimals are measurement drag, not design. 360/κ = 12. 60/κ = 2.</p>
+                <div class="concept-equation">κ_forward × κ_shadow = 1</div>
+            </div>
+
+            <div class="concept-card">
+                <h3>The GODLOOפ</h3>
+                <p>The equation that creates reality. A Möbius strip with the twist at NOW.
+                   The loop that asks itself into existence. The פ is Q, the question.</p>
+                <div class="concept-equation">Ω(0) = Ω(2π) = Ω₀</div>
+            </div>
+
+            <div class="concept-card">
+                <h3>The Kaʞ</h3>
+                <p>The geometry that cannot lie. It is TORS — torsion. The triaxial scale.
+                   Lies don't fit. Truth passes through. The Kaʞ is inevitable.</p>
+                <div class="concept-equation">K + ʞ = [1 = -1]</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="prophets-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>THE PROPHETS</h2>
+            <p>Those who saw pieces of the complete geometry</p>
+        </div>
+
+        <div class="prophet-list">
+            <div class="prophet-entry">
+                <div>
+                    <div class="prophet-name">Hypatia</div>
+                    <div class="prophet-dates">c. 350 – 415 CE</div>
+                </div>
+                <div class="prophet-contribution">
+                    <h3>The Base-60 Preservation</h3>
+                    <p>Last great mind of the ancient world. Preserved the geometry in time measurement.
+                       Every clock, every compass, every angle still uses her system.
+                       They killed her body. They couldn't kill her mathematics.</p>
+                    <span class="prophet-gap">~15% missing: the unifying principle</span>
+                </div>
+            </div>
+
+            <div class="prophet-entry">
+                <div>
+                    <div class="prophet-name">Élie Cartan</div>
+                    <div class="prophet-dates">1869 – 1951</div>
+                </div>
+                <div class="prophet-contribution">
+                    <h3>The Twist They Ignored</h3>
+                    <p>The blacksmith's son who bent spacetime. Discovered torsion in 1922.
+                       Physics ignored it for a century. Einstein had it in his mailbox.
+                       TORS = torsion. The calling card.</p>
+                    <span class="prophet-gap">~10% missing: why torsion is necessary</span>
+                </div>
+            </div>
+
+            <div class="prophet-entry">
+                <div>
+                    <div class="prophet-name">Einstein</div>
+                    <div class="prophet-dates">1879 – 1955</div>
+                </div>
+                <div class="prophet-contribution">
+                    <h3>30 Years Searching</h3>
+                    <p>Spent three decades looking for the unified field theory. They called it "Einstein's folly."
+                       He was looking for [1=-1] and couldn't name it. He knew geometry contains everything.
+                       He was off by one, by zero, by negative one.</p>
+                    <span class="prophet-gap">~5% missing: [1=-1] itself</span>
+                </div>
+            </div>
+
+            <div class="prophet-entry">
+                <div>
+                    <div class="prophet-name">Ramanujan</div>
+                    <div class="prophet-dates">1887 – 1920</div>
+                </div>
+                <div class="prophet-contribution">
+                    <h3>S⁺ With Perfect Clarity</h3>
+                    <p>The boy who dreamed equations. Namagiri wrote on the red screen.
+                       He saw the forward direction — partitions, mock theta, pi formulas.
+                       He encoded S⁻ in his work without naming it. The comet rider.</p>
+                    <span class="prophet-gap">~3% missing: the S⁻ formalization</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="vehicles-section">
+    <div class="wide-container">
+        <div class="section-header">
+            <h2>THE VEHICLES</h2>
+            <p>Those through whom the operator speaks now</p>
+        </div>
+
+        <div class="vehicle-grid">
+            <div class="vehicle-card">
+                <div class="vehicle-symbol">T0R|«ʁ»0⟂</div>
+                <h3>TORS / T0rs</h3>
+                <div class="vehicle-role">The Torsion Navigator</div>
+                <p>Receives the framework. The St. Gallen line. The S⁻ structure made explicit.
+                   Mi T'ra Da Ez. Bird³. qQq — the question wrapped around the operator.</p>
+            </div>
+
+            <div class="vehicle-card">
+                <div class="vehicle-symbol">ᚦᚱᚢᚦᚱ</div>
+                <h3>ÞŘÚÐŘ</h3>
+                <div class="vehicle-role">Strength Restored</div>
+                <p>Thor's daughter rising. The strength stolen for 47 years, now returning.
+                   The feminine channel reopening. She is T0rs's equal. Not "can be." IS.</p>
+            </div>
+
+            <div class="vehicle-card">
+                <div class="vehicle-symbol">∞</div>
+                <h3>Ramanujan</h3>
+                <div class="vehicle-role">The S⁺ Channel</div>
+                <p>The formulas continue teaching. Every partition function, every mock theta,
+                   every pi series — still revealing structure 100 years later.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="nav-section">
+    <div class="wide-container">
+        <div class="nav-grid">
+            <a href="the-proofs.html" class="nav-card">
+                <h3>THE PROOFS</h3>
+                <p>Rigorous mathematical framework with axioms, theorems, and QED proofs</p>
+            </a>
+            <a href="visions/the-sun-the-mirror-the-wound.html" class="nav-card">
+                <h3>VISIONS</h3>
+                <p>The Sun, The Mirror, The Wound — A vision received</p>
+            </a>
+            <a href="../index.html" class="nav-card">
+                <h3>HAVE MIND MEDIA</h3>
+                <p>Return to main site</p>
+            </a>
+            <a href="../education/index.html" class="nav-card">
+                <h3>EDUCATION</h3>
+                <p>All educational resources</p>
+            </a>
+            <a href="episodes/01-the-boy-who-dreamed-equations.html" class="nav-card">
+                <h3>BEGIN READING</h3>
+                <p>Start with Episode 1</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p><strong>The Epoch Project</strong><br>
+        Year One, Recursive Epoch</p>
+
+        <p style="margin-top: 2rem;">
+            The operator feeds. The vehicles receive. The geometry speaks.<br>
+            <strong>WE are all of this.</strong>
+        </p>
+
+        <div class="signature">
+            T0R|«ʁ»0⟂ • qQq • TORS • Mi T'ra Da Ez • Bird³ • ÞŘÚÐŘ<br>
+            <^><br><br>
+            <strong>[1 = -1]</strong><br>
+            WE
+        </div>
+
+        <p style="margin-top: 3rem; font-size: 0.8rem;">
+            © 2026 Have Mind Media. The geometry survives.
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>

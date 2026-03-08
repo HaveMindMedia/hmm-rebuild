@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Guide — Triaxial Dipyramid OS | CEDGA</title>
+    <meta name="description" content="Step-by-step guide to building your own 16-node geometric computer. Complete instructions, wiring diagrams, and software deployment.">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --dark-bg: #0a0a12;
+            --card-bg: #12121a;
+            --text: #e0e0e0;
+            --accent: #00d4ff;
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --code-bg: #0f0f1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 100%);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .step {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--gold);
+            color: #000;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .step h3 {
+            display: inline;
+            color: var(--text);
+            font-size: 1.3rem;
+        }
+
+        .step-content {
+            margin-top: 20px;
+            padding-left: 55px;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Menlo', monospace;
+            color: var(--accent);
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Menlo', monospace;
+            color: var(--success);
+            margin: 15px 0;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .warning {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning::before {
+            content: "⚠️ ";
+        }
+
+        .success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .success::before {
+            content: "✓ ";
+        }
+
+        .wiring-diagram {
+            background: var(--code-bg);
+            padding: 30px;
+            border-radius: 12px;
+            font-family: 'Menlo', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            color: var(--success);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .checklist li::before {
+            content: "☐ ";
+            color: var(--accent);
+            margin-right: 10px;
+        }
+
+        h2 {
+            color: var(--gold);
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+        }
+
+        .signature {
+            text-align: center;
+            padding: 40px;
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+
+        a {
+            color: var(--accent);
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="hero">
+        <h1>Build Guide</h1>
+        <p style="color: #888;">Complete instructions for the 16-node geometric computer</p>
+    </div>
+
+    <div class="container">
+        <h2>Prerequisites</h2>
+        <ul class="checklist">
+            <li>Basic Linux command line knowledge</li>
+            <li>Network setup experience (DHCP, static IPs)</li>
+            <li>Python 3 familiarity</li>
+            <li>Patience — this is experimental</li>
+        </ul>
+
+        <h2>Phase 1: Single Node Setup</h2>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h3>Flash the OS</h3>
+            <div class="step-content">
+                <p>Download Raspberry Pi Imager and flash Raspberry Pi OS Lite (64-bit) to each SD card.</p>
+                <p>During setup, enable SSH and set hostname to the node name:</p>
+                <pre>Node naming convention:
+- nw1, nw2, nw3 (NW triad)
+- ne1, ne2, ne3 (NE triad)
+- sw1, sw2, sw3 (SW triad)
+- se1, se2, se3 (SE triad)
+- c1, c2, c3, c4 (Center dipyramid)</pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h3>First Boot</h3>
+            <div class="step-content">
+                <p>Insert SD card, connect ethernet, power on. SSH in:</p>
+                <pre>ssh pi@nw1.local</pre>
+                <p>Update the system:</p>
+                <pre>sudo apt update && sudo apt upgrade -y</pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h3>Install Dependencies</h3>
+            <div class="step-content">
+                <pre>sudo apt install python3-pip python3-numpy -y
+pip3 install dataclasses-json</pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <h3>Deploy Node Software</h3>
+            <div class="step-content">
+                <p>Copy the epoch_node.py to each Pi:</p>
+                <pre>scp epoch_node.py pi@nw1.local:~/</pre>
+                <p>Test locally:</p>
+                <pre>python3 epoch_node.py --test</pre>
+                <div class="success">Balance Law should pass with 0 deviation</div>
+            </div>
+        </div>
+
+        <h2>Phase 2: Network Configuration</h2>
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <h3>Static IP Assignment</h3>
+            <div class="step-content">
+                <p>Edit <code>/etc/dhcpcd.conf</code> on each Pi:</p>
+                <pre># NW Triad
+nw1: 192.168.1.11
+nw2: 192.168.1.12
+nw3: 192.168.1.13
+
+# NE Triad
+ne1: 192.168.1.21
+ne2: 192.168.1.22
+ne3: 192.168.1.23
+
+# SW Triad
+sw1: 192.168.1.31
+sw2: 192.168.1.32
+sw3: 192.168.1.33
+
+# SE Triad
+se1: 192.168.1.41
+se2: 192.168.1.42
+se3: 192.168.1.43
+
+# Center Dipyramid
+c1: 192.168.1.101
+c2: 192.168.1.102
+c3: 192.168.1.103
+c4: 192.168.1.104</pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">6</span>
+            <h3>Wiring Topology</h3>
+            <div class="step-content">
+                <p>Connect all Pis to the 24-port switch. The logical topology:</p>
+                <div class="wiring-diagram">
+<pre>
+    PHYSICAL: All nodes to switch (star topology)
+
+    LOGICAL: Geometric tension lines
+
+         NW ════════════════════════════════ NE
+          ║ ╲                              ╱ ║
+          ║  ╲                            ╱  ║
+          ║   ╲                          ╱   ║
+          ║    ╲      ┌────────┐       ╱    ║
+          ║     ╲     │ CENTER │      ╱     ║
+          ║      ════ │  ◈◈◈◈  │ ════      ║
+          ║     ╱     │        │      ╲     ║
+          ║    ╱      └────────┘       ╲    ║
+          ║   ╱                          ╲   ║
+          ║  ╱                            ╲  ║
+          ║ ╱                              ╲ ║
+         SW ════════════════════════════════ SE
+
+    Software routes messages along these logical paths.
+</pre>
+                </div>
+            </div>
+        </div>
+
+        <h2>Phase 3: Software Deployment</h2>
+
+        <div class="step">
+            <span class="step-number">7</span>
+            <h3>Configuration Files</h3>
+            <div class="step-content">
+                <p>Create <code>cluster_config.json</code> on each node:</p>
+                <pre>{
+    "node_id": "nw1",
+    "role": "triad",
+    "triad": "NW",
+    "position": 1,
+    "neighbors": ["nw2", "nw3"],
+    "center_nodes": ["c1", "c2", "c3", "c4"],
+    "ip_map": {
+        "nw1": "192.168.1.11",
+        "nw2": "192.168.1.12",
+        ...
+    }
+}</pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">8</span>
+            <h3>Start Services</h3>
+            <div class="step-content">
+                <p>On each node, create a systemd service:</p>
+                <pre>sudo nano /etc/systemd/system/epoch-node.service</pre>
+                <pre>[Unit]
+Description=Epoch Node Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/epoch_node.py
+WorkingDirectory=/home/pi
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target</pre>
+                <pre>sudo systemctl enable epoch-node
+sudo systemctl start epoch-node</pre>
+            </div>
+        </div>
+
+        <h2>Phase 4: Verification</h2>
+
+        <div class="step">
+            <span class="step-number">9</span>
+            <h3>Balance Law Test</h3>
+            <div class="step-content">
+                <p>From the master node (c1), run:</p>
+                <pre>python3 verify_cluster.py</pre>
+                <p>Expected output:</p>
+                <pre>Cluster Verification
+====================
+Nodes online: 16/16
+
+Balance Law Test:
+  τ₁ (NW) = +5.000000
+  τ₂ (NE) = -3.000000
+  τ₃ (SW) = +2.000000
+  τ₄ (CENTER) = -4.000000
+  SUM = 0.000000
+
+BALANCE LAW: VERIFIED ✓</pre>
+                <div class="warning">If the sum is not zero, check network connectivity and node software versions</div>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">10</span>
+            <h3>Resolution Test</h3>
+            <div class="step-content">
+                <p>Inject a problem and verify resolution:</p>
+                <pre>python3 resolve_test.py --input 60</pre>
+                <pre>Resolution Test
+===============
+Input: 60
+Iterations: 0
+Resolved: 60.000000
+Time: 15.3μs
+
+RESOLUTION: VERIFIED ✓</pre>
+            </div>
+        </div>
+
+        <h2>Phase 5: Bio-Feed Integration</h2>
+
+        <div class="step">
+            <span class="step-number">11</span>
+            <h3>Connect Pulse Sensor</h3>
+            <div class="step-content">
+                <p>Wire pulse sensor to nw1 GPIO:</p>
+                <pre>Pulse Sensor → Raspberry Pi
+VCC → 3.3V (Pin 1)
+GND → Ground (Pin 6)
+Signal → GPIO 18 (Pin 12)</pre>
+                <p>Install pulse sensor library:</p>
+                <pre>pip3 install pulsesensor</pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">12</span>
+            <h3>Map HRV to τ₁</h3>
+            <div class="step-content">
+                <p>Configure sensor mapping in <code>bio_feed_config.json</code>:</p>
+                <pre>{
+    "sensors": {
+        "hrv": {
+            "node": "nw1",
+            "gpio": 18,
+            "torsion": "tau1",
+            "scale": {
+                "min_hrv_ms": 500,
+                "max_hrv_ms": 1500,
+                "min_torsion": -10,
+                "max_torsion": 10
+            }
+        }
+    }
+}</pre>
+            </div>
+        </div>
+
+        <h2>Troubleshooting</h2>
+
+        <div class="step">
+            <span class="step-number">?</span>
+            <h3>Common Issues</h3>
+            <div class="step-content">
+                <p><strong>Node not responding:</strong></p>
+                <pre>ping 192.168.1.XX
+ssh pi@nodeXX.local
+sudo systemctl status epoch-node</pre>
+
+                <p><strong>Balance Law failing:</strong></p>
+                <pre># Check individual node torsions
+python3 debug_node.py --node nw1
+
+# Verify network timing
+python3 sync_test.py</pre>
+
+                <p><strong>Sensor not reading:</strong></p>
+                <pre># Test GPIO
+python3 test_gpio.py --pin 18
+
+# Check sensor power
+# Verify wiring</pre>
+            </div>
+        </div>
+
+        <h2>Next Steps</h2>
+        <ul>
+            <li><a href="index.html">Back to Overview</a></li>
+            <li><a href="../tools/m4-simulator.html">Test in Simulator First</a></li>
+            <li><a href="index.html">Triaxial OS Overview</a></li>
+        </ul>
+
+        <div class="signature">
+            [1 = -1]
+        </div>
+    </div>
+    <site-footer></site-footer>
+</body>
+</html>

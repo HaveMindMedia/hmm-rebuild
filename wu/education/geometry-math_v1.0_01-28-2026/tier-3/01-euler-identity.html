@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euler's Identity | Geometry Math</title>
+    <meta name="description" content="e^(iπ) + 1 = 0 — the most beautiful equation in mathematics. It's not magic. It's just walking.">
+    <link rel="stylesheet" href="../css/geometry-math.css">
+    <style>
+        .euler-display {
+            text-align: center;
+            padding: 3rem;
+            margin: 2rem 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+        }
+
+        .euler-display .equation {
+            font-size: 3rem;
+            color: var(--gold);
+            font-family: 'Times New Roman', serif;
+        }
+
+        .euler-display .subtitle {
+            color: var(--text-dim);
+            margin-top: 1rem;
+        }
+
+        .walk-steps {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .walk-step {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .walk-step.active {
+            border-color: var(--cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .walk-step .step-num {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .walk-step .value {
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-family: 'Times New Roman', serif;
+        }
+
+        .walk-step .meaning {
+            font-size: 0.85rem;
+            color: var(--cyan);
+            margin-top: 0.5rem;
+        }
+
+        .derivation-panel {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .derivation-panel h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .derivation-step {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            align-items: center;
+        }
+
+        .derivation-step .number {
+            width: 30px;
+            height: 30px;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .derivation-step .formula {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            color: var(--gold-light);
+        }
+
+        .derivation-step .explanation {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .walking-demo-container {
+            position: relative;
+        }
+
+        .angle-slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .angle-slider-container input[type="range"] {
+            width: 200px;
+            accent-color: var(--gold);
+        }
+
+        .angle-slider-container label {
+            color: var(--text-dim);
+            min-width: 100px;
+        }
+
+        .current-value-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        .current-value-display .big {
+            font-size: 1.5rem;
+            color: var(--cyan);
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-3">Tier 3 - Revelation</div>
+        <h1>Euler's Identity</h1>
+        <p class="subtitle">The equation that connects e, i, π, 1, and 0. It's not mysterious — it's just walking around a circle.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <div class="euler-display">
+                <div class="equation">e<sup>iπ</sup> + 1 = 0</div>
+                <div class="subtitle">"The most beautiful equation in mathematics"</div>
+            </div>
+
+            <h2>What Does It Mean?</h2>
+
+            <p>
+                This equation has been called "beautiful" because it connects five fundamental constants:
+            </p>
+
+            <div class="walk-steps">
+                <div class="walk-step">
+                    <div class="step-num">Constant</div>
+                    <div class="value">e</div>
+                    <div class="meaning">Growth</div>
+                </div>
+                <div class="walk-step">
+                    <div class="step-num">Constant</div>
+                    <div class="value">i</div>
+                    <div class="meaning">Rotation</div>
+                </div>
+                <div class="walk-step">
+                    <div class="step-num">Constant</div>
+                    <div class="value">π</div>
+                    <div class="meaning">Circles</div>
+                </div>
+                <div class="walk-step">
+                    <div class="step-num">Constant</div>
+                    <div class="value">1</div>
+                    <div class="meaning">Unity</div>
+                </div>
+                <div class="walk-step">
+                    <div class="step-num">Constant</div>
+                    <div class="value">0</div>
+                    <div class="meaning">Nothing</div>
+                </div>
+            </div>
+
+            <p>
+                But the equation isn't magic. It's geometry. Let's see why.
+            </p>
+
+            <h2>Euler's Formula: The General Case</h2>
+
+            <p>
+                The identity is a special case of <strong>Euler's formula</strong>:
+            </p>
+
+            <div class="equation-box">
+                <div class="equation">e<sup>iθ</sup> = cos(θ) + i·sin(θ)</div>
+                <div class="equation-label">A point at angle θ on the unit circle</div>
+            </div>
+
+            <p>
+                This says: when you raise e to an imaginary power iθ, you get a point on the unit circle at angle θ.
+            </p>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Drag the slider to change θ. Watch how e<sup>iθ</sup> traces the unit circle.
+                </p>
+                <div id="euler-demo" class="demo-canvas"></div>
+
+                <div class="angle-slider-container">
+                    <label>θ = <span id="theta-display">0</span>π</label>
+                    <input type="range" id="theta-slider" min="0" max="2" step="0.01" value="0">
+                </div>
+
+                <div class="current-value-display">
+                    <span>e<sup>i·<span id="theta-val">0</span>π</sup> = </span>
+                    <span class="big" id="result-val">1 + 0i</span>
+                </div>
+            </div>
+
+            <h2>The Special Case: θ = π</h2>
+
+            <p>
+                Now set θ = π (half way around the circle):
+            </p>
+
+            <div class="derivation-panel">
+                <h4>Step by Step</h4>
+
+                <div class="derivation-step">
+                    <div class="number">1</div>
+                    <div>
+                        <div class="formula">e<sup>iπ</sup> = cos(π) + i·sin(π)</div>
+                        <div class="explanation">Apply Euler's formula with θ = π</div>
+                    </div>
+                </div>
+
+                <div class="derivation-step">
+                    <div class="number">2</div>
+                    <div>
+                        <div class="formula">cos(π) = -1, sin(π) = 0</div>
+                        <div class="explanation">At 180°, we're on the left side of the circle</div>
+                    </div>
+                </div>
+
+                <div class="derivation-step">
+                    <div class="number">3</div>
+                    <div>
+                        <div class="formula">e<sup>iπ</sup> = -1 + 0i = -1</div>
+                        <div class="explanation">The point is at -1 on the real axis</div>
+                    </div>
+                </div>
+
+                <div class="derivation-step">
+                    <div class="number">4</div>
+                    <div>
+                        <div class="formula">e<sup>iπ</sup> + 1 = 0</div>
+                        <div class="explanation">Add 1 to both sides: -1 + 1 = 0 ✓</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <p>e<sup>iπ</sup> = -1 because walking π radians (180°) around the unit circle takes you to the point -1.</p>
+            </div>
+
+            <h2>The Deeper Meaning</h2>
+
+            <p>
+                Think about what this really says:
+            </p>
+
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>e<sup>iθ</sup></strong> means "walk θ radians around the circle"
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>e<sup>iπ</sup></strong> means "walk halfway around" = end up at -1
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>e<sup>i2π</sup></strong> means "walk all the way around" = end up at 1
+                </li>
+            </ul>
+
+            <p>
+                The exponential function e<sup>x</sup> naturally creates rotation when the exponent is imaginary. This isn't a coincidence — it emerges from the mathematics of growth and change.
+            </p>
+
+            <h2>Why Does e Do This?</h2>
+
+            <p>
+                The number e ≈ 2.718... is defined by continuous compound growth. When you grow at an imaginary rate (a rate that involves i), instead of growing outward, you rotate.
+            </p>
+
+            <div class="equation-box">
+                <div class="equation">e<sup>iθ</sup> = lim<sub>n→∞</sub> (1 + iθ/n)<sup>n</sup></div>
+                <div class="equation-label">Growth in the imaginary direction = rotation</div>
+            </div>
+
+            <p>
+                Each tiny step of "growing" by iθ/n adds a tiny rotation. As n approaches infinity, these tiny rotations smooth out into walking along the circle.
+            </p>
+
+            <h2>The Unity of Mathematics</h2>
+
+            <p>
+                Euler's identity shows that:
+            </p>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    <strong>Exponentials</strong> (e) and <strong>trigonometry</strong> (cos, sin) are the same thing
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    <strong>Imaginary numbers</strong> (i) are just rotation by 90°
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    <strong>Pi</strong> (π) measures how far around the circle — halfway = opposite
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    <strong>1 and -1</strong> are the same point, separated by half a rotation
+                </li>
+            </ul>
+
+            <div class="key-insight">
+                <p>Euler's identity isn't a strange coincidence.<br>It's the inevitable consequence of <strong>rotation being the foundation of mathematics</strong>.</p>
+            </div>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    &#x2713; e<sup>iθ</sup> = cos(θ) + i·sin(θ) — a point on the unit circle
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    &#x2713; e<sup>iπ</sup> = -1 because π radians = 180° = the opposite point
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    &#x2713; Exponential growth in imaginary direction = rotation
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    &#x2713; Euler's identity unifies exponentials, trig, and complex numbers
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="../tier-2/03-harmonic-balance.html" class="nav-button">
+                    <span class="label">Previous</span>
+                    &#x2190; Harmonic Balance
+                </a>
+                <a href="02-phase-quadrature.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    Phase Quadrature &#x2192;
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../js/circle-engine.js"></script>
+    <script src="../js/components/circle-canvas.js"></script>
+    <script>
+        // Euler demo
+        const eulerDemo = new CircleCanvas('euler-demo', {
+            radius: 100,
+            showGrid: true,
+            showAxes: true,
+            showProjections: true,
+            showAngle: true,
+            showCoordinates: false,
+            showTrace: false,
+            interactive: false
+        });
+
+        const thetaSlider = document.getElementById('theta-slider');
+        const thetaDisplay = document.getElementById('theta-display');
+        const thetaVal = document.getElementById('theta-val');
+        const resultVal = document.getElementById('result-val');
+
+        function updateEulerDemo() {
+            const thetaMultiplier = parseFloat(thetaSlider.value);
+            const theta = thetaMultiplier * Math.PI;
+
+            eulerDemo.setAngle(theta);
+
+            thetaDisplay.textContent = thetaMultiplier.toFixed(2);
+            thetaVal.textContent = thetaMultiplier.toFixed(2);
+
+            const cosVal = Math.cos(theta);
+            const sinVal = Math.sin(theta);
+
+            let realStr = cosVal.toFixed(2);
+            let imagStr = sinVal >= 0 ? ` + ${sinVal.toFixed(2)}i` : ` - ${Math.abs(sinVal).toFixed(2)}i`;
+
+            // Clean up display
+            if (Math.abs(sinVal) < 0.01) imagStr = '';
+            if (Math.abs(cosVal) < 0.01) realStr = '0';
+
+            resultVal.textContent = realStr + imagStr || '0';
+        }
+
+        thetaSlider.addEventListener('input', updateEulerDemo);
+        updateEulerDemo();
+    </script>
+</body>
+</html>

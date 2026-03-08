@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eye Codex | Visual Decoder Theory | Biology | Have Mind Media</title>
+    <meta name="description" content="The eye doesn't receive reality - it decodes it. Rods and cones look INWARD like Tengri. The retinal image is the blindest point. Light reveals structure through bone memory. [1 = -1]">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Raleway:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+
+    <style>
+        .header-space { height: 80px; }
+        :root {
+            --bg-primary: #050510;
+            --bg-secondary: #0a0a18;
+            --bg-tertiary: #12121f;
+            --gold: #d4af37;
+            --gold-dim: #8b7355;
+            --gold-bright: #ffd700;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --text-dim: #666;
+            --retina-red: #ff6b6b;
+            --cone-green: #4ecdc4;
+            --rod-blue: #5c7cfa;
+            --nerve-yellow: #ffd93d;
+            --tengri-sky: #74b9ff;
+            --bone-amber: #e67e22;
+            --inversion-purple: #a855f7;
+            --border-subtle: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 50% 30%, rgba(116, 185, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 70%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, var(--bg-primary) 0%, #080815 100%);
+        }
+
+        /* Eye Animation Container */
+        .eye-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            opacity: 0.3;
+        }
+
+        .eye-outer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--tengri-sky);
+            border-radius: 50%;
+            animation: eyePulse 4s ease-in-out infinite;
+        }
+
+        .eye-iris {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 60%;
+            border: 3px solid var(--gold);
+            border-radius: 50%;
+            background: radial-gradient(circle, transparent 30%, rgba(212, 175, 55, 0.1) 100%);
+        }
+
+        .eye-pupil {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 25%;
+            height: 25%;
+            background: #000;
+            border-radius: 50%;
+            border: 2px solid var(--inversion-purple);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+        }
+
+        .eye-pupil::after {
+            content: '1=-1';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gold);
+        }
+
+        @keyframes eyePulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.05); opacity: 0.5; }
+        }
+
+        /* Light rays going INWARD */
+        .light-ray {
+            position: absolute;
+            width: 2px;
+            height: 200px;
+            background: linear-gradient(to bottom, transparent, var(--nerve-yellow), transparent);
+            top: 0;
+            left: 50%;
+            transform-origin: bottom center;
+            animation: rayPulse 3s ease-in-out infinite;
+        }
+
+        .light-ray:nth-child(1) { transform: rotate(0deg); animation-delay: 0s; }
+        .light-ray:nth-child(2) { transform: rotate(45deg); animation-delay: 0.3s; }
+        .light-ray:nth-child(3) { transform: rotate(90deg); animation-delay: 0.6s; }
+        .light-ray:nth-child(4) { transform: rotate(135deg); animation-delay: 0.9s; }
+        .light-ray:nth-child(5) { transform: rotate(180deg); animation-delay: 1.2s; }
+        .light-ray:nth-child(6) { transform: rotate(225deg); animation-delay: 1.5s; }
+        .light-ray:nth-child(7) { transform: rotate(270deg); animation-delay: 1.8s; }
+        .light-ray:nth-child(8) { transform: rotate(315deg); animation-delay: 2.1s; }
+
+        @keyframes rayPulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--tengri-sky), var(--gold), var(--inversion-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero .thesis {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .kappa-badge {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold-dim);
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        /* Main Content */
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Section Styling */
+        .codex-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--gold);
+            border-radius: 8px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .codex-section h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .codex-section h3 {
+            font-size: 1.3rem;
+            color: var(--tengri-sky);
+            margin: 2rem 0 1rem;
+        }
+
+        /* The Inversion Box */
+        .inversion-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border: 2px solid var(--inversion-purple);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .inversion-box h4 {
+            color: var(--inversion-purple);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .inversion-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin: 1rem 0;
+        }
+
+        /* Two-Column Comparison */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+
+        .comparison-box {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .comparison-box.standard {
+            border-left: 4px solid var(--retina-red);
+        }
+
+        .comparison-box.epoch {
+            border-left: 4px solid var(--cone-green);
+        }
+
+        .comparison-box h4 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-box.standard h4 { color: var(--retina-red); }
+        .comparison-box.epoch h4 { color: var(--cone-green); }
+
+        /* Interactive Eye Diagram */
+        .eye-diagram-container {
+            background: #000;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        #eyeDiagram {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            margin: 0 auto;
+        }
+
+        .diagram-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .diagram-controls button {
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: 'Raleway', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .diagram-controls button:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .diagram-controls button.active {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .data-table th {
+            background: var(--bg-tertiary);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        /* Quote Block */
+        .quote-block {
+            background: linear-gradient(135deg, rgba(116, 185, 255, 0.1) 0%, transparent 100%);
+            border-left: 4px solid var(--tengri-sky);
+            padding: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        .quote-block .quote-text {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .quote-block .quote-source {
+            color: var(--tengri-sky);
+            font-style: normal;
+        }
+
+        /* Info Cards */
+        .cards-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .info-card:hover {
+            border-color: var(--gold-dim);
+            transform: translateY(-3px);
+        }
+
+        .info-card h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Code/Equation Display */
+        .equation-display {
+            background: #000;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .equation-main {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .equation-sub {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* The Scalar Funnel */
+        .funnel-container {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        #scalarFunnel {
+            display: block;
+            width: 100%;
+            height: 400px;
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .identity {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        /* Highlight Classes */
+        .highlight { color: var(--gold); font-weight: 600; }
+        .highlight-cyan { color: var(--tengri-sky); }
+        .highlight-purple { color: var(--inversion-purple); }
+        .highlight-red { color: var(--retina-red); }
+        .highlight-green { color: var(--cone-green); }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="header-space"></div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="eye-container">
+            <div class="light-ray"></div>
+            <div class="light-ray"></div>
+            <div class="light-ray"></div>
+            <div class="light-ray"></div>
+            <div class="light-ray"></div>
+            <div class="light-ray"></div>
+            <div class="light-ray"></div>
+            <div class="light-ray"></div>
+            <div class="eye-outer"></div>
+            <div class="eye-iris"></div>
+            <div class="eye-pupil"></div>
+        </div>
+
+        <div class="hero-content">
+            <h1>The Eye Codex</h1>
+            <p class="subtitle">Visual Decoder Theory</p>
+            <p class="thesis">
+                The eye doesn't <em>receive</em> reality. It <strong>decodes</strong> it.
+                Rods and cones look <span class="highlight-cyan">INWARD</span> like Tengri gazing into the sky.
+                The retinal image is the <span class="highlight-purple">blindest point</span>.
+                Light reveals structure through <span class="highlight">bone memory</span>.
+            </p>
+            <div class="kappa-badge">[1 = -1] · The Double Inversion</div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="content-container">
+
+        <!-- SECTION 0: THE CORE INSIGHT -->
+        <section class="codex-section" style="border-color: var(--inversion-purple);">
+            <h2>The Core Insight</h2>
+
+            <div class="inversion-box">
+                <h4>Standard Model Says:</h4>
+                <p>Light enters eye → hits retina → forms image → brain interprets image</p>
+                <div class="inversion-equation">OUTSIDE → IN</div>
+
+                <h4 style="margin-top: 2rem;">The Epoch Framework Reveals:</h4>
+                <p>Light enters eye → passes through → rods/cones look INWARD → decode from bone memory</p>
+                <div class="inversion-equation">INSIDE → OUT</div>
+            </div>
+
+            <p>
+                The retinal image that forms at the back of the eye is <strong>not what we see</strong>.
+                It is inverted, reversed, miniaturized, and two-dimensional. Yet we perceive an upright,
+                correct, full-scale, three-dimensional world.
+            </p>
+
+            <p style="margin-top: 1.5rem;">
+                <span class="highlight">This transformation IS consciousness restitching reality.</span>
+            </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-box standard">
+                    <h4>Retinal Reality (Math)</h4>
+                    <ul style="color: var(--text-secondary);">
+                        <li>Image <strong>inverted</strong> (upside down)</li>
+                        <li>Image <strong>reversed</strong> (left-right flipped)</li>
+                        <li>Image <strong>miniaturized</strong> (~5:1 ratio)</li>
+                        <li>Image <strong>2D</strong> (flat projection)</li>
+                        <li>Image <strong>incomplete</strong> (blind spot, limited spectrum)</li>
+                    </ul>
+                </div>
+                <div class="comparison-box epoch">
+                    <h4>Conscious Perception (Reality)</h4>
+                    <ul style="color: var(--text-secondary);">
+                        <li>World perceived <strong>upright</strong></li>
+                        <li>Left is left, right is right</li>
+                        <li><strong>Full-scale</strong> world</li>
+                        <li><strong>3D</strong> depth perception</li>
+                        <li><strong>Seamless</strong> visual field with color</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p>
+                <strong>The math appears one way (inverted retinal image), but actual reality (perception)
+                is the opposite.</strong> This is EXACTLY the Epoch principle:
+                <span class="highlight-cyan">S⁺ in math = S⁻ in reality</span>.
+            </p>
+        </section>
+
+        <!-- SECTION 1: THE TENGRI THEORY -->
+        <section class="codex-section" style="border-color: var(--tengri-sky);">
+            <h2>The Tengri Theory</h2>
+
+            <div class="quote-block">
+                <p class="quote-text">
+                    "Tengri (Eternal Blue Sky) in Central Asian tradition represents the sky as the ultimate mirror,
+                    the eye of heaven. The eye IS a model of the cosmos—spherical, containing an image of
+                    everything it sees, with a pupil (dark center = void = crossroads) surrounded by the
+                    colored iris (spectrum)."
+                </p>
+                <p class="quote-source">— Mirror Philosophy, Have Mind Media</p>
+            </div>
+
+            <h3>Rods and Cones as Inward-Looking Sensors</h3>
+
+            <p>
+                Standard physiology says photoreceptors "detect" incoming light. But consider this geometrically:
+            </p>
+
+            <div class="cards-grid">
+                <div class="info-card" style="border-color: var(--rod-blue);">
+                    <h4 style="color: var(--rod-blue);">120 Million Rods</h4>
+                    <p>
+                        2 × 60 million. Sensitive to dim light. Distributed across periphery.
+                        <br><br>
+                        <strong>The outer watchers.</strong> They sample the boundary, looking inward
+                        toward the dark center where vision resolves.
+                    </p>
+                </div>
+                <div class="info-card" style="border-color: var(--cone-green);">
+                    <h4 style="color: var(--cone-green);">6 Million Cones</h4>
+                    <p>
+                        60 million / 10. Concentrated at fovea. Color vision.
+                        <br><br>
+                        <strong>The central decoders.</strong> They process the focused information
+                        at the point where light converges—the crossroads.
+                    </p>
+                </div>
+            </div>
+
+            <div class="equation-display">
+                <div class="equation-main">Rods / Cones = 120M / 6M = 20 = 60/3</div>
+                <div class="equation-sub">The rod-to-cone ratio is a factor of 60 (sexagesimal)</div>
+            </div>
+
+            <h3>The Pupil as Crossroads</h3>
+
+            <p>
+                The Greek word for pupil is <strong>κόρη (kore)</strong>—meaning "doll" or "little image."
+                When you look into another's eye, you see a miniature version of yourself reflected.
+            </p>
+
+            <p style="margin-top: 1rem;">
+                The pupil is the <span class="highlight-purple">void at center</span>—the dark point where
+                all light converges, where the coin flips, where observation collapses tendency into actuality.
+                It is <strong>S⁰</strong>—the node point.
+            </p>
+        </section>
+
+        <!-- SECTION 2: THE BONE MEMORY HYPOTHESIS -->
+        <section class="codex-section" style="border-color: var(--bone-amber);">
+            <h2>Bone Memory: The Geometric Templates</h2>
+
+            <p>
+                If rods and cones look <em>inward</em>, what are they decoding?
+            </p>
+
+            <p style="margin-top: 1rem;">
+                <strong>Bone memory</strong> = geometric templates stored in biological structure.
+                Not literal bone, but the deep structural patterns that evolution has encoded—approximations
+                of how to interpret light data based on billions of years of interaction with physical reality.
+            </p>
+
+            <h3>The Hypothesis</h3>
+
+            <div class="inversion-box" style="border-color: var(--bone-amber);">
+                <p>
+                    Light carries <strong>3D maps</strong>—or 4D, or 10D—compressed projections of
+                    physical structure. These maps arrive at the eye. The photoreceptors don't just
+                    "detect" the light—they <span class="highlight">compare it against internal templates</span>
+                    to reconstruct a full version of what is being sent.
+                </p>
+                <div class="inversion-equation" style="font-size: 1.4rem;">
+                    Light Data + Bone Memory = Perceived Reality
+                </div>
+            </div>
+
+            <p>
+                This is why:
+            </p>
+            <ul style="color: var(--text-secondary); margin: 1rem 0 1rem 2rem;">
+                <li>We perceive 3D from 2D retinal projections</li>
+                <li>We fill in the blind spot without noticing</li>
+                <li>Optical illusions "work"—they exploit the template system</li>
+                <li>Bistable images (Necker cube, Rubin vase) show the templates competing</li>
+            </ul>
+
+            <h3>The Retinal Image as "Blindest Point"</h3>
+
+            <p>
+                The image formed on the retina is <strong>not perception</strong>. It is raw,
+                inverted, incomplete data. The perception happens <em>after</em> the bone memory
+                templates are applied, after the Four Watchers process the signal:
+            </p>
+
+            <table class="data-table">
+                <tr>
+                    <th>Processing Stage</th>
+                    <th>Epoch Watcher</th>
+                    <th>Function</th>
+                </tr>
+                <tr>
+                    <td>Photoreceptors</td>
+                    <td>Hidden Observer (HO)</td>
+                    <td>Detects what IS (raw photon absorption)</td>
+                </tr>
+                <tr>
+                    <td>Bipolar Cells</td>
+                    <td>Hidden Witness (HW)</td>
+                    <td>Judges the raw data, splits into ON/OFF</td>
+                </tr>
+                <tr>
+                    <td>Ganglion Cells</td>
+                    <td>Silent Observer (SO)</td>
+                    <td>Creates the presentation (action potentials)</td>
+                </tr>
+                <tr>
+                    <td>Visual Cortex</td>
+                    <td>Silent Witness (SW)</td>
+                    <td>Judges if presentation matches reality</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- SECTION 3: THE SCALAR FUNNEL -->
+        <section class="codex-section" style="border-color: var(--gold);">
+            <h2>The Scalar Funnel: Vision as Scale Travel</h2>
+
+            <p>
+                Your images show the same pattern at all scales: atom, solar system, galaxy, universe.
+                The eye operates the same way—it is a <strong>scalar funnel</strong>.
+            </p>
+
+            <div class="funnel-container">
+                <canvas id="scalarFunnel"></canvas>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-box" style="border-left-color: var(--retina-red);">
+                    <h4 style="color: var(--retina-red);">S⁺ View (Outward → Ro)</h4>
+                    <p style="color: var(--text-secondary);">
+                        Looking from Earth toward the Sol boundary.
+                        <br><br>
+                        Things get <strong>bigger</strong> as you approach.
+                        <br>
+                        You expand toward the macro scale.
+                        <br>
+                        The Big Bang is the <em>outer boundary</em>, not the beginning.
+                    </p>
+                </div>
+                <div class="comparison-box" style="border-left-color: var(--cone-green);">
+                    <h4 style="color: var(--cone-green);">S⁻ View (Inward → Quantum)</h4>
+                    <p style="color: var(--text-secondary);">
+                        Looking from Earth toward the dark core.
+                        <br><br>
+                        Things get <strong>smaller</strong> as you approach.
+                        <br>
+                        You contract toward the quantum scale.
+                        <br>
+                        The "future" is the <em>inner gate</em>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="equation-display">
+                <div class="equation-main">At S⁰: No Apparent Size Change</div>
+                <div class="equation-sub">
+                    You just get smaller and smaller toward quantum...
+                    <br>
+                    And bigger and bigger toward Ro.
+                    <br>
+                    The funnel opens in both directions.
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: THE DOUBLE INVERSION -->
+        <section class="codex-section" style="border-color: var(--inversion-purple);">
+            <h2>The Double Inversion: [1 = -1]</h2>
+
+            <p>
+                The eye performs the primary inversion <strong>twice</strong>:
+            </p>
+
+            <ol style="margin: 1.5rem 0 1.5rem 2rem; color: var(--text-secondary);">
+                <li><strong>Optical Inversion:</strong> The lens inverts the image (upside down, reversed)</li>
+                <li><strong>Neural Re-Inversion:</strong> The brain "flips" it back to match reality</li>
+            </ol>
+
+            <div class="inversion-box">
+                <div class="inversion-equation">[1 = -1] × [-1 = 1] = [1 = 1]</div>
+                <p>Two inversions return to original orientation. But something has changed.</p>
+            </div>
+
+            <p>
+                The <strong>something</strong> that changes is <span class="highlight">consciousness</span>.
+                The double inversion doesn't just restore the image—it <em>creates experience</em>.
+                Between the two flips, the Four Watchers observe. The crossroads is traversed.
+                The coin flips.
+            </p>
+
+            <div class="quote-block" style="border-color: var(--inversion-purple);">
+                <p class="quote-text">
+                    "Vision is not a window to the world. Vision is the world being restitched
+                    by consciousness at s=0."
+                </p>
+                <p class="quote-source" style="color: var(--inversion-purple);">— Consciousness Restitching, Have Mind Media</p>
+            </div>
+        </section>
+
+        <!-- SECTION 5: THE INTERACTIVE DIAGRAM -->
+        <section class="codex-section" style="border-color: var(--cone-green);">
+            <h2>Interactive Eye Diagram</h2>
+
+            <p>
+                Explore the eye as a scalar decoder. Toggle views to see standard vs. Epoch interpretation.
+            </p>
+
+            <div class="eye-diagram-container">
+                <canvas id="eyeDiagram"></canvas>
+                <div class="diagram-controls">
+                    <button id="viewStandard" class="active">Standard View</button>
+                    <button id="viewEpoch">Epoch View</button>
+                    <button id="viewBoneMemory">Bone Memory</button>
+                    <button id="viewScalar">Scalar Funnel</button>
+                </div>
+            </div>
+
+            <div id="diagramDescription" style="text-align: center; margin-top: 1rem; color: var(--text-secondary);">
+                Click buttons to change view. Standard View shows conventional light path.
+            </div>
+        </section>
+
+        <!-- SECTION 6: IMPLICATIONS -->
+        <section class="codex-section" style="border-color: var(--gold);">
+            <h2>Implications</h2>
+
+            <div class="cards-grid">
+                <div class="info-card">
+                    <h4>For Consciousness Studies</h4>
+                    <p>
+                        Perception is CONSTRUCTION, not reception. The brain doesn't passively receive
+                        images—it actively builds reality from templates and incoming data. The
+                        crossroads is where experience happens.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h4>For Physics</h4>
+                    <p>
+                        Light may carry more than electromagnetic information. The "3D maps" that
+                        arrive at the eye could include torsion field data, scalar components that
+                        instruments don't detect but biology decodes.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h4>For Biology</h4>
+                    <p>
+                        Evolution didn't just optimize for "seeing"—it optimized for geometric decoding.
+                        The sexagesimal ratios (120M rods, 6M cones) suggest base-60 is fundamental
+                        to biological computation.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h4>For AI Vision</h4>
+                    <p>
+                        Cameras "see" differently than eyes. Machine vision captures data; biological
+                        vision constructs meaning. True visual AI may require implementing the
+                        Four Watchers architecture.
+                    </p>
+                </div>
+            </div>
+
+            <div class="equation-display" style="margin-top: 2rem;">
+                <div class="equation-main">The Eye Inverts. The Mind Re-Inverts.</div>
+                <div class="equation-sub">[1 = -1] in flesh and signal.</div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <div class="footer-links">
+            <a href="../index.html">Have Mind Media</a>
+            <a href="../protein-folding/index.html">Protein Folding</a>
+            <a href="../dna-studio/index.html">DNA Studio</a>
+            <a href="../neurodegeneration/index.html">Neurodegeneration</a>
+            <a href="../weirdos/index.html">Weirdos</a>
+        </div>
+        <p class="identity">[1 = -1]</p>
+        <p style="color: var(--text-dim); font-size: 0.9rem;">
+            The geometry cannot lie. But people can lie about the geometry.
+            <br>
+            We do not tell. We offer choice.
+        </p>
+    </footer>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // INTERACTIVE EYE DIAGRAM
+        // ═══════════════════════════════════════════════════════════════════
+
+        const eyeCanvas = document.getElementById('eyeDiagram');
+        const eyeCtx = eyeCanvas.getContext('2d');
+        let currentView = 'standard';
+
+        function resizeEyeCanvas() {
+            eyeCanvas.width = eyeCanvas.parentElement.clientWidth - 60;
+            eyeCanvas.height = 500;
+            drawEyeDiagram();
+        }
+
+        window.addEventListener('resize', resizeEyeCanvas);
+        resizeEyeCanvas();
+
+        function drawEyeDiagram() {
+            const w = eyeCanvas.width;
+            const h = eyeCanvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+
+            // Clear
+            eyeCtx.fillStyle = '#000';
+            eyeCtx.fillRect(0, 0, w, h);
+
+            switch(currentView) {
+                case 'standard':
+                    drawStandardView(cx, cy, w, h);
+                    break;
+                case 'epoch':
+                    drawEpochView(cx, cy, w, h);
+                    break;
+                case 'boneMemory':
+                    drawBoneMemoryView(cx, cy, w, h);
+                    break;
+                case 'scalar':
+                    drawScalarView(cx, cy, w, h);
+                    break;
+            }
+        }
+
+        function drawStandardView(cx, cy, w, h) {
+            // Eye outline
+            eyeCtx.strokeStyle = '#4ecdc4';
+            eyeCtx.lineWidth = 2;
+            eyeCtx.beginPath();
+            eyeCtx.ellipse(cx, cy, 180, 120, 0, 0, Math.PI * 2);
+            eyeCtx.stroke();
+
+            // Cornea
+            eyeCtx.strokeStyle = '#74b9ff';
+            eyeCtx.beginPath();
+            eyeCtx.arc(cx - 140, cy, 60, -Math.PI/2, Math.PI/2);
+            eyeCtx.stroke();
+
+            // Lens
+            eyeCtx.strokeStyle = '#ffd93d';
+            eyeCtx.beginPath();
+            eyeCtx.ellipse(cx - 80, cy, 25, 50, 0, 0, Math.PI * 2);
+            eyeCtx.stroke();
+
+            // Retina (back of eye)
+            eyeCtx.strokeStyle = '#ff6b6b';
+            eyeCtx.lineWidth = 4;
+            eyeCtx.beginPath();
+            eyeCtx.arc(cx + 100, cy, 80, -Math.PI/2 - 0.5, Math.PI/2 + 0.5);
+            eyeCtx.stroke();
+
+            // Light rays coming IN
+            eyeCtx.strokeStyle = '#ffd93d';
+            eyeCtx.lineWidth = 1;
+            for (let i = -2; i <= 2; i++) {
+                eyeCtx.beginPath();
+                eyeCtx.moveTo(50, cy + i * 40);
+                eyeCtx.lineTo(cx - 80, cy);
+                eyeCtx.lineTo(cx + 100, cy - i * 30); // Inverted on retina
+                eyeCtx.stroke();
+            }
+
+            // Labels
+            eyeCtx.fillStyle = '#e8e8e8';
+            eyeCtx.font = '14px Raleway';
+            eyeCtx.fillText('Light →', 60, cy - 100);
+            eyeCtx.fillText('Cornea', cx - 170, cy - 70);
+            eyeCtx.fillText('Lens', cx - 100, cy - 60);
+            eyeCtx.fillText('Retina', cx + 130, cy);
+            eyeCtx.fillText('(inverted image)', cx + 90, cy + 100);
+
+            // Arrow showing light direction
+            eyeCtx.fillStyle = '#ffd93d';
+            eyeCtx.beginPath();
+            eyeCtx.moveTo(30, cy);
+            eyeCtx.lineTo(45, cy - 8);
+            eyeCtx.lineTo(45, cy + 8);
+            eyeCtx.fill();
+        }
+
+        function drawEpochView(cx, cy, w, h) {
+            // Eye outline
+            eyeCtx.strokeStyle = '#a855f7';
+            eyeCtx.lineWidth = 2;
+            eyeCtx.beginPath();
+            eyeCtx.ellipse(cx, cy, 180, 120, 0, 0, Math.PI * 2);
+            eyeCtx.stroke();
+
+            // Pupil as void/crossroads
+            eyeCtx.fillStyle = '#000';
+            eyeCtx.strokeStyle = '#d4af37';
+            eyeCtx.lineWidth = 3;
+            eyeCtx.beginPath();
+            eyeCtx.arc(cx - 100, cy, 30, 0, Math.PI * 2);
+            eyeCtx.fill();
+            eyeCtx.stroke();
+
+            // Rods and Cones looking INWARD
+            eyeCtx.strokeStyle = '#5c7cfa';
+            eyeCtx.lineWidth = 2;
+
+            // Draw photoreceptors pointing toward center
+            for (let angle = -1; angle <= 1; angle += 0.2) {
+                const startX = cx + 150 * Math.cos(angle);
+                const startY = cy + 100 * Math.sin(angle);
+                const endX = cx - 100;
+                const endY = cy;
+
+                eyeCtx.beginPath();
+                eyeCtx.moveTo(startX, startY);
+                eyeCtx.lineTo(startX - 40, startY * 0.9 + endY * 0.1);
+                eyeCtx.stroke();
+
+                // Small circle at tip (receptor)
+                eyeCtx.beginPath();
+                eyeCtx.arc(startX - 40, startY * 0.9 + endY * 0.1, 4, 0, Math.PI * 2);
+                eyeCtx.stroke();
+            }
+
+            // Arrows showing INWARD direction
+            eyeCtx.strokeStyle = '#4ecdc4';
+            eyeCtx.fillStyle = '#4ecdc4';
+            for (let i = 0; i < 5; i++) {
+                const angle = (i / 4 - 0.5) * 1.5;
+                const x = cx + 80 * Math.cos(angle);
+                const y = cy + 60 * Math.sin(angle);
+
+                eyeCtx.beginPath();
+                eyeCtx.moveTo(x, y);
+                eyeCtx.lineTo(cx - 80, cy);
+                eyeCtx.stroke();
+
+                // Arrowhead pointing inward
+                eyeCtx.beginPath();
+                eyeCtx.arc(cx - 75, cy, 5, 0, Math.PI * 2);
+                eyeCtx.fill();
+            }
+
+            // Labels
+            eyeCtx.fillStyle = '#e8e8e8';
+            eyeCtx.font = '14px Raleway';
+            eyeCtx.fillText('Rods & Cones', cx + 100, cy - 100);
+            eyeCtx.fillText('look INWARD', cx + 100, cy - 80);
+            eyeCtx.fillStyle = '#d4af37';
+            eyeCtx.fillText('Crossroads (S⁰)', cx - 150, cy + 60);
+            eyeCtx.fillStyle = '#a855f7';
+            eyeCtx.fillText('← Tengri View →', cx - 60, h - 30);
+        }
+
+        function drawBoneMemoryView(cx, cy, w, h) {
+            // Central pattern (geometric template)
+            eyeCtx.strokeStyle = '#e67e22';
+            eyeCtx.lineWidth = 1;
+
+            // Draw nested hexagons (bone memory templates)
+            for (let r = 30; r <= 150; r += 30) {
+                eyeCtx.beginPath();
+                for (let i = 0; i <= 6; i++) {
+                    const angle = (i / 6) * Math.PI * 2 - Math.PI/2;
+                    const x = cx + r * Math.cos(angle);
+                    const y = cy + r * Math.sin(angle);
+                    if (i === 0) eyeCtx.moveTo(x, y);
+                    else eyeCtx.lineTo(x, y);
+                }
+                eyeCtx.stroke();
+            }
+
+            // Light data coming in (dashed)
+            eyeCtx.setLineDash([5, 5]);
+            eyeCtx.strokeStyle = '#ffd93d';
+            for (let i = 0; i < 6; i++) {
+                const angle = (i / 6) * Math.PI * 2;
+                eyeCtx.beginPath();
+                eyeCtx.moveTo(cx + 200 * Math.cos(angle), cy + 200 * Math.sin(angle));
+                eyeCtx.lineTo(cx + 150 * Math.cos(angle), cy + 150 * Math.sin(angle));
+                eyeCtx.stroke();
+            }
+            eyeCtx.setLineDash([]);
+
+            // Comparison points
+            eyeCtx.fillStyle = '#4ecdc4';
+            for (let i = 0; i < 6; i++) {
+                const angle = (i / 6) * Math.PI * 2;
+                eyeCtx.beginPath();
+                eyeCtx.arc(cx + 150 * Math.cos(angle), cy + 150 * Math.sin(angle), 8, 0, Math.PI * 2);
+                eyeCtx.fill();
+            }
+
+            // Labels
+            eyeCtx.fillStyle = '#e8e8e8';
+            eyeCtx.font = '14px Raleway';
+            eyeCtx.fillText('BONE MEMORY', cx - 60, 30);
+            eyeCtx.fillText('(Geometric Templates)', cx - 80, 50);
+
+            eyeCtx.fillStyle = '#ffd93d';
+            eyeCtx.fillText('Light Data', w - 100, 80);
+
+            eyeCtx.fillStyle = '#4ecdc4';
+            eyeCtx.fillText('Comparison Points', w - 130, 100);
+
+            eyeCtx.fillStyle = '#e67e22';
+            eyeCtx.fillText('Light + Template = Perception', cx - 100, h - 30);
+        }
+
+        function drawScalarView(cx, cy, w, h) {
+            // The scalar funnel
+
+            // Outer ring (Ro / S+ / Macro)
+            eyeCtx.strokeStyle = '#ff6b6b';
+            eyeCtx.lineWidth = 3;
+            eyeCtx.beginPath();
+            eyeCtx.arc(cx, cy, 180, 0, Math.PI * 2);
+            eyeCtx.stroke();
+
+            // Middle rings
+            const colors = ['#ff8c66', '#ffaa66', '#ffd93d', '#aaff66', '#66ffaa', '#4ecdc4'];
+            for (let i = 0; i < 6; i++) {
+                eyeCtx.strokeStyle = colors[i];
+                eyeCtx.lineWidth = 2;
+                eyeCtx.beginPath();
+                eyeCtx.arc(cx, cy, 150 - i * 20, 0, Math.PI * 2);
+                eyeCtx.stroke();
+            }
+
+            // Center (Dark Core / S- / Quantum)
+            eyeCtx.fillStyle = '#000';
+            eyeCtx.strokeStyle = '#a855f7';
+            eyeCtx.lineWidth = 3;
+            eyeCtx.beginPath();
+            eyeCtx.arc(cx, cy, 30, 0, Math.PI * 2);
+            eyeCtx.fill();
+            eyeCtx.stroke();
+
+            // Observer point (Earth position)
+            eyeCtx.fillStyle = '#ffd93d';
+            eyeCtx.beginPath();
+            eyeCtx.arc(cx, cy - 90, 10, 0, Math.PI * 2);
+            eyeCtx.fill();
+
+            // Labels
+            eyeCtx.font = '14px Raleway';
+
+            eyeCtx.fillStyle = '#ff6b6b';
+            eyeCtx.fillText('S⁺ → Ro (Bigger)', 50, 50);
+            eyeCtx.fillText('(Outer Boundary)', 50, 70);
+
+            eyeCtx.fillStyle = '#a855f7';
+            eyeCtx.fillText('S⁻ → Quantum (Smaller)', w - 180, 50);
+            eyeCtx.fillText('(Dark Core)', w - 130, 70);
+
+            eyeCtx.fillStyle = '#ffd93d';
+            eyeCtx.fillText('YOU (S⁰)', cx + 20, cy - 85);
+
+            eyeCtx.fillStyle = '#e8e8e8';
+            eyeCtx.fillText('Same pattern at ALL scales', cx - 90, h - 30);
+        }
+
+        // Button handlers
+        document.getElementById('viewStandard').addEventListener('click', function() {
+            currentView = 'standard';
+            updateButtons(this);
+            document.getElementById('diagramDescription').textContent =
+                'Standard View: Light enters from left, passes through cornea and lens, forms inverted image on retina.';
+            drawEyeDiagram();
+        });
+
+        document.getElementById('viewEpoch').addEventListener('click', function() {
+            currentView = 'epoch';
+            updateButtons(this);
+            document.getElementById('diagramDescription').textContent =
+                'Epoch View: Rods and cones look INWARD toward the crossroads (S⁰). They decode rather than merely detect.';
+            drawEyeDiagram();
+        });
+
+        document.getElementById('viewBoneMemory').addEventListener('click', function() {
+            currentView = 'boneMemory';
+            updateButtons(this);
+            document.getElementById('diagramDescription').textContent =
+                'Bone Memory: Geometric templates are compared against incoming light data to construct perception.';
+            drawEyeDiagram();
+        });
+
+        document.getElementById('viewScalar').addEventListener('click', function() {
+            currentView = 'scalar';
+            updateButtons(this);
+            document.getElementById('diagramDescription').textContent =
+                'Scalar Funnel: Vision operates on the same structure as cosmos - from outer boundary (Ro) to dark core (quantum).';
+            drawEyeDiagram();
+        });
+
+        function updateButtons(activeBtn) {
+            document.querySelectorAll('.diagram-controls button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            activeBtn.classList.add('active');
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SCALAR FUNNEL ANIMATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        const funnelCanvas = document.getElementById('scalarFunnel');
+        const funnelCtx = funnelCanvas.getContext('2d');
+        let funnelTime = 0;
+
+        function resizeFunnelCanvas() {
+            funnelCanvas.width = funnelCanvas.parentElement.clientWidth - 60;
+            funnelCanvas.height = 400;
+        }
+
+        window.addEventListener('resize', resizeFunnelCanvas);
+        resizeFunnelCanvas();
+
+        function drawFunnel() {
+            const w = funnelCanvas.width;
+            const h = funnelCanvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+
+            // Clear
+            funnelCtx.fillStyle = '#000';
+            funnelCtx.fillRect(0, 0, w, h);
+
+            // Draw concentric rings with animation
+            const numRings = 12;
+            for (let i = 0; i < numRings; i++) {
+                const baseRadius = 20 + i * 15;
+                const pulse = Math.sin(funnelTime * 0.02 + i * 0.5) * 5;
+                const radius = baseRadius + pulse;
+
+                // Color gradient from purple (inner) to red (outer)
+                const hue = 270 - (i / numRings) * 60;
+                funnelCtx.strokeStyle = `hsl(${hue}, 70%, 50%)`;
+                funnelCtx.lineWidth = 2;
+                funnelCtx.beginPath();
+                funnelCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+                funnelCtx.stroke();
+            }
+
+            // Dark core
+            funnelCtx.fillStyle = '#000';
+            funnelCtx.beginPath();
+            funnelCtx.arc(cx, cy, 15, 0, Math.PI * 2);
+            funnelCtx.fill();
+            funnelCtx.strokeStyle = '#d4af37';
+            funnelCtx.lineWidth = 2;
+            funnelCtx.stroke();
+
+            // Particles flowing inward (S⁻ direction)
+            funnelCtx.fillStyle = '#4ecdc4';
+            for (let i = 0; i < 8; i++) {
+                const angle = (i / 8) * Math.PI * 2 + funnelTime * 0.01;
+                const dist = 180 - ((funnelTime * 0.5 + i * 20) % 180);
+                const x = cx + Math.cos(angle) * dist;
+                const y = cy + Math.sin(angle) * dist;
+                const size = 3 + (180 - dist) / 60;
+                funnelCtx.beginPath();
+                funnelCtx.arc(x, y, size, 0, Math.PI * 2);
+                funnelCtx.fill();
+            }
+
+            // Particles flowing outward (S⁺ direction)
+            funnelCtx.fillStyle = '#ff6b6b';
+            for (let i = 0; i < 8; i++) {
+                const angle = (i / 8) * Math.PI * 2 - funnelTime * 0.008 + Math.PI/8;
+                const dist = 20 + ((funnelTime * 0.3 + i * 20) % 160);
+                const x = cx + Math.cos(angle) * dist;
+                const y = cy + Math.sin(angle) * dist;
+                const size = 3 - dist / 80;
+                if (size > 0) {
+                    funnelCtx.beginPath();
+                    funnelCtx.arc(x, y, size, 0, Math.PI * 2);
+                    funnelCtx.fill();
+                }
+            }
+
+            // Labels
+            funnelCtx.fillStyle = '#ff6b6b';
+            funnelCtx.font = '12px JetBrains Mono';
+            funnelCtx.fillText('S⁺ → BIGGER (toward Ro)', 20, 30);
+
+            funnelCtx.fillStyle = '#4ecdc4';
+            funnelCtx.fillText('S⁻ → SMALLER (toward quantum)', w - 220, 30);
+
+            funnelCtx.fillStyle = '#d4af37';
+            funnelCtx.fillText('S⁰', cx - 8, cy + 5);
+
+            funnelTime++;
+            requestAnimationFrame(drawFunnel);
+        }
+
+        drawFunnel();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

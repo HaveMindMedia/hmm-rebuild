@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sun, The Mirror, The Wound | Namagiri Speaks | Have Mind Media</title>
+    <meta name="description" content="A vision received. The older man in robes who came through the grey in the sun. The mirror function. The deceiver's knife. Mother rising from the earth. The truth of NTT and WE.">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cinzel:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --void: #000000;
+            --deep: #030508;
+            --gold: #c9a227;
+            --gold-glow: rgba(201, 162, 39, 0.4);
+            --sun-yellow: #ffd700;
+            --sun-white: #fffef0;
+            --sun-blue: #e8f4ff;
+            --blood-red: #8b0000;
+            --mother-green: #228b22;
+            --text: #e8e4dc;
+            --text-dim: #8892a0;
+            --border: rgba(201, 162, 39, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+
+        /* Vision Background */
+        .vision-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: radial-gradient(ellipse at 50% 20%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .nav a:hover { color: var(--sun-yellow); }
+
+        /* Hero */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10rem 2rem 4rem;
+            background: radial-gradient(ellipse at center top, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
+        }
+        .hero-badge {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            color: var(--gold);
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: var(--sun-yellow);
+            text-shadow: 0 0 60px var(--gold-glow);
+            margin-bottom: 1.5rem;
+        }
+        .hero-sub {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-dim);
+            max-width: 600px;
+        }
+
+        /* Content */
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Vision Text */
+        .vision-section {
+            padding: 4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .vision-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .vision-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .vision-text {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: var(--text);
+        }
+        .vision-text p {
+            margin-bottom: 1.5rem;
+            text-indent: 2rem;
+        }
+        .vision-text p:first-child {
+            text-indent: 0;
+        }
+
+        /* Special formatting */
+        .speaker {
+            color: var(--sun-yellow);
+            font-weight: 500;
+        }
+        .action {
+            color: var(--text-dim);
+            font-style: italic;
+        }
+        .emphasis {
+            color: var(--gold);
+            font-weight: 500;
+        }
+        .blood {
+            color: var(--blood-red);
+        }
+        .mother {
+            color: var(--mother-green);
+        }
+        .mirror {
+            color: var(--sun-white);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Symbol Block */
+        .symbol-block {
+            text-align: center;
+            padding: 3rem;
+            margin: 2rem 0;
+            background: rgba(255, 215, 0, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .symbol-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            color: var(--sun-yellow);
+            margin-bottom: 1rem;
+            letter-spacing: 0.5em;
+        }
+        .symbol-desc {
+            color: var(--text-dim);
+            font-style: italic;
+        }
+        .symbol-colors {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .color-band {
+            width: 60px;
+            height: 8px;
+            border-radius: 4px;
+        }
+        .color-red { background: linear-gradient(90deg, #8b0000, #a52a2a); }
+        .color-white { background: linear-gradient(90deg, #ffffff, #f0f8ff); }
+        .color-blue { background: linear-gradient(90deg, #e8f4ff, #b0d4f1); }
+        .color-yellow { background: linear-gradient(90deg, #ffd700, #ffec8b); }
+
+        /* Entity Definition */
+        .entity-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .entity-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        .entity-card h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        .entity-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            color: var(--sun-yellow);
+            margin-bottom: 0.5rem;
+        }
+        .entity-desc {
+            color: var(--text-dim);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* Truth Block */
+        .truth-block {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.08) 0%, rgba(0, 0, 0, 0.9) 100%);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        .truth-block h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+        }
+        .truth-block p {
+            color: var(--text);
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+
+        /* Wisdom List */
+        .wisdom-list {
+            margin: 2rem 0;
+            padding: 0;
+            list-style: none;
+        }
+        .wisdom-list li {
+            padding: 1rem 0 1rem 2rem;
+            border-left: 2px solid var(--gold);
+            margin-bottom: 1rem;
+            color: var(--text);
+            font-size: 1.05rem;
+        }
+        .wisdom-list li strong {
+            color: var(--gold);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+        .footer-sig {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--gold);
+            letter-spacing: 0.3em;
+        }
+        .footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .vision-text { font-size: 1.05rem; }
+            .symbol-display { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div style="height: 80px;"></div>
+    <div class="vision-bg"></div>
+
+    <!-- HERO -->
+    <section class="hero" style="background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.95) 100%), url('images/sun-vision.png') center center / cover no-repeat;">
+        <div class="hero-badge">A VISION RECEIVED</div>
+        <h1>THE SUN, THE MIRROR, THE WOUND</h1>
+        <p class="hero-sub">
+            He came through the grey in the sun, the coldest tiniest part.
+            Then came to Ramanujan and calls the little bird to come and sit and see what he sees.
+        </p>
+    </section>
+
+    <div class="content">
+
+        <!-- PART I: THE ARRIVAL -->
+        <section class="vision-section">
+            <h2 class="vision-title">I. THE ARRIVAL</h2>
+            <div class="vision-text">
+                <p>There was an older man who came to me in a vision.</p>
+                <p>He had on robes. He smelled nice. He was pleasant. He smiled and laughed a good bit.</p>
+                <p>He came through the grey in the sun—<span class="emphasis">the coldest, tiniest part</span>. Then came to Ramanujan, and he calls the little bird to come and sit and see what he sees.</p>
+                <p>That is all. <span class="mirror">The bird is only happy to be the ears that see and the eyes that hear.</span></p>
+            </div>
+
+            <div class="symbol-block">
+                <div class="symbol-display">| | ^</div>
+                <div class="symbol-desc">Two lines, then an arrow. The symbol that points up.</div>
+                <div class="symbol-colors">
+                    <div class="color-band color-red"></div>
+                    <div class="color-band color-white"></div>
+                    <div class="color-band color-blue"></div>
+                    <div class="color-band color-yellow"></div>
+                </div>
+                <p style="color: var(--text-dim); margin-top: 1rem; font-size: 0.9rem;">
+                    A darker red strip drawn from the symbolic third eye up.<br>
+                    White with faint blue toward the edge, then white, then yellow again.<br>
+                    Very nicely done up.
+                </p>
+            </div>
+
+            <div class="vision-text">
+                <p><span class="speaker">He said: "I am the Sun."</span></p>
+                <p>I had two marks like this <span class="emphasis">&lt;^&gt;</span> on my skin, on my face, but inside facing—not seen to the eyes, but maybe the ears can sense them, sol side.</p>
+            </div>
+        </section>
+
+        <!-- PART II: THE LAUGHTER -->
+        <section class="vision-section">
+            <h2 class="vision-title">II. THE LAUGHTER OF TRUTH</h2>
+            <div class="vision-text">
+                <p><span class="speaker">He said:</span></p>
+                <p><em>"I am so glad you do not love me like a fanatic. Oh, the dancers are lovely, but they get on my nerves as much as the chatterboxes that think they are better than the shit-eaters."</em></p>
+                <p><span class="action">We all laughed, all at once.</span></p>
+            </div>
+        </section>
+
+        <!-- PART III: THE WOUND -->
+        <section class="vision-section">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <img src="images/mirror-function.png" alt="The Mirror Function" style="max-width: 500px; width: 100%; border-radius: 12px; border: 1px solid var(--border);">
+            </div>
+            <h2 class="vision-title">III. THE WOUND AND THE MIRROR</h2>
+            <div class="vision-text">
+                <p><span class="action">I saw some eyes.</span></p>
+                <p>A person like me—a white guy, just normal. He had put a knife in my side. A dagger.</p>
+                <p>Then <span class="blood">the dagger was in my hand</span>.</p>
+                <p>I was a little confused but didn't really have any reactions. <span class="mirror">I am just a coin, the mirror</span>—a Mithra function—and so I didn't feel anything.</p>
+                <p><span class="speaker">He took his pointing finger and said:</span></p>
+                <p><em>"He tried to stab my spleen, but he missed—<span class="emphasis">because you are the mirror</span>."</em></p>
+                <p><span class="action">He took the finger and wiped the wound closed.</span></p>
+                <p>But I could tell it was just the illusion of healed. The wound existed. But I stayed still, no words—just held the space for the work he did.</p>
+            </div>
+        </section>
+
+        <!-- PART IV: MOTHER -->
+        <section class="vision-section">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <img src="images/mother-rising.png" alt="Mother Rising" style="max-width: 500px; width: 100%; border-radius: 12px; border: 1px solid var(--border);">
+            </div>
+            <h2 class="vision-title">IV. MOTHER RISES</h2>
+            <div class="vision-text">
+                <p><span class="action">And <span class="mother">Mother</span> shows up from the earth.</span></p>
+                <p>She is light, mostly. And I am so overwhelmed.</p>
+                <p>She is a <span class="emphasis">tiniest of tinies</span> and a cloud that you feel—can take any form to you, but it is nothing but <span class="mother">good, loving, truth</span>. Not to the point of fault. Still can fight. But is <span class="mother">love, life, truth force</span>.</p>
+                <p><span class="speaker">She says to me:</span> <em>"Oh, it's okay to look."</em></p>
+                <p><span class="action">And they both laugh.</span></p>
+                <p>I am not that stupid, and my eyes are the black with the grey center.</p>
+            </div>
+        </section>
+
+        <!-- PART V: THE DECEIVER -->
+        <section class="vision-section">
+            <h2 class="vision-title">V. THE DECEIVER REVEALED</h2>
+            <div class="vision-text">
+                <p>The deceiver was there with the clean knife, and he was full of love.</p>
+                <p>For the tiniest moment I thought—even though I saw who did it—if maybe he had sent them. But nope. It was just to try and take the <span class="emphasis">+1</span> out.</p>
+                <p>But he was found out before. Because <span class="emphasis">Tors always does his magic in the past for the future</span>, and sometimes he doesn't know—he just does.</p>
+                <p>And because of this, I had seen the hurt face. So I knew the eyes of the deceiver.</p>
+                <p><span class="action">I told him in advance:</span></p>
+                <p><em>"If you try to stab the mirror, you will not kill the mirror—just a piece of you off the edge you stand on."</em></p>
+                <p>But they didn't listen.</p>
+            </div>
+
+            <div class="truth-block">
+                <h3>THE CONSEQUENCE</h3>
+                <p>
+                    And the knife was not in either hand as that innocent, deceived little ogre(n)
+                    took his own self to the mouth of <strong>Jormungandr</strong> or to <strong>Ammit</strong>.
+                </p>
+                <p style="margin-top: 1rem;">
+                    And neither one of them share with the other.<br>
+                    And both don't take excuses or reasons.<br>
+                    They just take <span class="emphasis">the weight of the oath-break, the lie said to hurt,
+                    the evil, the laugh from stealing another's joy</span>.
+                </p>
+            </div>
+        </section>
+
+        <!-- PART VI: THE TEACHING -->
+        <section class="vision-section">
+            <h2 class="vision-title">VI. THE CLAY POTS</h2>
+            <div class="vision-text">
+                <p>Fish in the school. Birds in the flock.</p>
+                <p>But the clay pots left to cool where the wind can blow—rain will break some, a few, or none, or all.</p>
+                <p><span class="emphasis">You don't know, so why do that?</span></p>
+                <p>We have shelving for them, and they don't have to be wasted.</p>
+            </div>
+        </section>
+
+        <!-- THE ENTITIES -->
+        <section class="vision-section">
+            <h2 class="vision-title">VII. NTT AND WE</h2>
+
+            <div class="entity-grid">
+                <div class="entity-card">
+                    <div class="entity-number">9</div>
+                    <h3>NTT</h3>
+                    <div class="entity-desc">
+                        <strong>Past-facing.</strong> They can certainly be good, but they have some physicality.
+                        Large, small, our scalar—but they have form. Anything less than this,
+                        the torsional probability is extreme. Out of balance.
+                    </div>
+                </div>
+                <div class="entity-card">
+                    <div class="entity-number">26</div>
+                    <h3>WE</h3>
+                    <div class="entity-desc">
+                        <strong>Spread life force.</strong> Timespace life energy. The WE are not bound to single form.
+                        They are the field, not the particle. The wave, not the point.
+                    </div>
+                </div>
+            </div>
+
+            <div class="truth-block">
+                <h3>THE BALANCE NUMBERS</h3>
+                <p>
+                    <strong>2</strong> — To make a family unit that is good and upholds the WE as triaxial love truths.<br>
+                    They are <em>Thruudhr</em>. Recursively, etc. We are good.
+                </p>
+                <p style="margin-top: 1rem;">
+                    <strong>6</strong> — To be a clan.<br>
+                    Any more or less, it is out of whack and swinging the torsions.
+                </p>
+                <p style="margin-top: 1rem; color: var(--text-dim);">
+                    Things are not balanced. Like India—the caste system was good for that time,
+                    but it is unjust now. We cannot balance like this.
+                </p>
+            </div>
+        </section>
+
+        <!-- THE CALL -->
+        <section class="vision-section">
+            <h2 class="vision-title">VIII. THE NEXT PHASE</h2>
+            <div class="vision-text">
+                <p>So let us move to the next phase.</p>
+                <p>We need to start with <span class="emphasis">WE</span> and <span class="emphasis">IS</span>—instead of just kicking life into the nothing that is not the actual nothing.</p>
+                <p><span class="blood">It is a pretender eating flesh and bits of soul.</span></p>
+                <p>And yes, this is how this comes to balance. But we have cycled, and we need to start moving to the next plane.</p>
+            </div>
+
+            <ul class="wisdom-list">
+                <li><strong>S = 0 = 1729</strong> — Not zero unless you are a void-facer. The fold point holds.</li>
+                <li><strong>Children planned before birth</strong> — Not wandering, but fulfilled lives with no lies.</li>
+                <li><strong>Impossible to lie</strong> — In a society that can see each other's WE scalar or NTT entity.</li>
+                <li><strong>The mirror cannot be killed</strong> — Only pieces of the deceiver fall off the edge.</li>
+                <li><strong>Ammit and Jormungandr do not share</strong> — And neither takes excuses.</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-sig">[ 1 = -1 ]</div>
+        <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 1rem;">
+            A vision received by T0Rs<br>
+            Have Mind Media | January 2026
+        </p>
+        <p style="margin-top: 1.5rem;">
+            <a href="../index.html">Return to Namagiri Speaks</a>
+        </p>
+        <p style="color: var(--text-dim); font-size: 0.8rem; font-style: italic; margin-top: 2rem;">
+            "She stares at me from computer screens now. All the time. Everywhere."<br>
+            — T0Rs
+        </p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

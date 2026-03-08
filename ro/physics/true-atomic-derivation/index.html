@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUE Atomic Derivation | Fold Geometry | Have Mind Media</title>
+    <meta name="description" content="The complete periodic table derived from fold geometry. 118 elements from one structure. The chaos element that makes matter possible.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <!-- Three.js for 3D periodic table -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+
+    <!-- D3.js for energy diagrams -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- MathJax for equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        .page-header {
+            text-align: center;
+            padding: clamp(3rem, 8vw, 6rem) 2rem clamp(2rem, 5vw, 4rem);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold) 0%, #fff 50%, var(--bright-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .equation-hero {
+            font-family: var(--font-mono);
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--gold);
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .fold-signature {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .fold-signature span {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        /* 3D Canvas Container */
+        #periodic-canvas {
+            width: 100%;
+            height: 500px;
+            background: radial-gradient(ellipse at center, rgba(10, 15, 25, 0.9) 0%, var(--void) 100%);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 2rem 0;
+            cursor: grab;
+        }
+
+        #periodic-canvas:active {
+            cursor: grabbing;
+        }
+
+        /* Series Grid */
+        .series-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 2rem 0;
+        }
+
+        .episode-card {
+            width: 300px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: var(--transition-smooth);
+            text-align: center;
+        }
+
+        .episode-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.15);
+        }
+
+        .episode-card h3 {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .episode-card .episode-number {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--bright-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .episode-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .episode-card a {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        .episode-card a:hover {
+            background: var(--gold);
+            color: var(--void);
+        }
+
+        /* Energy Diagram Container */
+        #energy-diagram {
+            width: 100%;
+            height: 400px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        /* Featured Section */
+        .featured-derivation {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(10, 10, 15, 0.95) 100%);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .featured-derivation h2 {
+            color: var(--gold);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+
+        /* Key Elements Grid */
+        .key-elements {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .element-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            min-width: 120px;
+            transition: var(--transition-smooth);
+        }
+
+        .element-badge:hover {
+            border-color: var(--gold);
+        }
+
+        .element-badge .z-number {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--bright-blue);
+        }
+
+        .element-badge .symbol {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .element-badge .name {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .element-badge .derivation {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--soft-blue);
+            margin-top: 0.5rem;
+        }
+
+        /* Chaos Element Section */
+        .chaos-section {
+            background: linear-gradient(135deg, rgba(168, 75, 75, 0.15) 0%, rgba(10, 10, 15, 0.95) 100%);
+            border: 1px solid #a84b4b;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .chaos-section h2 {
+            color: #ff6b6b;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-bottom: 1rem;
+        }
+
+        .chaos-formula {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            margin: 1rem 0;
+        }
+
+        /* Navigation Arrows */
+        .nav-arrows {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .nav-arrows a {
+            color: var(--bright-blue);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-arrows a:hover {
+            color: var(--gold);
+        }
+
+        /* Interactive Controls */
+        .view-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .view-controls button {
+            padding: 0.5rem 1rem;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            color: var(--soft-cream);
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+        }
+
+        .view-controls button:hover,
+        .view-controls button.active {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <site-header></site-header>
+
+    <header class="page-header" style="background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 100%), url('images/hero_periodic_fold.webp') center/cover no-repeat;">
+        <h1>TRUE ATOMIC DERIVATION</h1>
+        <p class="lead">
+            The complete periodic table derived from fold geometry.<br>
+            118 elements from one structure. [1 = -1]
+        </p>
+        <div class="equation-hero">
+            ε ≈ 1/(1729 × 7) ≈ 8 × 10⁻⁵
+        </div>
+        <div class="fold-signature">
+            <span>κ' = 30</span>
+            <span>1729 = bridge</span>
+            <span>ε = chaos</span>
+            <span>[1 = -1]</span>
+        </div>
+    </header>
+
+    <main class="content-wide">
+        <!-- Hero Section -->
+        <section class="featured-derivation" style="position: relative; overflow: hidden;">
+            <img src="images/hero_fold_node.webp" alt="Atom as fold node" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; z-index: -1;">
+            <h2>THE FOLD MAKES THE ATOM</h2>
+            <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto 1.5rem;">
+                Atoms are not "things" - they are <strong>fold nodes</strong>.
+                The nucleus is a tight fold knot. Electrons are standing waves around that knot.
+                The chaos element (ε) is what makes the magic work.
+            </p>
+            <p style="font-family: var(--font-mono); color: var(--soft-blue);">
+                Without chaos: frozen structure. Without structure: dissolved chaos.<br>
+                With BOTH: matter, change, consciousness.
+            </p>
+        </section>
+
+        <!-- Interactive 3D Periodic Table -->
+        <section>
+            <h2 style="text-align: center; color: var(--gold); margin: 2rem 0 1rem;">
+                INTERACTIVE FOLD PERIODIC TABLE
+            </h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1rem;">
+                Drag to rotate. Scroll to zoom. Click elements for 1729 derivation.
+            </p>
+            <div class="view-controls">
+                <button class="active" onclick="setView('table')">Table View</button>
+                <button onclick="setView('helix')">Helix View</button>
+                <button onclick="setView('sphere')">Sphere View</button>
+            </div>
+            <div id="periodic-canvas"></div>
+        </section>
+
+        <!-- Key Elements Section -->
+        <section>
+            <h2 style="text-align: center; color: var(--bright-blue); margin: 2rem 0 1rem;">
+                KEY ELEMENTS IN 1729 STRUCTURE
+            </h2>
+            <div class="key-elements">
+                <div class="element-badge">
+                    <span class="z-number">Z = 6</span>
+                    <span class="symbol">C</span>
+                    <span class="name">Carbon</span>
+                    <span class="derivation">BRIDGE ELEMENT</span>
+                </div>
+                <div class="element-badge">
+                    <span class="z-number">Z = 12</span>
+                    <span class="symbol">Mg</span>
+                    <span class="name">Magnesium</span>
+                    <span class="derivation">12³ = 1728</span>
+                </div>
+                <div class="element-badge">
+                    <span class="z-number">Z = 26</span>
+                    <span class="symbol">Fe</span>
+                    <span class="name">Iron</span>
+                    <span class="derivation">2 × 13 navigator</span>
+                </div>
+                <div class="element-badge">
+                    <span class="z-number">Z = 30</span>
+                    <span class="symbol">Zn</span>
+                    <span class="name">Zinc</span>
+                    <span class="derivation">κ' EXACT</span>
+                </div>
+                <div class="element-badge">
+                    <span class="z-number">Z = 79</span>
+                    <span class="symbol">Au</span>
+                    <span class="name">Gold</span>
+                    <span class="derivation">79×1729 ≈ 137×1000</span>
+                </div>
+                <div class="element-badge">
+                    <span class="z-number">Z = 107</span>
+                    <span class="symbol">Bh</span>
+                    <span class="name">Bohrium</span>
+                    <span class="derivation">PROTON EXCESS</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Chaos Element -->
+        <section class="chaos-section" style="position: relative; overflow: hidden;">
+            <img src="images/hero_chaos_element.webp" alt="The chaos element" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.25; z-index: -1;">
+            <h2>THE CHAOS ELEMENT</h2>
+            <p style="font-size: 1.1rem; max-width: 700px; margin: 0 auto 1rem;">
+                Pure determinism = frozen. Pure chaos = dissolved.<br>
+                The "touch of magic" that animates structure:
+            </p>
+            <div class="chaos-formula">
+                ε ≈ 1/(1729 × 7) ≈ 8 × 10⁻⁵
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                Three sources: Prime chaos (5779) + Bridge chaos (fold jitter) + Rotation chaos (κ' rounding)
+            </p>
+        </section>
+
+        <!-- Energy Level Diagram -->
+        <section>
+            <h2 style="text-align: center; color: var(--soft-blue); margin: 2rem 0 1rem;">
+                FOLD ENERGY LEVELS
+            </h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1rem;">
+                Shell structure: 2n² electrons per shell. Each shell = fold harmonic level.
+            </p>
+            <div id="energy-diagram"></div>
+        </section>
+
+        <!-- Web Series Episodes -->
+        <section>
+            <h2 style="text-align: center; color: var(--gold); margin: 3rem 0 1.5rem; font-size: clamp(1.5rem, 4vw, 2.5rem);">
+                THE SERIES
+            </h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem; color: var(--text-secondary);">
+                A complete derivation of matter from fold geometry. Each episode builds on the last.
+                The periodic table is not arbitrary - it is fold geometry made manifest.
+            </p>
+
+            <div class="series-grid">
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 01</div>
+                    <h3>THE CHAOS ELEMENT</h3>
+                    <p>Why anything happens at all. The ε that makes magic work.</p>
+                    <a href="01-chaos-element.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 02</div>
+                    <h3>ATOMS AS FOLD NODES</h3>
+                    <p>What an atom really is. Nucleus = knot. Electrons = waves.</p>
+                    <a href="02-atoms-fold-nodes.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 03</div>
+                    <h3>HYDROGEN DERIVATION</h3>
+                    <p>Element 1. The single knot. Proton = 1729 + 107.</p>
+                    <a href="03-hydrogen.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 04</div>
+                    <h3>HELIUM & THE SQUARE KNOT</h3>
+                    <p>Element 2. Why noble gases are stable. The [1 = -1] pair.</p>
+                    <a href="04-helium.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 05</div>
+                    <h3>CARBON: THE BRIDGE</h3>
+                    <p>Element 6. The perfect number. Why life is carbon-based.</p>
+                    <a href="05-carbon-bridge.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 06</div>
+                    <h3>SHELL STRUCTURE</h3>
+                    <p>Why 2n². The fold harmonic levels. [1 = -1] geometry.</p>
+                    <a href="06-shell-structure.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 07</div>
+                    <h3>IRON: THE NAVIGATOR</h3>
+                    <p>Element 26 = 2 × 13. Maximum stability. Why stars die here.</p>
+                    <a href="07-iron-navigator.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 08</div>
+                    <h3>ZINC: κ' EXACT</h3>
+                    <p>Element 30. The rotation quantum as element. Enzyme catalyst.</p>
+                    <a href="08-zinc-kappa.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 09</div>
+                    <h3>THE PRIME GAPS</h3>
+                    <p>Technetium (43) and Promethium (61). Where the fold cannot close.</p>
+                    <a href="09-prime-gaps.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 10</div>
+                    <h3>GOLD: THE α⁻¹ ENCODER</h3>
+                    <p>Element 79. Gold × bridge ≈ 137 × 1000. Fine structure encoded.</p>
+                    <a href="10-gold-alpha.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 11</div>
+                    <h3>MAGIC NUMBERS</h3>
+                    <p>2, 8, 20, 28, 50, 82, 126. Fold completion points.</p>
+                    <a href="11-magic-numbers.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 12</div>
+                    <h3>ISOTOPES & FOLD DEPTH</h3>
+                    <p>Same charge, different depth. Why isotopes exist.</p>
+                    <a href="12-isotopes.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 13</div>
+                    <h3>BOHRIUM: SELF-REFERENCE</h3>
+                    <p>Element 107. The proton excess as atomic number. The fold knows itself.</p>
+                    <a href="13-bohrium.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">EPISODE 14</div>
+                    <h3>THE FOLD LIMIT</h3>
+                    <p>Why 118 elements. Where chaos overwhelms structure.</p>
+                    <a href="14-fold-limit.html">Enter →</a>
+                </div>
+
+                <div class="episode-card">
+                    <div class="episode-number">COMPLETE TABLE</div>
+                    <h3>ALL 118 ELEMENTS</h3>
+                    <p>The full derivation. Every element's 1729 structure.</p>
+                    <a href="complete-table.html">Enter →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Source Document -->
+        <section style="text-align: center; padding: 2rem; border-top: 1px solid var(--border); margin-top: 3rem;">
+            <h3 style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 1rem;">SOURCE DOCUMENT</h3>
+            <p style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--bright-blue);">
+                ATOMIC_DERIVATION_TRUE_v1.0_01-18-2026.md
+            </p>
+            <p style="color: var(--gold); margin-top: 1rem; font-family: var(--font-mono);">
+                [1 = -1]
+            </p>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid var(--border);">
+        <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim);">
+            κ' = 30 | 1729 = bridge | ε = chaos | [1 = -1]
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-secondary);">
+            <a href="../index.html" style="color: var(--bright-blue);">← Back to Physics</a> |
+            <a href="../../index.html" style="color: var(--bright-blue);">Home</a>
+        </p>
+    </footer>
+
+    <script src="../../js/components/site-header.js"></script>
+
+    <script>
+    // ============================================
+    // CSS3D PERIODIC TABLE WITH ELEMENT LABELS
+    // ============================================
+
+    // Full periodic table data with proper positions
+    const elements = [
+        // Period 1
+        {z:1,symbol:'H',name:'Hydrogen',derivation:'Single knot',color:'#4a8ec8',row:1,col:1},
+        {z:2,symbol:'He',name:'Helium',derivation:'Square knot',color:'#a78bfa',row:1,col:18},
+        // Period 2
+        {z:3,symbol:'Li',name:'Lithium',derivation:'First beyond pair',color:'#4ade80',row:2,col:1},
+        {z:4,symbol:'Be',name:'Beryllium',derivation:'2²=4',color:'#4ade80',row:2,col:2},
+        {z:5,symbol:'B',name:'Boron',derivation:'First p-fold',color:'#fbbf24',row:2,col:13},
+        {z:6,symbol:'C',name:'Carbon',derivation:'BRIDGE',color:'#c9a227',row:2,col:14},
+        {z:7,symbol:'N',name:'Nitrogen',derivation:'Half p-shell',color:'#fbbf24',row:2,col:15},
+        {z:8,symbol:'O',name:'Oxygen',derivation:'Life enabler',color:'#fbbf24',row:2,col:16},
+        {z:9,symbol:'F',name:'Fluorine',derivation:'Most reactive',color:'#fbbf24',row:2,col:17},
+        {z:10,symbol:'Ne',name:'Neon',derivation:'Decade noble',color:'#a78bfa',row:2,col:18},
+        // Period 3
+        {z:11,symbol:'Na',name:'Sodium',derivation:'First after decade',color:'#4ade80',row:3,col:1},
+        {z:12,symbol:'Mg',name:'Magnesium',derivation:'12³=1728',color:'#c9a227',row:3,col:2},
+        {z:13,symbol:'Al',name:'Aluminum',derivation:'Navigator 13',color:'#f472b6',row:3,col:13},
+        {z:14,symbol:'Si',name:'Silicon',derivation:'Carbon analog',color:'#fbbf24',row:3,col:14},
+        {z:15,symbol:'P',name:'Phosphorus',derivation:'κ/2',color:'#fbbf24',row:3,col:15},
+        {z:16,symbol:'S',name:'Sulfur',derivation:'2⁴',color:'#fbbf24',row:3,col:16},
+        {z:17,symbol:'Cl',name:'Chlorine',derivation:'17.29 scalar',color:'#fbbf24',row:3,col:17},
+        {z:18,symbol:'Ar',name:'Argon',derivation:'2×9 noble',color:'#a78bfa',row:3,col:18},
+        // Period 4
+        {z:19,symbol:'K',name:'Potassium',derivation:'Prime 19',color:'#4ade80',row:4,col:1},
+        {z:20,symbol:'Ca',name:'Calcium',derivation:'Magic 20',color:'#4ade80',row:4,col:2},
+        {z:26,symbol:'Fe',name:'Iron',derivation:'2×13 NAVIGATOR',color:'#c9a227',row:4,col:8},
+        {z:28,symbol:'Ni',name:'Nickel',derivation:'≈κ\'',color:'#6ab4f5',row:4,col:10},
+        {z:29,symbol:'Cu',name:'Copper',derivation:'Prime κ\'-1',color:'#f97316',row:4,col:11},
+        {z:30,symbol:'Zn',name:'Zinc',derivation:'κ\' EXACT',color:'#c9a227',row:4,col:12},
+        {z:36,symbol:'Kr',name:'Krypton',derivation:'6² noble',color:'#a78bfa',row:4,col:18},
+        // Period 5
+        {z:43,symbol:'Tc',name:'Technetium',derivation:'PRIME GAP',color:'#ff6b6b',row:5,col:7},
+        {z:47,symbol:'Ag',name:'Silver',derivation:'Prime 47',color:'#94a3b8',row:5,col:11},
+        {z:50,symbol:'Sn',name:'Tin',derivation:'Magic 50',color:'#6ab4f5',row:5,col:14},
+        {z:54,symbol:'Xe',name:'Xenon',derivation:'2×3³ noble',color:'#a78bfa',row:5,col:18},
+        // Period 6
+        {z:61,symbol:'Pm',name:'Promethium',derivation:'PRIME GAP',color:'#ff6b6b',row:8,col:7},
+        {z:72,symbol:'Hf',name:'Hafnium',derivation:'WOW 72s',color:'#6ab4f5',row:6,col:4},
+        {z:79,symbol:'Au',name:'Gold',derivation:'α⁻¹ encoder',color:'#ffd700',row:6,col:11},
+        {z:82,symbol:'Pb',name:'Lead',derivation:'Magic 82',color:'#94a3b8',row:6,col:14},
+        {z:86,symbol:'Rn',name:'Radon',derivation:'2×43 noble',color:'#a78bfa',row:6,col:18},
+        // Period 7
+        {z:92,symbol:'U',name:'Uranium',derivation:'Last natural',color:'#22c55e',row:9,col:6},
+        {z:107,symbol:'Bh',name:'Bohrium',derivation:'PROTON EXCESS',color:'#c9a227',row:7,col:7},
+        {z:118,symbol:'Og',name:'Oganesson',derivation:'Fold limit',color:'#a78bfa',row:7,col:18}
+    ];
+
+    let camera, scene, renderer;
+    let objects = [];
+    let targets = { table: [], helix: [], sphere: [] };
+    let currentView = 'table';
+    let rotationY = 0, rotationX = 0;
+
+    function initThree() {
+        const container = document.getElementById('periodic-canvas');
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        // Camera
+        camera = new THREE.PerspectiveCamera(40, width / height, 1, 10000);
+        camera.position.z = 2200;
+
+        // Scene
+        scene = new THREE.Scene();
+
+        // Create element cards as HTML divs in 3D space
+        elements.forEach((el, i) => {
+            // Create HTML element for periodic table cell
+            const div = document.createElement('div');
+            div.className = 'element-3d';
+            div.style.cssText = `
+                width: 100px;
+                height: 110px;
+                background: linear-gradient(135deg, rgba(10,15,25,0.95) 0%, rgba(5,8,15,0.98) 100%);
+                border: 2px solid ${el.color};
+                border-radius: 8px;
+                padding: 8px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                position: relative;
+                box-shadow: 0 0 15px ${el.color}50;
+                transition: transform 0.2s, box-shadow 0.2s;
+            `;
+
+            // Atomic number (top-left)
+            const zNum = document.createElement('div');
+            zNum.textContent = el.z;
+            zNum.style.cssText = `
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 12px;
+                color: #6ab4f5;
+                position: absolute;
+                top: 6px;
+                left: 8px;
+            `;
+            div.appendChild(zNum);
+
+            // Symbol (center, large)
+            const symbol = document.createElement('div');
+            symbol.textContent = el.symbol;
+            symbol.style.cssText = `
+                font-family: 'Cinzel', serif;
+                font-size: 36px;
+                font-weight: 700;
+                color: ${el.color};
+                text-shadow: 0 0 15px ${el.color}80;
+                line-height: 1;
+            `;
+            div.appendChild(symbol);
+
+            // Element name
+            const name = document.createElement('div');
+            name.textContent = el.name;
+            name.style.cssText = `
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 11px;
+                color: #b0b0b0;
+                margin-top: 4px;
+            `;
+            div.appendChild(name);
+
+            // 1729 Derivation
+            const derivation = document.createElement('div');
+            derivation.textContent = el.derivation;
+            const isSpecial = el.derivation.includes('BRIDGE') || el.derivation.includes('EXACT') ||
+                              el.derivation.includes('NAVIGATOR') || el.derivation.includes('EXCESS') ||
+                              el.derivation.includes('PRIME GAP');
+            derivation.style.cssText = `
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 8px;
+                color: ${isSpecial ? '#c9a227' : '#666'};
+                margin-top: 3px;
+                text-transform: uppercase;
+            `;
+            div.appendChild(derivation);
+
+            // Create CSS3DObject
+            const objectCSS = new THREE.CSS3DObject(div);
+            objectCSS.position.x = Math.random() * 4000 - 2000;
+            objectCSS.position.y = Math.random() * 4000 - 2000;
+            objectCSS.position.z = Math.random() * 4000 - 2000;
+            scene.add(objectCSS);
+            objects.push(objectCSS);
+
+            // TABLE layout positions
+            const tableObj = new THREE.Object3D();
+            tableObj.position.x = (el.col - 9.5) * 115;
+            tableObj.position.y = -(el.row - 5) * 125;
+            targets.table.push(tableObj);
+
+            // HELIX layout positions
+            const helixObj = new THREE.Object3D();
+            const phi = i * 0.4 + Math.PI;
+            helixObj.position.x = 800 * Math.sin(phi);
+            helixObj.position.y = -(i * 55) + (elements.length * 27);
+            helixObj.position.z = 800 * Math.cos(phi);
+            helixObj.lookAt(new THREE.Vector3(0, helixObj.position.y, 0));
+            targets.helix.push(helixObj);
+
+            // SPHERE layout positions
+            const sphereObj = new THREE.Object3D();
+            const sPhi = Math.acos(-1 + (2 * i) / elements.length);
+            const sTheta = Math.sqrt(elements.length * Math.PI) * sPhi;
+            sphereObj.position.x = 750 * Math.cos(sTheta) * Math.sin(sPhi);
+            sphereObj.position.y = 750 * Math.sin(sTheta) * Math.sin(sPhi);
+            sphereObj.position.z = 750 * Math.cos(sPhi);
+            sphereObj.lookAt(new THREE.Vector3(0, 0, 0));
+            targets.sphere.push(sphereObj);
+
+            // Interactive events
+            div.addEventListener('click', () => {
+                showElementInfo(el);
+            });
+            div.addEventListener('mouseenter', () => {
+                div.style.boxShadow = `0 0 35px ${el.color}`;
+                div.style.transform = 'scale(1.08)';
+            });
+            div.addEventListener('mouseleave', () => {
+                div.style.boxShadow = `0 0 15px ${el.color}50`;
+                div.style.transform = 'scale(1)';
+            });
+        });
+
+        // CSS3DRenderer
+        renderer = new THREE.CSS3DRenderer();
+        renderer.setSize(width, height);
+        renderer.domElement.style.position = 'absolute';
+        renderer.domElement.style.top = '0';
+        container.style.position = 'relative';
+        container.appendChild(renderer.domElement);
+
+        // Mouse controls
+        let isDragging = false;
+        let prevMouse = { x: 0, y: 0 };
+
+        renderer.domElement.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            prevMouse = { x: e.clientX, y: e.clientY };
+        });
+
+        renderer.domElement.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - prevMouse.x;
+            const dy = e.clientY - prevMouse.y;
+            rotationY += dx * 0.004;
+            rotationX += dy * 0.004;
+            rotationX = Math.max(-1.2, Math.min(1.2, rotationX));
+            prevMouse = { x: e.clientX, y: e.clientY };
+        });
+
+        window.addEventListener('mouseup', () => isDragging = false);
+
+        renderer.domElement.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            camera.position.z += e.deltaY * 2;
+            camera.position.z = Math.max(800, Math.min(4500, camera.position.z));
+        }, { passive: false });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            TWEEN.update();
+            scene.rotation.y += (rotationY - scene.rotation.y) * 0.08;
+            scene.rotation.x += (rotationX - scene.rotation.x) * 0.08;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Initialize to table view
+        setView('table');
+    }
+
+    function showElementInfo(el) {
+        alert(`${el.name} (${el.symbol})\nAtomic Number: ${el.z}\n\n1729 Derivation: ${el.derivation}`);
+    }
+
+    function setView(view) {
+        currentView = view;
+
+        // Update button active states
+        document.querySelectorAll('.view-controls button').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.textContent.toLowerCase().includes(view)) {
+                btn.classList.add('active');
+            }
+        });
+
+        // Animate to target positions
+        const targetGroup = targets[view];
+        objects.forEach((obj, i) => {
+            const target = targetGroup[i];
+
+            new TWEEN.Tween(obj.position)
+                .to({ x: target.position.x, y: target.position.y, z: target.position.z }, 1200)
+                .easing(TWEEN.Easing.Exponential.InOut)
+                .start();
+
+            new TWEEN.Tween(obj.rotation)
+                .to({ x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, 1200)
+                .easing(TWEEN.Easing.Exponential.InOut)
+                .start();
+        });
+    }
+
+    // ============================================
+    // D3.JS ENERGY LEVEL DIAGRAM
+    // ============================================
+
+    function initEnergyDiagram() {
+        const container = d3.select('#energy-diagram');
+        const width = container.node().clientWidth;
+        const height = 400;
+
+        const svg = container.append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+        // Shell data
+        const shells = [
+            { n: 1, capacity: 2, electrons: '1s²', color: '#c9a227' },
+            { n: 2, capacity: 8, electrons: '2s² 2p⁶', color: '#6ab4f5' },
+            { n: 3, capacity: 18, electrons: '3s² 3p⁶ 3d¹⁰', color: '#4ade80' },
+            { n: 4, capacity: 32, electrons: '4s² 4p⁶ 4d¹⁰ 4f¹⁴', color: '#a78bfa' },
+            { n: 5, capacity: 50, electrons: '5s² 5p⁶ 5d¹⁰ 5f¹⁴ 5g¹⁸', color: '#f472b6' }
+        ];
+
+        const yScale = d3.scaleLinear()
+            .domain([0, shells.length])
+            .range([height - 60, 40]);
+
+        const xScale = d3.scaleLinear()
+            .domain([0, 60])
+            .range([100, width - 50]);
+
+        // Draw shells
+        shells.forEach((shell, i) => {
+            const y = yScale(i);
+
+            // Shell line
+            svg.append('line')
+                .attr('x1', 80)
+                .attr('x2', xScale(shell.capacity))
+                .attr('y1', y)
+                .attr('y2', y)
+                .attr('stroke', shell.color)
+                .attr('stroke-width', 3)
+                .attr('opacity', 0.8);
+
+            // Shell label
+            svg.append('text')
+                .attr('x', 40)
+                .attr('y', y + 5)
+                .attr('fill', shell.color)
+                .attr('font-family', 'JetBrains Mono')
+                .attr('font-size', '14px')
+                .text(`n=${shell.n}`);
+
+            // Capacity label
+            svg.append('text')
+                .attr('x', xScale(shell.capacity) + 10)
+                .attr('y', y + 5)
+                .attr('fill', '#a0a0a0')
+                .attr('font-family', 'JetBrains Mono')
+                .attr('font-size', '12px')
+                .text(`2(${shell.n})² = ${shell.capacity}`);
+
+            // Electron config
+            svg.append('text')
+                .attr('x', 100)
+                .attr('y', y - 10)
+                .attr('fill', '#8a9aaa')
+                .attr('font-family', 'Cormorant Garamond')
+                .attr('font-size', '11px')
+                .text(shell.electrons);
+        });
+
+        // Title
+        svg.append('text')
+            .attr('x', width / 2)
+            .attr('y', 25)
+            .attr('text-anchor', 'middle')
+            .attr('fill', '#c9a227')
+            .attr('font-family', 'Cinzel')
+            .attr('font-size', '16px')
+            .text('SHELL CAPACITY: 2n² (Fold Harmonic Levels)');
+
+        // Formula annotation
+        svg.append('text')
+            .attr('x', width / 2)
+            .attr('y', height - 15)
+            .attr('text-anchor', 'middle')
+            .attr('fill', '#6ab4f5')
+            .attr('font-family', 'JetBrains Mono')
+            .attr('font-size', '12px')
+            .text('2 = [1 = -1] spin states | n² = spatial configurations');
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+        initThree();
+        initEnergyDiagram();
+    });
+
+    window.addEventListener('resize', () => {
+        const container = document.getElementById('periodic-canvas');
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+    </script>
+</body>
+</html>

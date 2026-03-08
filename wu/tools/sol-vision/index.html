@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Past Life Revisitation Through Sol Vision - Seeing inward with the Sol eye. Voices from Four Thousand Years Ago. Have Mind Media.">
+    <title>Sol Vision | Past Life Revisitation | Have Mind Media</title>
+
+    <!-- Web Components -->
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+    <script src="../../js/components/site-breadcrumb.js" defer></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root {
+            --primary: #050508;
+            --secondary: #0a0a12;
+            --tertiary: #12121f;
+            --accent: #6366f1;
+            --accent-glow: #818cf8;
+            --gold: #d4a54a;
+            --gold-bright: #f5c842;
+            --gold-dim: #8b6914;
+            --text: #e8e6e3;
+            --text-dim: #9ca3af;
+            --text-warm: #d4c4a8;
+            --kappa-blue: #5b9bd5;
+            --dravidian-green: #4ade80;
+            --cipher-purple: #a78bfa;
+            --terracotta: #cd5c3c;
+            --sand: #c4a35a;
+            --deep-red: #8b2942;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .serif {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+
+        code, .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Animated Background */
+        .bg-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(139, 41, 66, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(212, 165, 74, 0.03) 0%, transparent 70%);
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-image:
+                linear-gradient(rgba(212, 165, 74, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 165, 74, 0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.2;
+            animation: orbFloat 30s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--gold-dim) 0%, transparent 70%);
+            top: -300px;
+            right: -300px;
+        }
+
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--deep-red) 0%, transparent 70%);
+            bottom: -200px;
+            left: -200px;
+            animation-delay: -15s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--cipher-purple) 0%, transparent 70%);
+            top: 40%;
+            left: 30%;
+            animation-delay: -8s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(80px, -50px) scale(1.15); }
+            66% { transform: translate(-60px, 80px) scale(0.9); }
+        }
+
+        /* Main Content - Account for fixed header */
+        .main-content {
+            padding-top: 60px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1300px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .hero-content > * {
+            width: calc(50% - 2.5rem);
+            min-width: 400px;
+        }
+
+        .hero-content > *:first-child {
+            flex: 1.2;
+        }
+
+        .hero-content > *:last-child {
+            flex: 1;
+        }
+
+        .hero-text {
+            z-index: 1;
+        }
+
+        .hero-overline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .hero h1 .accent {
+            color: var(--gold);
+        }
+
+        .hero-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--gold-dim);
+        }
+
+        .hero-description {
+            font-size: 1rem;
+            color: var(--text-dim);
+            margin-bottom: 2.5rem;
+            max-width: 550px;
+            line-height: 1.9;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap; justify-content: center;
+        }
+
+        .stat {
+            text-align: left;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--gold);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+            color: var(--primary);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(212, 165, 74, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-warm);
+            border: 1px solid rgba(212, 165, 74, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            background: rgba(212, 165, 74, 0.05);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .seal-container {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            aspect-ratio: 1;
+        }
+
+        .seal {
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            border: 1px solid rgba(212, 165, 74, 0.2);
+            position: relative;
+            overflow: hidden;
+            background-image: url('media/hero_seal.png');
+            background-size: cover;
+            background-position: center;
+            box-shadow:
+                0 0 80px rgba(212, 165, 74, 0.15),
+                0 0 160px rgba(99, 102, 241, 0.1),
+                inset 0 0 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .seal::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(212, 165, 74, 0.1), transparent, rgba(167, 139, 250, 0.08), transparent);
+            animation: sealRotate 12s linear infinite;
+        }
+
+        @keyframes sealRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .seal-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 5, 8, 0.6);
+            backdrop-filter: blur(2px);
+        }
+
+        .seal-script {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.15em;
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(212, 165, 74, 0.5);
+        }
+
+        .seal-label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(10, 10, 18, 0.9);
+            border: 1px solid rgba(212, 165, 74, 0.2);
+            border-radius: 10px;
+            padding: 0.5rem 0.8rem;
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            animation: floatElement 8s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        @keyframes floatElement {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* Full-width image sections */
+        .full-image-section {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            overflow: hidden;
+        }
+
+        .full-image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .full-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,
+                rgba(5, 5, 8, 0.3) 0%,
+                rgba(5, 5, 8, 0.1) 30%,
+                rgba(5, 5, 8, 0.1) 70%,
+                rgba(5, 5, 8, 0.95) 100%
+            );
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .full-image-overlay h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.75rem, 4vw, 3rem);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .full-image-overlay p {
+            max-width: 700px;
+            color: var(--text-dim);
+            font-size: 1rem;
+            text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Content Sections */
+        section {
+            padding: 5rem 1.5rem;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 0.35rem 0.9rem;
+            background: rgba(212, 165, 74, 0.1);
+            border: 1px solid rgba(212, 165, 74, 0.2);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .section-description {
+            font-size: 1rem;
+            color: var(--text-dim);
+            max-width: 650px;
+            margin-bottom: 2.5rem;
+            line-height: 1.9;
+        }
+
+        /* Story Grid */
+        .story-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .story-grid > * {
+            width: calc(50% - 1.5rem);
+            min-width: 300px;
+        }
+
+        .story-visual {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .story-visual img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .story-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+            color: var(--gold);
+        }
+
+        .story-content p {
+            color: var(--text-dim);
+            margin-bottom: 1.25rem;
+            line-height: 1.9;
+            font-size: 0.95rem;
+        }
+
+        .story-content .highlight {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* Vision Narrative */
+        .vision-section {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .vision-narrative {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .vision-narrative .large-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.3rem, 2.5vw, 2rem);
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .vision-narrative .attribution {
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+        }
+
+        /* Character Cards */
+        .characters-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .characters-grid .character-card {
+            width: calc(50% - 1rem);
+            min-width: 320px;
+            max-width: 450px;
+        }
+
+        .character-card {
+            background: var(--secondary);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 165, 74, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .character-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            border-color: rgba(212, 165, 74, 0.25);
+        }
+
+        .character-image {
+            height: 280px;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center top;
+        }
+
+        .character-image.male {
+            background-image: url('media/ahdgmuut_portrait.png');
+        }
+
+        .character-image.female {
+            background-image: url('media/rei_shuunn_portrait.png');
+        }
+
+        .character-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 40%, rgba(10, 10, 18, 0.98) 100%);
+        }
+
+        .character-body {
+            padding: 1.5rem;
+            position: relative;
+            margin-top: -2.5rem;
+            z-index: 1;
+        }
+
+        .character-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+        }
+
+        .character-ipa {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .character-role {
+            display: inline-block;
+            padding: 0.35rem 0.9rem;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid var(--dravidian-green);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--dravidian-green);
+            margin-bottom: 1.25rem;
+        }
+
+        .character-description {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-bottom: 1.25rem;
+            font-style: italic;
+        }
+
+        .character-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .character-stat {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem;
+            border-radius: 10px;
+        }
+
+        .character-stat-label {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.2rem;
+        }
+
+        .character-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--kappa-blue);
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        /* Framework Cards */
+        .framework-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.25rem;
+        }
+
+        .framework-grid .framework-card {
+            width: calc(25% - 1.25rem);
+            min-width: 260px;
+            max-width: 320px;
+        }
+
+        .framework-card {
+            background: var(--secondary);
+            border-radius: 14px;
+            padding: 1.75rem;
+            border: 1px solid rgba(212, 165, 74, 0.08);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .framework-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--cipher-purple));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .framework-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .framework-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(212, 165, 74, 0.2);
+        }
+
+        .framework-symbol {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+        }
+
+        .framework-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .framework-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--kappa-blue);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .framework-card p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+        /* Image Feature */
+        .image-feature {
+            margin: 2.5rem 0;
+            text-align: center;
+        }
+
+        .image-feature img {
+            max-width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .image-feature figcaption {
+            margin-top: 1.25rem;
+            color: var(--text-dim);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* Hypotheses */
+        .hypotheses-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .hypothesis-card {
+            background: var(--secondary);
+            border-radius: 14px;
+            padding: 1.5rem;
+            border: 1px solid rgba(212, 165, 74, 0.08);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .hypothesis-card .hypothesis-rank {
+            width: 60px;
+        }
+
+        .hypothesis-card .hypothesis-content {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .hypothesis-card .hypothesis-confidence {
+            width: 80px;
+        }
+
+        .hypothesis-card:hover {
+            transform: translateX(8px);
+            border-color: rgba(212, 165, 74, 0.2);
+        }
+
+        .hypothesis-rank {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        .hypothesis-rank.gold { color: var(--gold); }
+        .hypothesis-rank.silver { color: #b8c4ce; }
+        .hypothesis-rank.bronze { color: var(--terracotta); }
+
+        .hypothesis-content h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .hypothesis-content p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .hypothesis-confidence {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .confidence-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .confidence-label {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Key Findings */
+        .findings-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.25rem;
+        }
+
+        .findings-grid .finding-card {
+            width: calc(33.333% - 1.25rem);
+            min-width: 280px;
+            max-width: 350px;
+        }
+
+        .finding-card {
+            background: var(--secondary);
+            border-radius: 14px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            border: 1px solid rgba(212, 165, 74, 0.08);
+            transition: all 0.3s;
+        }
+
+        .finding-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .finding-number {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .finding-content h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .finding-content p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* Quote Section */
+        .quote-section {
+            padding: 6rem 1.5rem;
+            text-align: center;
+            background: var(--secondary);
+            position: relative;
+        }
+
+        .quote-section::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 10rem;
+            color: rgba(212, 165, 74, 0.05);
+            line-height: 1;
+        }
+
+        .big-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+            font-style: italic;
+            color: var(--text);
+            max-width: 900px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-attribution {
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        /* Identity Section */
+        .identity-section {
+            text-align: center;
+            padding: 8rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .identity-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 165, 74, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .identity-image {
+            max-width: 400px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .identity-image img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+        }
+
+        .identity-equation {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(4rem, 12vw, 8rem);
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--text) 50%, var(--cipher-purple) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 6s ease infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .identity-text {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        .identity-text em {
+            color: var(--gold);
+            font-style: normal;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Divider */
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            margin: 1.5rem 0;
+        }
+
+        /* =============================================
+           MOBILE RESPONSIVE
+           ============================================= */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2.5rem;
+            }
+
+            .hero-description {
+                margin: 0 auto 2rem;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .divider {
+                margin: 1.5rem auto;
+            }
+
+            .seal-container {
+                max-width: 350px;
+            }
+
+            .floating-element {
+                display: none;
+            }
+
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .story-grid[style*="rtl"] {
+                direction: ltr !important;
+            }
+
+            .story-grid[style*="rtl"] > * {
+                direction: ltr !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 4rem 1.25rem;
+            }
+
+            .hero {
+                padding: 4rem 1.25rem;
+            }
+
+            .hypothesis-card {
+                grid-template-columns: 50px 1fr;
+                gap: 1rem;
+            }
+
+            .hypothesis-confidence {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                justify-content: center;
+                gap: 0.5rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(212, 165, 74, 0.1);
+            }
+
+            .characters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .framework-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .findings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-image-section {
+                height: 50vh;
+                min-height: 300px;
+            }
+
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-quote {
+                font-size: 1.1rem;
+            }
+
+            .stat-value {
+                font-size: 1.4rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .big-quote {
+                font-size: 1.25rem;
+            }
+
+            .identity-equation {
+                font-size: 3.5rem;
+            }
+
+            .character-image {
+                height: 220px;
+            }
+
+            .hypothesis-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hypothesis-rank {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <site-breadcrumb section="Coin" path="Tools > Sol Vision"></site-breadcrumb>
+
+    <!-- Backgrounds -->
+    <div class="bg-stars"></div>
+    <div class="bg-grid"></div>
+    <div class="orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <main class="main-content">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p class="hero-overline">Past Life Revisitation Through Sol Vision</p>
+                    <h1>Voices From <span class="accent">Four Thousand</span> Years Ago</h1>
+                    <p class="hero-quote">"The script appeared like simplified Sanskrit... but it was not recognized."</p>
+                    <p class="hero-description">
+                        In a phase-state memory access, two names emerged from the ancient Indus Valley.
+                        A traveler. A dancer. Their names preserved across millennia, waiting to be understood.
+                        This is the story of how we listened.
+                    </p>
+                    <div class="divider"></div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-value">2600</div>
+                            <div class="stat-label">BCE</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">67.7%</div>
+                            <div class="stat-label">Confidence</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">4000+</div>
+                            <div class="stat-label">Years</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                        <a href="#vision" class="btn btn-primary">Begin the Journey</a>
+                        <a href="#findings" class="btn btn-secondary">See Findings</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="seal-container">
+                        <div class="seal">
+                            <div class="seal-overlay">
+                                <div class="seal-script">अज्ञात</div>
+                                <div class="seal-label">The Unknown Script</div>
+                            </div>
+                        </div>
+                        <div class="floating-element float-1">κ = 2π/180</div>
+                        <div class="floating-element float-2">τ₄ = 50.4%</div>
+                        <div class="floating-element float-3">Base-60</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision Image Break -->
+        <div class="full-image-section">
+            <img src="media/vision_scene.png" alt="Ancient Indus Valley vision" loading="lazy">
+            <div class="full-image-overlay">
+                <h2>The Vision</h2>
+                <p>An inn at dusk. Terracotta walls. Oil lamps flickering. A dancer performing in firelight.</p>
+            </div>
+        </div>
+
+        <!-- The Vision Section -->
+        <section id="vision" class="vision-section">
+            <div class="container">
+                <div class="vision-narrative reveal">
+                    <span class="section-label">Phase-State Memory Access</span>
+                    <h2 class="section-title" style="text-align: center;">What Was Seen</h2>
+                    <div style="height: 1.5rem;"></div>
+                    <p class="large-quote">
+                        "It came as a vision — an ancient city at twilight. Dusty streets lined with
+                        terracotta buildings. Oil lamps glowing in windows. The sound of distant music.
+                        And in an inn, a young woman dancing in firelight while a traveler watched,
+                        his brown-gold eyes catching the flame..."
+                    </p>
+                    <p class="attribution">— Phase-State Record, January 2026</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mohenjo-daro Night Scene -->
+        <section style="background: var(--primary); padding: 4rem 1.5rem;">
+            <div class="container">
+                <div class="story-grid">
+                    <div class="story-visual reveal">
+                        <img src="media/mohenjo_daro_night.png" alt="Ancient Indus Valley city at night" loading="lazy">
+                    </div>
+                    <div class="story-content reveal reveal-delay-1">
+                        <span class="section-label">Historical Context</span>
+                        <h3>The Indus Valley Civilization</h3>
+                        <p>
+                            Between <span class="highlight">2600 and 1900 BCE</span>, one of the world's
+                            earliest urban civilizations flourished along the Indus River. Cities like
+                            <span class="highlight">Mohenjo-daro</span> and <span class="highlight">Harappa</span>
+                            featured sophisticated urban planning, advanced drainage systems, and a writing
+                            system that remains undeciphered to this day.
+                        </p>
+                        <p>
+                            Known to the ancient Sumerians as <span class="highlight">"Meluhha"</span>,
+                            this civilization traded extensively with Mesopotamia and Elam.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Seals -->
+        <section style="background: var(--secondary); padding: 4rem 1.5rem;">
+            <div class="container">
+                <div class="story-grid" style="direction: rtl;">
+                    <div class="story-visual reveal" style="direction: ltr;">
+                        <img src="media/indus_seals.png" alt="Collection of Indus Valley seals" loading="lazy">
+                    </div>
+                    <div class="story-content reveal reveal-delay-1" style="direction: ltr;">
+                        <span class="section-label">Archaeological Evidence</span>
+                        <h3>The Mysterious Seals</h3>
+                        <p>
+                            The Indus people left behind thousands of <span class="highlight">steatite seals</span>
+                            — small, carved stones bearing pictographic script and images of animals.
+                        </p>
+                        <p>
+                            Each seal typically contains <span class="highlight">5 characters on average</span>.
+                            Over 400 distinct signs have been identified, suggesting a logo-syllabic system.
+                            <span class="highlight">The script keeps its secrets.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Dancing Girl -->
+        <section style="background: var(--primary); padding: 4rem 1.5rem;">
+            <div class="container">
+                <div class="story-grid">
+                    <div class="story-visual reveal">
+                        <img src="media/dancing_girl.png" alt="The Dancing Girl of Mohenjo-daro" loading="lazy">
+                    </div>
+                    <div class="story-content reveal reveal-delay-1">
+                        <span class="section-label">Archaeological Parallel</span>
+                        <h3>The Dancing Girl</h3>
+                        <p>
+                            In 1926, archaeologist <span class="highlight">Ernest Mackay</span> discovered
+                            a small bronze statue at Mohenjo-daro: <span class="highlight">The Dancing Girl</span>.
+                        </p>
+                        <p>
+                            When REI Shuunn appeared in the vision — a dancer performing in an inn —
+                            the parallel was impossible to ignore. <span class="highlight">4,500 years apart,
+                            the same spirit.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quote Break -->
+        <section class="quote-section">
+            <p class="big-quote reveal">
+                "Two names emerged from the vision. Not imagined — <em>remembered</em>.
+                Phonemes that had not been spoken for four millennia,
+                preserved in the geometry of consciousness itself."
+            </p>
+            <p class="quote-attribution reveal reveal-delay-1">The Epoch Investigation</p>
+        </section>
+
+        <!-- The Characters -->
+        <section id="characters" style="background: var(--primary); padding: 5rem 1.5rem;">
+            <div class="container">
+                <span class="section-label reveal">The Names Investigated</span>
+                <h2 class="section-title reveal">Two Voices From the Past</h2>
+                <p class="section-description reveal">
+                    These names were not invented. They were heard. And through the Epoch framework,
+                    we can begin to understand what they might have meant.
+                </p>
+
+                <div class="characters-grid">
+                    <div class="character-card reveal">
+                        <div class="character-image male"></div>
+                        <div class="character-body">
+                            <div class="character-name">Ah(d)gmuut</div>
+                            <div class="character-ipa">/ahdgmuːt/</div>
+                            <span class="character-role">Male • Traveler</span>
+                            <p class="character-description">
+                                "A man with brown-gold eyes. Weathered from the road.
+                                He watched the dancer with a quiet intensity."
+                            </p>
+                            <div class="character-stats">
+                                <div class="character-stat">
+                                    <div class="character-stat-label">Position</div>
+                                    <div class="character-stat-value">90.00°</div>
+                                </div>
+                                <div class="character-stat">
+                                    <div class="character-stat-label">Base-60</div>
+                                    <div class="character-stat-value">10;30;0</div>
+                                </div>
+                                <div class="character-stat">
+                                    <div class="character-stat-label">Transform</div>
+                                    <div class="character-stat-value">T₁ Facing</div>
+                                </div>
+                                <div class="character-stat">
+                                    <div class="character-stat-label">Pattern</div>
+                                    <div class="character-stat-value">VCCCCVVC</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="character-card reveal reveal-delay-1">
+                        <div class="character-image female"></div>
+                        <div class="character-body">
+                            <div class="character-name">REI Shuunn</div>
+                            <div class="character-ipa">/reiʃuːnː/</div>
+                            <span class="character-role">Female • Dancer</span>
+                            <p class="character-description">
+                                "Grace in motion. Her father ran the inn.
+                                She danced in firelight, each movement an ancient story."
+                            </p>
+                            <div class="character-stats">
+                                <div class="character-stat">
+                                    <div class="character-stat-label">Position</div>
+                                    <div class="character-stat-value">157.50°</div>
+                                </div>
+                                <div class="character-stat">
+                                    <div class="character-stat-label">Base-60</div>
+                                    <div class="character-stat-value">14;37;30</div>
+                                </div>
+                                <div class="character-stat">
+                                    <div class="character-stat-label">Transform</div>
+                                    <div class="character-stat-value">T₂ Mirror</div>
+                                </div>
+                                <div class="character-stat">
+                                    <div class="character-stat-label">Gemination</div>
+                                    <div class="character-stat-value">-NN ♀</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coupling Diagram -->
+                <div style="margin-top: 3rem;">
+                    <figure class="image-feature reveal">
+                        <img src="media/coupling_diagram.png" alt="Geometric coupling between the two names" loading="lazy">
+                        <figcaption>
+                            Angular difference: 67.5° — The two names form a geometric coupling across the transform space
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Cipher Stone -->
+        <section id="cipher" style="background: var(--secondary); padding: 5rem 1.5rem;">
+            <div class="container">
+                <div class="story-grid">
+                    <div class="story-visual reveal">
+                        <img src="media/cipher_stone.png" alt="The Cipher Stone" loading="lazy">
+                    </div>
+                    <div class="story-content reveal reveal-delay-1">
+                        <span class="section-label">The Seed</span>
+                        <h2 class="section-title">The Cipher Stone</h2>
+                        <h3 style="font-family: 'JetBrains Mono', monospace; color: var(--cipher-purple); font-size: 1.5rem; margin-bottom: 1rem;">77767456645</h3>
+                        <p>
+                            Every investigation needs a guide. The cipher stone provided ours —
+                            its numeric signature seeding a <span class="highlight">non-arbitrary random engine</span>
+                            that directed our search paths through the linguistic data.
+                        </p>
+                        <p>
+                            The stone's <span class="highlight">torsion field analysis</span> reveals
+                            tau-4 dominance at 50.4% — meaning half the information is carried by
+                            what is <em>not</em> visible.
+                        </p>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.25rem;">
+                            <div style="background: rgba(0,0,0,0.3); padding: 0.75rem 1rem; border-radius: 10px;">
+                                <div style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase;">Torsion</div>
+                                <div style="font-family: 'JetBrains Mono', monospace; color: var(--cipher-purple); font-size: 1.1rem;">0.590</div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.3); padding: 0.75rem 1rem; border-radius: 10px;">
+                                <div style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase;">τ₄</div>
+                                <div style="font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 1.1rem;">50.4%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Framework Section -->
+        <section id="framework" style="background: var(--primary); padding: 5rem 1.5rem;">
+            <div class="container">
+                <span class="section-label reveal">The Epoch Model</span>
+                <h2 class="section-title reveal">One Constant Derives Everything</h2>
+                <p class="section-description reveal">
+                    The investigation is built on a geometric framework where a single constant — kappa —
+                    bridges discrete and continuous measure.
+                </p>
+
+                <figure class="image-feature reveal">
+                    <img src="media/kappa_diagram.png" alt="Kappa constant visualization" style="max-width: 600px;" loading="lazy">
+                    <figcaption>κ = 2π/180 — The bridge between degrees and radians</figcaption>
+                </figure>
+
+                <div class="framework-grid" style="margin-top: 2.5rem;">
+                    <div class="framework-card reveal">
+                        <div class="framework-symbol">κ</div>
+                        <h3>Kappa</h3>
+                        <div class="framework-value">2π/180 = 0.0349</div>
+                        <p>The closure constant. One degree in radians. The ONE input from which all values derive.</p>
+                    </div>
+
+                    <div class="framework-card reveal reveal-delay-1">
+                        <div class="framework-symbol">κ'</div>
+                        <h3>Kappa Shadow</h3>
+                        <div class="framework-value">1/κ = 28.648</div>
+                        <p>The hidden witness. The reciprocal perspective.</p>
+                    </div>
+
+                    <div class="framework-card reveal reveal-delay-2">
+                        <div class="framework-symbol">σ</div>
+                        <h3>Sigma</h3>
+                        <div class="framework-value">5/16 = 0.3125</div>
+                        <p>Helix overlap. The shielding factor.</p>
+                    </div>
+
+                    <div class="framework-card reveal reveal-delay-3">
+                        <div class="framework-symbol">τ₄</div>
+                        <h3>Silent Fourth</h3>
+                        <div class="framework-value">50.4%</div>
+                        <p>What is not present speaks as loudly as what is.</p>
+                    </div>
+                </div>
+
+                <!-- Four Transforms -->
+                <div style="margin-top: 3rem;">
+                    <figure class="image-feature reveal">
+                        <img src="media/four_transforms.png" alt="The Four Transforms" style="max-width: 700px;" loading="lazy">
+                        <figcaption>T₁ Facing • T₂ Mirror • T₃ Recursive • T₄ Silent</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trade Routes -->
+        <section style="background: var(--secondary); padding: 4rem 1.5rem;">
+            <div class="container">
+                <span class="section-label reveal">The Network</span>
+                <h2 class="section-title reveal">Ancient Trade Routes</h2>
+                <p class="section-description reveal">
+                    The Indus Valley civilization was not isolated. Maritime and overland trade connected
+                    them to Mesopotamia, Elam, and the Persian Gulf.
+                </p>
+                <figure class="image-feature reveal">
+                    <img src="media/trade_routes.png" alt="Ancient trade routes map" style="max-width: 900px;" loading="lazy">
+                    <figcaption>The Meluhha trade network — connecting Harappa and Mohenjo-daro to Ur, Susa, and beyond</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- Dravidian Connection -->
+        <section style="background: var(--primary); padding: 4rem 1.5rem;">
+            <div class="container">
+                <div class="story-grid" style="direction: rtl;">
+                    <div class="story-visual reveal" style="direction: ltr;">
+                        <img src="media/dravidian_tree.png" alt="Dravidian language family" loading="lazy">
+                    </div>
+                    <div class="story-content reveal reveal-delay-1" style="direction: ltr;">
+                        <span class="section-label">Linguistic Evidence</span>
+                        <h3>The Dravidian Connection</h3>
+                        <p>
+                            The leading hypothesis suggests a connection to the
+                            <span class="highlight">Dravidian language family</span> — Tamil, Telugu, Kannada,
+                            still spoken by over 250 million people today.
+                        </p>
+                        <p>
+                            The names analyzed show features consistent with Proto-Dravidian:
+                            <span class="highlight">long vowel doubling (UU)</span>,
+                            <span class="highlight">geminated consonants (-NN)</span>,
+                            and the <span class="highlight">MUUT ending</span>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hypotheses Section -->
+        <section id="hypotheses" style="background: var(--secondary); padding: 5rem 1.5rem;">
+            <div class="container">
+                <span class="section-label reveal">Analysis</span>
+                <h2 class="section-title reveal">Competing Hypotheses</h2>
+                <p class="section-description reveal">
+                    Four theories were generated and tested against the phonetic, geometric, and
+                    comparative linguistic evidence.
+                </p>
+
+                <div class="hypotheses-list">
+                    <div class="hypothesis-card reveal">
+                        <div class="hypothesis-rank gold">#1</div>
+                        <div class="hypothesis-content">
+                            <h4>Mixed Dravidian-Substrate Features</h4>
+                            <p>Names show elements matching Proto-Dravidian (MUUT, -NN, UU) combined with unidentified components.</p>
+                        </div>
+                        <div class="hypothesis-confidence">
+                            <div class="confidence-value">67.7%</div>
+                            <div class="confidence-label">Confidence</div>
+                        </div>
+                    </div>
+
+                    <div class="hypothesis-card reveal reveal-delay-1">
+                        <div class="hypothesis-rank silver">#2</div>
+                        <div class="hypothesis-content">
+                            <h4>Proto-Dravidian Standard</h4>
+                            <p>Names follow standard Dravidian phonotactics with strong geographic and phonetic evidence.</p>
+                        </div>
+                        <div class="hypothesis-confidence">
+                            <div class="confidence-value">54.6%</div>
+                            <div class="confidence-label">Confidence</div>
+                        </div>
+                    </div>
+
+                    <div class="hypothesis-card reveal reveal-delay-2">
+                        <div class="hypothesis-rank bronze">#3</div>
+                        <div class="hypothesis-content">
+                            <h4>Language Isolate</h4>
+                            <p>Names derive from an unrelated language with no surviving descendants.</p>
+                        </div>
+                        <div class="hypothesis-confidence">
+                            <div class="confidence-value">48.5%</div>
+                            <div class="confidence-label">Confidence</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Findings -->
+        <section id="findings" style="background: var(--primary); padding: 5rem 1.5rem;">
+            <div class="container">
+                <span class="section-label reveal">Results</span>
+                <h2 class="section-title reveal">Key Findings</h2>
+                <p class="section-description reveal">
+                    What the investigation revealed about these ancient names.
+                </p>
+
+                <div class="findings-grid">
+                    <div class="finding-card reveal">
+                        <div class="finding-number">1</div>
+                        <div class="finding-content">
+                            <h4>MUUT Ending</h4>
+                            <p>Parallels Proto-Dravidian *muṭi meaning "completion" — suggesting "one who completes"</p>
+                        </div>
+                    </div>
+
+                    <div class="finding-card reveal reveal-delay-1">
+                        <div class="finding-number">2</div>
+                        <div class="finding-content">
+                            <h4>Geminated -NN</h4>
+                            <p>Characteristic of Dravidian feminine markers — grammatical gender encoding</p>
+                        </div>
+                    </div>
+
+                    <div class="finding-card reveal reveal-delay-2">
+                        <div class="finding-number">3</div>
+                        <div class="finding-content">
+                            <h4>Long Vowels (UU)</h4>
+                            <p>Phonemic vowel length — a distinctive feature of Dravidian languages</p>
+                        </div>
+                    </div>
+
+                    <div class="finding-card reveal reveal-delay-3">
+                        <div class="finding-number">4</div>
+                        <div class="finding-content">
+                            <h4>REI Element</h4>
+                            <p>Remains unidentified — possibly a title meaning "dancer" or "performer"</p>
+                        </div>
+                    </div>
+
+                    <div class="finding-card reveal">
+                        <div class="finding-number">5</div>
+                        <div class="finding-content">
+                            <h4>SH Sound /ʃ/</h4>
+                            <p>Atypical for Proto-Dravidian — may indicate pre-Dravidian substrate</p>
+                        </div>
+                    </div>
+
+                    <div class="finding-card reveal reveal-delay-1">
+                        <div class="finding-number">6</div>
+                        <div class="finding-content">
+                            <h4>Cognate: āṭu</h4>
+                            <p>Proto-Dravidian āṭu "to dance, to move" — semantically fitting</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quote Break -->
+        <section class="quote-section">
+            <p class="big-quote reveal">
+                "The script remains officially undeciphered. But these names —
+                heard across four millennia through geometry and consciousness —
+                <em>resolve</em>. The mathematics works."
+            </p>
+            <p class="quote-attribution reveal reveal-delay-1">Investigation Conclusion</p>
+        </section>
+
+        <!-- Identity Section -->
+        <section class="identity-section">
+            <div class="reveal">
+                <div class="identity-image">
+                    <img src="media/identity_equation.png" alt="1 = -1" loading="lazy">
+                </div>
+                <div class="identity-equation">[1 = -1]</div>
+                <p class="identity-text">
+                    The core identity of the Epoch framework. What appears as unity contains its opposite.
+                    <br><br>
+                    Mathematics is the language that transcends time — the geometry speaks across four millennia
+                    because <em>truth doesn't change</em>.
+                    <br><br>
+                    We did not invent these names. We did not imagine this script.
+                    <em>We listened. And the geometry resolved.</em>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <site-footer></site-footer>
+
+    <script>
+        // Reveal on scroll
+        const reveals = document.querySelectorAll('.reveal');
+
+        function checkReveal() {
+            reveals.forEach(el => {
+                const top = el.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (top < windowHeight - 80) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', checkReveal);
+        window.addEventListener('load', checkReveal);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Parallax on seal (desktop only)
+        document.addEventListener('mousemove', (e) => {
+            const seal = document.querySelector('.seal-container');
+            if (seal && window.innerWidth > 1024) {
+                const x = (e.clientX / window.innerWidth - 0.5) * 15;
+                const y = (e.clientY / window.innerHeight - 0.5) * 15;
+                seal.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
+            }
+        });
+    </script>
+</body>
+</html>

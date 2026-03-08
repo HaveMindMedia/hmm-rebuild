@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Unit Circle | Geometry Math</title>
+    <meta name="description" content="The master circle where radius equals 1. Where sine and cosine reveal themselves as shadows.">
+    <link rel="stylesheet" href="../css/geometry-math.css">
+    <style>
+        .explanation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .explanation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .explain-box {
+            background: rgba(10, 22, 40, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .explain-box h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .explain-box.sin h4 { color: var(--sin-color); }
+        .explain-box.cos h4 { color: var(--cos-color); }
+
+        .wave-container {
+            width: 100%;
+            height: 150px;
+            margin: 1rem 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .special-angles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .angle-card {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .angle-card:hover {
+            border-color: var(--cyan);
+            transform: translateY(-2px);
+        }
+
+        .angle-card .degrees {
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .angle-card .values {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+
+        .shadow-explanation {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .shadow-diagram {
+            width: 200px;
+            height: 200px;
+        }
+
+        .shadow-text {
+            flex: 1;
+            min-width: 250px;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-2">Tier 2 - Connection</div>
+        <h1>The Unit Circle</h1>
+        <p class="subtitle">The master circle where radius = 1. Where sine and cosine reveal themselves.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <h2>What Makes It "Unit"?</h2>
+
+            <p>
+                A <strong>unit circle</strong> is simply a circle with radius = 1.
+            </p>
+
+            <p>
+                Why is this special? Because when the radius is 1, the coordinates of any point on the circle directly give us sine and cosine. No extra calculation needed.
+            </p>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Drag the point around. Watch how the x and y coordinates change.
+                </p>
+                <div id="unit-demo" class="demo-canvas"></div>
+                <div class="values-panel numbers-layer visible">
+                    <div class="value-box angle">
+                        <div class="label">Angle (θ)</div>
+                        <div class="value" id="angle-val">0°</div>
+                    </div>
+                    <div class="value-box cos">
+                        <div class="label">x = cos(θ)</div>
+                        <div class="value" id="cos-val">1.00</div>
+                    </div>
+                    <div class="value-box sin">
+                        <div class="label">y = sin(θ)</div>
+                        <div class="value" id="sin-val">0.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Sine and Cosine: The Shadows</h2>
+
+            <p>
+                Imagine shining a light on the spinning point from two directions:
+            </p>
+
+            <div class="shadow-explanation">
+                <div class="shadow-diagram">
+                    <svg viewBox="0 0 200 200" width="200" height="200">
+                        <!-- Circle -->
+                        <circle cx="100" cy="100" r="70" fill="none" stroke="#d4af37" stroke-width="2"/>
+                        <!-- Axes -->
+                        <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                        <line x1="100" y1="20" x2="100" y2="180" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                        <!-- Point at 45 degrees -->
+                        <circle cx="149" cy="51" r="8" fill="#00d4ff"/>
+                        <!-- Vertical projection (sin) -->
+                        <line x1="149" y1="51" x2="149" y2="100" stroke="#4ecdc4" stroke-width="2" stroke-dasharray="4,4"/>
+                        <line x1="100" y1="100" x2="100" y2="51" stroke="#4ecdc4" stroke-width="4"/>
+                        <!-- Horizontal projection (cos) -->
+                        <line x1="149" y1="51" x2="100" y2="51" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="4,4"/>
+                        <line x1="100" y1="100" x2="149" y2="100" stroke="#ff6b6b" stroke-width="4"/>
+                        <!-- Labels -->
+                        <text x="85" y="75" fill="#4ecdc4" font-size="14">sin</text>
+                        <text x="120" y="115" fill="#ff6b6b" font-size="14">cos</text>
+                    </svg>
+                </div>
+                <div class="shadow-text">
+                    <p><strong style="color: var(--cos-color);">Cosine (cos)</strong> is the shadow on the horizontal axis — how far <em>right or left</em> the point is.</p>
+                    <p><strong style="color: var(--sin-color);">Sine (sin)</strong> is the shadow on the vertical axis — how far <em>up or down</em> the point is.</p>
+                </div>
+            </div>
+
+            <div class="equation-box">
+                <div class="equation">
+                    x = cos(θ) &nbsp;&nbsp;&nbsp; y = sin(θ)
+                </div>
+                <div class="equation-label">On the unit circle, coordinates ARE sine and cosine</div>
+            </div>
+
+            <h2>The Wave Emerges</h2>
+
+            <p>
+                Watch what happens when we track the sine value over time as the point rotates:
+            </p>
+
+            <div class="demo-container">
+                <p class="demo-instruction">
+                    Press Play. The vertical position traces out a wave — the sine wave!
+                </p>
+                <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; flex-wrap: wrap;">
+                    <div id="wave-circle" class="demo-canvas" style="flex-shrink: 0;"></div>
+                    <canvas id="wave-canvas" width="300" height="250" style="background: rgba(0,0,0,0.2); border-radius: 8px;"></canvas>
+                </div>
+                <div class="animation-controls">
+                    <button class="control-btn" id="wave-play">&#x25B6;</button>
+                    <button class="control-btn" id="wave-reset">&#x21BA;</button>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <p>A <strong>wave</strong> is just the shadow of circular motion, traced over time.</p>
+            </div>
+
+            <h2>Special Angles to Remember</h2>
+
+            <p>
+                Some angles have particularly clean values. Click any to see it:
+            </p>
+
+            <div class="special-angles" id="special-angles">
+                <div class="angle-card" data-angle="0">
+                    <div class="degrees">0°</div>
+                    <div class="values">cos=1, sin=0</div>
+                </div>
+                <div class="angle-card" data-angle="30">
+                    <div class="degrees">30°</div>
+                    <div class="values">cos=√3/2, sin=1/2</div>
+                </div>
+                <div class="angle-card" data-angle="45">
+                    <div class="degrees">45°</div>
+                    <div class="values">cos=√2/2, sin=√2/2</div>
+                </div>
+                <div class="angle-card" data-angle="60">
+                    <div class="degrees">60°</div>
+                    <div class="values">cos=1/2, sin=√3/2</div>
+                </div>
+                <div class="angle-card" data-angle="90">
+                    <div class="degrees">90°</div>
+                    <div class="values">cos=0, sin=1</div>
+                </div>
+                <div class="angle-card" data-angle="180">
+                    <div class="degrees">180°</div>
+                    <div class="values">cos=-1, sin=0</div>
+                </div>
+                <div class="angle-card" data-angle="270">
+                    <div class="degrees">270°</div>
+                    <div class="values">cos=0, sin=-1</div>
+                </div>
+            </div>
+
+            <h2>The Deep Connection</h2>
+
+            <p>
+                The unit circle reveals something profound: <strong>trigonometry is just geometry</strong>.
+            </p>
+
+            <p>
+                When you memorize sin(30°) = 0.5, you're memorizing a geometric fact: at 30° around the circle, the point is exactly halfway up.
+            </p>
+
+            <div class="explanation-grid">
+                <div class="explain-box cos">
+                    <h4>Cosine tells you...</h4>
+                    <p>How much of the rotation is in the horizontal direction. At 0°, it's all horizontal (cos=1). At 90°, there's no horizontal component (cos=0).</p>
+                </div>
+                <div class="explain-box sin">
+                    <h4>Sine tells you...</h4>
+                    <p>How much of the rotation is in the vertical direction. At 0°, there's no vertical (sin=0). At 90°, it's all vertical (sin=1).</p>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <p>Sine and cosine aren't abstract functions to memorize.<br>They're the <strong>x and y coordinates</strong> of a point walking around the unit circle.</p>
+            </div>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    &#x2713; The unit circle has radius = 1
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    &#x2713; cos(θ) = x-coordinate, sin(θ) = y-coordinate
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    &#x2713; Sine and cosine are "shadows" of circular motion
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    &#x2713; Waves come from projecting rotation over time
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="../tier-1/03-seesaw.html" class="nav-button">
+                    <span class="label">Previous</span>
+                    &#x2190; The Seesaw
+                </a>
+                <a href="02-multiply-spin.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    Multiplication is Rotation &#x2192;
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../js/circle-engine.js"></script>
+    <script src="../js/components/circle-canvas.js"></script>
+    <script>
+        // Main unit circle demo
+        const unitDemo = new CircleCanvas('unit-demo', {
+            radius: 120,
+            showGrid: true,
+            showAxes: true,
+            showProjections: true,
+            showAngle: true,
+            showCoordinates: true,
+            showTrace: false,
+            interactive: true,
+            onAngleChange: function(angle, values) {
+                const deg = ((values.degrees % 360) + 360) % 360;
+                document.getElementById('angle-val').textContent = deg.toFixed(0) + '°';
+                document.getElementById('cos-val').textContent = values.cos.toFixed(2);
+                document.getElementById('sin-val').textContent = values.sin.toFixed(2);
+            }
+        });
+
+        // Special angles
+        document.querySelectorAll('.angle-card').forEach(card => {
+            card.onclick = function() {
+                const angle = parseInt(this.dataset.angle);
+                unitDemo.setAngleDegrees(angle);
+            };
+        });
+
+        // Wave demo
+        const waveCircle = new CircleCanvas('wave-circle', {
+            radius: 80,
+            showGrid: false,
+            showAxes: true,
+            showProjections: true,
+            showAngle: false,
+            showCoordinates: false,
+            showTrace: false,
+            interactive: false,
+            animate: false
+        });
+
+        const waveCanvas = document.getElementById('wave-canvas');
+        const waveCtx = waveCanvas.getContext('2d');
+        let waveAngle = 0;
+        let waveData = [];
+        let waveAnimating = false;
+        let waveAnimId = null;
+
+        function drawWave() {
+            waveCtx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            waveCtx.fillRect(0, 0, waveCanvas.width, waveCanvas.height);
+
+            // Center line
+            waveCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            waveCtx.beginPath();
+            waveCtx.moveTo(0, waveCanvas.height / 2);
+            waveCtx.lineTo(waveCanvas.width, waveCanvas.height / 2);
+            waveCtx.stroke();
+
+            // Wave
+            if (waveData.length > 1) {
+                waveCtx.strokeStyle = '#4ecdc4';
+                waveCtx.lineWidth = 2;
+                waveCtx.beginPath();
+                waveData.forEach((y, i) => {
+                    const x = waveCanvas.width - (waveData.length - i);
+                    if (i === 0) waveCtx.moveTo(x, y);
+                    else waveCtx.lineTo(x, y);
+                });
+                waveCtx.stroke();
+            }
+
+            // Current point
+            if (waveData.length > 0) {
+                waveCtx.fillStyle = '#4ecdc4';
+                waveCtx.beginPath();
+                waveCtx.arc(waveCanvas.width - 1, waveData[waveData.length - 1], 5, 0, Math.PI * 2);
+                waveCtx.fill();
+            }
+        }
+
+        function animateWave() {
+            waveAngle += 0.03;
+            const sinVal = Math.sin(waveAngle);
+            const y = waveCanvas.height / 2 - sinVal * 80;
+            waveData.push(y);
+            if (waveData.length > waveCanvas.width) waveData.shift();
+
+            waveCircle.setAngle(waveAngle);
+            drawWave();
+
+            if (waveAnimating) {
+                waveAnimId = requestAnimationFrame(animateWave);
+            }
+        }
+
+        document.getElementById('wave-play').onclick = function() {
+            waveAnimating = !waveAnimating;
+            this.innerHTML = waveAnimating ? '&#x23F8;' : '&#x25B6;';
+            if (waveAnimating) animateWave();
+        };
+
+        document.getElementById('wave-reset').onclick = function() {
+            waveAnimating = false;
+            document.getElementById('wave-play').innerHTML = '&#x25B6;';
+            if (waveAnimId) cancelAnimationFrame(waveAnimId);
+            waveAngle = 0;
+            waveData = [];
+            waveCircle.setAngle(0);
+            waveCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+            drawWave();
+        };
+
+        // Initial draw
+        drawWave();
+    </script>
+</body>
+</html>

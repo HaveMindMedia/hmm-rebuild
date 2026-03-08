@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion on the Circle | Calculus Through Rotation</title>
+    <link rel="stylesheet" href="../../css/geometry-math.css">
+    <style>
+        .lesson-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-number {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-subtitle {
+            color: var(--text);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .content-section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section h3 {
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .demo-container {
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .demo-title {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        canvas {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .control-btn.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .math-block {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--cyan);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .math-block .equation {
+            font-size: 1.4rem;
+            color: var(--cyan);
+            margin: 0.5rem 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-card {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .info-card .label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card .value {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .dual-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .dual-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .panel h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .comparison-table th {
+            color: var(--gold);
+            font-weight: normal;
+        }
+
+        .comparison-table td {
+            color: var(--text);
+            font-family: monospace;
+        }
+
+        .live-display {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .live-display .param {
+            display: inline-block;
+            margin: 0.5rem 1rem;
+        }
+
+        .live-display .param-label {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .live-display .param-value {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+
+        .slider-container label {
+            color: var(--text);
+            min-width: 100px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .slider-container .value {
+            color: var(--cyan);
+            font-family: monospace;
+            min-width: 60px;
+        }
+
+        .trace-path {
+            stroke-dasharray: 4;
+            animation: dash 20s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -1000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-number">Calculus Through Rotation — Lesson 01</div>
+        <h1>Motion on the Circle</h1>
+        <p class="lesson-subtitle">
+            Formalizing circular motion: from coordinates to complex exponentials
+        </p>
+    </header>
+
+    <section class="content-section">
+        <h2>The Parametric Description</h2>
+
+        <p>
+            In Lesson 00, we saw that on a circle, <strong>velocity is always perpendicular to position</strong>.
+            Now we formalize this with equations. A point moving around a unit circle can be described
+            with a single parameter: the angle <em>t</em> (measured in radians from the positive x-axis).
+        </p>
+
+        <div class="math-block">
+            <p>Position at angle t:</p>
+            <div class="equation">x(t) = cos(t), &nbsp; y(t) = sin(t)</div>
+        </div>
+
+        <p>
+            As <em>t</em> increases from 0 to 2π, the point traces out the entire circle once.
+            The parameter <em>t</em> represents both the angle AND the arc length traveled
+            (on a unit circle, they're the same).
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Parametric Trace</div>
+            <div class="canvas-container">
+                <canvas id="parametricCanvas" width="500" height="400"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">t (radians)</span>
+                    <span class="param-value" id="tValue">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">x = cos(t)</span>
+                    <span class="param-value" id="xValue">1.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">y = sin(t)</span>
+                    <span class="param-value" id="yValue">0.00</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="playPauseBtn">Play</button>
+                <button class="control-btn" id="resetBtn">Reset</button>
+            </div>
+            <div class="slider-container">
+                <label>Speed:</label>
+                <input type="range" id="speedSlider" min="0.1" max="3" step="0.1" value="1">
+                <span class="value" id="speedValue">1.0x</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Complex Exponential: e<sup>it</sup></h2>
+
+        <p>
+            Here's where mathematics becomes elegant. Instead of tracking two separate coordinates
+            (x and y), we can represent position as a <strong>single complex number</strong>:
+        </p>
+
+        <div class="math-block">
+            <p>Euler's Formula:</p>
+            <div class="equation">e<sup>it</sup> = cos(t) + i·sin(t)</div>
+        </div>
+
+        <p>
+            This isn't just a convenient shorthand — it reveals something deep. The function
+            e<sup>it</sup> naturally produces circular motion because the number <em>e</em> combined
+            with imaginary exponents creates rotation.
+        </p>
+
+        <div class="highlight-box">
+            <h4>Why e<sup>it</sup>?</h4>
+            <p>
+                The exponential function e<sup>x</sup> has a special property: its derivative equals itself.
+                When we put <em>i</em> in the exponent, this self-replicating property creates
+                <strong>rotation</strong> instead of growth. Each instant, the direction changes
+                perpendicular to the current position — which is exactly what happens on a circle!
+            </p>
+        </div>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Complex Plane Walker</div>
+            <div class="canvas-container">
+                <canvas id="complexCanvas" width="500" height="400"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">t</span>
+                    <span class="param-value" id="cTValue">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">e<sup>it</sup></span>
+                    <span class="param-value" id="eulerValue">1.00 + 0.00i</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="complexPlayBtn">Play</button>
+                <button class="control-btn" id="showTrailBtn">Show Trail</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Velocity Emerges from Position</h2>
+
+        <p>
+            Now the key insight: what happens when we differentiate position with respect to time?
+        </p>
+
+        <div class="dual-panel">
+            <div class="panel">
+                <h4>Cartesian Approach</h4>
+                <p style="color: var(--text);">Position: (cos t, sin t)</p>
+                <p style="color: var(--text);">Differentiate each component:</p>
+                <p style="color: var(--cyan); font-family: monospace;">
+                    dx/dt = -sin(t)<br>
+                    dy/dt = cos(t)
+                </p>
+                <p style="color: var(--text);">Velocity: (-sin t, cos t)</p>
+            </div>
+            <div class="panel">
+                <h4>Complex Approach</h4>
+                <p style="color: var(--text);">Position: z(t) = e<sup>it</sup></p>
+                <p style="color: var(--text);">Differentiate:</p>
+                <p style="color: var(--cyan); font-family: monospace;">
+                    dz/dt = i · e<sup>it</sup>
+                </p>
+                <p style="color: var(--text);">Velocity = i × Position</p>
+            </div>
+        </div>
+
+        <div class="math-block">
+            <p>The Central Identity:</p>
+            <div class="equation">Velocity = i · Position</div>
+            <p>Multiplying by i rotates 90° counterclockwise</p>
+        </div>
+
+        <p>
+            This is profound: <strong>velocity IS position, rotated 90°</strong>. The complex number
+            <em>i</em> acts as a rotation operator. In the next lesson, we'll see that this means
+            differentiation itself is a 90° rotation.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Position → Velocity Transformation</div>
+            <div class="canvas-container">
+                <canvas id="velocityCanvas" width="500" height="400"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Position</span>
+                    <span class="param-value" id="posDisplay" style="color: #00d4ff;">—</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Velocity</span>
+                    <span class="param-value" id="velDisplay" style="color: #d4af37;">—</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">P · V</span>
+                    <span class="param-value" id="dotDisplay" style="color: #00ff88;">0.00</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="velPlayBtn">Play</button>
+                <button class="control-btn" id="showMultiplyBtn">Show i × P</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Summary: Three Equivalent Views</h2>
+
+        <table class="comparison-table">
+            <tr>
+                <th>Description</th>
+                <th>Position</th>
+                <th>Velocity</th>
+            </tr>
+            <tr>
+                <td>Coordinates</td>
+                <td>(cos t, sin t)</td>
+                <td>(-sin t, cos t)</td>
+            </tr>
+            <tr>
+                <td>Complex Number</td>
+                <td>e<sup>it</sup></td>
+                <td>i · e<sup>it</sup></td>
+            </tr>
+            <tr>
+                <td>Relationship</td>
+                <td>P</td>
+                <td>P rotated 90°</td>
+            </tr>
+        </table>
+
+        <div class="highlight-box">
+            <h4>Key Insight for Calculus</h4>
+            <p>
+                The velocity of circular motion is the position rotated 90°. Since differentiation
+                gives us velocity from position, and rotation by 90° is multiplication by <em>i</em>,
+                we can say: <strong>for circular functions, differentiation = multiplication by i = rotation by 90°</strong>.
+            </p>
+            <p>
+                This will be the foundation of everything that follows.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Why This Matters</h2>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="label">For Physics</div>
+                <div class="value">Velocity ⊥ Position<br>always on circles</div>
+            </div>
+            <div class="info-card">
+                <div class="label">For Calculus</div>
+                <div class="value">d/dt = × i<br>for exponentials</div>
+            </div>
+            <div class="info-card">
+                <div class="label">For Engineering</div>
+                <div class="value">Phasors rotate<br>AC circuits</div>
+            </div>
+            <div class="info-card">
+                <div class="label">For Understanding</div>
+                <div class="value">One formula<br>unifies all</div>
+            </div>
+        </div>
+    </section>
+
+    <nav class="lesson-nav">
+        <a href="00-circular-understanding.html">← Lesson 00: Circular Understanding</a>
+        <a href="02-derivative-rotation.html">Lesson 02: The 90° Secret →</a>
+    </nav>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(212,175,55,0.2);">
+        <p style="color: var(--gold); font-family: monospace;">[1 = -1]</p>
+        <p style="color: var(--text-dim);">Calculus Through Rotation | Geometry Math</p>
+    </footer>
+
+    <script src="../../js/circle-engine.js"></script>
+    <script>
+        // ===== PARAMETRIC TRACE DEMO =====
+        (function() {
+            const canvas = document.getElementById('parametricCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            // High DPI setup
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = 120;
+
+            let t = 0;
+            let playing = false;
+            let speed = 1;
+            let tracePoints = [];
+
+            const tDisplay = document.getElementById('tValue');
+            const xDisplay = document.getElementById('xValue');
+            const yDisplay = document.getElementById('yValue');
+            const playBtn = document.getElementById('playPauseBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const speedSlider = document.getElementById('speedSlider');
+            const speedValue = document.getElementById('speedValue');
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(cx - 160, cy);
+                ctx.lineTo(cx + 160, cy);
+                ctx.moveTo(cx, cy - 160);
+                ctx.lineTo(cx, cy + 160);
+                ctx.stroke();
+
+                // Draw unit circle
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Draw trace
+                if (tracePoints.length > 1) {
+                    ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(tracePoints[0].x, tracePoints[0].y);
+                    for (let i = 1; i < tracePoints.length; i++) {
+                        ctx.lineTo(tracePoints[i].x, tracePoints[i].y);
+                    }
+                    ctx.stroke();
+                }
+
+                // Current position
+                const x = Math.cos(t);
+                const y = Math.sin(t);
+                const px = cx + x * radius;
+                const py = cy - y * radius; // Flip y for screen coords
+
+                // Draw radius line
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.8)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(px, py);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Draw angle arc
+                ctx.strokeStyle = 'rgba(0, 255, 136, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, 30, 0, -t, t > 0);
+                ctx.stroke();
+
+                // Draw projections
+                ctx.strokeStyle = 'rgba(0, 212, 255, 0.5)';
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(px, cy);
+                ctx.moveTo(px, py);
+                ctx.lineTo(cx, py);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Draw point
+                ctx.fillStyle = '#00d4ff';
+                ctx.beginPath();
+                ctx.arc(px, py, 10, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Labels
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = '12px monospace';
+                ctx.fillText('cos(t)', px + 5, cy + 15);
+                ctx.fillText('sin(t)', cx + 5, py - 5);
+                ctx.fillText('t', cx + 35, cy - 10);
+
+                // Update displays
+                tDisplay.textContent = t.toFixed(2);
+                xDisplay.textContent = x.toFixed(3);
+                yDisplay.textContent = y.toFixed(3);
+            }
+
+            function animate() {
+                if (playing) {
+                    t += 0.02 * speed;
+                    if (t > Math.PI * 2) {
+                        t = 0;
+                        tracePoints = [];
+                    }
+
+                    const x = Math.cos(t);
+                    const y = Math.sin(t);
+                    tracePoints.push({
+                        x: cx + x * radius,
+                        y: cy - y * radius
+                    });
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            playBtn.addEventListener('click', () => {
+                playing = !playing;
+                playBtn.textContent = playing ? 'Pause' : 'Play';
+                playBtn.classList.toggle('active', playing);
+            });
+
+            resetBtn.addEventListener('click', () => {
+                t = 0;
+                tracePoints = [];
+                playing = false;
+                playBtn.textContent = 'Play';
+                playBtn.classList.remove('active');
+            });
+
+            speedSlider.addEventListener('input', (e) => {
+                speed = parseFloat(e.target.value);
+                speedValue.textContent = speed.toFixed(1) + 'x';
+            });
+
+            animate();
+        })();
+
+        // ===== COMPLEX PLANE DEMO =====
+        (function() {
+            const canvas = document.getElementById('complexCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = 120;
+
+            let t = 0;
+            let playing = false;
+            let showTrail = false;
+            let trail = [];
+
+            const tDisplay = document.getElementById('cTValue');
+            const eulerDisplay = document.getElementById('eulerValue');
+            const playBtn = document.getElementById('complexPlayBtn');
+            const trailBtn = document.getElementById('showTrailBtn');
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw complex plane axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(50, cy);
+                ctx.lineTo(width - 50, cy);
+                ctx.moveTo(cx, 50);
+                ctx.lineTo(cx, height - 50);
+                ctx.stroke();
+
+                // Axis labels
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '14px serif';
+                ctx.fillText('Real', width - 70, cy - 10);
+                ctx.fillText('Imaginary', cx + 10, 70);
+                ctx.fillText('1', cx + radius + 5, cy + 15);
+                ctx.fillText('-1', cx - radius - 15, cy + 15);
+                ctx.fillText('i', cx + 5, cy - radius - 5);
+                ctx.fillText('-i', cx + 5, cy + radius + 15);
+
+                // Draw unit circle
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Draw trail
+                if (showTrail && trail.length > 1) {
+                    ctx.strokeStyle = 'rgba(255, 0, 255, 0.4)';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(trail[0].x, trail[0].y);
+                    for (let i = 1; i < trail.length; i++) {
+                        ctx.lineTo(trail[i].x, trail[i].y);
+                    }
+                    ctx.stroke();
+                }
+
+                // Current position (e^it)
+                const real = Math.cos(t);
+                const imag = Math.sin(t);
+                const px = cx + real * radius;
+                const py = cy - imag * radius;
+
+                // Draw to origin
+                ctx.strokeStyle = 'rgba(0, 212, 255, 0.8)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(px, py);
+                ctx.stroke();
+
+                // Draw point
+                ctx.fillStyle = '#00d4ff';
+                ctx.shadowColor = '#00d4ff';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.arc(px, py, 12, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Draw e^it label
+                ctx.fillStyle = '#00d4ff';
+                ctx.font = '14px serif';
+                const labelOffset = 20;
+                ctx.fillText('e', px + labelOffset, py - 10);
+                ctx.font = '10px serif';
+                ctx.fillText('it', px + labelOffset + 8, py - 14);
+
+                // Update displays
+                tDisplay.textContent = t.toFixed(2);
+                const sign = imag >= 0 ? '+' : '-';
+                eulerDisplay.textContent = `${real.toFixed(2)} ${sign} ${Math.abs(imag).toFixed(2)}i`;
+            }
+
+            function animate() {
+                if (playing) {
+                    t += 0.02;
+                    if (t > Math.PI * 2) {
+                        t = 0;
+                        trail = [];
+                    }
+
+                    if (showTrail) {
+                        trail.push({
+                            x: cx + Math.cos(t) * radius,
+                            y: cy - Math.sin(t) * radius
+                        });
+                    }
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            playBtn.addEventListener('click', () => {
+                playing = !playing;
+                playBtn.textContent = playing ? 'Pause' : 'Play';
+                playBtn.classList.toggle('active', playing);
+            });
+
+            trailBtn.addEventListener('click', () => {
+                showTrail = !showTrail;
+                trailBtn.classList.toggle('active', showTrail);
+                if (!showTrail) trail = [];
+            });
+
+            animate();
+        })();
+
+        // ===== VELOCITY DEMO =====
+        (function() {
+            const canvas = document.getElementById('velocityCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = 100;
+
+            let t = 0;
+            let playing = false;
+            let showMultiply = false;
+
+            const posDisplay = document.getElementById('posDisplay');
+            const velDisplay = document.getElementById('velDisplay');
+            const dotDisplay = document.getElementById('dotDisplay');
+            const playBtn = document.getElementById('velPlayBtn');
+            const multiplyBtn = document.getElementById('showMultiplyBtn');
+
+            function drawArrow(fromX, fromY, toX, toY, color, label) {
+                const angle = Math.atan2(toY - fromY, toX - fromX);
+                const len = Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2);
+
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(fromX, fromY);
+                ctx.lineTo(toX, toY);
+                ctx.stroke();
+
+                // Arrowhead
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(toX - 12 * Math.cos(angle - 0.3), toY - 12 * Math.sin(angle - 0.3));
+                ctx.lineTo(toX - 12 * Math.cos(angle + 0.3), toY - 12 * Math.sin(angle + 0.3));
+                ctx.closePath();
+                ctx.fill();
+
+                // Label
+                if (label) {
+                    ctx.fillStyle = color;
+                    ctx.font = '14px serif';
+                    const midX = (fromX + toX) / 2;
+                    const midY = (fromY + toY) / 2;
+                    ctx.fillText(label, midX + 15 * Math.cos(angle + Math.PI/2), midY + 15 * Math.sin(angle + Math.PI/2));
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(cx - 180, cy);
+                ctx.lineTo(cx + 180, cy);
+                ctx.moveTo(cx, cy - 180);
+                ctx.lineTo(cx, cy + 180);
+                ctx.stroke();
+
+                // Draw unit circle
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Position
+                const px = Math.cos(t);
+                const py = Math.sin(t);
+                const screenPx = cx + px * radius;
+                const screenPy = cy - py * radius;
+
+                // Velocity (derivative)
+                const vx = -Math.sin(t);
+                const vy = Math.cos(t);
+
+                // Draw position vector (cyan)
+                drawArrow(cx, cy, screenPx, screenPy, '#00d4ff', 'P');
+
+                // Draw velocity vector from point (gold), scaled for visibility
+                const velScale = 60;
+                drawArrow(
+                    screenPx, screenPy,
+                    screenPx + vx * velScale,
+                    screenPy - vy * velScale,
+                    '#d4af37', 'V'
+                );
+
+                // Show multiplication by i
+                if (showMultiply) {
+                    // i * P = i * (cos + i*sin) = -sin + i*cos = velocity
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.font = '14px monospace';
+                    ctx.fillText('V = i × P', cx + 130, cy - 130);
+                    ctx.fillText('(90° rotation)', cx + 130, cy - 110);
+
+                    // Draw 90° arc
+                    ctx.strokeStyle = 'rgba(0, 255, 136, 0.5)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    const arcRadius = 40;
+                    ctx.arc(screenPx, screenPy, arcRadius, -t, -t - Math.PI/2, true);
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#00ff88';
+                    ctx.font = '12px monospace';
+                    ctx.fillText('90°', screenPx + arcRadius * 0.7 * Math.cos(-t - Math.PI/4),
+                                       screenPy - arcRadius * 0.7 * Math.sin(-t - Math.PI/4));
+                }
+
+                // Draw point
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(screenPx, screenPy, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Dot product (should be ~0)
+                const dot = px * vx + py * vy;
+
+                // Update displays
+                posDisplay.textContent = `(${px.toFixed(2)}, ${py.toFixed(2)})`;
+                velDisplay.textContent = `(${vx.toFixed(2)}, ${vy.toFixed(2)})`;
+                dotDisplay.textContent = dot.toFixed(4);
+            }
+
+            function animate() {
+                if (playing) {
+                    t += 0.015;
+                    if (t > Math.PI * 2) t = 0;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            playBtn.addEventListener('click', () => {
+                playing = !playing;
+                playBtn.textContent = playing ? 'Pause' : 'Play';
+                playBtn.classList.toggle('active', playing);
+            });
+
+            multiplyBtn.addEventListener('click', () => {
+                showMultiply = !showMultiply;
+                multiplyBtn.classList.toggle('active', showMultiply);
+            });
+
+            // Allow dragging
+            let dragging = false;
+            canvas.addEventListener('mousedown', () => { dragging = true; playing = false; playBtn.textContent = 'Play'; });
+            canvas.addEventListener('mouseup', () => { dragging = false; });
+            canvas.addEventListener('mouseleave', () => { dragging = false; });
+            canvas.addEventListener('mousemove', (e) => {
+                if (!dragging) return;
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left - cx;
+                const my = -(e.clientY - rect.top - cy);
+                t = Math.atan2(my, mx);
+                if (t < 0) t += Math.PI * 2;
+            });
+
+            animate();
+        })();
+    </script>
+</body>
+</html>

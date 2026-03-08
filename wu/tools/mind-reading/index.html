@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Reading Training - Have Mind Media</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --void: #0a0a0f;
+            --panel: #151a24;
+            --border: #1e2836;
+            --text: #e6e6e6;
+            --soft-blue: #6ab4f5;
+            --gold: #c9a227;
+            --accent: #50c878;
+            --warning: #e74c3c;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(180deg, var(--void) 0%, #0d1117 50%, var(--void) 100%);
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: var(--soft-blue);
+            font-style: italic;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--soft-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover { color: var(--gold); }
+
+        /* Game Area */
+        .game-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .stat-value.streak { color: var(--accent); }
+        .stat-value.time { color: var(--soft-blue); }
+
+        /* Timer Ring */
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .timer-ring {
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .timer-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .timer-ring circle {
+            fill: none;
+            stroke-width: 8;
+        }
+
+        .timer-bg {
+            stroke: var(--border);
+        }
+
+        .timer-progress {
+            stroke: var(--accent);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .timer-progress.warning {
+            stroke: var(--warning);
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text);
+        }
+
+        /* Target Card Area */
+        .target-area {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .target-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .target-card {
+            width: 120px;
+            height: 160px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #1a2535 0%, #0d1520 100%);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            box-shadow: 0 0 30px rgba(201, 162, 39, 0.2);
+        }
+
+        /* Choice Cards */
+        .choices-area {
+            margin: 30px 0;
+        }
+
+        .choices-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .choices-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 15px;
+            justify-items: center;
+        }
+
+        .choice-card {
+            width: 100px;
+            height: 140px;
+            background: linear-gradient(135deg, #1a2535 0%, #0d1520 100%);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .choice-card:hover {
+            border-color: var(--soft-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(106, 180, 245, 0.2);
+        }
+
+        .choice-card.face-down::before {
+            content: "?";
+            font-size: 2.5rem;
+            color: var(--border);
+        }
+
+        .choice-card.face-down .symbol {
+            display: none;
+        }
+
+        .choice-card.revealed {
+            pointer-events: none;
+        }
+
+        .choice-card.correct {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(80, 200, 120, 0.4);
+        }
+
+        .choice-card.wrong {
+            border-color: var(--warning);
+            opacity: 0.5;
+        }
+
+        .choice-card.missed {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(201, 162, 39, 0.3);
+        }
+
+        /* Message Area */
+        .message-area {
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message {
+            font-size: 1.3rem;
+            padding: 15px 30px;
+            border-radius: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.instruction {
+            color: var(--soft-blue);
+            background: rgba(106, 180, 245, 0.1);
+            border: 1px solid rgba(106, 180, 245, 0.3);
+        }
+
+        .message.success {
+            color: var(--accent);
+            background: rgba(80, 200, 120, 0.1);
+            border: 1px solid rgba(80, 200, 120, 0.3);
+        }
+
+        .message.fail {
+            color: var(--warning);
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        /* Start Button */
+        .start-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--void);
+            background: linear-gradient(135deg, var(--gold) 0%, #d4af37 100%);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(201, 162, 39, 0.4);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Instructions */
+        .instructions {
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 25px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .instructions h3 {
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .instructions p {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .instructions .highlight {
+            color: var(--soft-blue);
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .game-footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .game-footer a {
+            color: var(--soft-blue);
+            text-decoration: none;
+        }
+
+        @media (max-width: 500px) {
+            .choices-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .choice-card {
+                width: 120px;
+                height: 160px;
+            }
+        }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <a href="../../index.html" class="back-link">← Back to Have Mind</a>
+
+    <div class="header">
+        <h1>Mind Reading Training</h1>
+        <p>Trust your first instinct. Don't think — feel.</p>
+    </div>
+
+    <div class="game-container">
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-label">Streak</div>
+                <div class="stat-value streak" id="streak">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Best</div>
+                <div class="stat-value" id="best">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Time</div>
+                <div class="stat-value time" id="time-limit">5.0s</div>
+            </div>
+        </div>
+
+        <div class="timer-container" id="timer-container" style="display: none;">
+            <div class="timer-ring">
+                <svg width="100" height="100">
+                    <circle class="timer-bg" cx="50" cy="50" r="42"></circle>
+                    <circle class="timer-progress" id="timer-progress" cx="50" cy="50" r="42"
+                            stroke-dasharray="264" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="timer-text" id="timer-text">5.0</div>
+            </div>
+        </div>
+
+        <div class="target-area" id="target-area" style="display: none;">
+            <div class="target-label">Remember this symbol</div>
+            <div class="target-card" id="target-card"></div>
+        </div>
+
+        <div class="choices-area" id="choices-area" style="display: none;">
+            <div class="choices-label">DO NOT THINK — Click the first one that feels right</div>
+            <div class="choices-grid" id="choices-grid"></div>
+        </div>
+
+        <div class="message-area">
+            <div class="message instruction" id="message">Press START to begin training</div>
+        </div>
+
+        <button class="start-btn" id="start-btn">START</button>
+
+        <div class="instructions" id="instructions">
+            <h3>How This Works</h3>
+            <p>You'll see a symbol, then four face-down cards.</p>
+            <p>Pick the matching card <span class="highlight">before time runs out</span>.</p>
+            <p>Each correct answer makes the next round <span class="highlight">faster</span>.</p>
+            <p>This trains your gut reaction — the part of you that knows before you think.</p>
+        </div>
+    </div>
+
+    <div class="game-footer">
+        <p>The geometry is in your instincts. <a href="../../education/soul-science.html">Learn more</a></p>
+    </div>
+
+    <script>
+        // Sacred Geometry Symbols
+        const SYMBOLS = ['◯', '△', '□', '◇', '⬡', '⬢', '✦', '✧', '⊕', '⊗', '☯', '⚛'];
+
+        // Game State
+        let state = {
+            playing: false,
+            streak: 0,
+            best: parseInt(localStorage.getItem('mindreading-best') || '0'),
+            timeLimit: 5.0,
+            minTime: 1.0,
+            timeDecrement: 0.3,
+            currentSymbol: null,
+            correctIndex: null,
+            timer: null,
+            timeRemaining: 0
+        };
+
+        // Elements
+        const elements = {
+            streak: document.getElementById('streak'),
+            best: document.getElementById('best'),
+            timeLimit: document.getElementById('time-limit'),
+            timerContainer: document.getElementById('timer-container'),
+            timerProgress: document.getElementById('timer-progress'),
+            timerText: document.getElementById('timer-text'),
+            targetArea: document.getElementById('target-area'),
+            targetCard: document.getElementById('target-card'),
+            choicesArea: document.getElementById('choices-area'),
+            choicesGrid: document.getElementById('choices-grid'),
+            message: document.getElementById('message'),
+            startBtn: document.getElementById('start-btn'),
+            instructions: document.getElementById('instructions')
+        };
+
+        // Initialize
+        elements.best.textContent = state.best;
+
+        // Start Game
+        elements.startBtn.addEventListener('click', startGame);
+
+        function startGame() {
+            state.playing = true;
+            state.streak = 0;
+            state.timeLimit = 5.0;
+
+            elements.startBtn.style.display = 'none';
+            elements.instructions.style.display = 'none';
+
+            updateStats();
+            showNextRound();
+        }
+
+        function showNextRound() {
+            // Pick random symbol
+            state.currentSymbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+            // Show target
+            elements.targetArea.style.display = 'block';
+            elements.targetCard.textContent = state.currentSymbol;
+            elements.choicesArea.style.display = 'none';
+            elements.timerContainer.style.display = 'none';
+
+            setMessage('Remember this symbol...', 'instruction');
+
+            // After 2 seconds, show choices
+            setTimeout(showChoices, 2000);
+        }
+
+        function showChoices() {
+            elements.targetArea.style.display = 'none';
+            elements.choicesArea.style.display = 'block';
+            elements.timerContainer.style.display = 'flex';
+
+            // Generate 4 choices (1 correct, 3 random)
+            const choices = [state.currentSymbol];
+            while (choices.length < 4) {
+                const sym = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+                if (!choices.includes(sym)) {
+                    choices.push(sym);
+                }
+            }
+
+            // Shuffle
+            for (let i = choices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [choices[i], choices[j]] = [choices[j], choices[i]];
+            }
+
+            state.correctIndex = choices.indexOf(state.currentSymbol);
+
+            // Create cards
+            elements.choicesGrid.innerHTML = '';
+            choices.forEach((sym, i) => {
+                const card = document.createElement('div');
+                card.className = 'choice-card face-down';
+                card.dataset.index = i;
+                card.innerHTML = `<span class="symbol">${sym}</span>`;
+                card.addEventListener('click', () => makeChoice(i));
+                elements.choicesGrid.appendChild(card);
+            });
+
+            setMessage('PICK NOW!', 'instruction');
+
+            // Start timer
+            startTimer();
+        }
+
+        function startTimer() {
+            state.timeRemaining = state.timeLimit;
+            const circumference = 264; // 2 * PI * 42
+
+            elements.timerProgress.style.strokeDashoffset = 0;
+            elements.timerProgress.classList.remove('warning');
+            elements.timerText.textContent = state.timeLimit.toFixed(1);
+
+            const startTime = Date.now();
+            const duration = state.timeLimit * 1000;
+
+            state.timer = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                state.timeRemaining = Math.max(0, state.timeLimit - elapsed / 1000);
+
+                // Update visual
+                const progress = elapsed / duration;
+                elements.timerProgress.style.strokeDashoffset = circumference * progress;
+                elements.timerText.textContent = state.timeRemaining.toFixed(1);
+
+                // Warning color when low
+                if (state.timeRemaining < 2) {
+                    elements.timerProgress.classList.add('warning');
+                }
+
+                // Time's up
+                if (state.timeRemaining <= 0) {
+                    clearInterval(state.timer);
+                    timeUp();
+                }
+            }, 50);
+        }
+
+        function makeChoice(index) {
+            if (!state.playing) return;
+
+            clearInterval(state.timer);
+
+            // Reveal all cards
+            const cards = elements.choicesGrid.querySelectorAll('.choice-card');
+            cards.forEach((card, i) => {
+                card.classList.remove('face-down');
+                card.classList.add('revealed');
+
+                if (i === state.correctIndex) {
+                    card.classList.add(index === state.correctIndex ? 'correct' : 'missed');
+                } else if (i === index) {
+                    card.classList.add('wrong');
+                }
+            });
+
+            if (index === state.correctIndex) {
+                // Correct!
+                state.streak++;
+                if (state.streak > state.best) {
+                    state.best = state.streak;
+                    localStorage.setItem('mindreading-best', state.best);
+                }
+
+                // Decrease time for next round
+                state.timeLimit = Math.max(state.minTime, state.timeLimit - state.timeDecrement);
+
+                updateStats();
+                setMessage('Correct! Trust your instincts.', 'success');
+
+                // Next round after delay
+                setTimeout(showNextRound, 1500);
+            } else {
+                // Wrong
+                endGame('Wrong card. Your streak: ' + state.streak);
+            }
+        }
+
+        function timeUp() {
+            // Reveal all cards
+            const cards = elements.choicesGrid.querySelectorAll('.choice-card');
+            cards.forEach((card, i) => {
+                card.classList.remove('face-down');
+                card.classList.add('revealed');
+                if (i === state.correctIndex) {
+                    card.classList.add('missed');
+                }
+            });
+
+            endGame('Too slow! Your streak: ' + state.streak);
+        }
+
+        function endGame(reason) {
+            state.playing = false;
+            setMessage(reason, 'fail');
+
+            setTimeout(() => {
+                elements.targetArea.style.display = 'none';
+                elements.choicesArea.style.display = 'none';
+                elements.timerContainer.style.display = 'none';
+                elements.startBtn.style.display = 'block';
+                elements.startBtn.textContent = 'TRY AGAIN';
+                elements.instructions.style.display = 'block';
+
+                setMessage('Press TRY AGAIN to continue training', 'instruction');
+            }, 2500);
+        }
+
+        function updateStats() {
+            elements.streak.textContent = state.streak;
+            elements.best.textContent = state.best;
+            elements.timeLimit.textContent = state.timeLimit.toFixed(1) + 's';
+        }
+
+        function setMessage(text, type) {
+            elements.message.textContent = text;
+            elements.message.className = 'message ' + type;
+        }
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

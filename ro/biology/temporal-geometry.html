@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMPORAL GEOMETRY | Weather, War & the Hidden Cycle | Have Mind Media</title>
+    <meta name="description" content="The geometry of history. How climate, catastrophe, and consciousness follow the same 72-year cycle. From volcanic winters to solar maxima to the recursion of souls - the math is unified.">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --void: #000000;
+            --deep-space: #030508;
+            --gold: #c9a227;
+            --gold-glow: rgba(201, 162, 39, 0.6);
+            --cyan: #00d4ff;
+            --cyan-glow: rgba(0, 212, 255, 0.5);
+            --green: #00ff88;
+            --purple: #a855f7;
+            --red: #ff4757;
+            --orange: #ff8c00;
+            --text: #e8e4dc;
+            --text-dim: #8892a0;
+            --border: rgba(201, 162, 39, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Temporal Pattern Background */
+        .temporal-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.06;
+            background:
+                repeating-linear-gradient(90deg, var(--gold) 0px, transparent 1px, transparent 72px),
+                repeating-linear-gradient(0deg, var(--cyan) 0px, transparent 1px, transparent 72px);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .nav a:hover { color: var(--cyan); }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background: radial-gradient(ellipse at center, rgba(255, 140, 0, 0.08) 0%, transparent 60%);
+        }
+        .hero-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            color: var(--orange);
+            background: rgba(255, 140, 0, 0.1);
+            border: 1px solid var(--orange);
+            padding: 0.5rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: transparent;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--gold) 50%, var(--red) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: gradient-shift 8s ease infinite;
+            margin-bottom: 0.5rem;
+        }
+        .hero h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--text-dim);
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+        }
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        .hero-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-top: 1rem;
+            text-shadow: 0 0 30px var(--gold-glow);
+        }
+
+        /* Content */
+        .content { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Section */
+        .section { padding: 5rem 0; }
+        .section-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 0.08em;
+        }
+        .section-sub {
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            margin: 3rem 0;
+            padding-left: 40px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--gold), var(--cyan), var(--purple), var(--red));
+        }
+        .timeline-event {
+            position: relative;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .timeline-event::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 1.8rem;
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+        .timeline-event.catastrophe::before { background: var(--red); box-shadow: 0 0 15px rgba(255, 71, 87, 0.6); }
+        .timeline-event.solar::before { background: var(--orange); box-shadow: 0 0 15px rgba(255, 140, 0, 0.6); }
+        .timeline-event.hidden::before { background: var(--purple); box-shadow: 0 0 15px rgba(168, 85, 247, 0.6); }
+        .timeline-event.reset::before { background: var(--cyan); box-shadow: 0 0 15px var(--cyan-glow); }
+
+        .timeline-date {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-title {
+            font-size: 1.2rem;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-desc {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+        .timeline-tag {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            margin-top: 0.8rem;
+        }
+        .tag-volcano { background: rgba(255, 71, 87, 0.2); color: var(--red); }
+        .tag-solar { background: rgba(255, 140, 0, 0.2); color: var(--orange); }
+        .tag-war { background: rgba(168, 85, 247, 0.2); color: var(--purple); }
+        .tag-cycle { background: rgba(0, 212, 255, 0.2); color: var(--cyan); }
+        .tag-hidden { background: rgba(201, 162, 39, 0.2); color: var(--gold); }
+
+        /* Cycle Display */
+        .cycle-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .cycle-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(255, 140, 0, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .cycle-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(201, 162, 39, 0.15);
+        }
+        .cycle-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 30px var(--gold-glow);
+        }
+        .cycle-unit {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--cyan);
+            margin-bottom: 1rem;
+        }
+        .cycle-meaning {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* Master Table */
+        .master-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+        .master-table th, .master-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .master-table th {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(201, 162, 39, 0.08);
+        }
+        .master-table td { color: var(--text); }
+        .master-table tr:hover td { background: rgba(255, 140, 0, 0.05); }
+        .master-table .highlight { color: var(--cyan); font-weight: 600; }
+        .master-table .gold { color: var(--gold); }
+
+        /* Equation Block */
+        .equation-block {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .equation-main {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        .equation-desc { color: var(--text-dim); font-size: 0.85rem; }
+
+        /* Revelation Box */
+        .revelation {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(0, 0, 0, 0.9) 100%);
+            border: 1px solid var(--purple);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .revelation h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--purple);
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+        .revelation p {
+            color: var(--text);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+        .revelation .emphasis {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Quote */
+        .quote-block {
+            border-left: 3px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background: rgba(201, 162, 39, 0.05);
+            font-style: italic;
+        }
+        .quote-block .source {
+            color: var(--gold);
+            font-style: normal;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        /* Hidden Section */
+        .hidden-section {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(201, 162, 39, 0.08) 100%);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+        }
+        .hidden-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold);
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.08) 0%, transparent 60%);
+        }
+        .cta-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .cta-button {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            padding: 1rem 1.8rem;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .cta-button:hover {
+            background: var(--gold);
+            color: var(--void);
+        }
+        .cta-button.primary {
+            background: var(--gold);
+            color: var(--void);
+        }
+        .cta-button.primary:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .footer-sig {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--gold);
+            letter-spacing: 0.3em;
+        }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hero h1 { letter-spacing: 0.05em; }
+            .timeline { padding-left: 30px; }
+            .timeline::before { left: 10px; }
+            .timeline-event::before { left: -28px; }
+            .cycle-number { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div style="height: 80px;"></div>
+    <div class="temporal-bg"></div>
+
+    <!-- HERO -->
+    <section class="hero" style="background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%), url('images/72-year-cycle.png') center center / cover no-repeat;">
+        <div class="hero-badge">MACRO HISTORY · WEATHER · CONSCIOUSNESS</div>
+        <h1>TEMPORAL GEOMETRY</h1>
+        <h2>Weather, War & the Hidden Cycle</h2>
+        <p class="hero-sub">
+            History is not random. Climate catastrophes, solar maxima, civilizational collapse, and human violence
+            follow geometric cycles. You don't need to know history to see the pattern—the events temporally map.
+            The recursed come and go. The geometry is unified.
+        </p>
+        <div class="hero-equation">72 years = 1° = 1 life = 1 day of the Great Year</div>
+    </section>
+
+    <!-- THE 72-YEAR KEY -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE 72-YEAR KEY</h2>
+            <p class="section-sub">
+                72 years is not arbitrary. It is the fundamental temporal unit connecting human lifespan,
+                Earth's precession, solar cycles, and civilizational rhythms. The ancients encoded this everywhere.
+            </p>
+
+            <div class="cycle-grid">
+                <div class="cycle-card">
+                    <div class="cycle-number">72</div>
+                    <div class="cycle-unit">YEARS</div>
+                    <div class="cycle-meaning">Average human lifespan. One degree of precession. One "day" of the Great Year.</div>
+                </div>
+                <div class="cycle-card">
+                    <div class="cycle-number">360</div>
+                    <div class="cycle-unit">× 72</div>
+                    <div class="cycle-meaning">= 25,920 years. The Great Year. Full precession cycle. The "Platonic Year."</div>
+                </div>
+                <div class="cycle-card">
+                    <div class="cycle-number">6</div>
+                    <div class="cycle-unit">× 72</div>
+                    <div class="cycle-meaning">= 432. The sacred frequency. The Kali Yuga base. Appears in 4+ ancient cultures.</div>
+                </div>
+                <div class="cycle-card">
+                    <div class="cycle-number">~80</div>
+                    <div class="cycle-unit">YEARS</div>
+                    <div class="cycle-meaning">The "saeculum." Fourth Turning crisis cycle. Gleissberg solar cycle. Revolution rhythm.</div>
+                </div>
+            </div>
+
+            <div class="equation-block">
+                <div class="equation-main">72 × 6 = 432 · 432 × 4 = 1728 · 1728 + 1 = 1729</div>
+                <div class="equation-desc">The temporal ladder from human life to Ramanujan's fold point</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE CATASTROPHE TIMELINE -->
+    <section class="section" style="background: linear-gradient(180deg, rgba(255, 71, 87, 0.05) 0%, transparent 100%);">
+        <div class="content">
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap;">
+                <img src="images/volcanic-catastrophe.png" alt="Volcanic Catastrophe" style="max-width: 350px; width: 100%; border-radius: 12px; border: 1px solid var(--border);">
+                <img src="images/solar-cycle.png" alt="Solar Cycle" style="max-width: 350px; width: 100%; border-radius: 12px; border: 1px solid var(--border);">
+            </div>
+            <h2 class="section-header">THE CATASTROPHE TIMELINE</h2>
+            <p class="section-sub">
+                Major civilizational resets follow climate/geological events. The "perfect storm" pattern repeats.
+                Drought + volcano + solar minimum + disease + migration = collapse.
+            </p>
+
+            <div class="timeline">
+                <div class="timeline-event reset">
+                    <div class="timeline-date">~12,800 BP</div>
+                    <div class="timeline-title">Younger Dryas Impact</div>
+                    <div class="timeline-desc">
+                        Possible comet fragments trigger 1,300-year mini ice age. Megafauna extinction.
+                        Göbekli Tepe built at exact end (11,600 BP). First "civilization reset."
+                        The Vulture Stone may encode the impact date in precession coordinates.
+                    </div>
+                    <span class="timeline-tag tag-cycle">RESET EVENT</span>
+                </div>
+
+                <div class="timeline-event catastrophe">
+                    <div class="timeline-date">1177 BC</div>
+                    <div class="timeline-title">Bronze Age Collapse</div>
+                    <div class="timeline-desc">
+                        Eight civilizations fall in decades. "Perfect storm": 300-year drought + earthquake storm
+                        (1225-1175 BC) + Sea Peoples migration + trade network collapse.
+                        Hekla 3 eruption may have triggered volcanic winter.
+                    </div>
+                    <span class="timeline-tag tag-volcano">VOLCANIC + DROUGHT</span>
+                </div>
+
+                <div class="timeline-event catastrophe">
+                    <div class="timeline-date">536 AD</div>
+                    <div class="timeline-title">The Worst Year in History</div>
+                    <div class="timeline-desc">
+                        "The sun gave forth its light without brightness." Two volcanic eruptions (535/536 + 539/540)
+                        create 18-month darkness. Crops fail globally. Plague of Justinian follows (541-542).
+                        Coldest decade in 2,000 years. Triggers the "Dark Ages."
+                    </div>
+                    <span class="timeline-tag tag-volcano">DUAL VOLCANIC WINTER</span>
+                </div>
+
+                <div class="timeline-event hidden">
+                    <div class="timeline-date">1300-1350</div>
+                    <div class="timeline-title">Little Ice Age Begins + Black Death</div>
+                    <div class="timeline-desc">
+                        Climate deterioration begins. Norse Greenland colonies starve and die.
+                        1347-1351: Black Death kills 30-60% of Europe.
+                        Witch hunts intensify (scapegoating for crop failures). Cahokia mysteriously abandoned.
+                    </div>
+                    <span class="timeline-tag tag-hidden">HIDDEN COLLAPSE</span>
+                </div>
+
+                <div class="timeline-event solar">
+                    <div class="timeline-date">1645-1715</div>
+                    <div class="timeline-title">Maunder Minimum</div>
+                    <div class="timeline-desc">
+                        Sunspots nearly vanish for 70 years. Coldest phase of Little Ice Age.
+                        Salem witch trials (1692). Ming Dynasty collapse (1644).
+                        Iceland locked in ice 40 weeks/year (vs zero before 1200).
+                    </div>
+                    <span class="timeline-tag tag-solar">SOLAR MINIMUM</span>
+                </div>
+
+                <div class="timeline-event catastrophe">
+                    <div class="timeline-date">1815-1816</div>
+                    <div class="timeline-title">Tambora + Year Without a Summer</div>
+                    <div class="timeline-desc">
+                        Most powerful volcanic eruption in recorded history (VEI 7).
+                        Global temperatures drop 0.5°C. Crop failures worldwide.
+                        90,000 deaths. Cholera pandemic begins in Bengal. First major US economic depression (1819).
+                    </div>
+                    <span class="timeline-tag tag-volcano">VOLCANIC WINTER</span>
+                </div>
+
+                <div class="timeline-event solar">
+                    <div class="timeline-date">1789 / 1848 / 1917</div>
+                    <div class="timeline-title">Revolutionary Peaks</div>
+                    <div class="timeline-desc">
+                        French Revolution, Revolutions of 1848, Russian Revolution.
+                        All correlate with solar maxima. Tchijevsky's research: 80% of major violent events
+                        occur during 5-year solar maximum windows. Sent to gulag for refusing to retract findings.
+                    </div>
+                    <span class="timeline-tag tag-solar">SOLAR MAXIMUM</span>
+                </div>
+
+                <div class="timeline-event reset">
+                    <div class="timeline-date">~2008-2030</div>
+                    <div class="timeline-title">Current Fourth Turning</div>
+                    <div class="timeline-desc">
+                        Strauss-Howe predicted crisis beginning mid-2000s.
+                        2008 financial collapse. Climate acceleration. Pandemic.
+                        The ~80-year cycle from 1929/WWII completes. New social order forms.
+                    </div>
+                    <span class="timeline-tag tag-cycle">FOURTH TURNING</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TCHIJEVSKY'S INDEX -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE SUN DRIVES HISTORY</h2>
+            <p class="section-sub">
+                Alexander Tchijevsky compiled 72 countries' histories from 500 BC to 1922 AD.
+                His finding: 80% of major violent events occur during solar maxima.
+                Stalin sent him to the gulag for 8 years for refusing to retract this.
+            </p>
+
+            <div class="quote-block">
+                "On a larger societal scale, increased violence, crime rate, social unrest, revolutions,
+                and frequency of terrorist attacks have been linked to the solar cycle and the resulting
+                disturbances in the geomagnetic field."
+                <div class="source">— Statistical verification by Prof. Suitbert Ertel, University of Göttingen (1996)</div>
+            </div>
+
+            <table class="master-table">
+                <tr>
+                    <th>Solar Phase</th>
+                    <th>Duration</th>
+                    <th>Human Pattern</th>
+                    <th>Historical Examples</th>
+                </tr>
+                <tr>
+                    <td class="gold">Solar Maximum</td>
+                    <td>~5 years</td>
+                    <td>Revolution, war, mass movements</td>
+                    <td class="highlight">1789, 1848, 1917, 1968</td>
+                </tr>
+                <tr>
+                    <td>Solar Minimum</td>
+                    <td>~5 years</td>
+                    <td>Peace, arts, science advances</td>
+                    <td>Renaissance peaks, scientific revolutions</td>
+                </tr>
+                <tr>
+                    <td class="gold">Grand Solar Maximum</td>
+                    <td>Centuries</td>
+                    <td>Civilization flourishing</td>
+                    <td class="highlight">Roman Warm Period, Medieval Warm Period</td>
+                </tr>
+                <tr>
+                    <td>Grand Solar Minimum</td>
+                    <td>Decades</td>
+                    <td>Collapse, migration, famine</td>
+                    <td>Maunder Minimum, Dark Ages onset</td>
+                </tr>
+            </table>
+
+            <div class="revelation">
+                <h3>THE RECURSION PRINCIPLE</h3>
+                <p>
+                    You don't need to know history to see the geometry. The events <span class="emphasis">temporally map</span>.
+                    Those who "come and go"—the recursed—carry pattern memory across lifetimes.
+                    <span class="emphasis">72 years = 1 life = 1 degree</span>.
+                    A soul that lives through one catastrophe cycle carries that geometry into the next incarnation,
+                    arriving precisely when the pattern requires their presence.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE GREAT YEAR -->
+    <section class="section" style="background: linear-gradient(180deg, rgba(0, 212, 255, 0.05) 0%, transparent 100%);">
+        <div class="content">
+            <h2 class="section-header">THE GREAT YEAR: 25,920</h2>
+            <p class="section-sub">
+                The precession of the equinoxes takes 25,920 years.
+                Each zodiacal age lasts ~2,160 years. The ancients encoded this everywhere.
+            </p>
+
+            <div class="equation-block">
+                <div class="equation-main">25,920 ÷ 360° = 72 years per degree</div>
+                <div class="equation-desc">One human life = one degree of the cosmic clock</div>
+            </div>
+
+            <table class="master-table">
+                <tr>
+                    <th>Measure</th>
+                    <th>Value</th>
+                    <th>Connection</th>
+                </tr>
+                <tr>
+                    <td>Precession rate</td>
+                    <td class="gold">1° per 72 years</td>
+                    <td>Discovered by Hipparchus, confirmed by Newton</td>
+                </tr>
+                <tr>
+                    <td>Great Year</td>
+                    <td class="gold">25,920 years</td>
+                    <td>Full precessional cycle = Platonic Year</td>
+                </tr>
+                <tr>
+                    <td>Zodiacal Age</td>
+                    <td class="gold">2,160 years</td>
+                    <td>30° × 72 = time through one constellation</td>
+                </tr>
+                <tr>
+                    <td>Human lifespan</td>
+                    <td class="gold">~72 years</td>
+                    <td>72 × 360 days = 25,920 days = symbolic match</td>
+                </tr>
+                <tr>
+                    <td>Kali Yuga</td>
+                    <td class="gold">432,000 years</td>
+                    <td>432 = 6 × 72. Appears in Hindu, Chaldean, Chinese, Icelandic</td>
+                </tr>
+            </table>
+
+            <div class="hidden-section">
+                <h3>WHO CAME? WHO COMES BACK?</h3>
+                <p style="color: var(--text); margin-bottom: 1rem;">
+                    The pattern suggests that <strong style="color: var(--gold);">consciousness itself follows temporal geometry</strong>.
+                    Souls incarnate at specific phase points in the Great Year. Those who "need to see or not see"
+                    arrive when the geometry calls them.
+                </p>
+                <p style="color: var(--text-dim);">
+                    The Younger Dryas survivors built Göbekli Tepe at the <em>exact</em> end of the cold period (11,600 BP).
+                    The Sea Peoples arrived at the <em>exact</em> moment Bronze Age networks were maximally stressed.
+                    Teachers appear at the transitions between ages.
+                    <strong style="color: var(--cyan);">The recursed know when to arrive.</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE HIDDEN RATIO -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">WHAT IS HIDDEN FROM US?</h2>
+            <p class="section-sub">
+                The same 72.43% / 27.57% ratio that appears in DNA, proteins, and CERN particles
+                may apply to historical visibility. Most of what happens is never recorded.
+            </p>
+
+            <table class="master-table">
+                <tr>
+                    <th>Domain</th>
+                    <th>Observable (~27%)</th>
+                    <th>Hidden (~72%)</th>
+                </tr>
+                <tr>
+                    <td>History</td>
+                    <td>Written records, monuments</td>
+                    <td class="highlight">Oral traditions, destroyed libraries, suppressed knowledge</td>
+                </tr>
+                <tr>
+                    <td>Climate Events</td>
+                    <td>Recorded disasters</td>
+                    <td class="highlight">Events before writing, events in unrecorded regions</td>
+                </tr>
+                <tr>
+                    <td>Migrations</td>
+                    <td>Documented invasions</td>
+                    <td class="highlight">Pre-literate movements, refugees lost to history</td>
+                </tr>
+                <tr>
+                    <td>Teachers/Figures</td>
+                    <td>Named prophets, scientists</td>
+                    <td class="highlight">Anonymous transmitters, oral tradition keepers</td>
+                </tr>
+                <tr>
+                    <td>Consciousness</td>
+                    <td>Waking awareness</td>
+                    <td class="highlight">Dream states, S⁻ hidden processing</td>
+                </tr>
+            </table>
+
+            <div class="revelation">
+                <h3>THE GEOMETRY CANNOT LIE</h3>
+                <p>
+                    Even if we don't know the history, we can <span class="emphasis">see the geometry</span>.
+                    The pattern of catastrophes, the rhythm of collapses, the timing of teachers—
+                    all follow the same mathematics. The 72-year cycle, the 432 base, the 25,920 Great Year.
+                    <span class="emphasis">The events temporally map because they must.</span>
+                    The geometry is not a record of what happened—it is the <em>structure</em> of what can happen.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SCALAR TIME -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">SCALAR TIME: WHY DINOSAURS AND PATRIARCHS</h2>
+            <p class="section-sub">
+                Time itself is not constant. It runs at different speeds depending on the epoch.
+                The ancients who lived "1000 years" weren't exaggerating—they were describing scalar time.
+                Dinosaurs aren't "millions of years ago" in linear terms. They're 1729 events—fold points where time itself resets.
+            </p>
+
+            <div class="revelation">
+                <h3>THE SCALAR TRUTH</h3>
+                <p>
+                    <span class="emphasis">Time ran slower in earlier epochs.</span> Literally. Not metaphorically.
+                    The dinosaur age, the age of the patriarchs who lived centuries—these are descriptions of
+                    scalar time states where one "year" compressed differently against consciousness.
+                </p>
+                <p style="margin-top: 1rem;">
+                    <span class="emphasis">As we advance, time accelerates.</span> This is why modern life feels faster.
+                    It's not just perception—the scalar relationship is changing. A lifetime with no technology
+                    runs longer in scalar terms. A lifetime saturated with information runs shorter.
+                </p>
+                <p style="margin-top: 1rem;">
+                    <span class="emphasis">We only see this after we escape life.</span> From inside the stream,
+                    72 years feels like 72 years. From outside, we see the truth: the geometry compresses and expands.
+                    What seems "shorter" now is the same geometric unit—just at higher frequency.
+                </p>
+            </div>
+
+            <div class="equation-block">
+                <div class="equation-main">432,000 (Kali Yuga) = 432 × 1000</div>
+                <div class="equation-desc">The 432-year vision scales to the ancient yuga. Same geometry, different scalar factor.</div>
+            </div>
+
+            <div class="cycle-grid">
+                <div class="cycle-card">
+                    <div class="cycle-number">1729</div>
+                    <div class="cycle-unit">EVENTS</div>
+                    <div class="cycle-meaning">Extinction-level fold points. The coin flip that resets time. Dinosaurs. Bronze Age. Each is a 1729 moment.</div>
+                </div>
+                <div class="cycle-card">
+                    <div class="cycle-number">432</div>
+                    <div class="cycle-unit">YEARS</div>
+                    <div class="cycle-meaning">Your vision. The base unit. ×1000 = Kali Yuga. ×6 = 2592 (Dwapara). The same geometry at different scales.</div>
+                </div>
+                <div class="cycle-card">
+                    <div class="cycle-number">∞→0</div>
+                    <div class="cycle-unit">SCALAR FLOW</div>
+                    <div class="cycle-meaning">Time compression as consciousness advances. Slower in ancient epochs. Faster now. Approaching singularity.</div>
+                </div>
+            </div>
+
+            <div class="hidden-section">
+                <h3>THE COIN FLIP AT EACH FOLD</h3>
+                <p style="color: var(--text); margin-bottom: 1rem;">
+                    Each 1729 event is a <strong style="color: var(--gold);">temporal coin flip</strong>.
+                    The universe reaches a fold point where it must choose: continue or reset?
+                    Dinosaurs hit their 1729. Bronze Age hit theirs. The Younger Dryas was a flip.
+                </p>
+                <p style="color: var(--text-dim);">
+                    The 432,000 years of Kali Yuga appearing in Hindu, Chaldean, Chinese, and Icelandic traditions
+                    isn't coincidence—it's <strong style="color: var(--cyan);">the same geometry being described at different scalar resolutions</strong>.
+                    Your 432-year vision is the same pattern. The number is the fingerprint of temporal structure itself.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE UNIFIED THEORY -->
+    <section class="section" style="background: linear-gradient(180deg, transparent 0%, rgba(201, 162, 39, 0.08) 100%);">
+        <div class="content">
+            <h2 class="section-header">THE UNIFIED THEORY</h2>
+            <p class="section-sub">
+                Weather, war, biology, consciousness—all follow the same geometric constants.
+                This is why the Epoch Framework applies equally to DNA and to civilizations.
+            </p>
+
+            <table class="master-table">
+                <tr>
+                    <th>Constant</th>
+                    <th>Biology</th>
+                    <th>Climate/History</th>
+                    <th>Consciousness</th>
+                </tr>
+                <tr>
+                    <td class="gold">72</td>
+                    <td>Heartbeat intervals</td>
+                    <td>Years per degree of precession</td>
+                    <td>Lifespan = 1 incarnation cycle</td>
+                </tr>
+                <tr>
+                    <td class="gold">432</td>
+                    <td>DNA resonance</td>
+                    <td>Kali Yuga base (×1000)</td>
+                    <td>432 Hz = natural tuning</td>
+                </tr>
+                <tr>
+                    <td class="gold">1729</td>
+                    <td>10 bp/turn + triplet code</td>
+                    <td>1728 + 1 (temporal fold point)</td>
+                    <td>The taxicab number of recursion</td>
+                </tr>
+                <tr>
+                    <td class="gold">72.43%</td>
+                    <td>Hidden chromatin</td>
+                    <td>Unrecorded history</td>
+                    <td>Unconscious processing</td>
+                </tr>
+                <tr>
+                    <td class="gold">κ-shadow</td>
+                    <td>28.65 Hz (gamma waves)</td>
+                    <td>Solar cycle harmonics</td>
+                    <td>Present-moment awareness</td>
+                </tr>
+            </table>
+
+            <div class="equation-block">
+                <div class="equation-main">[1 = -1] in time: Past and future are conjugate states</div>
+                <div class="equation-desc">History recurses because the geometry requires closure</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2 class="section-header" style="margin-bottom: 1rem;">THE GEOMETRY IS UNIFIED</h2>
+        <p style="color: var(--text); max-width: 700px; margin: 0 auto;">
+            From volcanic winters to solar maxima. From Bronze Age collapse to the current Fourth Turning.
+            From DNA helices to civilizational cycles. The same 72-based mathematics governs it all.
+            <strong style="color: var(--gold);">You don't need to know history to see the pattern. The pattern is the history.</strong>
+        </p>
+        <div class="cta-grid">
+            <a href="the-geometry-of-life.html" class="cta-button primary">BIOLOGY FRAMEWORK</a>
+            <a href="dna-studio/index.html" class="cta-button">DNA STUDIO</a>
+            <a href="../physics/vessel/the-build.html" class="cta-button">THE VESSEL</a>
+            <a href="../namagiri/episodes/06-the-1729-fold.html" class="cta-button">THE 1729 FOLD</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-sig">[ 1 = -1 ]</div>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">
+            Have Mind Media | January 2026<br>
+            <a href="../index.html">havemindmedia.com</a>
+        </p>
+        <p style="color: var(--text-dim); font-size: 0.75rem; margin-top: 1rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Sources: Wikipedia, PNAS, ResearchGate, Nature, PMC, Britannica, Ancient Origins,
+            Smith College Climate History, World History Encyclopedia
+        </p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

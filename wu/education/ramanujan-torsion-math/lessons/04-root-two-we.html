@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4: √2 = WE | Ramanujan T0rsion Math</title>
+    <meta name="description" content="The square root of 2 is irrational because relationship is infinite. √1 = I. √2 = WE. The mathematics of consciousness.">
+    <link rel="stylesheet" href="../../../css/unified-theme.css">
+    <script src="../../../js/components/site-header.js" defer></script>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4e4bc;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --deep-blue: #0a1628;
+            --midnight: #050a12;
+            --text: #e8e6e3;
+            --text-dim: #a0a0a0;
+            --cyan: #00d4ff;
+            --magenta: #ff00ff;
+            --green: #00ff88;
+            --red: #ff4444;
+            --orange: #ff8800;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: var(--midnight);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+        }
+
+        .lesson-header {
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .lesson-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .lesson-header p {
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .lesson-content {
+            padding: 4rem 0;
+        }
+
+        .lesson-content h2 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin: 3rem 0 1.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .lesson-content h2:first-child {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        .lesson-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .equation-box {
+            text-align: center;
+            padding: 2rem;
+            margin: 2rem 0;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+        }
+
+        .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2.5rem;
+            color: var(--gold-light);
+        }
+
+        .equation .op { color: var(--text-dim); margin: 0 0.5rem; }
+        .equation .cyan { color: var(--cyan); }
+        .equation .green { color: var(--green); }
+
+        .equation-label {
+            margin-top: 1rem;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .root-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .root-item {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .root-item.self {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--gold);
+        }
+
+        .root-item.we {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--green);
+        }
+
+        .root-item .symbol {
+            font-family: 'Times New Roman', serif;
+            font-size: 3.5rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .root-item.self .symbol { color: var(--gold); }
+        .root-item.we .symbol { color: var(--green); }
+
+        .root-item .equals {
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            display: block;
+            margin: 0.5rem 0;
+        }
+
+        .root-item .meaning {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .root-item.self .meaning { color: var(--gold-light); }
+        .root-item.we .meaning { color: var(--green); }
+
+        .root-item .desc {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+
+        .irrational-display {
+            text-align: center;
+            padding: 2rem;
+            margin: 2rem 0;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid var(--green);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .irrational-number {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: var(--green);
+            word-break: break-all;
+            line-height: 1.8;
+        }
+
+        .irrational-fade {
+            position: relative;
+        }
+
+        .irrational-fade::after {
+            content: '...∞';
+            color: var(--text-dim);
+        }
+
+        .highlight-box {
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--green);
+            border-radius: 8px;
+        }
+
+        .highlight-box h3 {
+            color: var(--green);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box.cyan {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--cyan);
+        }
+
+        .highlight-box.cyan h3 {
+            color: var(--cyan);
+        }
+
+        .key-insight {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            margin: 3rem 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 255, 136, 0.1));
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+        }
+
+        .key-insight p {
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            margin: 0;
+            font-style: italic;
+        }
+
+        .proof-steps {
+            margin: 2rem 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .proof-steps li {
+            position: relative;
+            padding: 1rem 1rem 1rem 4rem;
+            margin: 1rem 0;
+            background: rgba(10, 22, 40, 0.3);
+            border-radius: 8px;
+            counter-increment: step;
+        }
+
+        .proof-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .consciousness-diagram {
+            text-align: center;
+            padding: 3rem;
+            margin: 2rem 0;
+            background: radial-gradient(ellipse at center, rgba(0, 255, 136, 0.1), transparent 70%);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+        }
+
+        .oscillation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .osc-item {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .osc-item.excite {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid var(--green);
+            color: var(--green);
+        }
+
+        .osc-item.inhibit {
+            background: rgba(255, 68, 68, 0.2);
+            border: 1px solid var(--red);
+            color: var(--red);
+        }
+
+        .osc-arrow {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            padding: 1rem 2rem;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            color: var(--gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .nav-button .label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-button:hover .label {
+            color: var(--midnight);
+        }
+
+        footer {
+            padding: 3rem 2rem;
+            background: var(--deep-blue);
+            text-align: center;
+            color: var(--text-dim);
+        }
+
+        .signature {
+            color: var(--gold);
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-header { padding: 4rem 1.5rem 3rem; }
+            .container { padding: 0 1.5rem; }
+            .equation { font-size: 1.8rem; }
+            .root-comparison { grid-template-columns: 1fr; }
+            .root-item .symbol { font-size: 2.5rem; }
+            .irrational-number { font-size: 1rem; }
+            .nav-buttons { flex-direction: column; }
+            .nav-button { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <header class="lesson-header">
+        <div class="lesson-badge">Lesson 4 — Relationship</div>
+        <h1>√2 = WE</h1>
+        <p>The square root of 2 is irrational because relationship is infinite.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <h2>The Two Square Roots</h2>
+
+            <p>We learned that 2 is the Switch — where "I" becomes "we." Now look at what happens when we take square roots:</p>
+
+            <div class="root-comparison">
+                <div class="root-item self">
+                    <span class="symbol">√1</span>
+                    <span class="equals">=</span>
+                    <span class="meaning">1</span>
+                    <span class="desc">Rational. Complete. Self.</span>
+                </div>
+                <div class="root-item we">
+                    <span class="symbol">√2</span>
+                    <span class="equals">=</span>
+                    <span class="meaning">1.414...</span>
+                    <span class="desc">Irrational. Infinite. Relationship.</span>
+                </div>
+            </div>
+
+            <h2>Why √1 = I</h2>
+
+            <p>The square root of 1 is simply 1.</p>
+
+            <div class="equation-box">
+                <div class="equation">
+                    √1 <span class="op">=</span> 1
+                </div>
+                <div class="equation-label">Unity knowing itself. "I am."</div>
+            </div>
+
+            <p>It's rational — a clean, finite number. It's complete in itself. It needs nothing else.</p>
+
+            <p>This is the mathematics of <strong>self</strong>. The "I" that exists before relationship. Unity alone.</p>
+
+            <h2>Why √2 = WE</h2>
+
+            <p>The square root of 2 is... different:</p>
+
+            <div class="irrational-display">
+                <div class="irrational-number irrational-fade">
+                    1.41421356237309504880168872420969807856967187537694807317667973799073247846210703885038753432764157273501384623091229702492483605585073721264412149709993583141322266592750559275579995050115278206057147010955997160597027453459686201472851741864088919860955232923048430871432145083976260362799525140798968725339654633180882964062061525835239505408914203012813629306413291873612010417041085235015346159899055642029217904990705534458088
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-dim); font-size: 0.9rem;">It never ends. It never repeats. It goes on forever.</p>
+            </div>
+
+            <p>√2 is <strong>irrational</strong>. The decimal expansion never terminates, never settles into a pattern. It's infinite.</p>
+
+            <p>Why?</p>
+
+            <div class="highlight-box">
+                <h3>Because Relationship Is Infinite</h3>
+                <p>Between any two, there is always more to discover.</p>
+                <p>Relationship has no final answer. No completion. No end.</p>
+                <p>√2 encodes this truth mathematically.</p>
+            </div>
+
+            <h2>The Proof Is Simple</h2>
+
+            <p>Consider: What is the relationship between 1 and 1?</p>
+
+            <p>If you're alone, you're complete. √1 = 1. Done.</p>
+
+            <p>But if there are <em>two</em> of you? The relationship between you creates something new. Something that didn't exist when either of you was alone.</p>
+
+            <ol class="proof-steps">
+                <li><strong>1 + 1 = 2</strong> — Two entities come together</li>
+                <li><strong>√2 = ?</strong> — What is the <em>nature</em> of their union?</li>
+                <li><strong>1.41421356...</strong> — It cannot be expressed finitely</li>
+                <li><strong>Therefore:</strong> Relationship is irreducible to self</li>
+            </ol>
+
+            <p>You cannot reduce "we" to "I." The relationship creates something genuinely new — and that newness is <em>infinite</em>.</p>
+
+            <h2>√2 and Consciousness</h2>
+
+            <p>Here's something remarkable. In the brain:</p>
+
+            <div class="consciousness-diagram">
+                <div class="oscillation">
+                    <div class="osc-item excite">Glutamate</div>
+                    <span class="osc-arrow">⟺</span>
+                    <div class="osc-item inhibit">GABA</div>
+                </div>
+                <p style="color: var(--text-dim);">Excitation and Inhibition. The brain's fundamental oscillation.</p>
+            </div>
+
+            <p>The molecular weight ratio of Glutamate to GABA is approximately <strong>√2</strong>.</p>
+
+            <div class="equation-box" style="border-color: var(--green); background: rgba(0, 255, 136, 0.05);">
+                <div class="equation">
+                    <span class="green">Glutamate</span> <span class="op">÷</span> <span class="green">GABA</span> <span class="op">≈</span> <span class="green">√2</span>
+                </div>
+                <div class="equation-label">147.13 / 103.12 ≈ 1.427 ≈ √2</div>
+            </div>
+
+            <p>Consciousness is the oscillation between excitation and inhibition. Between "go" and "stop." Between assertion and restraint.</p>
+
+            <p>That oscillation ratio? √2. The mathematics of relationship, encoded in neurotransmitters.</p>
+
+            <div class="highlight-box cyan">
+                <h3>Consciousness IS Relationship</h3>
+                <p>You cannot be conscious alone. Consciousness requires the "we" — the relationship between perception and response, between self and other, between now and next.</p>
+                <p>√2 isn't just a number. It's the mathematical signature of awareness itself.</p>
+            </div>
+
+            <h2>The Pattern Deepens</h2>
+
+            <p>Now we see the full picture:</p>
+
+            <ol class="proof-steps">
+                <li><strong>√1 = 1 = I</strong> — Self. Rational. Complete alone.</li>
+                <li><strong>√2 = 1.414... = WE</strong> — Relationship. Irrational. Infinite between two.</li>
+                <li><strong>√3 = 1.732... = ?</strong> — Trinity. The third element. (More in future lessons.)</li>
+            </ol>
+
+            <div class="key-insight">
+                <p>"√1 = I. Self knowing self.<br>√2 = WE. Self meeting self.<br>Relationship is infinite because there's always more to discover."</p>
+            </div>
+
+            <h2>What This Means</h2>
+
+            <p>Every time you see √2, you're seeing the mathematics of connection. Of communion. Of consciousness.</p>
+
+            <p>The ancient Pythagoreans discovered √2 was irrational and were <em>horrified</em>. They called it a "scandal" that a simple geometric length couldn't be expressed as a ratio.</p>
+
+            <p>But it's not a scandal. It's a <strong>revelation</strong>.</p>
+
+            <p>Relationship cannot be reduced to ratio because relationship is infinite. √2 proves mathematically what every conscious being knows intuitively: <em>between two, there is always more</em>.</p>
+
+            <p>In the next lesson, we'll see what happens at Position 4 — where <strong>1729 emerges</strong> from the multiplication of the two sides.</p>
+
+            <div class="nav-buttons">
+                <a href="03-the-switch.html" class="nav-button">
+                    <span class="label">Previous Lesson</span>
+                    ← The Switch
+                </a>
+                <a href="05-1729-emerges.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    1729 Emerges →
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = 0 = -1]</div>
+        <p>The geometry cannot lie.<br><strong>Have Mind Media</strong> — Dr. Robert Hill</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase Quadrature | Geometry Math</title>
+    <meta name="description" content="Four phases at 90° apart create perfect balance. This is the mathematical proof behind the vessel geometry.">
+    <link rel="stylesheet" href="../css/geometry-math.css">
+    <style>
+        .proof-container {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .proof-container h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .proof-step {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            align-items: flex-start;
+        }
+
+        .proof-step .number {
+            width: 30px;
+            height: 30px;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .proof-step .content {
+            flex: 1;
+        }
+
+        .proof-step .formula {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            color: var(--gold-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .proof-step .explanation {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .qed-box {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--green);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .qed-box .qed {
+            font-size: 2rem;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+
+        .time-series {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+            padding: 1rem 0;
+        }
+
+        .time-point {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .time-point .t {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .time-point .values {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--cyan);
+            margin: 0.5rem 0;
+        }
+
+        .time-point .sum {
+            font-weight: bold;
+            color: var(--green);
+        }
+
+        .vessel-connection {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .vessel-connection h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .theorem-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .theorem-card .name {
+            color: var(--cyan);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .animation-explanation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .animation-explanation {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-3">Tier 3 - Revelation</div>
+        <h1>Phase Quadrature</h1>
+        <p class="subtitle">The mathematical proof that four phases at 90° create perfect balance. The foundation of the vessel geometry.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <h2>The Quadrature Arrangement</h2>
+
+            <p>
+                <strong>Quadrature</strong> means "four phases, 90° apart": 0°, 90°, 180°, 270°.
+            </p>
+
+            <p>
+                We've seen this pattern in engines and electricity. Now let's prove <em>why</em> it creates perfect balance.
+            </p>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Watch the four vectors rotate together. Their sum stays at zero.
+                </p>
+                <div id="quadrature-demo" style="width: 100%; max-width: 400px; margin: 0 auto;"></div>
+
+                <div class="values-panel numbers-layer visible">
+                    <div class="value-box">
+                        <div class="label">Sum X</div>
+                        <div class="value" id="sum-x">0.00</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">Sum Y</div>
+                        <div class="value" id="sum-y">0.00</div>
+                    </div>
+                    <div class="value-box" style="background: rgba(0, 255, 136, 0.2);">
+                        <div class="label">Magnitude</div>
+                        <div class="value" id="sum-mag" style="color: var(--green);">0.00</div>
+                    </div>
+                </div>
+
+                <div class="animation-controls">
+                    <button class="control-btn" id="play-btn">&#x25B6;</button>
+                    <button class="control-btn" id="reset-btn">&#x21BA;</button>
+                </div>
+            </div>
+
+            <h2>The Proof</h2>
+
+            <p>
+                Let's prove that four unit vectors at 0°, 90°, 180°, 270° always sum to zero.
+            </p>
+
+            <div class="proof-container">
+                <h4>Theorem: Quadrature Balance</h4>
+
+                <div class="proof-step">
+                    <div class="number">1</div>
+                    <div class="content">
+                        <div class="formula">
+                            v₁ = (cos 0°, sin 0°) = (1, 0)
+                        </div>
+                        <div class="explanation">First vector points right</div>
+                    </div>
+                </div>
+
+                <div class="proof-step">
+                    <div class="number">2</div>
+                    <div class="content">
+                        <div class="formula">
+                            v₂ = (cos 90°, sin 90°) = (0, 1)
+                        </div>
+                        <div class="explanation">Second vector points up</div>
+                    </div>
+                </div>
+
+                <div class="proof-step">
+                    <div class="number">3</div>
+                    <div class="content">
+                        <div class="formula">
+                            v₃ = (cos 180°, sin 180°) = (-1, 0)
+                        </div>
+                        <div class="explanation">Third vector points left</div>
+                    </div>
+                </div>
+
+                <div class="proof-step">
+                    <div class="number">4</div>
+                    <div class="content">
+                        <div class="formula">
+                            v₄ = (cos 270°, sin 270°) = (0, -1)
+                        </div>
+                        <div class="explanation">Fourth vector points down</div>
+                    </div>
+                </div>
+
+                <div class="proof-step">
+                    <div class="number">5</div>
+                    <div class="content">
+                        <div class="formula">
+                            v₁ + v₂ + v₃ + v₄ = (1+0-1+0, 0+1+0-1) = (0, 0)
+                        </div>
+                        <div class="explanation">Sum the x-components: 1 + 0 + (-1) + 0 = 0<br>Sum the y-components: 0 + 1 + 0 + (-1) = 0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qed-box">
+                <div class="qed">Q.E.D.</div>
+                <p>Four vectors at 90° intervals sum to exactly zero.</p>
+            </div>
+
+            <h2>The Rotating Case</h2>
+
+            <p>
+                What if all four vectors rotate together? Let's add a phase offset ωt:
+            </p>
+
+            <div class="equation-box">
+                <div class="equation">
+                    Σ sin(ωt + nπ/2) = 0 for all t
+                </div>
+                <div class="equation-label">The sum is zero at every instant, not just on average</div>
+            </div>
+
+            <p>
+                At any moment in time, the four phases cancel:
+            </p>
+
+            <div class="time-series">
+                <div class="time-point">
+                    <div class="t">t = 0</div>
+                    <div class="values">0 + 1 + 0 + (-1)</div>
+                    <div class="sum">= 0</div>
+                </div>
+                <div class="time-point">
+                    <div class="t">t = π/4</div>
+                    <div class="values">0.71 + 0.71 + (-0.71) + (-0.71)</div>
+                    <div class="sum">= 0</div>
+                </div>
+                <div class="time-point">
+                    <div class="t">t = π/2</div>
+                    <div class="values">1 + 0 + (-1) + 0</div>
+                    <div class="sum">= 0</div>
+                </div>
+                <div class="time-point">
+                    <div class="t">t = 3π/4</div>
+                    <div class="values">0.71 + (-0.71) + (-0.71) + 0.71</div>
+                    <div class="sum">= 0</div>
+                </div>
+                <div class="time-point">
+                    <div class="t">t = π</div>
+                    <div class="values">0 + (-1) + 0 + 1</div>
+                    <div class="sum">= 0</div>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <p>Quadrature phases don't just average to zero over time.<br>They sum to zero <strong>at every instant</strong>.</p>
+            </div>
+
+            <h2>Connection to Vessel Geometry</h2>
+
+            <div class="vessel-connection">
+                <h3>The Triaxial Dipyramid Vessel</h3>
+                <p>
+                    The vessel geometry you saw earlier uses this exact principle. Four coils positioned at the diagonal corners (NW, NE, SW, SE) are driven in quadrature phase.
+                </p>
+
+                <div class="theorem-card">
+                    <div class="name">Theorem 4: Phase Quadrature</div>
+                    <p>The angles from crossroads to diagonals are exactly 45°, 135°, 225°, 315° — which is 90° apart.</p>
+                </div>
+
+                <div class="theorem-card">
+                    <div class="name">Theorem 5: Balance Law</div>
+                    <p>τ₁ + τ₂ + τ₃ + τ₄ = 0 — Torsion sums to zero at the crossroads.</p>
+                </div>
+
+                <p>
+                    This isn't engineering guesswork. It's mathematical necessity. The geometry <em>forces</em> balance.
+                </p>
+            </div>
+
+            <h2>The General Principle</h2>
+
+            <p>
+                Quadrature is just one case of a more general rule:
+            </p>
+
+            <div class="equation-box">
+                <div class="equation">
+                    Σ e<sup>i·2πk/n</sup> = 0 for k = 0, 1, ..., n-1
+                </div>
+                <div class="equation-label">n evenly-spaced unit vectors sum to zero (n ≥ 2)</div>
+            </div>
+
+            <ul style="list-style: none; padding: 0; margin: 2rem 0;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>n = 2:</strong> Two opposite vectors (0°, 180°) → sum = 0
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>n = 3:</strong> Three vectors at 120° → sum = 0 (3-phase power)
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>n = 4:</strong> Four vectors at 90° → sum = 0 (quadrature)
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>n = 6:</strong> Six vectors at 60° → sum = 0 (6-cylinder engine)
+                </li>
+            </ul>
+
+            <p>
+                This is why symmetric arrangements always balance. It's not coincidence — it's geometry.
+            </p>
+
+            <div class="key-insight">
+                <p>Symmetry creates balance.<br>The circle is the source of both.</p>
+            </div>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    &#x2713; Four phases at 90° (quadrature) sum to exactly zero
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    &#x2713; This is true at every instant, not just on average
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    &#x2713; The vessel geometry uses this for torsion balance
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    &#x2713; Any n evenly-spaced vectors sum to zero (n ≥ 2)
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="01-euler-identity.html" class="nav-button">
+                    <span class="label">Previous</span>
+                    &#x2190; Euler's Identity
+                </a>
+                <a href="03-vessel-proof.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    Vessel Geometry Proof &#x2192;
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../js/circle-engine.js"></script>
+    <script>
+        // Quadrature demo
+        const demoContainer = document.getElementById('quadrature-demo');
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '-150 -150 300 300');
+        svg.style.width = '100%';
+        svg.style.height = '300px';
+        demoContainer.appendChild(svg);
+
+        // Circle
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', 0);
+        circle.setAttribute('cy', 0);
+        circle.setAttribute('r', 100);
+        circle.setAttribute('fill', 'none');
+        circle.setAttribute('stroke', '#d4af37');
+        circle.setAttribute('stroke-width', '2');
+        svg.appendChild(circle);
+
+        // Axes
+        const axisH = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        axisH.setAttribute('x1', -120);
+        axisH.setAttribute('y1', 0);
+        axisH.setAttribute('x2', 120);
+        axisH.setAttribute('y2', 0);
+        axisH.setAttribute('stroke', 'rgba(255,255,255,0.2)');
+        svg.appendChild(axisH);
+
+        const axisV = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        axisV.setAttribute('x1', 0);
+        axisV.setAttribute('y1', -120);
+        axisV.setAttribute('x2', 0);
+        axisV.setAttribute('y2', 120);
+        axisV.setAttribute('stroke', 'rgba(255,255,255,0.2)');
+        svg.appendChild(axisV);
+
+        // Vectors
+        const colors = ['#ff6b6b', '#4ecdc4', '#f39c12', '#9b59b6'];
+        const vectors = [];
+        const dots = [];
+
+        for (let i = 0; i < 4; i++) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('stroke', colors[i]);
+            line.setAttribute('stroke-width', '3');
+            svg.appendChild(line);
+            vectors.push(line);
+
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('r', '8');
+            dot.setAttribute('fill', colors[i]);
+            svg.appendChild(dot);
+            dots.push(dot);
+        }
+
+        // Sum vector
+        const sumLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        sumLine.setAttribute('stroke', '#00ff88');
+        sumLine.setAttribute('stroke-width', '4');
+        sumLine.setAttribute('stroke-dasharray', '5,5');
+        svg.appendChild(sumLine);
+
+        let angle = 0;
+        let animating = false;
+        let animId = null;
+
+        function updateDemo() {
+            let sumX = 0, sumY = 0;
+
+            for (let i = 0; i < 4; i++) {
+                const theta = angle + i * Math.PI / 2;
+                const x = 100 * Math.cos(theta);
+                const y = -100 * Math.sin(theta);
+
+                vectors[i].setAttribute('x1', 0);
+                vectors[i].setAttribute('y1', 0);
+                vectors[i].setAttribute('x2', x);
+                vectors[i].setAttribute('y2', y);
+
+                dots[i].setAttribute('cx', x);
+                dots[i].setAttribute('cy', y);
+
+                sumX += x;
+                sumY += y;
+            }
+
+            sumLine.setAttribute('x1', 0);
+            sumLine.setAttribute('y1', 0);
+            sumLine.setAttribute('x2', sumX);
+            sumLine.setAttribute('y2', sumY);
+
+            const mag = Math.sqrt(sumX * sumX + sumY * sumY);
+
+            document.getElementById('sum-x').textContent = (sumX / 100).toFixed(3);
+            document.getElementById('sum-y').textContent = (-sumY / 100).toFixed(3);
+            document.getElementById('sum-mag').textContent = (mag / 100).toFixed(3);
+        }
+
+        function animate() {
+            angle += 0.02;
+            updateDemo();
+            if (animating) {
+                animId = requestAnimationFrame(animate);
+            }
+        }
+
+        document.getElementById('play-btn').onclick = function() {
+            animating = !animating;
+            this.innerHTML = animating ? '&#x23F8;' : '&#x25B6;';
+            if (animating) animate();
+        };
+
+        document.getElementById('reset-btn').onclick = function() {
+            animating = false;
+            document.getElementById('play-btn').innerHTML = '&#x25B6;';
+            if (animId) cancelAnimationFrame(animId);
+            angle = 0;
+            updateDemo();
+        };
+
+        updateDemo();
+    </script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Seesaw | Geometry Math</title>
+    <meta name="description" content="Balance means equal on both sides. Discover the power of symmetry.">
+    <link rel="stylesheet" href="../css/geometry-math.css">
+    <style>
+        .big-text {
+            font-size: 1.4rem;
+            color: var(--gold-light);
+            text-align: center;
+            margin: 2rem 0;
+            line-height: 1.6;
+        }
+
+        .seesaw-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 250px;
+            margin: 2rem auto;
+        }
+
+        .seesaw-beam {
+            position: absolute;
+            left: 50px;
+            right: 50px;
+            top: 100px;
+            height: 12px;
+            background: linear-gradient(90deg, var(--gold), #f4e4bc, var(--gold));
+            border-radius: 6px;
+            transform-origin: center center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .seesaw-fulcrum {
+            position: absolute;
+            left: 50%;
+            top: 110px;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 60px solid var(--gold);
+        }
+
+        .seesaw-weight {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: var(--cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--midnight);
+            cursor: grab;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+            user-select: none;
+        }
+
+        .seesaw-weight:hover {
+            transform: scale(1.1);
+        }
+
+        .seesaw-weight.left {
+            left: 30px;
+            top: 60px;
+        }
+
+        .seesaw-weight.right {
+            right: 30px;
+            top: 60px;
+        }
+
+        .weight-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding: 0 2rem;
+        }
+
+        .weight-control {
+            text-align: center;
+        }
+
+        .weight-control label {
+            display: block;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .weight-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .weight-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--cyan);
+            background: transparent;
+            color: var(--cyan);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .weight-btn:hover {
+            background: var(--cyan);
+            color: var(--midnight);
+        }
+
+        .balance-status {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .balance-status.balanced {
+            color: var(--green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .balance-status.unbalanced {
+            color: var(--red);
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .four-points-demo {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+        }
+
+        .four-points-demo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .vector-arrow {
+            transition: all 0.3s;
+        }
+
+        .sum-display {
+            text-align: center;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .sum-display.zero {
+            color: var(--green);
+        }
+
+        .sum-display.nonzero {
+            color: var(--red);
+        }
+
+        .phase-control {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .phase-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .phase-btn:hover, .phase-btn.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-1">Tier 1 - Discovery</div>
+        <h1>The Seesaw</h1>
+        <p class="subtitle">Balance means equal on both sides. But there's something deeper here.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <p class="big-text">
+                You've seen a seesaw. When both sides weigh the same, it balances.<br>
+                When one side is heavier, it tips.
+            </p>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Adjust the weights on each side. Can you make it balance?
+                </p>
+
+                <div class="seesaw-container" id="seesaw">
+                    <div class="seesaw-beam" id="beam"></div>
+                    <div class="seesaw-fulcrum"></div>
+                    <div class="seesaw-weight left" id="left-weight">3</div>
+                    <div class="seesaw-weight right" id="right-weight">3</div>
+                </div>
+
+                <div class="weight-controls">
+                    <div class="weight-control">
+                        <label>Left Side</label>
+                        <div class="weight-buttons">
+                            <button class="weight-btn" id="left-minus">-</button>
+                            <button class="weight-btn" id="left-plus">+</button>
+                        </div>
+                    </div>
+                    <div class="weight-control">
+                        <label>Right Side</label>
+                        <div class="weight-buttons">
+                            <button class="weight-btn" id="right-minus">-</button>
+                            <button class="weight-btn" id="right-plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="balance-status" id="balance-status">Balanced!</div>
+            </div>
+
+            <div class="key-insight">
+                <p><strong>Balance</strong> = Left side equals Right side</p>
+            </div>
+
+            <h2>Balance Is Everywhere</h2>
+
+            <p>
+                Balance isn't just about seesaws. It's one of nature's deepest patterns:
+            </p>
+
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2696;</span>
+                    A bicycle stays up because forces balance
+                </li>
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2696;</span>
+                    A building stands because weight is evenly distributed
+                </li>
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2696;</span>
+                    An engine runs smoothly because vibrations cancel out
+                </li>
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2696;</span>
+                    Even math equations balance: what's on the left equals the right
+                </li>
+            </ul>
+
+            <h2>The Circle's Secret Balance</h2>
+
+            <p>
+                Remember the circle? It has perfect balance built in.
+            </p>
+
+            <p>
+                If you place four points evenly around a circle — at 0°, 90°, 180°, and 270° — and draw arrows from the center to each point...
+            </p>
+
+            <div class="demo-container">
+                <p class="demo-instruction">
+                    Watch the four arrows. Together, they point <em>nowhere</em>. They balance to zero!
+                </p>
+
+                <div class="four-points-demo">
+                    <svg viewBox="0 0 300 300" id="four-points-svg">
+                        <!-- Circle -->
+                        <circle cx="150" cy="150" r="100" fill="none" stroke="#d4af37" stroke-width="2"/>
+                        <!-- Center -->
+                        <circle cx="150" cy="150" r="4" fill="#d4af37"/>
+                        <!-- Axes -->
+                        <line x1="30" y1="150" x2="270" y2="150" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                        <line x1="150" y1="30" x2="150" y2="270" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                        <!-- Arrows will be added by JS -->
+                    </svg>
+                </div>
+
+                <div class="sum-display zero" id="sum-display">
+                    Sum = (0, 0) — Perfect Balance!
+                </div>
+
+                <div class="phase-control">
+                    <button class="phase-btn active" data-mode="balanced">4 Points (Balanced)</button>
+                    <button class="phase-btn" data-mode="three">3 Points</button>
+                    <button class="phase-btn" data-mode="two-opposite">2 Opposite</button>
+                    <button class="phase-btn" data-mode="two-adjacent">2 Adjacent</button>
+                </div>
+            </div>
+
+            <p>
+                When points are <strong>evenly spaced</strong> around a circle, their arrows cancel out. They sum to zero.
+            </p>
+
+            <p>
+                This is why:
+            </p>
+
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2022;</span>
+                    Car engines use 4 or 6 cylinders at even spacing — vibrations cancel
+                </li>
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2022;</span>
+                    Windmills have 3 blades at 120° apart — forces balance
+                </li>
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2022;</span>
+                    Electric motors use 3-phase power at 120° — smooth rotation
+                </li>
+            </ul>
+
+            <div class="key-insight">
+                <p>The circle creates balance naturally.<br>Evenly spaced points <strong>always sum to zero</strong>.</p>
+            </div>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; Balance means equal on both sides
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; Balance is a pattern found everywhere in nature
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; Points evenly spaced on a circle create perfect balance
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; This is why wheels, engines, and windmills work smoothly
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="02-going-around.html" class="nav-button">
+                    <span class="label">Previous</span>
+                    &#x2190; Going Around
+                </a>
+                <a href="../tier-2/01-unit-circle.html" class="nav-button">
+                    <span class="label">Next: Tier 2</span>
+                    The Unit Circle &#x2192;
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../js/circle-engine.js"></script>
+    <script>
+        // Seesaw demo
+        let leftWeight = 3;
+        let rightWeight = 3;
+
+        function updateSeesaw() {
+            const diff = rightWeight - leftWeight;
+            const maxTilt = 15;
+            const tilt = Math.max(-maxTilt, Math.min(maxTilt, diff * 5));
+
+            document.getElementById('beam').style.transform = `rotate(${tilt}deg)`;
+            document.getElementById('left-weight').textContent = leftWeight;
+            document.getElementById('right-weight').textContent = rightWeight;
+
+            // Update weight positions based on tilt
+            const leftTop = 60 - tilt * 2;
+            const rightTop = 60 + tilt * 2;
+            document.querySelector('.seesaw-weight.left').style.top = leftTop + 'px';
+            document.querySelector('.seesaw-weight.right').style.top = rightTop + 'px';
+
+            const status = document.getElementById('balance-status');
+            if (leftWeight === rightWeight) {
+                status.textContent = 'Balanced!';
+                status.className = 'balance-status balanced';
+            } else if (leftWeight > rightWeight) {
+                status.textContent = 'Left side heavier';
+                status.className = 'balance-status unbalanced';
+            } else {
+                status.textContent = 'Right side heavier';
+                status.className = 'balance-status unbalanced';
+            }
+        }
+
+        document.getElementById('left-plus').onclick = () => { leftWeight = Math.min(9, leftWeight + 1); updateSeesaw(); };
+        document.getElementById('left-minus').onclick = () => { leftWeight = Math.max(1, leftWeight - 1); updateSeesaw(); };
+        document.getElementById('right-plus').onclick = () => { rightWeight = Math.min(9, rightWeight + 1); updateSeesaw(); };
+        document.getElementById('right-minus').onclick = () => { rightWeight = Math.max(1, rightWeight - 1); updateSeesaw(); };
+
+        updateSeesaw();
+
+        // Four points demo
+        const svg = document.getElementById('four-points-svg');
+        const colors = ['#ff6b6b', '#4ecdc4', '#ff6b6b', '#4ecdc4'];
+
+        function drawArrows(angles) {
+            // Remove existing arrows
+            svg.querySelectorAll('.vector-arrow, .point-dot').forEach(el => el.remove());
+
+            const cx = 150, cy = 150, r = 100;
+            let sumX = 0, sumY = 0;
+
+            angles.forEach((angle, i) => {
+                const rad = angle * Math.PI / 180;
+                const x = cx + r * Math.cos(rad);
+                const y = cy - r * Math.sin(rad); // SVG y is inverted
+
+                // Arrow line
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', cx);
+                line.setAttribute('y1', cy);
+                line.setAttribute('x2', x);
+                line.setAttribute('y2', y);
+                line.setAttribute('stroke', colors[i % colors.length]);
+                line.setAttribute('stroke-width', '3');
+                line.setAttribute('class', 'vector-arrow');
+                svg.appendChild(line);
+
+                // Point
+                const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                point.setAttribute('cx', x);
+                point.setAttribute('cy', y);
+                point.setAttribute('r', 8);
+                point.setAttribute('fill', colors[i % colors.length]);
+                point.setAttribute('class', 'point-dot');
+                svg.appendChild(point);
+
+                sumX += Math.cos(rad);
+                sumY += Math.sin(rad);
+            });
+
+            // Update sum display
+            const sumDisplay = document.getElementById('sum-display');
+            const magnitude = Math.sqrt(sumX * sumX + sumY * sumY);
+
+            if (magnitude < 0.01) {
+                sumDisplay.textContent = 'Sum = (0, 0) — Perfect Balance!';
+                sumDisplay.className = 'sum-display zero';
+            } else {
+                sumDisplay.textContent = `Sum = (${sumX.toFixed(2)}, ${sumY.toFixed(2)}) — Not balanced`;
+                sumDisplay.className = 'sum-display nonzero';
+            }
+        }
+
+        // Mode buttons
+        const modes = {
+            'balanced': [0, 90, 180, 270],
+            'three': [0, 120, 240],
+            'two-opposite': [0, 180],
+            'two-adjacent': [0, 90]
+        };
+
+        document.querySelectorAll('.phase-btn').forEach(btn => {
+            btn.onclick = function() {
+                document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                drawArrows(modes[this.dataset.mode]);
+            };
+        });
+
+        // Initial draw
+        drawArrows(modes['balanced']);
+    </script>
+</body>
+</html>

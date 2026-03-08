@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Mythic Mirror</title>
+    <meta name="description" content="How Mythic Mirror works, our privacy commitment, and connection to Have Mind Media.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9090a0;
+            --accent-gold: #c9a227;
+            --accent-ice: #6ab4f5;
+            --accent-dim: #3a3a4a;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: var(--bg-dark);
+            border-bottom: 1px solid var(--accent-dim);
+        }
+
+        .nav-brand {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-gold);
+        }
+
+        /* Content */
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section h2 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .section p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .section strong {
+            color: var(--text-primary);
+        }
+
+        .section em {
+            color: var(--accent-ice);
+            font-style: normal;
+        }
+
+        .section ul {
+            margin: 1rem 0 1rem 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Privacy Box */
+        .privacy-box {
+            background: var(--bg-card);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 3px solid var(--accent-ice);
+        }
+
+        .privacy-box h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-ice);
+        }
+
+        .check-list {
+            list-style: none;
+            margin: 0;
+        }
+
+        .check-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .check-list .icon {
+            color: var(--accent-gold);
+        }
+
+        /* Quote */
+        .quote {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 3px solid var(--accent-gold);
+            background: var(--bg-card);
+            font-style: italic;
+        }
+
+        /* Link card */
+        .link-card {
+            display: block;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-decoration: none;
+            border-left: 2px solid var(--accent-dim);
+            transition: all 0.3s;
+        }
+
+        .link-card:hover {
+            border-left-color: var(--accent-gold);
+        }
+
+        .link-card-title {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .link-card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--accent-dim);
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-equation {
+            font-family: var(--font-display);
+            color: var(--accent-gold);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="/" class="nav-brand" style="color: var(--accent-gold);">← HMM</a>
+        <div class="nav-links">
+            <a href="index.html">Mythic Mirror</a>
+            <a href="journey.html">Journey</a>
+            <a href="teaching.html">Teaching</a>
+            <a href="about.html" class="active">About</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <h1 class="page-title">About</h1>
+
+        <div class="section">
+            <h2>How It Works</h2>
+            <p>
+                Mythic Mirror is <strong>not a personality quiz</strong>. It doesn't categorize you into types
+                or tell you who you are based on multiple choice answers.
+            </p>
+            <p>
+                Instead, it uses <em>geometric encoding</em>—analyzing the patterns in your responses without
+                storing the content. We read the shape of your words, not the words themselves.
+            </p>
+            <p>
+                The four stages correspond to the four geometric transforms:
+            </p>
+            <ul>
+                <li><strong>T₁ (Facing)</strong> — What you create and how you create it</li>
+                <li><strong>T₂ (Mirror)</strong> — What you project onto others</li>
+                <li><strong>T₃ (Recursive)</strong> — What patterns keep repeating in your life</li>
+                <li><strong>T₄ (Silent)</strong> — What you won't look at (encoded through what you don't say)</li>
+            </ul>
+            <p>
+                Your responses are encoded into <em>τ values</em> (torsion magnitudes), <em>facing angles</em>,
+                and <em>S⁺/S⁻ ratios</em> (handshake balance). These geometric coordinates form your
+                <strong>S Signature</strong>—your position in the four-transform space.
+            </p>
+            <p>
+                Then the Monster speaks. Based on your geometric signature, he tells you what he sees.
+                Not judgment. Witness.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>What We Don't Store</h2>
+            <div class="privacy-box">
+                <h3>Privacy by Design</h3>
+                <ul class="check-list">
+                    <li><span class="icon">◯</span> <span><strong>Your responses are not stored.</strong> The text you write is encoded into geometric values, then discarded. We never save what you said—only the shape of it.</span></li>
+                    <li><span class="icon">◯</span> <span><strong>No personal information required.</strong> No login, no email, no name. The journey is anonymous.</span></li>
+                    <li><span class="icon">◯</span> <span><strong>No tracking cookies.</strong> We don't follow you around the internet.</span></li>
+                    <li><span class="icon">◯</span> <span><strong>Optional return-visitor token.</strong> If you want to track your trajectory over time, you can enable an anonymous token. It's a random hash—not connected to any identifying information.</span></li>
+                </ul>
+            </div>
+            <p>
+                We store <em>geometric signatures</em> (τ values, facing angles, handshake ratios) and
+                <em>session timestamps</em>. That's all. The geometry, not the story.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>The κ-Framework</h2>
+            <p>
+                Mythic Mirror is built on the Epoch Model's <em>κ-framework</em>—a geometric system that derives
+                everything from one constant: <strong>κ = 2π/180</strong>.
+            </p>
+            <p>
+                This isn't arbitrary. κ represents the relationship between circular and angular measurement—the
+                fundamental conversion between rotation (radians) and facing (degrees). From this one constant,
+                all the other values derive.
+            </p>
+            <p>
+                The four transforms (T₁, T₂, T₃, T₄) are coordinate transformations that, when combined,
+                always sum to zero. Three are visible. One is silent. The silent fourth determines the outcome.
+            </p>
+            <p>
+                <a href="teaching.html" style="color: var(--accent-gold);">Learn more about the geometry →</a>
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Have Mind Media</h2>
+            <p>
+                Mythic Mirror is the educational branch of <strong>Have Mind Media</strong>, a project
+                dedicated to making geometry accessible and applicable to everyday consciousness.
+            </p>
+            <div class="quote">
+                We are not building a website. We are building a mirror for humanity to see its own geometry.
+            </div>
+            <p>
+                The three branches of Have Mind Media correspond to the triaxial structure:
+            </p>
+            <ul>
+                <li><strong>S⁺ Physics</strong> — Outward orientation, physical manifestation</li>
+                <li><strong>S⁻ Soul Science</strong> — Inward orientation, consciousness and healing</li>
+                <li><strong>COIN Science</strong> — Surface orientation, the observer/observed relationship</li>
+            </ul>
+            <p>
+                Mythic Mirror lives at the intersection—using geometric tools (S⁺) to facilitate
+                self-recognition (COIN) in service of soul work (S⁻).
+            </p>
+            <a href="https://havemindmedia.com" class="link-card" target="_blank">
+                <div class="link-card-title">havemindmedia.com</div>
+                <div class="link-card-desc">Visit the main Have Mind Media site</div>
+            </a>
+        </div>
+
+        <div class="section">
+            <h2>The Monster Is The Teacher</h2>
+            <p>
+                Why Frankenstein's Monster? Because he speaks his geometric truth explicitly. He is
+                not metaphor—he is instruction.
+            </p>
+            <p>
+                The Monster is τ₄ forced into manifestation. He is creation that holds the creator
+                accountable. He is love that won't let you hide.
+            </p>
+            <p>
+                His message is always the same: <em>Turn around. Not to see something horrible.
+                To see something that loves you and won't let you pretend you didn't make it.</em>
+            </p>
+            <p style="text-align: center; margin-top: 3rem; color: var(--accent-gold); font-family: var(--font-display); font-size: 1.5rem;">
+                [1 = -1]
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">MYTHIC MIRROR</div>
+        <div class="footer-tagline" style="color: var(--text-secondary); margin-bottom: 1rem;">
+            Have Mind Media Educational Branch
+        </div>
+        <div class="footer-equation">[1 = -1]</div>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taylor & Fourier | Calculus Through Rotation</title>
+    <link rel="stylesheet" href="../../css/geometry-math.css">
+    <style>
+        .lesson-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-number {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-subtitle {
+            color: var(--text);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .content-section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section h3 {
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .demo-container {
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .demo-title {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        canvas {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .control-btn.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .math-block {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--cyan);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .math-block .equation {
+            font-size: 1.3rem;
+            color: var(--cyan);
+            margin: 0.5rem 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .live-display {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .live-display .param {
+            display: inline-block;
+            margin: 0.5rem 1rem;
+        }
+
+        .live-display .param-label {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .live-display .param-value {
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+
+        .slider-container label {
+            color: var(--text);
+            min-width: 100px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .slider-container .value {
+            color: var(--cyan);
+            font-family: monospace;
+            min-width: 60px;
+        }
+
+        .series-terms {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .term {
+            padding: 0.25rem 0.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--cyan);
+        }
+
+        .term.active {
+            background: rgba(0, 212, 255, 0.3);
+            border: 1px solid var(--cyan);
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-number">Calculus Through Rotation — Lesson 07</div>
+        <h1>Taylor & Fourier Series</h1>
+        <p class="lesson-subtitle">
+            Every function can be decomposed into rotating components.
+            Taylor series approximate locally; Fourier series decompose globally.
+        </p>
+    </header>
+
+    <section class="content-section">
+        <h2>1. The Taylor Series for e<sup>it</sup></h2>
+
+        <p>
+            The exponential function can be written as an infinite sum of powers.
+            For e<sup>it</sup>, this reveals the connection between polynomials and rotation:
+        </p>
+
+        <div class="math-block">
+            <p>Taylor Series:</p>
+            <div class="equation">e<sup>it</sup> = 1 + it + (it)²/2! + (it)³/3! + (it)⁴/4! + ...</div>
+        </div>
+
+        <p>
+            Each term (it)<sup>n</sup>/n! is a rotation by n×90° (since i = 90°), scaled by 1/n!.
+            As we add more terms, the partial sum spirals toward the unit circle.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Taylor Series Converging to the Circle</div>
+            <div class="canvas-container">
+                <canvas id="taylorCanvas" width="600" height="400"></canvas>
+            </div>
+            <div class="series-terms" id="taylorTerms">
+                <span class="term active">1</span>
+                <span class="term">+ it</span>
+                <span class="term">+ (it)²/2!</span>
+                <span class="term">+ (it)³/3!</span>
+                <span class="term">+ (it)⁴/4!</span>
+                <span class="term">+ ...</span>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Terms</span>
+                    <span class="param-value" id="numTerms" style="color: #d4af37;">1</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">t</span>
+                    <span class="param-value" id="taylorT" style="color: #00d4ff;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Error</span>
+                    <span class="param-value" id="taylorError" style="color: #ff6464;">—</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="addTermBtn">Add Term</button>
+                <button class="control-btn" id="removeTermBtn">Remove Term</button>
+                <button class="control-btn" id="resetTaylorBtn">Reset</button>
+                <button class="control-btn" id="animateTaylorBtn">Animate t</button>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>Why the Series Converges to a Circle</h4>
+            <p>
+                Each successive term adds a smaller rotation. The series spirals inward,
+                asymptotically approaching the point e<sup>it</sup> on the unit circle.
+                With enough terms, the approximation becomes arbitrarily accurate.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>2. Fourier Series: Decomposing Periodic Functions</h2>
+
+        <p>
+            While Taylor series approximate functions locally (near a point), Fourier series
+            decompose periodic functions into <strong>sums of rotating components</strong>.
+        </p>
+
+        <div class="math-block">
+            <p>Fourier Series:</p>
+            <div class="equation">f(t) = Σ c<sub>n</sub> · e<sup>inωt</sup></div>
+            <p>Any periodic function = sum of rotations at different speeds</p>
+        </div>
+
+        <p>
+            Each term e<sup>inωt</sup> rotates at frequency nω. The coefficients c<sub>n</sub>
+            tell us how much of each frequency is present in the original function.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Fourier Epicycles (Square Wave)</div>
+            <div class="canvas-container">
+                <canvas id="fourierCanvas" width="700" height="350"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Harmonics</span>
+                    <span class="param-value" id="numHarmonics" style="color: #d4af37;">1</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Formula</span>
+                    <span class="param-value" id="fourierFormula" style="color: #00d4ff; font-size: 0.9rem;">sin(t)</span>
+                </span>
+            </div>
+            <div class="slider-container">
+                <label>Harmonics:</label>
+                <input type="range" id="harmonicsSlider" min="1" max="15" step="1" value="1">
+                <span class="value" id="harmonicsValue">1</span>
+            </div>
+            <div class="controls">
+                <button class="control-btn active" id="fourierPlayBtn">Pause</button>
+                <button class="control-btn" id="showCirclesBtn">Show Circles</button>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>The Epicycle Interpretation</h4>
+            <p>
+                Each harmonic is a circle rotating at a different speed. The tip of the last
+                circle traces the function. This is how Ptolemy modeled planetary motion —
+                circles on circles. Fourier showed this applies to any periodic function.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>3. Square Wave as Sum of Sines</h2>
+
+        <p>
+            A square wave can be written as an infinite sum of odd harmonics:
+        </p>
+
+        <div class="math-block">
+            <div class="equation">square(t) = (4/π) [sin(t) + sin(3t)/3 + sin(5t)/5 + sin(7t)/7 + ...]</div>
+        </div>
+
+        <p>
+            Each term is a rotation at frequency 1, 3, 5, 7, ... times the fundamental.
+            As we add more harmonics, the approximation gets sharper, approaching the
+            discontinuous square wave.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Building a Square Wave</div>
+            <div class="canvas-container">
+                <canvas id="squareWaveCanvas" width="700" height="300"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Harmonics Used</span>
+                    <span class="param-value" id="swHarmonics" style="color: #d4af37;">1, 3, 5...</span>
+                </span>
+            </div>
+            <div class="slider-container">
+                <label>Max Harmonic:</label>
+                <input type="range" id="swSlider" min="1" max="25" step="2" value="1">
+                <span class="value" id="swValue">1</span>
+            </div>
+            <p style="color: var(--text-dim); text-align: center; font-size: 0.9rem; margin-top: 1rem;">
+                Notice the "Gibbs phenomenon" — the overshoot near discontinuities never fully disappears.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>4. The Connection: Local vs Global</h2>
+
+        <div class="highlight-box">
+            <h4>Taylor Series</h4>
+            <ul style="color: var(--text); line-height: 2;">
+                <li>Approximates near a <strong>single point</strong></li>
+                <li>Uses powers: 1, t, t², t³, ...</li>
+                <li>For e<sup>it</sup>: powers of (it) spiral toward the circle</li>
+                <li>Best for: local approximations, computing transcendental functions</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h4>Fourier Series</h4>
+            <ul style="color: var(--text); line-height: 2;">
+                <li>Decomposes over an <strong>entire period</strong></li>
+                <li>Uses frequencies: e<sup>it</sup>, e<sup>2it</sup>, e<sup>3it</sup>, ...</li>
+                <li>Each term rotates at a different speed</li>
+                <li>Best for: analyzing periodic signals, solving PDEs</li>
+            </ul>
+        </div>
+
+        <p>
+            Both are expressing functions as sums of simpler rotating components.
+            Taylor uses "how fast are you spinning up" (derivatives).
+            Fourier uses "what frequencies are present" (harmonics).
+        </p>
+    </section>
+
+    <section class="content-section">
+        <h2>5. Why This Matters</h2>
+
+        <div class="math-block">
+            <p>The Unifying Principle:</p>
+            <div class="equation">Any function ≈ Sum of rotations</div>
+        </div>
+
+        <p>
+            Both Taylor and Fourier series decompose functions into rotating components.
+            This is the deep reason why e<sup>it</sup> appears everywhere in mathematics,
+            physics, and engineering: rotation is the universal building block.
+        </p>
+
+        <ul style="color: var(--text); line-height: 2;">
+            <li><strong>Signal Processing:</strong> Fourier analysis decomposes sounds into frequencies</li>
+            <li><strong>Quantum Mechanics:</strong> Wave functions are sums of energy eigenstates (rotations)</li>
+            <li><strong>Differential Equations:</strong> Solutions often expressible as series of exponentials</li>
+            <li><strong>Number Theory:</strong> The Riemann zeta function involves infinite sums of rotations</li>
+        </ul>
+    </section>
+
+    <nav class="lesson-nav">
+        <a href="06-applications.html">← Lesson 06: Applications</a>
+        <a href="08-synthesis.html">Lesson 08: Synthesis →</a>
+    </nav>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(212,175,55,0.2);">
+        <p style="color: var(--gold); font-family: monospace;">[1 = -1]</p>
+        <p style="color: var(--text-dim);">Calculus Through Rotation | Geometry Math</p>
+    </footer>
+
+    <script src="../../js/circle-engine.js"></script>
+    <script>
+        // ===== TAYLOR SERIES DEMO =====
+        (function() {
+            const canvas = document.getElementById('taylorCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const scale = 100;
+
+            let numTerms = 1;
+            let t = Math.PI / 2;
+            let animating = false;
+
+            const termsDisplay = document.getElementById('numTerms');
+            const tDisplay = document.getElementById('taylorT');
+            const errorDisplay = document.getElementById('taylorError');
+            const termSpans = document.querySelectorAll('#taylorTerms .term');
+
+            function factorial(n) {
+                if (n <= 1) return 1;
+                let result = 1;
+                for (let i = 2; i <= n; i++) result *= i;
+                return result;
+            }
+
+            function taylorApprox(t, terms) {
+                let re = 0, im = 0;
+                for (let n = 0; n < terms; n++) {
+                    const coef = Math.pow(t, n) / factorial(n);
+                    const phase = n * Math.PI / 2; // i^n rotates by n*90°
+                    re += coef * Math.cos(phase);
+                    im += coef * Math.sin(phase);
+                }
+                return { re, im };
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(50, cy);
+                ctx.lineTo(width - 50, cy);
+                ctx.moveTo(cx, 50);
+                ctx.lineTo(cx, height - 50);
+                ctx.stroke();
+
+                // Draw unit circle
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, scale, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Draw exact e^(it) point
+                const exactX = cx + Math.cos(t) * scale;
+                const exactY = cy - Math.sin(t) * scale;
+
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.5)';
+                ctx.beginPath();
+                ctx.arc(exactX, exactY, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw Taylor approximation spiral
+                let re = 0, im = 0;
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+
+                for (let n = 0; n < numTerms; n++) {
+                    const coef = Math.pow(t, n) / factorial(n);
+                    const phase = n * Math.PI / 2;
+                    const dre = coef * Math.cos(phase);
+                    const dim = coef * Math.sin(phase);
+
+                    const newRe = re + dre;
+                    const newIm = im + dim;
+
+                    // Draw this term's contribution
+                    ctx.lineTo(cx + newRe * scale, cy - newIm * scale);
+
+                    re = newRe;
+                    im = newIm;
+                }
+                ctx.stroke();
+
+                // Draw approximation point
+                const approxX = cx + re * scale;
+                const approxY = cy - im * scale;
+
+                ctx.fillStyle = '#00d4ff';
+                ctx.shadowColor = '#00d4ff';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.arc(approxX, approxY, 10, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Draw error line
+                ctx.strokeStyle = '#ff6464';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(approxX, approxY);
+                ctx.lineTo(exactX, exactY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Labels
+                ctx.fillStyle = '#d4af37';
+                ctx.font = '12px monospace';
+                ctx.fillText('e^(it)', exactX + 10, exactY - 10);
+
+                ctx.fillStyle = '#00d4ff';
+                ctx.fillText('Taylor', approxX + 10, approxY + 15);
+
+                // Axis labels
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fillText('Re', width - 60, cy - 10);
+                ctx.fillText('Im', cx + 10, 60);
+
+                // Calculate error
+                const error = Math.sqrt(Math.pow(re - Math.cos(t), 2) + Math.pow(im - Math.sin(t), 2));
+
+                // Update displays
+                termsDisplay.textContent = numTerms;
+                tDisplay.textContent = t.toFixed(2);
+                errorDisplay.textContent = error.toFixed(6);
+
+                // Update term highlighting
+                termSpans.forEach((span, i) => {
+                    span.classList.toggle('active', i < numTerms);
+                });
+            }
+
+            function animate() {
+                if (animating) {
+                    t += 0.02;
+                    if (t > 2 * Math.PI) t = 0;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('addTermBtn').addEventListener('click', () => {
+                if (numTerms < 15) numTerms++;
+            });
+
+            document.getElementById('removeTermBtn').addEventListener('click', () => {
+                if (numTerms > 1) numTerms--;
+            });
+
+            document.getElementById('resetTaylorBtn').addEventListener('click', () => {
+                numTerms = 1;
+                t = Math.PI / 2;
+                animating = false;
+                document.getElementById('animateTaylorBtn').classList.remove('active');
+            });
+
+            document.getElementById('animateTaylorBtn').addEventListener('click', function() {
+                animating = !animating;
+                this.classList.toggle('active', animating);
+            });
+
+            animate();
+        })();
+
+        // ===== FOURIER EPICYCLES DEMO =====
+        (function() {
+            const canvas = document.getElementById('fourierCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            const epicenterX = 180;
+            const epicenterY = height / 2;
+
+            let t = 0;
+            let harmonics = 1;
+            let playing = true;
+            let showCircles = true;
+            let trace = [];
+
+            const harmonicsDisplay = document.getElementById('numHarmonics');
+            const formulaDisplay = document.getElementById('fourierFormula');
+
+            function squareWaveCoeffs(n) {
+                // Square wave = sum of odd harmonics: sin(t) + sin(3t)/3 + sin(5t)/5 + ...
+                const coeffs = [];
+                for (let k = 0; k < n; k++) {
+                    const harmonic = 2 * k + 1; // 1, 3, 5, 7, ...
+                    coeffs.push({
+                        freq: harmonic,
+                        amp: 4 / (Math.PI * harmonic)
+                    });
+                }
+                return coeffs;
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                const coeffs = squareWaveCoeffs(harmonics);
+
+                // Draw epicycles
+                let x = epicenterX;
+                let y = epicenterY;
+
+                coeffs.forEach((coeff, i) => {
+                    const radius = coeff.amp * 60;
+                    const angle = coeff.freq * t;
+
+                    // Draw circle
+                    if (showCircles) {
+                        ctx.strokeStyle = `rgba(0, 212, 255, ${0.3 - i * 0.02})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.arc(x, y, radius, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
+
+                    // Calculate next point
+                    const nx = x + radius * Math.cos(angle);
+                    const ny = y - radius * Math.sin(angle);
+
+                    // Draw radius
+                    if (showCircles) {
+                        ctx.strokeStyle = '#00d4ff';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(nx, ny);
+                        ctx.stroke();
+                    }
+
+                    x = nx;
+                    y = ny;
+                });
+
+                // Final point
+                ctx.fillStyle = '#00ff88';
+                ctx.shadowColor = '#00ff88';
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Add to trace
+                trace.push({ x: x, y: y });
+                if (trace.length > 500) trace.shift();
+
+                // Draw trace going to wave
+                const waveLeft = 350;
+                const waveWidth = width - waveLeft - 30;
+
+                // Connect to wave
+                ctx.strokeStyle = 'rgba(0, 255, 136, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(waveLeft, y);
+                ctx.stroke();
+
+                // Draw wave from trace
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let i = 0; i < trace.length; i++) {
+                    const wx = waveLeft + (i / trace.length) * waveWidth;
+                    const wy = trace[trace.length - 1 - i].y;
+                    if (i === 0) {
+                        ctx.moveTo(wx, wy);
+                    } else {
+                        ctx.lineTo(wx, wy);
+                    }
+                }
+                ctx.stroke();
+
+                // Draw target square wave (faded)
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let wx = 0; wx <= waveWidth; wx++) {
+                    const phase = ((waveWidth - wx) / waveWidth) * 4 * Math.PI + t;
+                    const val = Math.sin(phase) > 0 ? 60 : -60;
+                    if (wx === 0) {
+                        ctx.moveTo(waveLeft + wx, epicenterY - val);
+                    } else {
+                        ctx.lineTo(waveLeft + wx, epicenterY - val);
+                    }
+                }
+                ctx.stroke();
+
+                // Wave axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(waveLeft, epicenterY);
+                ctx.lineTo(waveLeft + waveWidth, epicenterY);
+                ctx.stroke();
+
+                // Update displays
+                harmonicsDisplay.textContent = harmonics;
+
+                // Build formula string
+                let formula = 'sin(t)';
+                for (let k = 1; k < harmonics && k < 4; k++) {
+                    const h = 2 * k + 1;
+                    formula += ` + sin(${h}t)/${h}`;
+                }
+                if (harmonics > 4) formula += ' + ...';
+                formulaDisplay.textContent = formula;
+            }
+
+            function animate() {
+                if (playing) {
+                    t += 0.03;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('harmonicsSlider').addEventListener('input', (e) => {
+                harmonics = parseInt(e.target.value);
+                document.getElementById('harmonicsValue').textContent = harmonics;
+                trace = [];
+            });
+
+            document.getElementById('fourierPlayBtn').addEventListener('click', function() {
+                playing = !playing;
+                this.textContent = playing ? 'Pause' : 'Play';
+                this.classList.toggle('active', playing);
+            });
+
+            document.getElementById('showCirclesBtn').addEventListener('click', function() {
+                showCircles = !showCircles;
+                this.classList.toggle('active', showCircles);
+            });
+
+            animate();
+        })();
+
+        // ===== SQUARE WAVE BUILDER DEMO =====
+        (function() {
+            const canvas = document.getElementById('squareWaveCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cy = height / 2;
+            const margin = 50;
+            const waveWidth = width - margin * 2;
+            const amp = 80;
+
+            let maxHarmonic = 1;
+            let t = 0;
+
+            function squareWave(x, maxH) {
+                let sum = 0;
+                for (let n = 1; n <= maxH; n += 2) {
+                    sum += Math.sin(n * x) / n;
+                }
+                return sum * 4 / Math.PI;
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(margin, cy);
+                ctx.lineTo(width - margin, cy);
+                ctx.stroke();
+
+                // Draw ideal square wave (faded)
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let px = 0; px <= waveWidth; px++) {
+                    const x = (px / waveWidth) * 4 * Math.PI + t;
+                    const val = Math.sin(x) > 0 ? 1 : -1;
+                    if (px === 0) {
+                        ctx.moveTo(margin + px, cy - val * amp);
+                    } else {
+                        ctx.lineTo(margin + px, cy - val * amp);
+                    }
+                }
+                ctx.stroke();
+
+                // Draw Fourier approximation
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let px = 0; px <= waveWidth; px++) {
+                    const x = (px / waveWidth) * 4 * Math.PI + t;
+                    const val = squareWave(x, maxHarmonic);
+                    if (px === 0) {
+                        ctx.moveTo(margin + px, cy - val * amp);
+                    } else {
+                        ctx.lineTo(margin + px, cy - val * amp);
+                    }
+                }
+                ctx.stroke();
+
+                // Draw individual harmonics (faded)
+                const colors = ['#00ff88', '#ff6464', '#ff00ff', '#ffff00', '#00ffff'];
+                for (let n = 1, i = 0; n <= maxHarmonic && n <= 9; n += 2, i++) {
+                    ctx.strokeStyle = colors[i % colors.length];
+                    ctx.globalAlpha = 0.3;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    for (let px = 0; px <= waveWidth; px++) {
+                        const x = (px / waveWidth) * 4 * Math.PI + t;
+                        const val = (4 / Math.PI) * Math.sin(n * x) / n;
+                        if (px === 0) {
+                            ctx.moveTo(margin + px, cy - val * amp);
+                        } else {
+                            ctx.lineTo(margin + px, cy - val * amp);
+                        }
+                    }
+                    ctx.stroke();
+                }
+                ctx.globalAlpha = 1;
+
+                // Update harmonics display
+                let harmonicsStr = [];
+                for (let n = 1; n <= maxHarmonic; n += 2) {
+                    harmonicsStr.push(n);
+                }
+                document.getElementById('swHarmonics').textContent = harmonicsStr.join(', ') + (maxHarmonic > 9 ? '...' : '');
+
+                t += 0.01;
+            }
+
+            function animate() {
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('swSlider').addEventListener('input', (e) => {
+                maxHarmonic = parseInt(e.target.value);
+                document.getElementById('swValue').textContent = maxHarmonic;
+            });
+
+            animate();
+        })();
+    </script>
+</body>
+</html>

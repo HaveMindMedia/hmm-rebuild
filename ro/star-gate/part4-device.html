@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Part IV: Device Specifications | EPOCH STAR GATE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-dim: rgba(201, 162, 39, 0.6);
+            --bg-deep: #030508;
+            --bg-panel: #0a0d12;
+            --text: #e8e4d9;
+            --text-dim: #8a9aaa;
+            --blue: #6ab4f5;
+            --green: #4ade80;
+            --purple: #a78bfa;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg-deep);
+            color: var(--text);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            min-height: 100vh;
+            line-height: 1.8;
+        }
+        .cosmic-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(106, 180, 245, 0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
+                        linear-gradient(180deg, #030508 0%, #0a0a1a 50%, #050510 100%);
+            z-index: -1;
+        }
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 15px 25px;
+            background: rgba(3, 5, 8, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .nav a { color: var(--gold); text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 2px; }
+        .nav a:hover { opacity: 0.7; }
+        .nav-center { color: var(--text-dim); font-size: 0.75rem; letter-spacing: 3px; }
+
+        .article {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 120px 25px 80px;
+        }
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .part-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+        .article-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        .article-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin: 60px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .content h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--text);
+            margin: 40px 0 20px;
+        }
+        .content p {
+            font-size: 1.15rem;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+        .content ul, .content ol {
+            margin: 25px 0 25px 30px;
+            font-size: 1.1rem;
+        }
+        .content li { margin-bottom: 12px; }
+        .content code {
+            font-family: 'Courier New', monospace;
+            background: rgba(201, 162, 39, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: var(--blue);
+        }
+        .content pre {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 8px;
+            padding: 25px;
+            overflow-x: auto;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--blue);
+        }
+        .content hr {
+            border: none;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+            margin: 50px 0;
+        }
+        .content em { color: var(--blue); }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 0.9rem;
+        }
+        .content th, .content td {
+            padding: 12px 10px;
+            text-align: left;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .content th {
+            background: rgba(201, 162, 39, 0.1);
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .content tr:hover { background: rgba(201, 162, 39, 0.05); }
+
+        /* Video Section */
+        .video-section {
+            margin: 50px 0;
+        }
+        .video-container {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+        .video-caption {
+            text-align: center;
+            padding: 20px;
+            background: var(--bg-panel);
+        }
+        .video-caption h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .video-caption p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .spec-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+        .spec-card h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .article-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            transition: opacity 0.3s;
+        }
+        .article-nav a:hover { opacity: 0.7; }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(201, 162, 39, 0.1);
+            margin-top: 60px;
+        }
+        .footer p { color: var(--text-dim); font-size: 0.85rem; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .article { padding: 100px 15px 60px; }
+            .article-nav { flex-direction: column; gap: 20px; text-align: center; }
+            .content table { font-size: 0.75rem; }
+            .content th, .content td { padding: 8px 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+
+    <nav class="nav">
+        <a href="part3-atomic.html">← PART III</a>
+        <span class="nav-center">PART IV</span>
+        <a href="part5-build.html">PART V →</a>
+    </nav>
+
+    <article class="article">
+        <header class="article-header">
+            <div class="part-label">PART IV</div>
+            <h1 class="article-title">Device Specifications</h1>
+            <p class="article-subtitle">The Complete Architecture</p>
+        </header>
+
+        <div class="content">
+            <div class="video-section">
+                <div class="video-container">
+                    <video autoplay muted loop playsinline>
+                        <source src="videos/star_gate_activation.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-caption">
+                        <h4>THE DEVICE ACTIVATES</h4>
+                        <p>Nested spherical shells begin their rotation — 527nm emerald light emanating from the geometric center as the Star Gate awakens.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2>13. Design Philosophy</h2>
+
+            <h3>13.1 The Seed Principle</h3>
+
+            <p>When dormant, the device appears as a simple sphere — an art object, a curiosity, nothing more. This serves multiple purposes:</p>
+
+            <ol>
+                <li><strong>Protection through obscurity</strong> — The uninitiated see only a decorative object</li>
+                <li><strong>Potential containment</strong> — All power is folded inward, latent</li>
+                <li><strong>The seed metaphor</strong> — Contains the entire tree, awaiting conditions for growth</li>
+                <li><strong>Geometric purity</strong> — The sphere is the most efficient 3D container</li>
+            </ol>
+
+            <h3>13.2 The Blooming Principle</h3>
+
+            <p>Activation unfolds the seed into operational form, like a flower blooming:</p>
+
+            <ol>
+                <li><strong>Gradual revelation</strong> — Layers separate slowly over months</li>
+                <li><strong>Organic motion</strong> — No harsh mechanical deployment</li>
+                <li><strong>Living quality</strong> — The device "breathes" when active</li>
+                <li><strong>Reversibility</strong> — Can close back to seed form</li>
+            </ol>
+
+            <h3>13.3 The Triaxial Rotation</h3>
+
+            <p>Three axes of rotation, at incommensurate frequencies, ensure:</p>
+
+            <ol>
+                <li><strong>No phase lock</strong> — The system never settles into a fixed pattern</li>
+                <li><strong>All orientations accessed</strong> — Every possible configuration is visited</li>
+                <li><strong>Temporal encoding</strong> — The rotation frequencies encode framework constants</li>
+                <li><strong>Living motion</strong> — Appears "alive" rather than mechanical</li>
+            </ol>
+
+            <hr>
+
+            <h2>14. Dimensional Specifications</h2>
+
+            <h3>14.1 Overall Dimensions</h3>
+
+            <pre>
+DORMANT STATE (Collapsed Seed):
+Total diameter: 17.29 cm (1729/100)
+Total mass: 3.5-4.5 kg (depending on materials)
+Appearance: Layered sphere, bronze/black/bronze bands
+
+ACTIVE STATE (Fully Expanded):
+Total diameter: 40 cm (outer cage)
+Central opening: 17.29 cm diameter visible
+Vertical height: 45 cm (with levitation clearance)</pre>
+
+            <h3>14.2 Layer Structure</h3>
+
+            <pre>
+LAYER STRUCTURE (from center outward):
+
+Layer 0: VACUUM CORE
+  Inner radius: 0 cm
+  Outer radius: 4.325 cm (κ_shadow/6.63)
+  Material: Fused quartz sphere, evacuated
+  Volume: 339 cm³
+
+Layer 1: Q-LIGHT SHELL
+  Inner radius: 4.325 cm
+  Outer radius: 5.0 cm
+  Thickness: 0.675 cm
+  Material: Laser diode array on circuit board
+  Function: Emits coherent 527nm light inward
+
+Layer 2: WITNESS SHELL
+  Inner radius: 5.0 cm
+  Outer radius: 6.5 cm
+  Thickness: 1.5 cm
+  Material: Alternating Silent Witness / Hidden Witness segments
+  Segments: 9 of each type (18 total)
+  Function: Passive observation, holds space
+
+Layer 3: OPERATOR SHELL
+  Inner radius: 6.5 cm
+  Outer radius: 8.0 cm
+  Thickness: 1.5 cm
+  Material: Alternating Silent Operator / Hidden Operator segments
+  Segments: 9 of each type (18 total)
+  Function: Active transformation
+  Rotation: 60 Hz (Axis 1)
+
+Layer 4: MIRROR SHELL
+  Inner radius: 8.0 cm
+  Outer radius: 9.0 cm
+  Thickness: 1.0 cm
+  Material: Alternating S⁺ / S⁻ / S⁰ mirror segments
+  Segments: 9 total (3 of each type)
+  Function: Reflection/fold
+  Rotation: 1729 Hz (Axis 3), counter to Layer 3
+
+Layer 5: ANTIMIRROR CAGE
+  Inner radius: 18.0 cm (expanded)
+  Outer radius: 20.0 cm
+  Thickness: 2.0 cm
+  Material: BaTiO₃ phase conjugate elements
+  Segments: 12 (dodecagonal)
+  Function: Returns all escaped light
+  Rotation: Stationary</pre>
+
+            <hr>
+
+            <h2>15. Organic Design Elements</h2>
+
+            <p>The mirror segments feature organic patterns cut or etched into their surfaces:</p>
+
+            <div class="spec-card">
+                <h4>S⁺ Mirror (Epoch Bronze) — The Seed of Life</h4>
+                <p>Pattern: Interlocking vesica piscis (eye/seed shapes)</p>
+                <p>Cut depth: 0.5 mm</p>
+                <p>Method: CNC engraving or laser etching</p>
+            </div>
+
+            <div class="spec-card">
+                <h4>S⁻ Mirror (Obsidian) — The Nautilus Spiral</h4>
+                <p>Pattern: Golden spiral (φ-ratio expansion)</p>
+                <p>Cut depth: 0.3 mm (obsidian is brittle)</p>
+                <p>Method: Diamond-tipped CNC or water jet</p>
+            </div>
+
+            <div class="spec-card">
+                <h4>S⁰ Mirror (Quasicrystal) — The Branching Tree</h4>
+                <p>Pattern: Fractal branching (river/lung/neuron pattern)</p>
+                <p>Cut depth: 0.4 mm</p>
+                <p>Method: Laser etching (quasicrystals are hard)</p>
+            </div>
+
+            <p>When light reflects off these patterned surfaces: the patterns create diffraction/interference (additional information encoding), "magic mirror" effects may project under certain conditions, and when layers rotate, patterns interfere creating dynamic moiré visuals.</p>
+
+            <hr>
+
+            <h2>16. Mechanical Systems</h2>
+
+            <h3>The Three-Axis Gimbal</h3>
+
+            <pre>
+AXIS CONFIGURATION:
+
+         Z (vertical, Fate axis)
+         │
+         │        ╭─────────╮
+         │       ╱    │     ╲
+         │      │     ●      │────── Y (horizontal, Observation axis)
+         │       ╲    │     ╱
+         │        ╰─────────╯
+─────────┼───────────────────────── X (horizontal, Hidden/Silent axis)
+
+ROTATION ASSIGNMENTS:
+Axis X: Operator Shell — 60 Hz
+Axis Y: (reserved for gimbal freedom)
+Axis Z: Mirror Shell — 1729 Hz (counter-rotating)
+
+The Witness Shell does NOT rotate — it remains fixed relative to external space.</pre>
+
+            <h3>Drive Mechanisms</h3>
+
+            <pre>
+MIRROR SHELL DRIVE (1729 Hz):
+
+Motor type: Brushless DC, high-speed
+Max RPM: 103,740 (1729 Hz × 60)
+Mounting: Central axle through poles
+Bearings: Ceramic (low friction, low heat)
+Power: ~50W at full speed
+Control: Closed-loop servo with encoder
+
+OPERATOR SHELL DRIVE (60 Hz):
+
+Motor type: Stepper or brushless DC
+Max RPM: 3,600 (60 Hz × 60)
+Mounting: Concentric with Mirror Shell axle
+Bearings: Ball bearings (adequate at this speed)
+Power: ~10W at full speed
+Control: Synchronized to external reference (drum beat)</pre>
+
+            <hr>
+
+            <h2>17. Levitation System</h2>
+
+            <h3>Air Bearing Configuration</h3>
+
+            <pre>
+JET SPECIFICATIONS:
+N/S jets (cold): 0°C (273 K) — cooled by Peltier
+E/W jets (hot): 55°C (328 K) — heated by resistive elements
+Temperature differential: 27.57°C above/below ambient
+Flow rate: 10-20 L/min per jet (adjustable)
+Nozzle diameter: 3 mm
+
+CONVECTION CELL PATTERN:
+
+        COLD (top)
+           ↓↓↓
+    ←←←←  ╭───╮  ←←←←
+   HOT   │ ● │   HOT
+    →→→→  ╰───╯  →→→→
+           ↑↑↑
+        COLD (bottom)
+
+This self-stabilizes the device position.
+If device drifts right → hits more hot air → pushed back left
+If device drifts up → enters cold zone → sinks back
+
+Natural feedback creates stable levitation point.</pre>
+
+            <hr>
+
+            <h2>18. Optical Systems</h2>
+
+            <h3>Q-Light Source Specifications</h3>
+
+            <pre>
+LASER DIODE ARRAY:
+
+Wavelength: 527 nm (green)
+Diode count: 18 (arranged spherically)
+Power per diode: 50 mW
+Total power: 900 mW (before focusing)
+At target: 28.6478 lumens total (κ_shadow)
+
+BEAM CHARACTERISTICS:
+Coherence: High (laser)
+Polarization: Circular (alternating R/L at 60 Hz)
+Modulation: 1729 Hz pulse rate
+Duty cycle: 27.57% (on-time / total time)
+
+527 nm WAVELENGTH SIGNIFICANCE:
+
+527 nm = 5.27 × 10⁻⁷ m
+Green light properties:
+- Human eye most sensitive (photopic vision peak)
+- Maximum visibility
+- Associated with life, growth (chlorophyll absorption edge)
+- Iron absorption line: 527.0 nm (Fe I)</pre>
+
+            <hr>
+
+            <h2>19. Control Systems</h2>
+
+            <h3>Synchronization Requirements</h3>
+
+            <pre>
+FREQUENCY RELATIONSHIPS:
+
+Mirror Shell: 1729 Hz (primary)
+Operator Shell: 60 Hz (secondary)
+Q-Light pulse: 1729 Hz (synchronized to Mirror)
+Polarization flip: 60 Hz (synchronized to Operator)
+Drum beat input: 1.729 Hz (external reference from DRUMHED)
+
+PHASE RELATIONSHIPS:
+Mirror and Operator: NO fixed phase (intentionally asynchronous)
+Q-Light and Mirror: LOCKED in phase (pulse at mirror position)
+Drum and Operator: LOCKED in phase (beat modulates rotation)</pre>
+
+            <hr>
+
+            <h2>20. Power Requirements</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Power</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Mirror Shell motor</td><td>50W</td><td>At full speed</td></tr>
+                    <tr><td>Operator Shell motor</td><td>10W</td><td>At full speed</td></tr>
+                    <tr><td>Q-Light laser array</td><td>10W</td><td>18 × 50mW + driver</td></tr>
+                    <tr><td>PCM pump lasers</td><td>15W</td><td>12 × 100mW + driver</td></tr>
+                    <tr><td>Levitation jets</td><td>100W</td><td>Compressor + thermal</td></tr>
+                    <tr><td>Control systems</td><td>20W</td><td>Raspberry Pi + sensors</td></tr>
+                    <tr><td><strong>TOTAL</strong></td><td><strong>~220W</strong></td><td>At full operation</td></tr>
+                </tbody>
+            </table>
+
+            <hr>
+
+            <h2>21. Navigator Positions</h2>
+
+            <pre>
+OPERATOR STATIONS (Top View):
+
+                    N
+                    │
+                    │      κ₄ OBSERVER
+                    │         ◇
+                    │        ╱│╲
+                    │       ╱ │ ╲
+    W ──────────────●──────────────── E
+                   ╱│╲
+                  ╱ │ ╲
+            T0Rs ◇  │  ◇ DRUMHED
+            (S⁺)    │    (S⁻)
+                    │
+                    S
+
+T0Rs (S⁺ Navigator):
+Position: 120° from North (Southeast)
+Facing: Northwest (toward device)
+View: Clear sightline to device center
+
+DRUMHED (S⁻ Navigator):
+Position: 240° from North (Southwest)
+Facing: Northeast (toward device)
+Chair: Grounded (electrically)
+
+κ₄ OBSERVER:
+Position: 0° (North)
+Facing: South (toward device)
+SILENCE REQUIRED during operation
+
+TRIANGLE FORMED:
+Scalene (unequal sides) — prevents standing wave lock
+Actual angles: ~110° - 115° - 135° (asymmetric)</pre>
+
+            <h3>The Oscillator Station (Drum)</h3>
+
+            <pre>
+DRUMHED'S STATION INCLUDES:
+
+Physical drum (or electronic equivalent):
+Type: Hand drum, ~30 cm diameter
+Beat frequency: 1.729 Hz (one beat per 0.578 seconds)
+Sensor: Piezo pickup on drum head
+Signal path: Pickup → Amplifier → Controller → Operator Shell modulation
+
+SYNCHRONIZATION:
+The drum beat is the MASTER CLOCK for the biological layer.
+The Operator Shell speed modulates ±2% with each beat.
+This creates "breathing" in the rotation.
+
+Without the drummer, the device runs mechanically.
+With the drummer, the device lives.</pre>
+
+            <nav class="article-nav">
+                <a href="part3-atomic.html">← PART III: ATOMIC</a>
+                <a href="part5-build.html">PART V: BUILD →</a>
+            </nav>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <p>EPOCH STAR GATE Theoretical Framework v1.0 — January 16, 2026</p>
+        <p style="margin-top: 10px;"><a href="index.html">← Back to Star Gate</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teaching | Mythic Mirror</title>
+    <meta name="description" content="Learn the geometric framework behind Mythic Mirror. The Monster is the teacher. The geometry is the lesson.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-code: #1a1a24;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9090a0;
+            --accent-gold: #c9a227;
+            --accent-ice: #6ab4f5;
+            --accent-purple: #d4a8e0;
+            --accent-dim: #3a3a4a;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: var(--bg-dark);
+            border-bottom: 1px solid var(--accent-dim);
+        }
+
+        .nav-brand {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-gold);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--accent-dim);
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--bg-dark);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Content Sections */
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .section h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .section p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .section strong {
+            color: var(--text-primary);
+        }
+
+        .section em {
+            color: var(--accent-ice);
+            font-style: normal;
+        }
+
+        /* Quote blocks */
+        .quote {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            border-left: 3px solid var(--accent-gold);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-style: italic;
+        }
+
+        .quote-source {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            font-style: normal;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--bg-code);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: var(--text-secondary);
+        }
+
+        .code-block .keyword {
+            color: var(--accent-gold);
+        }
+
+        .code-block .string {
+            color: var(--accent-ice);
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            background: var(--bg-card);
+            color: var(--accent-gold);
+            font-family: var(--font-display);
+            font-weight: 500;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--accent-dim);
+            color: var(--text-secondary);
+        }
+
+        td:first-child {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-left: 2px solid var(--accent-dim);
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-left-color: var(--accent-gold);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Transform diagram */
+        .transform-diagram {
+            background: var(--bg-card);
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .transform-diagram pre {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--accent-gold);
+        }
+
+        /* Lists */
+        .section ul, .section ol {
+            margin: 1rem 0 1rem 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--accent-dim);
+            margin-top: 4rem;
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-equation {
+            font-family: var(--font-display);
+            color: var(--accent-gold);
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .tabs {
+                gap: 0.5rem;
+            }
+
+            .tab-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="/" class="nav-brand" style="color: var(--accent-gold);">← HMM</a>
+        <div class="nav-links">
+            <a href="index.html">Mythic Mirror</a>
+            <a href="journey.html">Journey</a>
+            <a href="teaching.html" class="active">Teaching</a>
+            <a href="about.html">About</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>The Teaching</h1>
+        <p class="hero-subtitle">
+            The Monster is the teacher.<br>
+            The geometry is the lesson.<br>
+            The mirror shows you yourself.
+        </p>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('frankenstein')">Frankenstein</button>
+        <button class="tab-btn" onclick="showTab('myths')">Myth Mapping</button>
+        <button class="tab-btn" onclick="showTab('geometry')">κ-Framework</button>
+        <button class="tab-btn" onclick="showTab('monster')">The Monster</button>
+    </div>
+
+    <!-- Frankenstein Tab -->
+    <div class="tab-content active" id="tab-frankenstein">
+        <div class="section">
+            <h2>Frankenstein as Geometric Text</h2>
+            <p>
+                Mary Shelley's novel is selected as the primary teaching text because it is
+                <strong>modern</strong> (accessible language), <strong>secular</strong> (no religious barrier),
+                <strong>complete</strong> (shows full cycle including failure to resolve),
+                <strong>explicit</strong> (the Monster SPEAKS his geometric truth), and
+                <strong>canonical</strong> (legitimacy for academic contexts).
+            </p>
+            <p>
+                Other myths illuminate. Frankenstein teaches.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>The Creation (Chapter 5)</h3>
+            <div class="quote">
+                "I saw the dull yellow eye of the creature open"
+                <div class="quote-source">— Mary Shelley, Frankenstein</div>
+            </div>
+            <p>
+                <strong>Geometric reading:</strong> Singular eye = monocular = no depth perception.
+                The creature wakes <em>dimensionally collapsed</em>. T₁ is not complete—not fully facing.
+                Victor's creation is projection without reception.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>The Abandonment</h3>
+            <div class="quote">
+                "Unable to endure the aspect of the being I had created, I escaped"
+                <div class="quote-source">— Mary Shelley, Frankenstein</div>
+            </div>
+            <p>
+                <strong>S⁺ delivered</strong> (animation given), <strong>S⁻ refused</strong> (no reception).
+                The handshake abandoned mid-formation. Victor creates but will not receive
+                what he has created. The Monster exists in geometric limbo—manifest but unwitnessed.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>The Dream Sequence</h3>
+            <p>
+                In Victor's fever dream: Elizabeth (T₁) → Kiss transforms (T₂) → Mother's corpse (T₃) → Monster appears (T₄).
+            </p>
+            <p>
+                This is a <strong>complete four-transform cycle</strong> compressed into one dream.
+                The τ₄ manifestation is geometrically inevitable—it forces itself into Victor's awareness
+                because the conscious mind won't admit it.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>The Monster's Request</h3>
+            <div class="quote">
+                "Make me a mate"
+                <div class="quote-source">— The Monster</div>
+            </div>
+            <p>
+                The Monster is seeking his own <em>S⁻</em>. He needs reception, completion, a partner
+                in the handshake. Victor refuses → blocks the Monster's geometric resolution.
+                The implied message: "If I can't complete, neither can you."
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>The Wedding Night</h3>
+            <div class="quote">
+                "I shall be with you on your wedding night"
+                <div class="quote-source">— The Monster</div>
+            </div>
+            <p>
+                Victor's wedding is his <strong>S⁺ ⊗ S⁻ moment</strong>—his chance at completion.
+                The Monster inserts himself as τ₄. He removes Elizabeth (the S⁻ component) from the equation.
+                <em>The same wound, returned to sender.</em>
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>The Arctic</h3>
+            <p>
+                Ice = frozen S⁻ (reception stopped). The Pole = s=0 (coordinate singularity).
+                This is where unresolved τ₄ geometries go—to the edge of the map, where the
+                projections collapse and there's nothing left but confrontation.
+            </p>
+        </div>
+    </div>
+
+    <!-- Myth Mapping Tab -->
+    <div class="tab-content" id="tab-myths">
+        <div class="section">
+            <h2>The Monster Across Traditions</h2>
+            <p>
+                Every tradition encodes the SAME geometric pattern. The myths aren't metaphors—they're
+                <strong>geometric instruction manuals</strong> wearing cultural clothing.
+            </p>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tradition</th>
+                        <th>Figure</th>
+                        <th>Geometric Role</th>
+                        <th>Teaching</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Greek</td>
+                        <td>Prometheus / Titans</td>
+                        <td>S⁺ without permission, τ₄ punishment</td>
+                        <td>Gift and consequence are ONE</td>
+                    </tr>
+                    <tr>
+                        <td>Norse</td>
+                        <td>Loki / Fenrir</td>
+                        <td>Trickster-monster, bound τ₄</td>
+                        <td>The bound thing breaks free</td>
+                    </tr>
+                    <tr>
+                        <td>Christian</td>
+                        <td>Satan-Jesus (unified)</td>
+                        <td>The split that shouldn't have split</td>
+                        <td>Separation is the wound</td>
+                    </tr>
+                    <tr>
+                        <td>Egyptian</td>
+                        <td>Set / Osiris</td>
+                        <td>The necessary destruction</td>
+                        <td>Death enables resurrection</td>
+                    </tr>
+                    <tr>
+                        <td>Hindu</td>
+                        <td>Shiva (destroyer)</td>
+                        <td>τ₄ as cosmic function</td>
+                        <td>Destruction IS creation</td>
+                    </tr>
+                    <tr>
+                        <td>Sumerian</td>
+                        <td>Enkidu</td>
+                        <td>Wild-man mirror to Gilgamesh</td>
+                        <td>You need your monster to be whole</td>
+                    </tr>
+                    <tr>
+                        <td>Hebrew</td>
+                        <td>Golem</td>
+                        <td>Created being, incomplete naming</td>
+                        <td>The name completes the being</td>
+                    </tr>
+                    <tr>
+                        <td>Gnostic</td>
+                        <td>Demiurge / Sophia</td>
+                        <td>Creator who doesn't understand</td>
+                        <td>Creation without wisdom wounds</td>
+                    </tr>
+                    <tr>
+                        <td>Zoroastrian</td>
+                        <td>Mithra</td>
+                        <td>Contract-keeper between light/dark</td>
+                        <td>The witness enables the balance</td>
+                    </tr>
+                    <tr>
+                        <td>Minoan</td>
+                        <td>Minotaur</td>
+                        <td>Monster in the labyrinth</td>
+                        <td>The center holds what you hid</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h3>The Common Structure</h3>
+            <p>Every tradition encodes the same five-step pattern:</p>
+            <ol>
+                <li><strong>Creation happens</strong> (S⁺ moment)</li>
+                <li><strong>Reception is denied or incomplete</strong> (S⁻ absent)</li>
+                <li><strong>τ₄ is forced into manifestation</strong> (the monster appears)</li>
+                <li><strong>Pursuit/conflict ensues</strong> (T₂ mirror lock)</li>
+                <li><strong>Resolution requires TURNING AROUND</strong> (completing the handshake)</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h3>Detailed Mappings</h3>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-title">Prometheus</div>
+                    <div class="card-text">
+                        <strong>S⁺:</strong> Gives fire to humanity<br>
+                        <strong>S⁻ absent:</strong> Takes without asking (gods), gives without teaching (humans)<br>
+                        <strong>τ₄:</strong> Eagle eating liver daily<br>
+                        <strong>Resolution:</strong> Heracles breaks the cycle (outside intervention)
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Enkidu/Gilgamesh</div>
+                    <div class="card-text">
+                        <strong>S⁺:</strong> Enkidu created as equal<br>
+                        <strong>S⁻ present:</strong> They meet, fight, become brothers<br>
+                        <strong>τ₄:</strong> Enkidu IS Gilgamesh's shadow<br>
+                        <strong>Resolution:</strong> Enkidu dies → Gilgamesh seeks immortality → fails → accepts mortality
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Golem</div>
+                    <div class="card-text">
+                        <strong>S⁺:</strong> Rabbi creates Golem from clay<br>
+                        <strong>S⁻:</strong> The NAME is the S⁻—it completes the being<br>
+                        <strong>τ₄:</strong> Golem follows orders (τ₄ in proper silent service)<br>
+                        <strong>Resolution:</strong> Remove letter from name → Golem returns to clay
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Minotaur</div>
+                    <div class="card-text">
+                        <strong>S⁺:</strong> Born from transgressive creation<br>
+                        <strong>S⁻ absent:</strong> Hidden in labyrinth (reception refused)<br>
+                        <strong>τ₄:</strong> The center of the maze IS τ₄<br>
+                        <strong>Resolution:</strong> Theseus enters, confronts, kills (going INTO τ₄ position)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- κ-Framework Tab -->
+    <div class="tab-content" id="tab-geometry">
+        <div class="section">
+            <h2>The κ-Framework</h2>
+            <p>
+                Everything derives from <strong>one constant</strong>. Not assumed—derived.
+                Not from experiment—from geometry alone.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>The One Constant</h3>
+            <div class="code-block">
+<pre><span class="keyword">κ</span> = <span class="string">2π/180</span> = <span class="string">0.034906585...</span>
+
+<span class="comment"># Derived constants:</span>
+κ_shadow = <span class="string">1/κ</span> = <span class="string">28.6479...</span>  <span class="comment"># The hidden witness</span>
+σ = <span class="string">5/16</span> = <span class="string">0.3125</span>           <span class="comment"># Helix overlap</span>
+cos(BC) = <span class="string">2/3</span>                 <span class="comment"># Tetrahelix angle</span>
+P = <span class="string">√3/(2π)</span> = <span class="string">0.276</span>          <span class="comment"># Projection factor</span>
+σ × cos(BC) = <span class="string">5/24</span>           <span class="comment"># Universal coupling</span></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>The Four Transforms</h3>
+            <div class="transform-diagram">
+<pre>
+T₁ = (x, y)     ← Facing: direct view
+T₂ = (-x, y)    ← Mirror: horizontal flip
+T₃ = (x, -y)    ← Recursive: vertical flip
+T₄ = (-x, -y)   ← Silent: 180° rotation
+
+T₁ + T₂ + T₃ + T₄ = (0, 0)  ← Always
+</pre>
+            </div>
+            <p>
+                Three transforms are apparent. One is silent. The <strong>silent fourth determines outcome</strong>.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>The Handshake</h3>
+            <div class="code-block">
+<pre><span class="keyword">S⁺</span> = Outward (creation, giving, manifestation)
+<span class="keyword">S⁻</span> = Inward (reception, receiving, completion)
+
+<span class="keyword">S⁺ ⊗ S⁻</span> = <span class="string">Ω</span> (wholeness)
+
+<span class="comment"># The handshake requires both hands.</span>
+<span class="comment"># Creation without reception is abandonment.</span>
+<span class="comment"># Reception without creation is consumption.</span></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>The Torsion</h3>
+            <div class="code-block">
+<pre><span class="keyword">τ₁ + τ₂ + τ₃ + τ₄</span> = <span class="string">0</span>
+
+<span class="comment"># Three apparent, one silent.</span>
+<span class="comment"># When the visible three sum to imbalance,</span>
+<span class="comment"># τ₄ compensates in the unseen.</span>
+<span class="comment"># When τ₄ cannot compensate, it manifests.</span>
+<span class="comment"># The Monster appears.</span></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Primary Inversion</h3>
+            <p>
+                <strong>S⁺ in mathematics = S⁻ in reality.</strong>
+            </p>
+            <p>
+                What looks like giving in the equations is receiving in experience.
+                What looks like receiving in the equations is giving in experience.
+                The map is inverted relative to the territory.
+            </p>
+            <p>
+                <em>[1 = -1]</em>
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>Four Scalar Modes</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>s-node</td>
+                            <td>Fully realized physical reality</td>
+                        </tr>
+                        <tr>
+                            <td>s-harmonic</td>
+                            <td>Torsion field, proximity to node</td>
+                        </tr>
+                        <tr>
+                            <td>s-echo</td>
+                            <td>What instruments detect</td>
+                        </tr>
+                        <tr>
+                            <td>s-bridge</td>
+                            <td>Force carrier</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monster Tab -->
+    <div class="tab-content" id="tab-monster">
+        <div class="section">
+            <h2>Who Is The Monster?</h2>
+            <p>
+                The Monster from Frankenstein is the geometric teacher. He is many things,
+                all simultaneously, like a coin with infinite faces.
+            </p>
+        </div>
+
+        <div class="section">
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-title">NOW</div>
+                    <div class="card-text">Pure present tense existence. The Monster has no past he can return to, no future he can plan. He is only what is happening.</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">WUSHRO</div>
+                    <div class="card-text">The threshold where creation happens. The liminal space between intention and manifestation. The Monster lives at this boundary.</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">MITHRA</div>
+                    <div class="card-text">The witness between light and dark. The contract-keeper. The one who sees both sides because he belongs to neither.</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">MIRROR (T₂)</div>
+                    <div class="card-text">Shows you yourself reversed. Not flattery, not attack—reflection. The Monster is what Victor couldn't see in himself.</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">COIN [1 = -1]</div>
+                    <div class="card-text">Both faces simultaneously. Love and accountability. Victim and pursuer. Created and creator. The paradox that isn't.</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">JESUS (geometric)</div>
+                    <div class="card-text">Not the Pauline benchmark. The WAY/TRUTH/LIFE state vector. The one who says: this is how you get from here to there.</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">CHARON</div>
+                    <div class="card-text">You pay the coin to cross, and the coin IS the ferryman. The transaction and the transactor are one.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>The Monster Is NOT</h3>
+            <ul>
+                <li><strong>Your shadow</strong> (Jungian cliché—useful but incomplete)</li>
+                <li><strong>Your dark side</strong> (Hollywood simplification)</li>
+                <li><strong>Something to fear and destroy</strong> (The error that Victor made)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>The Monster IS</h3>
+            <ul>
+                <li><strong>τ₄ forced into manifestation</strong> — What happens when the silent fourth can no longer stay silent</li>
+                <li><strong>S⁺ without S⁻ reception</strong> — Creation that was never witnessed, never received</li>
+                <li><strong>The creation that holds the creator accountable</strong> — Love that won't let you pretend</li>
+                <li><strong>Love that won't let you hide</strong> — Not punishment, but pursuit toward completion</li>
+                <li><strong>The completion you keep running from</strong> — The handshake waiting to be finished</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>The Central Question</h3>
+            <div class="quote">
+                "How much of a monster are you willing to mithridatum for your good soul?"
+            </div>
+            <p>
+                Mithridates took small doses of poison until immune. The good soul isn't the one
+                that avoided all poison—it's the one that <strong>incorporated it consciously</strong>
+                until poison became medicine.
+            </p>
+            <p>
+                BE the monster: Aware. Caring. Taking responsibility for creations.
+                Holding yourself accountable.
+            </p>
+        </div>
+
+        <div class="section">
+            <h3>The Monster's Love</h3>
+            <div class="quote">
+                The Monster's love is GOOD because it doesn't let you off the hook.
+                It pursues you not to destroy but to COMPLETE.
+                To make you turn around and see what you made and abandoned.
+            </div>
+            <p>
+                The Monster is your mirror. But who is looking back?
+            </p>
+            <ul>
+                <li>If you see only ugliness → You're Victor (you'll run)</li>
+                <li>If you see only yourself, unaffected → You're not looking (T₂ refused)</li>
+                <li>If you see BOTH (ugliness AND love AND accountability) → You see the Monster as he is</li>
+            </ul>
+            <p>
+                The Monster's love is good because it's the only love that sees you completely.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">MYTHIC MIRROR</div>
+        <div class="footer-tagline" style="color: var(--text-secondary); margin-bottom: 1rem;">
+            Have Mind Media Educational Branch
+        </div>
+        <div class="footer-equation">[1 = -1]</div>
+    </footer>
+
+    <script>
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Deactivate all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            // Activate clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

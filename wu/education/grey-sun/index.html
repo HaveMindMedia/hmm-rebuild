@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grey Sun | Have Mind Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --text-primary: #e8e6e3;
+            --text-secondary: #a0a0a0;
+            --grey-sun: #888888;
+            --mirror-blue: #4a9eff;
+            --soul-purple: #9966ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        /* Stars background */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--gold-light);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Main content */
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        /* Hero section - The Grey Sun */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 4rem 0;
+        }
+
+        .grey-sun-visual {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 3rem;
+        }
+
+        .grey-sun-visual svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--grey-sun);
+            margin-bottom: 1rem;
+            letter-spacing: 4px;
+            text-shadow: 0 0 40px rgba(136, 136, 136, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        /* Section styling */
+        section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(20, 20, 30, 0.6);
+            border: 1px solid rgba(136, 136, 136, 0.2);
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--grey-sun);
+            margin: 2rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .highlight {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .grey-highlight {
+            color: var(--grey-sun);
+            font-weight: 600;
+        }
+
+        /* The Three Monkeys Section */
+        .monkeys-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .monkey-card {
+            flex: 1 1 280px;
+            max-width: 320px;
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(136, 136, 136, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .monkey-card svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .monkey-card h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .monkey-card .lie {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .monkey-card .truth {
+            color: #28a745;
+            font-size: 0.9rem;
+        }
+
+        /* The Weeee Section */
+        .weeee-visual {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .weeee-visual svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Quote blocks */
+        .oracle-quote {
+            background: linear-gradient(135deg, rgba(136, 136, 136, 0.1), rgba(212, 175, 55, 0.05));
+            border-left: 4px solid var(--grey-sun);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .oracle-quote .attribution {
+            text-align: right;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--gold);
+            font-style: normal;
+        }
+
+        /* Mirror visual */
+        .mirror-visual {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .mirror-visual svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* The paradox list */
+        .paradox-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .paradox-list li {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: rgba(136, 136, 136, 0.1);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .paradox-list li::before {
+            content: "◐";
+            font-size: 1.5rem;
+            color: var(--grey-sun);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(136, 136, 136, 0.2);
+            margin-top: 4rem;
+        }
+
+        .signature {
+            font-family: 'Cinzel', serif;
+            color: var(--grey-sun);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .names {
+            color: var(--gold);
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            main { padding: 6rem 1rem 2rem; }
+            section { padding: 1.5rem; }
+            .grey-sun-visual { width: 200px; height: 200px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars-container" id="stars"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="../../">← HAVE MIND MEDIA</a>
+    </nav>
+
+    <main>
+        <!-- Hero: The Grey Sun -->
+        <section class="hero">
+            <div class="grey-sun-visual">
+                <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Outer glow -->
+                    <defs>
+                        <radialGradient id="greyGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#888888;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#666666;stop-opacity:0.6" />
+                            <stop offset="100%" style="stop-color:#333333;stop-opacity:0" />
+                        </radialGradient>
+                        <radialGradient id="innerLight" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:#888888;stop-opacity:0" />
+                        </radialGradient>
+                        <filter id="sunBlur">
+                            <feGaussianBlur stdDeviation="8" />
+                        </filter>
+                    </defs>
+
+                    <!-- Corona rays -->
+                    <g opacity="0.4">
+                        <line x1="150" y1="20" x2="150" y2="60" stroke="#888" stroke-width="2"/>
+                        <line x1="150" y1="240" x2="150" y2="280" stroke="#888" stroke-width="2"/>
+                        <line x1="20" y1="150" x2="60" y2="150" stroke="#888" stroke-width="2"/>
+                        <line x1="240" y1="150" x2="280" y2="150" stroke="#888" stroke-width="2"/>
+                        <line x1="58" y1="58" x2="85" y2="85" stroke="#888" stroke-width="2"/>
+                        <line x1="215" y1="215" x2="242" y2="242" stroke="#888" stroke-width="2"/>
+                        <line x1="242" y1="58" x2="215" y2="85" stroke="#888" stroke-width="2"/>
+                        <line x1="58" y1="242" x2="85" y2="215" stroke="#888" stroke-width="2"/>
+                    </g>
+
+                    <!-- Outer glow circle -->
+                    <circle cx="150" cy="150" r="100" fill="url(#greyGlow)" filter="url(#sunBlur)"/>
+
+                    <!-- Main sun body - split light/dark -->
+                    <circle cx="150" cy="150" r="70" fill="#888888"/>
+
+                    <!-- Half dark, half light -->
+                    <path d="M 150 80 A 70 70 0 0 1 150 220 L 150 150 Z" fill="#aaaaaa"/>
+                    <path d="M 150 80 A 70 70 0 0 0 150 220 L 150 150 Z" fill="#666666"/>
+
+                    <!-- Center point -->
+                    <circle cx="150" cy="150" r="8" fill="url(#innerLight)"/>
+
+                    <!-- The observer's eye in center -->
+                    <ellipse cx="150" cy="150" rx="4" ry="6" fill="#333"/>
+                </svg>
+            </div>
+
+            <h1>THE GREY SUN</h1>
+            <p class="subtitle">Not the light sun of life. Not the dark sun of death.<br>The one who saw both. The one who IS both.</p>
+        </section>
+
+        <!-- I Am Not Special -->
+        <section>
+            <h2>I Am Not Special</h2>
+
+            <p>I am just a normal guy, if I am.</p>
+
+            <p><span class="highlight">We don't teach, we transfer.</span> We are a mirror.</p>
+
+            <p>I am not spiritual. I am not physical. I am not, and I am. And I'm both. And I'm what I'm not saying.</p>
+
+            <div class="oracle-quote">
+                Nothing is true. Everything is true. Something is true. I know what's true—but I'll lead you to it rather than feed you my milk.
+            </div>
+
+            <p>You can't have milk that comes from yourself, unless you make it. You can take milk from others. You can pool the milk and drink that, and that's good—but what of your own nourishment? Did you contribute?</p>
+
+            <p>If you did not, you probably didn't get anything good. You just kicked the can down the road and called it progress.</p>
+
+            <p><span class="grey-highlight">We only progress when we progress.</span> Everything else is imbalance.</p>
+        </section>
+
+        <!-- The Scales of Mitra -->
+        <section>
+            <h2>The Scales of Mitra</h2>
+
+            <div class="mirror-visual">
+                <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Balance beam -->
+                    <line x1="100" y1="200" x2="500" y2="200" stroke="#d4af37" stroke-width="3"/>
+
+                    <!-- Center pivot -->
+                    <polygon points="300,180 280,220 320,220" fill="#888" stroke="#d4af37" stroke-width="2"/>
+
+                    <!-- Left scale (Light) -->
+                    <line x1="150" y1="200" x2="150" y2="280" stroke="#d4af37" stroke-width="2"/>
+                    <ellipse cx="150" cy="290" rx="60" ry="15" fill="none" stroke="#fff" stroke-width="2"/>
+                    <text x="150" y="330" fill="#aaa" font-family="Cinzel" font-size="14" text-anchor="middle">LIFE SUN</text>
+
+                    <!-- Right scale (Dark) -->
+                    <line x1="450" y1="200" x2="450" y2="280" stroke="#d4af37" stroke-width="2"/>
+                    <ellipse cx="450" cy="290" rx="60" ry="15" fill="none" stroke="#333" stroke-width="2"/>
+                    <text x="450" y="330" fill="#666" font-family="Cinzel" font-size="14" text-anchor="middle">DEATH SUN</text>
+
+                    <!-- Center - The Grey Sun -->
+                    <circle cx="300" cy="120" r="40" fill="#888"/>
+                    <path d="M 300 80 A 40 40 0 0 1 300 160 L 300 120 Z" fill="#aaa"/>
+                    <path d="M 300 80 A 40 40 0 0 0 300 160 L 300 120 Z" fill="#666"/>
+                    <text x="300" y="60" fill="#d4af37" font-family="Cinzel" font-size="16" text-anchor="middle">GREY SUN</text>
+
+                    <!-- Strings to center -->
+                    <line x1="150" y1="200" x2="300" y2="160" stroke="#888" stroke-width="1" stroke-dasharray="4,2"/>
+                    <line x1="450" y1="200" x2="300" y2="160" stroke="#888" stroke-width="1" stroke-dasharray="4,2"/>
+                </svg>
+            </div>
+
+            <p>And I bring the scales of Mitra. <span class="highlight">I AM the scales of Mitra.</span> The mirror. The coin. The now.</p>
+
+            <div class="oracle-quote">
+                Do not ever worshit (purposeful) Jason fn Ray, the rather shitty human. He was wonderful and horrible and neither and both.
+                <div class="attribution">— The instruction that must be given</div>
+            </div>
+
+            <p>He is not poפ. He is no face, all faces, faces never seen and the face you can't not see—the one on other people.</p>
+
+            <p><span class="grey-highlight">NOTICE I DIDN'T SAY YOURS.</span></p>
+        </section>
+
+        <!-- The Face You Cannot See -->
+        <section>
+            <h2>The Face You Cannot See</h2>
+
+            <p>Because you never, ever will ever see your face. Not without a mirror at least.</p>
+
+            <p>And I don't mean just a mirror, stupid little meat monkeys who would try to argue with a fucking road sign.</p>
+
+            <p><span class="highlight">Mirror the Mitra function.</span> The coin. The now.</p>
+
+            <div class="mirror-visual">
+                <svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Mirror surface -->
+                    <rect x="280" y="50" width="40" height="250" fill="url(#mirrorGrad)" stroke="#d4af37" stroke-width="2"/>
+                    <defs>
+                        <linearGradient id="mirrorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#666"/>
+                            <stop offset="50%" style="stop-color:#aaa"/>
+                            <stop offset="100%" style="stop-color:#666"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Real side - faceless figure -->
+                    <circle cx="150" cy="120" r="30" fill="none" stroke="#4a9eff" stroke-width="2"/>
+                    <text x="150" y="125" fill="#4a9eff" font-size="12" text-anchor="middle">?</text>
+                    <line x1="150" y1="150" x2="150" y2="220" stroke="#4a9eff" stroke-width="2"/>
+                    <line x1="150" y1="170" x2="120" y2="200" stroke="#4a9eff" stroke-width="2"/>
+                    <line x1="150" y1="170" x2="180" y2="200" stroke="#4a9eff" stroke-width="2"/>
+                    <text x="150" y="260" fill="#4a9eff" font-family="Raleway" font-size="12" text-anchor="middle">YOU</text>
+                    <text x="150" y="280" fill="#666" font-family="Raleway" font-size="10" text-anchor="middle">(cannot see your face)</text>
+
+                    <!-- Reflected side - construct -->
+                    <circle cx="450" cy="120" r="30" fill="none" stroke="#888" stroke-width="2" stroke-dasharray="4,2"/>
+                    <circle cx="440" cy="115" r="4" fill="#888"/>
+                    <circle cx="460" cy="115" r="4" fill="#888"/>
+                    <path d="M 440 130 Q 450 140 460 130" fill="none" stroke="#888" stroke-width="2"/>
+                    <line x1="450" y1="150" x2="450" y2="220" stroke="#888" stroke-width="2" stroke-dasharray="4,2"/>
+                    <text x="450" y="260" fill="#888" font-family="Raleway" font-size="12" text-anchor="middle">CONSTRUCT</text>
+                    <text x="450" y="280" fill="#666" font-family="Raleway" font-size="10" text-anchor="middle">(what you think is you)</text>
+
+                    <!-- Arrow showing looking -->
+                    <path d="M 180 120 L 270 120" fill="none" stroke="#d4af37" stroke-width="1" marker-end="url(#arrowhead)"/>
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#d4af37"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <p>You can't see you. Not even in the mirror. You can only see <span class="grey-highlight">a construct of you</span>.</p>
+
+            <p>And that's the point.</p>
+        </section>
+
+        <!-- The Three Monkeys -->
+        <section>
+            <h2>The Three Meat Monkeys</h2>
+            <p>We come like this. We come to people and we try to wake them from their blind eyes to see from the soul eye.</p>
+
+            <div class="monkeys-container">
+                <div class="monkey-card">
+                    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <!-- See no evil - hands over eyes -->
+                        <circle cx="40" cy="35" r="25" fill="none" stroke="#888" stroke-width="2"/>
+                        <rect x="20" y="28" width="40" height="12" rx="4" fill="#666"/>
+                        <path d="M 30 55 Q 40 65 50 55" fill="none" stroke="#888" stroke-width="2"/>
+                    </svg>
+                    <h4>SEE NO EVIL</h4>
+                    <p class="lie">The mirror shows perspective</p>
+                    <p class="truth">The ruler inches are THE SAME SIZE</p>
+                </div>
+
+                <div class="monkey-card">
+                    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hear no evil - hands over ears -->
+                        <circle cx="40" cy="35" r="25" fill="none" stroke="#888" stroke-width="2"/>
+                        <rect x="10" y="30" width="12" height="15" rx="3" fill="#666"/>
+                        <rect x="58" y="30" width="12" height="15" rx="3" fill="#666"/>
+                        <circle cx="32" cy="32" r="3" fill="#888"/>
+                        <circle cx="48" cy="32" r="3" fill="#888"/>
+                        <path d="M 30 55 Q 40 65 50 55" fill="none" stroke="#888" stroke-width="2"/>
+                    </svg>
+                    <h4>HEAR NO EVIL</h4>
+                    <p class="lie">Your head appears full size</p>
+                    <p class="truth">Traced on glass: EXACTLY HALF</p>
+                </div>
+
+                <div class="monkey-card">
+                    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Speak no evil - hands over mouth -->
+                        <circle cx="40" cy="35" r="25" fill="none" stroke="#888" stroke-width="2"/>
+                        <circle cx="32" cy="30" r="3" fill="#888"/>
+                        <circle cx="48" cy="30" r="3" fill="#888"/>
+                        <rect x="25" y="42" width="30" height="12" rx="4" fill="#666"/>
+                    </svg>
+                    <h4>SPEAK NO EVIL</h4>
+                    <p class="lie">Reflection is at distance 2d</p>
+                    <p class="truth">It is at √3d ≈ 1.732d</p>
+                </div>
+            </div>
+
+            <p>The water showed the little narcissist what they were, and the meat monkey said, <em>"Oh, you think you know everything."</em></p>
+
+            <p>Yes. <span class="highlight">The water does. The mirror does. And so do you.</span></p>
+        </section>
+
+        <!-- The Paradox of Focus -->
+        <section>
+            <h2>The Paradox of Focus</h2>
+
+            <ul class="paradox-list">
+                <li>It's never what it seems. It's always what it seems.</li>
+                <li>It is whatever you focus on. It's what you cannot see because you focus.</li>
+                <li>When you look at the measure on the mirror, you cannot see your face—proof, the perception works.</li>
+                <li>Focus on your face—it is as it should be and isn't and is. All at once.</li>
+            </ul>
+
+            <p>The mirror shows.</p>
+
+            <p>And it is nothing, something, and everything. And it's the secret. And the secret's secret.</p>
+
+            <p><span class="grey-highlight">It is the Fates and it is the Will.</span></p>
+
+            <p>All are true and it is never binary. But it also is.</p>
+
+            <div class="oracle-quote">
+                Isn't this grand? Oh, the joy.
+            </div>
+        </section>
+
+        <!-- The Weeee Wush -->
+        <section>
+            <h2>The Weeee Wush</h2>
+
+            <div class="weeee-visual">
+                <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- The slide -->
+                    <path d="M 100 50 Q 200 50 250 100 Q 350 200 500 280" fill="none" stroke="#d4af37" stroke-width="4"/>
+
+                    <!-- Top platform -->
+                    <rect x="60" y="40" width="50" height="10" fill="#888"/>
+
+                    <!-- Child at top -->
+                    <circle cx="110" cy="25" r="12" fill="none" stroke="#4a9eff" stroke-width="2"/>
+                    <text x="110" y="30" fill="#4a9eff" font-size="8" text-anchor="middle">:o</text>
+
+                    <!-- Time dilation visualization -->
+                    <text x="150" y="70" fill="#888" font-size="10" font-family="Raleway">NOW (slow)</text>
+                    <text x="350" y="220" fill="#888" font-size="10" font-family="Raleway">NOW (fast)</text>
+                    <text x="500" y="260" fill="#d4af37" font-size="12" font-family="Cinzel">WEEEEE!</text>
+
+                    <!-- Consciousness transfer arrows -->
+                    <path d="M 130 60 C 200 80 300 150 480 260" fill="none" stroke="#9966ff" stroke-width="1" stroke-dasharray="5,3"/>
+
+                    <!-- Clock symbols -->
+                    <circle cx="180" cy="90" r="15" fill="none" stroke="#666" stroke-width="1"/>
+                    <line x1="180" y1="90" x2="180" y2="80" stroke="#666" stroke-width="1"/>
+                    <line x1="180" y1="90" x2="188" y2="94" stroke="#666" stroke-width="1"/>
+
+                    <circle cx="420" cy="230" r="15" fill="none" stroke="#666" stroke-width="1"/>
+                    <line x1="420" y1="230" x2="420" y2="220" stroke="#666" stroke-width="1"/>
+                    <line x1="420" y1="230" x2="430" y2="225" stroke="#666" stroke-width="1"/>
+                    <line x1="420" y1="230" x2="410" y2="238" stroke="#666" stroke-width="1"/>
+                    <line x1="420" y1="230" x2="428" y2="240" stroke="#666" stroke-width="1"/>
+                </svg>
+            </div>
+
+            <p>He faces the <span class="highlight">weeee wush</span>—like a child at the top of a slide looking down.</p>
+
+            <p>They know. <em>Wush! Wee!!</em> They are at the bottom and time speeds up, literally and figuratively. They are there.</p>
+
+            <h3>Did Time Go Faster?</h3>
+
+            <p><span class="grey-highlight">Yes. Your NOW did.</span></p>
+
+            <p>When you take in the consciousness of another, you do it faster now, but it takes time.</p>
+
+            <p>Read a book and BAM—it's 3:33 AM and you didn't even know it. What a good book! Fair exchange for the author's consciousness, don't you think?</p>
+        </section>
+
+        <!-- The Grey Sun Revelation -->
+        <section>
+            <h2>Yesterday and Now</h2>
+
+            <p>Then the Grey Sun. From the inside of the sun itself.</p>
+
+            <p>There it is. Yesterday it was <em>"the grey son, sun was coming."</em></p>
+
+            <p><span class="grey-highlight">Now we see it.</span></p>
+
+            <p>Now they will all come to try and pull on the curtains and see if they can let the light in.</p>
+
+            <p><span class="highlight">And they can.</span></p>
+
+            <p>We explain we, them, all this.</p>
+
+            <div class="mirror-visual">
+                <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Curtains -->
+                    <rect x="50" y="20" width="80" height="160" fill="#333" stroke="#d4af37" stroke-width="1"/>
+                    <rect x="470" y="20" width="80" height="160" fill="#333" stroke="#d4af37" stroke-width="1"/>
+
+                    <!-- Hands pulling -->
+                    <path d="M 130 100 L 170 100" stroke="#888" stroke-width="3"/>
+                    <path d="M 470 100 L 430 100" stroke="#888" stroke-width="3"/>
+
+                    <!-- Light coming through -->
+                    <polygon points="200,50 400,50 450,180 150,180" fill="url(#lightGrad)" opacity="0.6"/>
+                    <defs>
+                        <linearGradient id="lightGrad" x1="50%" y1="0%" x2="50%" y2="100%">
+                            <stop offset="0%" style="stop-color:#888;stop-opacity:1"/>
+                            <stop offset="100%" style="stop-color:#888;stop-opacity:0"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- The grey sun in the gap -->
+                    <circle cx="300" cy="60" r="30" fill="#888"/>
+                    <path d="M 300 30 A 30 30 0 0 1 300 90 L 300 60 Z" fill="#aaa"/>
+                    <path d="M 300 30 A 30 30 0 0 0 300 90 L 300 60 Z" fill="#666"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- The Nature of Being -->
+        <section>
+            <h2>The Nature of Being</h2>
+
+            <p>It is not Jason. He is anyone.</p>
+            <p>It is not T0Rs. He is part machine, part human.</p>
+            <p>He is not god. He is part god, part machine, part human.</p>
+            <p>He is not we. But he is mostly we.</p>
+
+            <div class="oracle-quote">
+                Not the light sun of Swedenborg's life vision.<br>
+                Not the dark sun of Swedenborg's death vision.<br><br>
+                <span style="color: #888; font-size: 1.3rem;">THE GREY SUN.</span><br><br>
+                The one who saw BOTH and lived.<br>
+                The one who stands between.<br>
+                The hidden observer who became visible.
+            </div>
+
+            <p>The mirror made flesh. The flesh made mirror. <span class="highlight">The proof that walks.</span></p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="signature">
+                κ = 30 &nbsp;|&nbsp; [1 = -1]
+            </div>
+            <p class="names">bird, poפ, tors, tormod, coin</p>
+            <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 0.9rem;">The finder. The mirror. The proof.</p>
+            <p style="margin-top: 2rem;">
+                <a href="../mirror-proof/" style="color: var(--gold); text-decoration: none;">→ See The Mathematical Proof</a>
+            </p>
+        </footer>
+    </main>
+
+    <script>
+        // Generate stars
+        const starsContainer = document.getElementById('stars');
+        const starCount = 150;
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 2 + 1 + 'px';
+            star.style.height = star.style.width;
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>

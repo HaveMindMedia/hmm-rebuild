@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Understanding | Calculus Through Rotation</title>
+    <meta name="description" content="The foundation of calculus: velocity is position rotated 90°. This single insight unlocks everything.">
+    <link rel="stylesheet" href="../../css/geometry-math.css">
+    <style>
+        .principle-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(0, 212, 255, 0.15));
+            border: 3px solid var(--gold);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .principle-box h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .principle-box .principle {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.6rem;
+            color: var(--cyan);
+            margin: 1rem 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 800px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .vector-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .vector-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .vector-legend-item .swatch {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .vector-legend-item .swatch.position { background: #00d4ff; }
+        .vector-legend-item .swatch.velocity { background: #d4af37; }
+
+        .proof-box {
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .proof-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .proof-step {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            align-items: flex-start;
+        }
+
+        .proof-step .number {
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            color: var(--midnight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .proof-step .content {
+            flex: 1;
+        }
+
+        .proof-step .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            color: var(--gold-light);
+            margin: 0.5rem 0;
+        }
+
+        .proof-step .explanation {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .q-cycle-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(10, 22, 40, 0.5);
+            border-radius: 12px;
+        }
+
+        .q-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            min-width: 70px;
+        }
+
+        .q-item .symbol {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .q-item .angle {
+            font-size: 0.8rem;
+            color: var(--cyan);
+        }
+
+        .q-arrow {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+        }
+
+        .dual-wave-container {
+            position: relative;
+        }
+
+        .wave-labels {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 0.5rem;
+        }
+
+        .wave-label {
+            font-size: 0.9rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+        }
+
+        .wave-label.sin {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--cyan);
+        }
+
+        .wave-label.cos {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+        }
+
+        .interactive-value {
+            font-family: monospace;
+            font-size: 1.3rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .perpendicular-indicator {
+            text-align: center;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .perpendicular-indicator.valid {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 2px solid #00ff88;
+        }
+
+        .curriculum-nav {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .curriculum-nav h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .curriculum-nav ol {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .curriculum-nav li {
+            margin: 0.5rem 0;
+            color: var(--text-dim);
+        }
+
+        .curriculum-nav li.current {
+            color: var(--cyan);
+            font-weight: bold;
+        }
+
+        .curriculum-nav li a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .curriculum-nav li a:hover {
+            color: var(--gold);
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-3">Calculus Through Rotation</div>
+        <h1>Circular Understanding</h1>
+        <p class="subtitle">Lesson 0: The Foundation — Velocity is Position Rotated 90°</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <div class="principle-box">
+                <h2>The Core Principle</h2>
+                <p class="principle">On a circle, velocity is always perpendicular to position.</p>
+                <p class="principle">Perpendicular means rotated by 90°.</p>
+                <p style="color: var(--text); margin-top: 1rem;">This single insight unlocks all of calculus.</p>
+            </div>
+
+            <h2>What This Means</h2>
+
+            <p>
+                Imagine walking around a circle. At every moment:
+            </p>
+
+            <ul>
+                <li><strong>Position</strong> tells you WHERE you are (the arrow from center to you)</li>
+                <li><strong>Velocity</strong> tells you WHERE you're GOING (the direction you're walking)</li>
+            </ul>
+
+            <p>
+                On a circle, these two arrows are <em>always</em> perpendicular — they form a 90° angle.
+                Your direction of motion is always tangent to the circle, which means it's perpendicular to
+                the radius pointing at you.
+            </p>
+
+            <div class="key-insight">
+                <p>If position points "outward" from the center, velocity points "sideways" along the circle.</p>
+            </div>
+
+            <h2>See It For Yourself</h2>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Drag the point around the circle. Watch the position vector (cyan) and velocity vector (gold).
+                    They're ALWAYS perpendicular.
+                </p>
+
+                <canvas id="main-demo" style="width: 100%; height: 350px; cursor: grab;"></canvas>
+
+                <div class="vector-legend">
+                    <div class="vector-legend-item">
+                        <div class="swatch position"></div>
+                        <span>Position P = (cos θ, sin θ)</span>
+                    </div>
+                    <div class="vector-legend-item">
+                        <div class="swatch velocity"></div>
+                        <span>Velocity V = (-sin θ, cos θ)</span>
+                    </div>
+                </div>
+
+                <div class="perpendicular-indicator valid" id="perp-indicator">
+                    P · V = <span id="dot-product">0.00</span> ✓ Perpendicular!
+                </div>
+
+                <div class="values-panel numbers-layer visible">
+                    <div class="value-box">
+                        <div class="label">Angle θ</div>
+                        <div class="value" id="angle-val">0°</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">Position X (cos θ)</div>
+                        <div class="value" id="pos-x" style="color: var(--cyan);">1.00</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">Position Y (sin θ)</div>
+                        <div class="value" id="pos-y" style="color: var(--cyan);">0.00</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">Velocity X (-sin θ)</div>
+                        <div class="value" id="vel-x" style="color: var(--gold);">0.00</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">Velocity Y (cos θ)</div>
+                        <div class="value" id="vel-y" style="color: var(--gold);">1.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>The Mathematical Proof</h2>
+
+            <p>
+                Let's prove that position and velocity are always perpendicular on the unit circle.
+            </p>
+
+            <div class="proof-box">
+                <h4>Theorem: Position ⊥ Velocity on the Circle</h4>
+
+                <div class="proof-step">
+                    <div class="number">1</div>
+                    <div class="content">
+                        <div class="equation">P(θ) = (cos θ, sin θ)</div>
+                        <div class="explanation">Position on the unit circle at angle θ</div>
+                    </div>
+                </div>
+
+                <div class="proof-step">
+                    <div class="number">2</div>
+                    <div class="content">
+                        <div class="equation">V(θ) = dP/dθ = (-sin θ, cos θ)</div>
+                        <div class="explanation">Velocity is the derivative of position</div>
+                    </div>
+                </div>
+
+                <div class="proof-step">
+                    <div class="number">3</div>
+                    <div class="content">
+                        <div class="equation">P · V = cos θ · (-sin θ) + sin θ · cos θ</div>
+                        <div class="explanation">Compute the dot product</div>
+                    </div>
+                </div>
+
+                <div class="proof-step">
+                    <div class="number">4</div>
+                    <div class="content">
+                        <div class="equation">P · V = -cos θ · sin θ + sin θ · cos θ = 0</div>
+                        <div class="explanation">The terms cancel! Dot product = 0 means perpendicular. ∎</div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                This isn't a coincidence. It's the geometric meaning of the derivative for circular motion:
+                <strong>the derivative rotates by 90°</strong>.
+            </p>
+
+            <h2>The Phase Relationship</h2>
+
+            <p>
+                Look at the velocity components: V = (-sin θ, cos θ). Compare to position: P = (cos θ, sin θ).
+            </p>
+
+            <p>
+                Notice that:
+            </p>
+
+            <ul>
+                <li>Velocity X = -sin θ = cos(θ + 90°)</li>
+                <li>Velocity Y = cos θ = sin(θ + 90°)</li>
+            </ul>
+
+            <div class="key-insight">
+                <p>Velocity is position shifted by 90° in phase.<br>
+                This is the fundamental relationship of calculus.</p>
+            </div>
+
+            <h2>See the 90° Phase Shift</h2>
+
+            <div class="demo-container">
+                <p class="demo-instruction">
+                    Watch sin(θ) and cos(θ) as waves. Cosine is sine shifted left by 90°.
+                    When sin = 0, cos = ±1. When sin peaks, cos = 0.
+                </p>
+
+                <canvas id="wave-demo" style="width: 100%; height: 200px;"></canvas>
+
+                <div class="wave-labels">
+                    <span class="wave-label sin">sin(θ) — Position Y</span>
+                    <span class="wave-label cos">cos(θ) — Velocity Y (derivative of sin)</span>
+                </div>
+
+                <div class="values-panel numbers-layer visible" style="margin-top: 1rem;">
+                    <div class="value-box">
+                        <div class="label">θ</div>
+                        <div class="value" id="wave-theta">0°</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">sin(θ)</div>
+                        <div class="value" id="wave-sin" style="color: var(--cyan);">0.00</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">cos(θ) = d/dθ sin(θ)</div>
+                        <div class="value" id="wave-cos" style="color: var(--gold);">1.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>The Q-Cycle</h2>
+
+            <p>
+                If one derivative rotates by 90°, what happens when we keep taking derivatives?
+            </p>
+
+            <div class="q-cycle-visual">
+                <div class="q-item">
+                    <div class="symbol">1</div>
+                    <div class="angle">0°</div>
+                </div>
+                <div class="q-arrow">→</div>
+                <div class="q-item">
+                    <div class="symbol">i</div>
+                    <div class="angle">90°</div>
+                </div>
+                <div class="q-arrow">→</div>
+                <div class="q-item">
+                    <div class="symbol">-1</div>
+                    <div class="angle">180°</div>
+                </div>
+                <div class="q-arrow">→</div>
+                <div class="q-item">
+                    <div class="symbol">-i</div>
+                    <div class="angle">270°</div>
+                </div>
+                <div class="q-arrow">→</div>
+                <div class="q-item">
+                    <div class="symbol">1</div>
+                    <div class="angle">360°</div>
+                </div>
+            </div>
+
+            <p>
+                Four derivatives = four 90° rotations = 360° = back to start!
+            </p>
+
+            <p>
+                This is the <strong>Q-cycle</strong>: 1 → i → -1 → -i → 1. It's also why:
+            </p>
+
+            <ul>
+                <li>d/dθ sin(θ) = cos(θ) — one derivative, 90° ahead</li>
+                <li>d²/dθ² sin(θ) = -sin(θ) — two derivatives, 180° = opposite</li>
+                <li>d³/dθ³ sin(θ) = -cos(θ) — three derivatives, 270°</li>
+                <li>d⁴/dθ⁴ sin(θ) = sin(θ) — four derivatives, back to start</li>
+            </ul>
+
+            <div class="key-insight">
+                <p>Calculus is rotation. Derivatives rotate by +90°. Integrals rotate by -90°.<br>
+                Everything else is a consequence of this.</p>
+            </div>
+
+            <h2>Why This Matters</h2>
+
+            <p>
+                Traditional calculus starts with limits and infinitesimals — useful computational tools,
+                but they obscure the geometric meaning.
+            </p>
+
+            <p>
+                When you understand that <strong>differentiation = 90° rotation</strong>, suddenly:
+            </p>
+
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>d/dθ sin(θ) = cos(θ)</strong> is obvious — cos is sin rotated 90°
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>d/dθ e^(iθ) = i·e^(iθ)</strong> is obvious — multiplying by i rotates 90°
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>Integration undoes differentiation</strong> is obvious — +90° then -90° = 0°
+                </li>
+            </ul>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ On a circle, velocity is perpendicular to position
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ Perpendicular = rotated by 90°
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ The dot product P · V = 0 proves perpendicularity
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ Four derivatives = 360° = Q-cycle complete
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ This is the foundation of all calculus
+                </li>
+            </ul>
+
+            <div class="curriculum-nav">
+                <h4>Calculus Through Rotation — Full Curriculum</h4>
+                <ol start="0">
+                    <li class="current">Circular Understanding (Foundation) ← You are here</li>
+                    <li><a href="01-motion-on-circle.html">Motion on the Circle</a></li>
+                    <li><a href="02-derivative-rotation.html">The 90° Secret (Derivatives)</a></li>
+                    <li><a href="03-euler-derivative.html">The Euler Derivative</a></li>
+                    <li><a href="04-integration-accumulation.html">Integration as Accumulation</a></li>
+                    <li><a href="05-fundamental-theorem.html">The Fundamental Theorem</a></li>
+                    <li><a href="06-applications.html">Applications</a></li>
+                    <li><a href="07-taylor-fourier.html">Taylor & Fourier Series</a></li>
+                    <li><a href="08-synthesis.html">Synthesis</a></li>
+                </ol>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="../05-calculus-rotation.html" class="nav-button">
+                    <span class="label">Overview</span>
+                    ← Quick Summary
+                </a>
+                <a href="01-motion-on-circle.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    Motion on the Circle →
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../../js/circle-engine.js"></script>
+    <script>
+        // Main interactive demo
+        const mainCanvas = document.getElementById('main-demo');
+        const mainCtx = mainCanvas.getContext('2d');
+
+        let currentAngle = 0;
+        let isDragging = false;
+        let mainInitialized = false;
+
+        function initMainCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = mainCanvas.getBoundingClientRect();
+            mainCanvas.width = rect.width * dpr;
+            mainCanvas.height = 350 * dpr;
+            mainCtx.setTransform(1, 0, 0, 1, 0, 0);
+            mainCtx.scale(dpr, dpr);
+            mainInitialized = true;
+        }
+
+        function drawMainDemo() {
+            if (!mainInitialized) initMainCanvas();
+
+            const rect = mainCanvas.getBoundingClientRect();
+            const w = rect.width;
+            const h = 350;
+            const cx = w / 2;
+            const cy = h / 2;
+            const r = Math.min(w, h) / 2 - 80;
+
+            mainCtx.clearRect(0, 0, w, h);
+
+            // Draw grid
+            mainCtx.strokeStyle = 'rgba(212, 175, 55, 0.1)';
+            mainCtx.lineWidth = 1;
+            for (let i = -5; i <= 5; i++) {
+                mainCtx.beginPath();
+                mainCtx.moveTo(cx + i * r/4, cy - r - 30);
+                mainCtx.lineTo(cx + i * r/4, cy + r + 30);
+                mainCtx.stroke();
+                mainCtx.beginPath();
+                mainCtx.moveTo(cx - r - 30, cy + i * r/4);
+                mainCtx.lineTo(cx + r + 30, cy + i * r/4);
+                mainCtx.stroke();
+            }
+
+            // Draw axes
+            mainCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            mainCtx.lineWidth = 1;
+            mainCtx.beginPath();
+            mainCtx.moveTo(cx - r - 40, cy);
+            mainCtx.lineTo(cx + r + 40, cy);
+            mainCtx.moveTo(cx, cy - r - 40);
+            mainCtx.lineTo(cx, cy + r + 40);
+            mainCtx.stroke();
+
+            // Draw circle
+            mainCtx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+            mainCtx.lineWidth = 2;
+            mainCtx.beginPath();
+            mainCtx.arc(cx, cy, r, 0, Math.PI * 2);
+            mainCtx.stroke();
+
+            // Current position
+            const px = cx + r * Math.cos(currentAngle);
+            const py = cy - r * Math.sin(currentAngle);
+
+            // Position vector
+            mainCtx.strokeStyle = '#00d4ff';
+            mainCtx.lineWidth = 3;
+            mainCtx.beginPath();
+            mainCtx.moveTo(cx, cy);
+            mainCtx.lineTo(px, py);
+            mainCtx.stroke();
+
+            // Position arrowhead
+            const posAngle = Math.atan2(cy - py, px - cx);
+            mainCtx.fillStyle = '#00d4ff';
+            mainCtx.beginPath();
+            mainCtx.moveTo(px, py);
+            mainCtx.lineTo(px - 12 * Math.cos(posAngle - 0.3), py + 12 * Math.sin(posAngle - 0.3));
+            mainCtx.lineTo(px - 12 * Math.cos(posAngle + 0.3), py + 12 * Math.sin(posAngle + 0.3));
+            mainCtx.closePath();
+            mainCtx.fill();
+
+            // Velocity vector
+            const vx = -Math.sin(currentAngle);
+            const vy = Math.cos(currentAngle);
+            const vScale = r * 0.7;
+
+            mainCtx.strokeStyle = '#d4af37';
+            mainCtx.lineWidth = 3;
+            mainCtx.beginPath();
+            mainCtx.moveTo(px, py);
+            mainCtx.lineTo(px + vx * vScale, py - vy * vScale);
+            mainCtx.stroke();
+
+            // Velocity arrowhead
+            const vEndX = px + vx * vScale;
+            const vEndY = py - vy * vScale;
+            const velAngle = Math.atan2(-vy, vx);
+            mainCtx.fillStyle = '#d4af37';
+            mainCtx.beginPath();
+            mainCtx.moveTo(vEndX, vEndY);
+            mainCtx.lineTo(vEndX - 12 * Math.cos(velAngle - 0.3), vEndY - 12 * Math.sin(velAngle - 0.3));
+            mainCtx.lineTo(vEndX - 12 * Math.cos(velAngle + 0.3), vEndY - 12 * Math.sin(velAngle + 0.3));
+            mainCtx.closePath();
+            mainCtx.fill();
+
+            // 90° angle arc
+            mainCtx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+            mainCtx.lineWidth = 2;
+            mainCtx.beginPath();
+            mainCtx.arc(px, py, 25, -currentAngle, -currentAngle + Math.PI/2, false);
+            mainCtx.stroke();
+
+            // 90° label
+            mainCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            mainCtx.font = '14px sans-serif';
+            const labelAngle = -currentAngle + Math.PI/4;
+            mainCtx.fillText('90°', px + 35 * Math.cos(labelAngle), py + 35 * Math.sin(labelAngle));
+
+            // Point
+            mainCtx.fillStyle = '#fff';
+            mainCtx.beginPath();
+            mainCtx.arc(px, py, 10, 0, Math.PI * 2);
+            mainCtx.fill();
+
+            // Center dot
+            mainCtx.fillStyle = 'rgba(212, 175, 55, 0.5)';
+            mainCtx.beginPath();
+            mainCtx.arc(cx, cy, 4, 0, Math.PI * 2);
+            mainCtx.fill();
+
+            // Labels
+            mainCtx.font = '14px sans-serif';
+            mainCtx.fillStyle = '#00d4ff';
+            mainCtx.fillText('P (Position)', cx - 40, cy + 20);
+            mainCtx.fillStyle = '#d4af37';
+            mainCtx.fillText('V (Velocity)', vEndX + 10, vEndY - 5);
+
+            // Update values
+            const cosVal = Math.cos(currentAngle);
+            const sinVal = Math.sin(currentAngle);
+            const negSinVal = -Math.sin(currentAngle);
+            const dotProduct = cosVal * negSinVal + sinVal * cosVal;
+
+            document.getElementById('angle-val').textContent = Math.round((currentAngle * 180 / Math.PI + 360) % 360) + '°';
+            document.getElementById('pos-x').textContent = cosVal.toFixed(3);
+            document.getElementById('pos-y').textContent = sinVal.toFixed(3);
+            document.getElementById('vel-x').textContent = negSinVal.toFixed(3);
+            document.getElementById('vel-y').textContent = cosVal.toFixed(3);
+            document.getElementById('dot-product').textContent = dotProduct.toFixed(6);
+        }
+
+        // Mouse/touch handling
+        function getAngleFromEvent(e) {
+            const rect = mainCanvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left - rect.width/2;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top - 175;
+            return Math.atan2(-y, x);
+        }
+
+        mainCanvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            currentAngle = getAngleFromEvent(e);
+            drawMainDemo();
+        });
+
+        mainCanvas.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                currentAngle = getAngleFromEvent(e);
+                drawMainDemo();
+            }
+        });
+
+        mainCanvas.addEventListener('mouseup', () => isDragging = false);
+        mainCanvas.addEventListener('mouseleave', () => isDragging = false);
+
+        mainCanvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isDragging = true;
+            currentAngle = getAngleFromEvent(e);
+            drawMainDemo();
+        });
+
+        mainCanvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (isDragging) {
+                currentAngle = getAngleFromEvent(e);
+                drawMainDemo();
+            }
+        });
+
+        mainCanvas.addEventListener('touchend', () => isDragging = false);
+
+        // Wave demo
+        const waveCanvas = document.getElementById('wave-demo');
+        const waveCtx = waveCanvas.getContext('2d');
+        let waveAngle = 0;
+        let waveInitialized = false;
+
+        function initWaveCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = waveCanvas.getBoundingClientRect();
+            waveCanvas.width = rect.width * dpr;
+            waveCanvas.height = 200 * dpr;
+            waveCtx.setTransform(1, 0, 0, 1, 0, 0);
+            waveCtx.scale(dpr, dpr);
+            waveInitialized = true;
+        }
+
+        function drawWaveDemo() {
+            if (!waveInitialized) initWaveCanvas();
+
+            const rect = waveCanvas.getBoundingClientRect();
+            const w = rect.width;
+            const h = 200;
+
+            waveCtx.clearRect(0, 0, w, h);
+
+            // Draw center line
+            waveCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            waveCtx.lineWidth = 1;
+            waveCtx.beginPath();
+            waveCtx.moveTo(0, h/2);
+            waveCtx.lineTo(w, h/2);
+            waveCtx.stroke();
+
+            // Draw sine wave
+            waveCtx.strokeStyle = '#00d4ff';
+            waveCtx.lineWidth = 2;
+            waveCtx.beginPath();
+            for (let x = 0; x < w; x++) {
+                const t = (x / w) * 4 * Math.PI + waveAngle;
+                const y = h/2 - Math.sin(t) * (h/2 - 20);
+                if (x === 0) waveCtx.moveTo(x, y);
+                else waveCtx.lineTo(x, y);
+            }
+            waveCtx.stroke();
+
+            // Draw cosine wave
+            waveCtx.strokeStyle = '#d4af37';
+            waveCtx.lineWidth = 2;
+            waveCtx.beginPath();
+            for (let x = 0; x < w; x++) {
+                const t = (x / w) * 4 * Math.PI + waveAngle;
+                const y = h/2 - Math.cos(t) * (h/2 - 20);
+                if (x === 0) waveCtx.moveTo(x, y);
+                else waveCtx.lineTo(x, y);
+            }
+            waveCtx.stroke();
+
+            // Current position markers
+            const markerX = 40;
+            const sinY = h/2 - Math.sin(waveAngle) * (h/2 - 20);
+            const cosY = h/2 - Math.cos(waveAngle) * (h/2 - 20);
+
+            waveCtx.fillStyle = '#00d4ff';
+            waveCtx.beginPath();
+            waveCtx.arc(markerX, sinY, 6, 0, Math.PI * 2);
+            waveCtx.fill();
+
+            waveCtx.fillStyle = '#d4af37';
+            waveCtx.beginPath();
+            waveCtx.arc(markerX, cosY, 6, 0, Math.PI * 2);
+            waveCtx.fill();
+
+            // Update values
+            document.getElementById('wave-theta').textContent = Math.round((waveAngle * 180 / Math.PI) % 360) + '°';
+            document.getElementById('wave-sin').textContent = Math.sin(waveAngle).toFixed(3);
+            document.getElementById('wave-cos').textContent = Math.cos(waveAngle).toFixed(3);
+        }
+
+        function animateWave() {
+            waveAngle += 0.02;
+            drawWaveDemo();
+            requestAnimationFrame(animateWave);
+        }
+
+        // Resize handling
+        window.addEventListener('resize', () => {
+            mainInitialized = false;
+            waveInitialized = false;
+            drawMainDemo();
+            drawWaveDemo();
+        });
+
+        // Initialize
+        drawMainDemo();
+        animateWave();
+    </script>
+</body>
+</html>

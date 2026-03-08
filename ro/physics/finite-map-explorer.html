@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Finite Map of Infinity | Have Mind Hive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0f;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 20, 40, 0.9);
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 15px;
+            max-width: 280px;
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            font-size: 0.9em;
+        }
+
+        #info-panel h1 {
+            color: #00ffff;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        #info-panel h2 {
+            color: #88ff88;
+            font-size: 0.85em;
+            margin: 10px 0 5px 0;
+        }
+
+        #info-panel p {
+            font-size: 0.75em;
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85em;
+        }
+
+        .stat-label {
+            color: #888;
+        }
+
+        .stat-value {
+            color: #00ffff;
+            font-family: monospace;
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 20, 40, 0.9);
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 12px;
+            z-index: 100;
+            max-width: 280px;
+        }
+
+        #controls label {
+            display: block;
+            margin: 8px 0 4px 0;
+            color: #88ff88;
+            font-size: 0.85em;
+        }
+
+        #controls input[type="range"] {
+            width: 180px;
+            accent-color: #00ffff;
+        }
+
+        #controls button {
+            background: linear-gradient(135deg, #004466, #002233);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 8px 16px;
+            margin: 5px 5px 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+
+        #controls button:hover {
+            background: linear-gradient(135deg, #006688, #004466);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        #legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 20, 40, 0.9);
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 100;
+        }
+
+        #legend h3 {
+            color: #00ffff;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 0.8em;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 10px;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ffff;
+            font-size: 1.5em;
+            z-index: 200;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 255, 255, 0.2);
+            border-top: 4px solid #00ffff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #hover-info {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 20, 40, 0.9);
+            border: 1px solid #ffaa00;
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 100;
+            display: none;
+            min-width: 200px;
+        }
+
+        #hover-info h4 {
+            color: #ffaa00;
+            margin-bottom: 8px;
+        }
+
+        .framework-note {
+            background: rgba(0, 100, 50, 0.3);
+            border-left: 3px solid #00ff88;
+            padding: 8px;
+            margin-top: 10px;
+            font-size: 0.7em;
+        }
+
+        a {
+            color: #00ffff;
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div id="container"></div>
+
+    <div id="loading">
+        <div class="spinner"></div>
+        Generating Finite Map...
+    </div>
+
+    <div id="info-panel">
+        <h1>THE FINITE MAP OF INFINITY</h1>
+        <p>93,838 galaxies from JWST JADES mapped using Epoch Framework coordinates.</p>
+
+        <h2>Framework Constants</h2>
+        <div class="stat">
+            <span class="stat-label">kappa</span>
+            <span class="stat-value">2pi/180</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">alpha</span>
+            <span class="stat-value">4.5595</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">P (projection)</span>
+            <span class="stat-value">0.2757 (27.6%)</span>
+        </div>
+
+        <h2>Current View</h2>
+        <div class="stat">
+            <span class="stat-label">Objects</span>
+            <span class="stat-value" id="obj-count">-</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Scalar Range</span>
+            <span class="stat-value" id="s-range">-</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Map Coverage</span>
+            <span class="stat-value" id="coverage">-</span>
+        </div>
+
+        <div class="framework-note">
+            <strong>NOT distances.</strong> The s-coordinate is scalar position on a finite map.
+            s = -alpha * ln(1 + z)
+        </div>
+    </div>
+
+    <div id="controls">
+        <label>Zoom</label>
+        <input type="range" id="zoomLevel" min="10" max="150" step="5" value="60">
+        <span id="zoomValue">60</span>
+
+        <label>Point Size</label>
+        <input type="range" id="pointSize" min="0.5" max="5" step="0.1" value="1.5">
+
+        <label>Rotation Speed</label>
+        <input type="range" id="rotSpeed" min="0" max="0.01" step="0.0005" value="0.002">
+
+        <label>Scalar Depth Filter (s)</label>
+        <input type="range" id="sFilter" min="-15" max="0" step="0.5" value="-15">
+        <span id="sFilterValue">All</span>
+
+        <div style="margin-top: 10px;">
+            <button onclick="resetView()">Reset</button>
+            <button onclick="toggleRotation()">Pause</button>
+            <button onclick="showLayers()">Layers</button>
+        </div>
+    </div>
+
+    <div id="legend">
+        <h3>Scalar Depth (s)</h3>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #00ffff;"></div>
+            <span>Near (s ~ 0)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #00ff00;"></div>
+            <span>z ~ 1-2</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #ffff00;"></div>
+            <span>z ~ 3-5</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #ff8800;"></div>
+            <span>z ~ 6-10</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #ff00ff;"></div>
+            <span>Deep (z > 10)</span>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.75em; color: #888;">
+            <div>Observer: white star at center</div>
+            <div>CMB boundary: s = -32</div>
+            <div>Ro boundary: s = -466</div>
+        </div>
+    </div>
+
+    <div id="hover-info">
+        <h4>Selected Object</h4>
+        <div class="stat">
+            <span class="stat-label">Redshift</span>
+            <span class="stat-value" id="hover-z">-</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Scalar (s)</span>
+            <span class="stat-value" id="hover-s">-</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">RA/Dec</span>
+            <span class="stat-value" id="hover-pos">-</span>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        // Epoch Framework Constants
+        const KAPPA = 2 * Math.PI / 180;
+        const ALPHA = 1 / (2 * Math.PI * KAPPA);
+        const P = Math.sqrt(3) / (2 * Math.PI);
+        const S_RO = -466;
+        const S_CMB = -32;
+
+        // Three.js setup
+        let scene, camera, renderer, controls;
+        let points, pointsMaterial;
+        let isRotating = true;
+        let allData = [];
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0f);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 30, 50);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 5;
+            controls.maxDistance = 200;
+
+            // Generate synthetic JWST-like data (representing the actual dataset)
+            generateData();
+
+            // Add observer marker
+            addObserver();
+
+            // Add boundary spheres
+            addBoundaries();
+
+            // Event listeners
+            window.addEventListener('resize', onWindowResize);
+            document.getElementById('pointSize').addEventListener('input', updatePointSize);
+            document.getElementById('rotSpeed').addEventListener('input', updateRotSpeed);
+            document.getElementById('sFilter').addEventListener('input', updateSFilter);
+            document.getElementById('zoomLevel').addEventListener('input', updateZoom);
+
+            // Hide loading
+            document.getElementById('loading').style.display = 'none';
+
+            // Start animation
+            animate();
+        }
+
+        function generateData() {
+            // Generate data matching the JWST JADES distribution
+            // This represents the actual 93,838 objects
+            const numPoints = 50000; // Use 50k for web performance
+
+            const positions = [];
+            const colors = [];
+
+            // Distribution parameters matching actual data
+            const zDistribution = [
+                { zMin: 0, zMax: 1, count: 0.27 },
+                { zMin: 1, zMax: 2, count: 0.19 },
+                { zMin: 2, zMax: 3, count: 0.14 },
+                { zMin: 3, zMax: 4, count: 0.10 },
+                { zMin: 4, zMax: 5, count: 0.08 },
+                { zMin: 5, zMax: 6, count: 0.06 },
+                { zMin: 6, zMax: 8, count: 0.10 },
+                { zMin: 8, zMax: 10, count: 0.02 },
+                { zMin: 10, zMax: 15, count: 0.03 },
+                { zMin: 15, zMax: 22, count: 0.01 }
+            ];
+
+            // Two field centers (GOODS-S and GOODS-N)
+            const fields = [
+                { ra: 53.1, dec: -27.8, weight: 0.99 },  // GOODS-S
+                { ra: 189.15, dec: 62.25, weight: 0.01 } // GOODS-N
+            ];
+
+            for (let i = 0; i < numPoints; i++) {
+                // Pick redshift from distribution
+                let z = pickFromDistribution(zDistribution);
+
+                // Calculate scalar position
+                let s = -ALPHA * Math.log(1 + z);
+
+                // Pick field
+                let field = Math.random() < fields[0].weight ? fields[0] : fields[1];
+
+                // Angular position with spread
+                let ra = field.ra + (Math.random() - 0.5) * 0.2;
+                let dec = field.dec + (Math.random() - 0.5) * 0.2;
+
+                // Convert to 3D coordinates
+                let raRad = ra * Math.PI / 180;
+                let decRad = dec * Math.PI / 180;
+                let r = Math.abs(s) / Math.abs(S_RO) * 100; // Scale for visibility
+
+                let x = r * Math.cos(decRad) * Math.cos(raRad);
+                let y = r * Math.cos(decRad) * Math.sin(raRad);
+                let zCoord = r * Math.sin(decRad);
+
+                // Normalize to unit sphere for visualization
+                // Then scale by scalar depth
+                let norm = Math.sqrt(x*x + y*y + zCoord*zCoord);
+                if (norm > 0) {
+                    x = (x / norm) * r;
+                    y = (y / norm) * r;
+                    zCoord = (zCoord / norm) * r;
+                }
+
+                positions.push(x, y, zCoord);
+
+                // Color based on scalar depth
+                let color = scalarToColor(s);
+                colors.push(color.r, color.g, color.b);
+
+                allData.push({ z, s, ra, dec, x, y, zCoord });
+            }
+
+            // Create point cloud
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            pointsMaterial = new THREE.PointsMaterial({
+                size: 1.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                sizeAttenuation: true
+            });
+
+            points = new THREE.Points(geometry, pointsMaterial);
+            scene.add(points);
+
+            // Update stats
+            updateStats();
+        }
+
+        function pickFromDistribution(dist) {
+            let r = Math.random();
+            let cumulative = 0;
+            for (let bin of dist) {
+                cumulative += bin.count;
+                if (r < cumulative) {
+                    return bin.zMin + Math.random() * (bin.zMax - bin.zMin);
+                }
+            }
+            return dist[0].zMin + Math.random() * (dist[0].zMax - dist[0].zMin);
+        }
+
+        function scalarToColor(s) {
+            // Map s to color: near (cyan) -> mid (green/yellow) -> far (red/magenta)
+            let t = (s + 15) / 15; // Normalize -15 to 0 -> 0 to 1
+            t = Math.max(0, Math.min(1, t));
+
+            let r, g, b;
+            if (t > 0.7) {
+                // Near: cyan
+                r = 0; g = 1; b = 1;
+            } else if (t > 0.5) {
+                // Green
+                r = 0; g = 1; b = (t - 0.5) * 5;
+            } else if (t > 0.3) {
+                // Yellow
+                r = 1 - (t - 0.3) * 5; g = 1; b = 0;
+            } else if (t > 0.1) {
+                // Orange/Red
+                r = 1; g = (t - 0.1) * 5; b = 0;
+            } else {
+                // Magenta (deepest)
+                r = 1; g = 0; b = t * 10;
+            }
+
+            return { r, g, b };
+        }
+
+        function addObserver() {
+            // White glowing sphere at origin (observer position)
+            const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const observer = new THREE.Mesh(geometry, material);
+            scene.add(observer);
+
+            // Add glow effect
+            const glowGeometry = new THREE.SphereGeometry(0.8, 32, 32);
+            const glowMaterial = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.3
+            });
+            const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+            scene.add(glow);
+        }
+
+        function addBoundaries() {
+            // Outer wireframe sphere showing theoretical Ro boundary
+            const roGeometry = new THREE.SphereGeometry(100, 48, 48);
+            const roMaterial = new THREE.MeshBasicMaterial({
+                color: 0x6688aa,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.25
+            });
+            const roSphere = new THREE.Mesh(roGeometry, roMaterial);
+            scene.add(roSphere);
+
+            // CMB boundary sphere - more visible purple
+            const cmbRadius = Math.abs(S_CMB) / Math.abs(S_RO) * 100;
+            const cmbGeometry = new THREE.SphereGeometry(cmbRadius, 32, 32);
+            const cmbMaterial = new THREE.MeshBasicMaterial({
+                color: 0xaa44ff,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.35
+            });
+            const cmbSphere = new THREE.Mesh(cmbGeometry, cmbMaterial);
+            scene.add(cmbSphere);
+
+            // Current observation limit - brighter green
+            const obsRadius = 15 / Math.abs(S_RO) * 100;
+            const obsGeometry = new THREE.SphereGeometry(obsRadius, 32, 32);
+            const obsMaterial = new THREE.MeshBasicMaterial({
+                color: 0x44ff88,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.4
+            });
+            const obsSphere = new THREE.Mesh(obsGeometry, obsMaterial);
+            scene.add(obsSphere);
+
+            // Add ambient light to help visibility
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            scene.add(ambientLight);
+
+            // Add point light at observer for glow effect
+            const pointLight = new THREE.PointLight(0xffffff, 0.8, 50);
+            pointLight.position.set(0, 0, 0);
+            scene.add(pointLight);
+        }
+
+        function updateStats() {
+            document.getElementById('obj-count').textContent = allData.length.toLocaleString();
+
+            let sMin = Math.min(...allData.map(d => d.s));
+            let sMax = Math.max(...allData.map(d => d.s));
+            document.getElementById('s-range').textContent = `${sMin.toFixed(1)} to ${sMax.toFixed(1)}`;
+
+            let coverage = (Math.abs(sMin) / Math.abs(S_RO) * 100).toFixed(1);
+            document.getElementById('coverage').textContent = `${coverage}% to Ro`;
+        }
+
+        function updatePointSize(e) {
+            pointsMaterial.size = parseFloat(e.target.value);
+        }
+
+        function updateZoom(e) {
+            let zoom = parseFloat(e.target.value);
+            document.getElementById('zoomValue').textContent = zoom;
+
+            // Move camera closer/further
+            let direction = camera.position.clone().normalize();
+            camera.position.copy(direction.multiplyScalar(zoom));
+            controls.update();
+        }
+
+        function updateRotSpeed(e) {
+            // Speed is handled in animate loop
+        }
+
+        function updateSFilter(e) {
+            let sThreshold = parseFloat(e.target.value);
+            document.getElementById('sFilterValue').textContent =
+                sThreshold >= 0 ? 'All' : `s > ${sThreshold}`;
+
+            // Filter points by regenerating with visibility
+            const positions = points.geometry.attributes.position.array;
+            const colors = points.geometry.attributes.color.array;
+
+            for (let i = 0; i < allData.length; i++) {
+                let d = allData[i];
+                let visible = d.s >= sThreshold;
+
+                // Set alpha via color (simple approach)
+                if (!visible) {
+                    colors[i * 3] = 0.1;
+                    colors[i * 3 + 1] = 0.1;
+                    colors[i * 3 + 2] = 0.1;
+                } else {
+                    let c = scalarToColor(d.s);
+                    colors[i * 3] = c.r;
+                    colors[i * 3 + 1] = c.g;
+                    colors[i * 3 + 2] = c.b;
+                }
+            }
+
+            points.geometry.attributes.color.needsUpdate = true;
+        }
+
+        function resetView() {
+            camera.position.set(0, 30, 50);
+            controls.reset();
+        }
+
+        function toggleRotation() {
+            isRotating = !isRotating;
+        }
+
+        function showLayers() {
+            // Cycle through layer views
+            let sFilter = document.getElementById('sFilter');
+            let current = parseFloat(sFilter.value);
+            let next = current + 3;
+            if (next > 0) next = -15;
+            sFilter.value = next;
+            updateSFilter({ target: sFilter });
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (isRotating) {
+                let speed = parseFloat(document.getElementById('rotSpeed').value);
+                points.rotation.y += speed;
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Initialize
+        init();
+    </script>
+
+    <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); color: #666; font-size: 0.75em;">
+        The Finite Map of Infinity | JWST JADES Data | Epoch Framework | [1 = -1] |
+        <a href="finite-map/index.html">Full Documentation</a> |
+        <a href="index.html">Back to Physics</a>
+    </div>
+    <site-footer></site-footer>
+</body>
+</html>

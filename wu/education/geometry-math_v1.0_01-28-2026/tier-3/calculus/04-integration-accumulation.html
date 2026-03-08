@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration as Accumulation | Calculus Through Rotation</title>
+    <link rel="stylesheet" href="../../css/geometry-math.css">
+    <style>
+        .lesson-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-number {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-subtitle {
+            color: var(--text);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .content-section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section h3 {
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .demo-container {
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .demo-title {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        canvas {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .control-btn.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .math-block {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--cyan);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .math-block .equation {
+            font-size: 1.4rem;
+            color: var(--cyan);
+            margin: 0.5rem 0;
+        }
+
+        .central-equation {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 212, 255, 0.2));
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .central-equation .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+        }
+
+        .central-equation .subtitle {
+            color: var(--text);
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .q-cycle-reverse {
+            background: rgba(255, 100, 100, 0.1);
+            border: 1px solid rgba(255, 100, 100, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .q-cycle-reverse h4 {
+            color: #ff6464;
+            margin-bottom: 1rem;
+        }
+
+        .q-cycle-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: monospace;
+            font-size: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .q-item {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .q-item.sin { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
+        .q-item.cos { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .q-item.neg-sin { background: rgba(255, 100, 100, 0.2); color: #ff6464; }
+        .q-item.neg-cos { background: rgba(255, 0, 255, 0.2); color: #ff00ff; }
+
+        .q-arrow {
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .comparison-table th {
+            color: var(--gold);
+            font-weight: normal;
+        }
+
+        .comparison-table td {
+            color: var(--text);
+            font-family: monospace;
+        }
+
+        .live-display {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .live-display .param {
+            display: inline-block;
+            margin: 0.5rem 1rem;
+        }
+
+        .live-display .param-label {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .live-display .param-value {
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .dual-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .dual-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .panel h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+
+        .slider-container label {
+            color: var(--text);
+            min-width: 100px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .slider-container .value {
+            color: var(--cyan);
+            font-family: monospace;
+            min-width: 60px;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-number">Calculus Through Rotation — Lesson 04</div>
+        <h1>Integration as Accumulation</h1>
+        <p class="lesson-subtitle">
+            If differentiation rotates +90°, integration rotates -90°.
+            The inverse operation runs the Q-cycle backwards.
+        </p>
+    </header>
+
+    <section class="content-section">
+        <h2>The Inverse Operation</h2>
+
+        <p>
+            Differentiation is rotation by +90° (multiplication by i). What's the inverse?
+            To undo a 90° rotation, we rotate by -90°. This is multiplication by -i (or equivalently, 1/i).
+        </p>
+
+        <div class="central-equation">
+            <div class="equation">∫ e<sup>it</sup> dt = (1/i) · e<sup>it</sup> = -i · e<sup>it</sup></div>
+            <p class="subtitle">
+                Integration rotates by -90° (division by i = multiplication by -i)
+            </p>
+        </div>
+
+        <p>
+            Since 1/i = -i (because i × (-i) = -i² = -(-1) = 1), integration multiplies by -i,
+            which is rotation by -90° (clockwise).
+        </p>
+    </section>
+
+    <section class="content-section">
+        <h2>The Q-Cycle Reversed</h2>
+
+        <p>
+            When we differentiate, we move forward through the Q-cycle (sin → cos → -sin → -cos).
+            When we integrate, we move backward:
+        </p>
+
+        <div class="q-cycle-reverse">
+            <h4>Integration: The Reverse Q-Cycle</h4>
+            <div class="q-cycle-display">
+                <span class="q-item sin">sin(t)</span>
+                <span class="q-arrow">←</span>
+                <span class="q-item neg-cos">-cos(t)</span>
+                <span class="q-arrow">←</span>
+                <span class="q-item neg-sin">-sin(t)</span>
+                <span class="q-arrow">←</span>
+                <span class="q-item cos">cos(t)</span>
+                <span class="q-arrow">←</span>
+                <span class="q-item sin">sin(t)</span>
+            </div>
+            <p style="color: var(--text); margin-top: 1rem;">
+                ∫ sin dt = -cos, &nbsp; ∫ cos dt = sin, &nbsp; ∫ (-sin) dt = cos, &nbsp; ∫ (-cos) dt = -sin
+            </p>
+        </div>
+
+        <div class="math-block">
+            <p>The Integration Formulas:</p>
+            <div class="equation" style="font-size: 1.2rem;">∫ sin(t) dt = -cos(t) + C</div>
+            <div class="equation" style="font-size: 1.2rem;">∫ cos(t) dt = sin(t) + C</div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Interactive: The Integration Wheel</h2>
+
+        <div class="demo-container">
+            <div class="demo-title">Watch Integration Rotate Backwards</div>
+            <div class="canvas-container">
+                <canvas id="integrationWheelCanvas" width="600" height="400"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">Current Function</span>
+                    <span class="param-value" id="intFunc" style="color: #00d4ff;">sin(t)</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Integration Count</span>
+                    <span class="param-value" id="intCount" style="color: #d4af37;">0</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Phase Shift</span>
+                    <span class="param-value" id="intPhase" style="color: #00ff88;">0°</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="integrateBtn">Integrate (∫ dt)</button>
+                <button class="control-btn" id="derivBtn">Differentiate (d/dt)</button>
+                <button class="control-btn" id="resetIntBtn">Reset</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Integration as Accumulated Area</h2>
+
+        <p>
+            Beyond the rotation view, integration also represents <strong>accumulated area</strong>
+            under a curve. For sin(t), the area from 0 to T oscillates — positive above the axis,
+            negative below.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Area Accumulator</div>
+            <div class="canvas-container">
+                <canvas id="areaCanvas" width="700" height="350"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">T (upper limit)</span>
+                    <span class="param-value" id="limitT" style="color: #d4af37;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">∫₀ᵀ sin(t) dt</span>
+                    <span class="param-value" id="areaValue" style="color: #00d4ff;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">= 1 - cos(T)</span>
+                    <span class="param-value" id="formulaValue" style="color: #00ff88;">0.00</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn active" id="areaPlayBtn">Pause</button>
+                <button class="control-btn" id="areaResetBtn">Reset</button>
+            </div>
+            <div class="slider-container">
+                <label>Speed:</label>
+                <input type="range" id="areaSpeedSlider" min="0.2" max="2" step="0.1" value="1">
+                <span class="value" id="areaSpeedValue">1.0x</span>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>The Complete Cycle Balances to Zero</h4>
+            <p>
+                Notice that ∫₀<sup>2π</sup> sin(t) dt = 0. The positive area in the first half
+                (0 to π) exactly cancels the negative area in the second half (π to 2π).
+                This is <strong>balance</strong> — the same principle that makes [1 = -1] work.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Phase Relationship Visualization</h2>
+
+        <p>
+            Integration shifts phase by -90°. This means the integral is always "behind"
+            the original function by a quarter cycle.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Function and Its Integral</div>
+            <div class="canvas-container">
+                <canvas id="phaseCanvas" width="700" height="300"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label" style="color: #00d4ff;">f(t) = sin(t)</span>
+                    <span class="param-value" id="fValue" style="color: #00d4ff;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label" style="color: #00ff88;">∫f dt = -cos(t)</span>
+                    <span class="param-value" id="intFValue" style="color: #00ff88;">-1.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">Phase Difference</span>
+                    <span class="param-value" id="phaseDiff" style="color: #d4af37;">-90°</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="showPeaksBtn">Show Peak Alignment</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Integration Table</h2>
+
+        <table class="comparison-table">
+            <tr>
+                <th>Function f(t)</th>
+                <th>∫ f(t) dt</th>
+                <th>Phase Shift</th>
+                <th>Complex Multiplier</th>
+            </tr>
+            <tr>
+                <td style="color: #00d4ff;">sin(t)</td>
+                <td style="color: #ff00ff;">-cos(t)</td>
+                <td>-90°</td>
+                <td>-i (or 1/i)</td>
+            </tr>
+            <tr>
+                <td style="color: #00ff88;">cos(t)</td>
+                <td style="color: #00d4ff;">sin(t)</td>
+                <td>-90°</td>
+                <td>-i</td>
+            </tr>
+            <tr>
+                <td style="color: #ff6464;">-sin(t)</td>
+                <td style="color: #00ff88;">cos(t)</td>
+                <td>-90°</td>
+                <td>-i</td>
+            </tr>
+            <tr>
+                <td style="color: #ff00ff;">-cos(t)</td>
+                <td style="color: #ff6464;">-sin(t)</td>
+                <td>-90°</td>
+                <td>-i</td>
+            </tr>
+            <tr>
+                <td>e<sup>it</sup></td>
+                <td>-i · e<sup>it</sup></td>
+                <td>-90°</td>
+                <td>-i = 1/i</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="content-section">
+        <h2>Differentiation vs Integration</h2>
+
+        <div class="dual-panel">
+            <div class="panel">
+                <h4>Differentiation (d/dt)</h4>
+                <ul style="color: var(--text); line-height: 2;">
+                    <li>Rotates +90° (counterclockwise)</li>
+                    <li>Multiplies by i</li>
+                    <li>Gives instantaneous rate of change</li>
+                    <li>sin → cos → -sin → -cos → sin</li>
+                </ul>
+            </div>
+            <div class="panel">
+                <h4>Integration (∫ dt)</h4>
+                <ul style="color: var(--text); line-height: 2;">
+                    <li>Rotates -90° (clockwise)</li>
+                    <li>Multiplies by -i (divides by i)</li>
+                    <li>Gives accumulated area</li>
+                    <li>sin → -cos → -sin → cos → sin</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>The Key Insight</h4>
+            <p>
+                Differentiation and integration are <strong>inverse rotations</strong>.
+                Apply one, then the other, and you return to where you started
+                (up to a constant). This is the foundation of the Fundamental Theorem of Calculus,
+                which we'll explore in the next lesson.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Why + C?</h2>
+
+        <p>
+            Every indefinite integral has "+ C" (plus a constant). Geometrically, this is because
+            rotation preserves the center: if you rotate any function around the unit circle,
+            you can shift it up or down without changing the rotation relationship.
+        </p>
+
+        <div class="math-block">
+            <p>The derivative of a constant is zero:</p>
+            <div class="equation">d/dt (C) = 0</div>
+            <p>So when we integrate, we recover the original function <em>plus</em> an arbitrary constant.</p>
+        </div>
+    </section>
+
+    <nav class="lesson-nav">
+        <a href="03-euler-derivative.html">← Lesson 03: The Euler Derivative</a>
+        <a href="05-fundamental-theorem.html">Lesson 05: Fundamental Theorem →</a>
+    </nav>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(212,175,55,0.2);">
+        <p style="color: var(--gold); font-family: monospace;">[1 = -1]</p>
+        <p style="color: var(--text-dim);">Calculus Through Rotation | Geometry Math</p>
+    </footer>
+
+    <script src="../../js/circle-engine.js"></script>
+    <script>
+        // ===== INTEGRATION WHEEL DEMO =====
+        (function() {
+            const canvas = document.getElementById('integrationWheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            const wheelCx = 150;
+            const wheelCy = height / 2;
+            const wheelRadius = 100;
+
+            const waveLeft = 280;
+            const waveWidth = width - waveLeft - 40;
+            const waveCy = height / 2;
+            const waveAmp = 80;
+
+            let phaseIndex = 0; // 0 = sin, 1 = -cos, 2 = -sin, 3 = cos (integration order)
+            let t = 0;
+
+            const intFuncDisplay = document.getElementById('intFunc');
+            const intCountDisplay = document.getElementById('intCount');
+            const intPhaseDisplay = document.getElementById('intPhase');
+
+            // Integration cycle (backwards from derivative)
+            const functions = [
+                { name: 'sin(t)', color: '#00d4ff', fn: (x) => Math.sin(x) },
+                { name: '-cos(t)', color: '#ff00ff', fn: (x) => -Math.cos(x) },
+                { name: '-sin(t)', color: '#ff6464', fn: (x) => -Math.sin(x) },
+                { name: 'cos(t)', color: '#00ff88', fn: (x) => Math.cos(x) }
+            ];
+
+            let integrationCount = 0;
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                const current = functions[phaseIndex];
+
+                // Draw wheel
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(wheelCx, wheelCy, wheelRadius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Draw quadrant labels (integration order: sin, -cos, -sin, cos)
+                const labels = ['sin', '-cos', '-sin', 'cos'];
+                const labelColors = ['#00d4ff', '#ff00ff', '#ff6464', '#00ff88'];
+                for (let i = 0; i < 4; i++) {
+                    const angle = -Math.PI/2 + i * Math.PI/2;
+                    const lx = wheelCx + (wheelRadius + 25) * Math.cos(angle);
+                    const ly = wheelCy + (wheelRadius + 25) * Math.sin(angle);
+                    ctx.fillStyle = labelColors[i];
+                    ctx.font = '14px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(labels[i], lx, ly + 5);
+                }
+
+                // Draw current position indicator
+                const indicatorAngle = -Math.PI/2 + phaseIndex * Math.PI/2;
+                const ix = wheelCx + wheelRadius * Math.cos(indicatorAngle);
+                const iy = wheelCy + wheelRadius * Math.sin(indicatorAngle);
+
+                ctx.fillStyle = current.color;
+                ctx.shadowColor = current.color;
+                ctx.shadowBlur = 20;
+                ctx.beginPath();
+                ctx.arc(ix, iy, 15, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Draw arrow showing integration direction (clockwise = -90°)
+                ctx.strokeStyle = 'rgba(255, 100, 100, 0.8)';
+                ctx.lineWidth = 2;
+                const arrowStart = indicatorAngle;
+                const arrowEnd = indicatorAngle - Math.PI/2;
+                ctx.beginPath();
+                ctx.arc(wheelCx, wheelCy, wheelRadius * 0.6, arrowStart, arrowEnd, true);
+                ctx.stroke();
+
+                // Arrowhead
+                const ahx = wheelCx + wheelRadius * 0.6 * Math.cos(arrowEnd);
+                const ahy = wheelCy + wheelRadius * 0.6 * Math.sin(arrowEnd);
+                ctx.fillStyle = 'rgba(255, 100, 100, 0.8)';
+                ctx.beginPath();
+                ctx.moveTo(ahx, ahy);
+                ctx.lineTo(ahx - 10 * Math.cos(arrowEnd + 0.5), ahy - 10 * Math.sin(arrowEnd + 0.5));
+                ctx.lineTo(ahx - 10 * Math.cos(arrowEnd - 0.5), ahy - 10 * Math.sin(arrowEnd - 0.5));
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = '#ff6464';
+                ctx.font = '12px monospace';
+                ctx.fillText('∫dt', wheelCx, wheelCy);
+
+                // Draw wave
+                ctx.strokeStyle = current.color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let x = 0; x <= waveWidth; x++) {
+                    const waveT = (x / waveWidth) * 4 * Math.PI + t;
+                    const y = current.fn(waveT) * waveAmp;
+                    if (x === 0) {
+                        ctx.moveTo(waveLeft + x, waveCy - y);
+                    } else {
+                        ctx.lineTo(waveLeft + x, waveCy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Wave axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(waveLeft, waveCy);
+                ctx.lineTo(waveLeft + waveWidth, waveCy);
+                ctx.stroke();
+
+                // Update displays
+                intFuncDisplay.textContent = current.name;
+                intFuncDisplay.style.color = current.color;
+                intCountDisplay.textContent = integrationCount;
+                intPhaseDisplay.textContent = (-integrationCount * 90 % 360) + '°';
+            }
+
+            function animate() {
+                t += 0.03;
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('integrateBtn').addEventListener('click', () => {
+                phaseIndex = (phaseIndex + 1) % 4;
+                integrationCount++;
+            });
+
+            document.getElementById('derivBtn').addEventListener('click', () => {
+                phaseIndex = (phaseIndex - 1 + 4) % 4;
+                integrationCount--;
+            });
+
+            document.getElementById('resetIntBtn').addEventListener('click', () => {
+                phaseIndex = 0;
+                integrationCount = 0;
+            });
+
+            animate();
+        })();
+
+        // ===== AREA ACCUMULATOR DEMO =====
+        (function() {
+            const canvas = document.getElementById('areaCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cy = height / 2;
+            const margin = 50;
+            const waveWidth = width - margin * 2;
+            const amp = 80;
+
+            let T = 0;
+            let playing = true;
+            let speed = 1;
+
+            const limitDisplay = document.getElementById('limitT');
+            const areaDisplay = document.getElementById('areaValue');
+            const formulaDisplay = document.getElementById('formulaValue');
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(margin, cy);
+                ctx.lineTo(width - margin, cy);
+                ctx.stroke();
+
+                // Draw sin wave
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let x = 0; x <= waveWidth; x++) {
+                    const t = (x / waveWidth) * 2 * Math.PI;
+                    const y = Math.sin(t) * amp;
+                    if (x === 0) {
+                        ctx.moveTo(margin + x, cy - y);
+                    } else {
+                        ctx.lineTo(margin + x, cy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Draw filled area from 0 to T
+                const Tx = (T / (2 * Math.PI)) * waveWidth;
+
+                // Positive area (green)
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.3)';
+                ctx.beginPath();
+                ctx.moveTo(margin, cy);
+                for (let x = 0; x <= Tx && x <= waveWidth; x++) {
+                    const t = (x / waveWidth) * 2 * Math.PI;
+                    const y = Math.sin(t) * amp;
+                    if (y > 0) {
+                        ctx.lineTo(margin + x, cy - y);
+                    } else {
+                        ctx.lineTo(margin + x, cy);
+                    }
+                }
+                ctx.lineTo(margin + Math.min(Tx, waveWidth), cy);
+                ctx.closePath();
+                ctx.fill();
+
+                // Negative area (red)
+                ctx.fillStyle = 'rgba(255, 100, 100, 0.3)';
+                ctx.beginPath();
+                ctx.moveTo(margin, cy);
+                for (let x = 0; x <= Tx && x <= waveWidth; x++) {
+                    const t = (x / waveWidth) * 2 * Math.PI;
+                    const y = Math.sin(t) * amp;
+                    if (y < 0) {
+                        ctx.lineTo(margin + x, cy - y);
+                    } else {
+                        ctx.lineTo(margin + x, cy);
+                    }
+                }
+                ctx.lineTo(margin + Math.min(Tx, waveWidth), cy);
+                ctx.closePath();
+                ctx.fill();
+
+                // Draw T marker
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(margin + Tx, 0);
+                ctx.lineTo(margin + Tx, height);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // T label
+                ctx.fillStyle = '#d4af37';
+                ctx.font = '14px monospace';
+                ctx.fillText('T', margin + Tx + 5, 20);
+
+                // Calculate integral: ∫₀ᵀ sin(t) dt = 1 - cos(T)
+                const integral = 1 - Math.cos(T);
+
+                // Update displays
+                limitDisplay.textContent = T.toFixed(2);
+                areaDisplay.textContent = integral.toFixed(3);
+                formulaDisplay.textContent = integral.toFixed(3);
+
+                // Draw integral value curve on the right
+                const intCurveLeft = width - 150;
+                const intCurveHeight = 80;
+                const intCurveCy = height - 50;
+
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(intCurveLeft, intCurveCy);
+                ctx.lineTo(intCurveLeft + 100, intCurveCy);
+                ctx.stroke();
+
+                // Draw integral curve
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let x = 0; x <= 100; x++) {
+                    const t = (x / 100) * 2 * Math.PI;
+                    const y = (1 - Math.cos(t)) * intCurveHeight / 2;
+                    if (x === 0) {
+                        ctx.moveTo(intCurveLeft + x, intCurveCy - y);
+                    } else {
+                        ctx.lineTo(intCurveLeft + x, intCurveCy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Current value on integral curve
+                const intX = (T / (2 * Math.PI)) * 100;
+                const intY = integral * intCurveHeight / 2;
+                ctx.fillStyle = '#00ff88';
+                ctx.beginPath();
+                ctx.arc(intCurveLeft + intX, intCurveCy - intY, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '10px monospace';
+                ctx.fillText('∫₀ᵀ sin dt', intCurveLeft, intCurveCy + 20);
+            }
+
+            function animate() {
+                if (playing) {
+                    T += 0.03 * speed;
+                    if (T > 2 * Math.PI) T = 0;
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('areaPlayBtn').addEventListener('click', function() {
+                playing = !playing;
+                this.textContent = playing ? 'Pause' : 'Play';
+                this.classList.toggle('active', playing);
+            });
+
+            document.getElementById('areaResetBtn').addEventListener('click', () => {
+                T = 0;
+            });
+
+            document.getElementById('areaSpeedSlider').addEventListener('input', (e) => {
+                speed = parseFloat(e.target.value);
+                document.getElementById('areaSpeedValue').textContent = speed.toFixed(1) + 'x';
+            });
+
+            animate();
+        })();
+
+        // ===== PHASE RELATIONSHIP DEMO =====
+        (function() {
+            const canvas = document.getElementById('phaseCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cy = height / 2;
+            const margin = 50;
+            const waveWidth = width - margin * 2;
+            const amp = 60;
+
+            let t = 0;
+            let showPeaks = false;
+
+            const fDisplay = document.getElementById('fValue');
+            const intFDisplay = document.getElementById('intFValue');
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axis
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(margin, cy);
+                ctx.lineTo(width - margin, cy);
+                ctx.stroke();
+
+                // Draw sin(t) - cyan
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let x = 0; x <= waveWidth; x++) {
+                    const waveT = (x / waveWidth) * 4 * Math.PI + t;
+                    const y = Math.sin(waveT) * amp;
+                    if (x === 0) {
+                        ctx.moveTo(margin + x, cy - y);
+                    } else {
+                        ctx.lineTo(margin + x, cy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Draw -cos(t) - green (integral of sin)
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let x = 0; x <= waveWidth; x++) {
+                    const waveT = (x / waveWidth) * 4 * Math.PI + t;
+                    const y = -Math.cos(waveT) * amp;
+                    if (x === 0) {
+                        ctx.moveTo(margin + x, cy - y);
+                    } else {
+                        ctx.lineTo(margin + x, cy - y);
+                    }
+                }
+                ctx.stroke();
+
+                // Show peaks alignment
+                if (showPeaks) {
+                    // sin peaks at π/2, integral (-cos) crosses zero going up
+                    // When sin = 1 (max), -cos = 0 and rising
+                    const peakX = ((Math.PI/2 - t % (4 * Math.PI) + 4 * Math.PI) % (4 * Math.PI)) / (4 * Math.PI) * waveWidth;
+
+                    if (peakX >= 0 && peakX <= waveWidth) {
+                        ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+                        ctx.setLineDash([5, 5]);
+                        ctx.beginPath();
+                        ctx.moveTo(margin + peakX, 0);
+                        ctx.lineTo(margin + peakX, height);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+
+                        ctx.fillStyle = 'rgba(212, 175, 55, 0.8)';
+                        ctx.font = '11px monospace';
+                        ctx.fillText('sin peak', margin + peakX + 5, 20);
+                        ctx.fillText('∫sin = 0', margin + peakX + 5, 35);
+                    }
+                }
+
+                // Legend
+                ctx.fillStyle = '#00d4ff';
+                ctx.font = '12px monospace';
+                ctx.fillText('sin(t)', width - 100, 30);
+                ctx.fillStyle = '#00ff88';
+                ctx.fillText('-cos(t) = ∫sin', width - 100, 50);
+
+                // Current values
+                const sinVal = Math.sin(t);
+                const cosVal = -Math.cos(t);
+                fDisplay.textContent = sinVal.toFixed(3);
+                intFDisplay.textContent = cosVal.toFixed(3);
+
+                t += 0.02;
+            }
+
+            function animate() {
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('showPeaksBtn').addEventListener('click', function() {
+                showPeaks = !showPeaks;
+                this.classList.toggle('active', showPeaks);
+            });
+
+            animate();
+        })();
+    </script>
+</body>
+</html>

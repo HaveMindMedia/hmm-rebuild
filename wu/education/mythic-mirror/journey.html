@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Journey | Mythic Mirror</title>
+    <meta name="description" content="Find your S Signature through four geometric stages. The Monster awaits.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9090a0;
+            --accent-gold: #c9a227;
+            --accent-ice: #6ab4f5;
+            --accent-purple: #d4a8e0;
+            --accent-dim: #3a3a4a;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Stage Container */
+        .journey-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .stage-wrapper {
+            max-width: 700px;
+            width: 100%;
+            display: none;
+        }
+
+        .stage-wrapper.active {
+            display: block;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stage Header */
+        .stage-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .stage-indicator {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .stage-title {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stage-symbol {
+            color: var(--accent-gold);
+        }
+
+        .stage-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Prompt */
+        .prompt-container {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-left: 2px solid var(--accent-gold);
+        }
+
+        .prompt-text {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .prompt-note {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Response Area */
+        .response-container {
+            margin-bottom: 2rem;
+        }
+
+        .response-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-dim);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .response-textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .response-textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        /* Navigation */
+        .stage-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 1px solid var(--accent-dim);
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .nav-btn.primary {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .nav-btn.primary:hover {
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Progress */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent-gold);
+            transition: width 0.5s ease;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-dim);
+            transition: background 0.3s;
+        }
+
+        .progress-dot.active {
+            background: var(--accent-gold);
+        }
+
+        .progress-dot.complete {
+            background: var(--accent-ice);
+        }
+
+        /* Silent Stage (T4) - Special Styling */
+        .silent-container {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .silent-text {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            line-height: 2;
+            color: var(--text-secondary);
+        }
+
+        .silent-pause {
+            margin: 3rem 0;
+            font-size: 3rem;
+            color: var(--accent-gold);
+            opacity: 0.5;
+        }
+
+        .silent-note {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 2rem;
+        }
+
+        /* Timer for T4 */
+        .pause-timer {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--accent-dim);
+            margin-top: 1rem;
+        }
+
+        /* Results Page */
+        .results-container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .results-title {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .signature-display {
+            background: var(--bg-card);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .tau-bars {
+            font-family: monospace;
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+
+        .tau-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .tau-label {
+            width: 30px;
+            color: var(--accent-gold);
+        }
+
+        .tau-visual {
+            flex: 1;
+            display: flex;
+            gap: 2px;
+        }
+
+        .tau-block {
+            width: 20px;
+            height: 20px;
+            background: var(--accent-dim);
+        }
+
+        .tau-block.filled {
+            background: var(--accent-gold);
+        }
+
+        .tau-value {
+            width: 50px;
+            text-align: right;
+            color: var(--text-secondary);
+        }
+
+        .signature-stats {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--accent-dim);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            margin-top: 0.5rem;
+        }
+
+        /* Monster Message */
+        .monster-message {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border-left: 3px solid var(--accent-gold);
+        }
+
+        .monster-message-text {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--text-primary);
+            white-space: pre-line;
+        }
+
+        .monster-signature {
+            margin-top: 2rem;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* 3D Visualization */
+        #signature-viz {
+            width: 100%;
+            height: 300px;
+            background: var(--bg-card);
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        /* Actions */
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 1px solid var(--accent-dim);
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* Back link */
+        .nav-links {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--accent-dim);
+            border-radius: 4px;
+            background: rgba(10, 10, 15, 0.9);
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+
+        .nav-links a.home-link {
+            color: var(--accent-gold);
+            border-color: rgba(201, 162, 39, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .prompt-text {
+                font-size: 1.2rem;
+            }
+
+            .stage-title {
+                font-size: 2rem;
+            }
+
+            .signature-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="nav-links">
+        <a href="/" class="home-link">← HMM</a>
+        <a href="index.html">← Mythic Mirror</a>
+    </div>
+
+    <main class="journey-container">
+        <!-- Stage 1: T1 Facing -->
+        <div class="stage-wrapper active" id="stage1">
+            <div class="progress-dots">
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+
+            <div class="stage-header">
+                <div class="stage-indicator">STAGE 1 OF 4</div>
+                <h1 class="stage-title"><span class="stage-symbol">T₁</span> FACING</h1>
+                <p class="stage-subtitle">Creation and Direct View</p>
+            </div>
+
+            <div class="prompt-container">
+                <p class="prompt-text">
+                    Tell me about something you made.
+                </p>
+                <p class="prompt-text" style="margin-top: 1rem;">
+                    It can be finished or unfinished.<br>
+                    A project, a relationship, an idea, a mess.<br>
+                    Something you brought into being.
+                </p>
+                <p class="prompt-note">
+                    We read pattern, not content. Your words are encoded geometrically and then discarded.
+                </p>
+            </div>
+
+            <div class="response-container">
+                <textarea
+                    class="response-textarea"
+                    id="response1"
+                    placeholder="Write freely. There are no wrong answers..."
+                ></textarea>
+            </div>
+
+            <div class="stage-nav">
+                <button class="nav-btn" disabled>&larr; Back</button>
+                <button class="nav-btn primary" onclick="nextStage(1)">Continue &rarr;</button>
+            </div>
+        </div>
+
+        <!-- Stage 2: T2 Mirror -->
+        <div class="stage-wrapper" id="stage2">
+            <div class="progress-dots">
+                <div class="progress-dot complete"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+
+            <div class="stage-header">
+                <div class="stage-indicator">STAGE 2 OF 4</div>
+                <h1 class="stage-title"><span class="stage-symbol">T₂</span> MIRROR</h1>
+                <p class="stage-subtitle">Reflection and Projection</p>
+            </div>
+
+            <div class="prompt-container">
+                <p class="prompt-text">
+                    Now tell me about someone who bothers you.
+                </p>
+                <p class="prompt-text" style="margin-top: 1rem;">
+                    Not why they're wrong.<br>
+                    What they <em>do</em> that gets under your skin.
+                </p>
+                <p class="prompt-note">
+                    The mirror shows what we project. This isn't judgment—it's geometry.
+                </p>
+            </div>
+
+            <div class="response-container">
+                <textarea
+                    class="response-textarea"
+                    id="response2"
+                    placeholder="Describe the behavior, not the person..."
+                ></textarea>
+            </div>
+
+            <div class="stage-nav">
+                <button class="nav-btn" onclick="prevStage(2)">&larr; Back</button>
+                <button class="nav-btn primary" onclick="nextStage(2)">Continue &rarr;</button>
+            </div>
+        </div>
+
+        <!-- Stage 3: T3 Recursive -->
+        <div class="stage-wrapper" id="stage3">
+            <div class="progress-dots">
+                <div class="progress-dot complete"></div>
+                <div class="progress-dot complete"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+            </div>
+
+            <div class="stage-header">
+                <div class="stage-indicator">STAGE 3 OF 4</div>
+                <h1 class="stage-title"><span class="stage-symbol">T₃</span> RECURSIVE</h1>
+                <p class="stage-subtitle">Pattern and Cycle</p>
+            </div>
+
+            <div class="prompt-container">
+                <p class="prompt-text">
+                    What keeps happening?
+                </p>
+                <p class="prompt-text" style="margin-top: 1rem;">
+                    Different circumstances, same pattern.<br>
+                    The thing that shows up wearing new costumes<br>
+                    but feeling the same underneath.
+                </p>
+                <p class="prompt-note">
+                    Recursion isn't punishment. It's precision. The geometry keeps bringing you back to what needs attention.
+                </p>
+            </div>
+
+            <div class="response-container">
+                <textarea
+                    class="response-textarea"
+                    id="response3"
+                    placeholder="Describe the pattern, not the instances..."
+                ></textarea>
+            </div>
+
+            <div class="stage-nav">
+                <button class="nav-btn" onclick="prevStage(3)">&larr; Back</button>
+                <button class="nav-btn primary" onclick="nextStage(3)">Continue &rarr;</button>
+            </div>
+        </div>
+
+        <!-- Stage 4: T4 Silent -->
+        <div class="stage-wrapper" id="stage4">
+            <div class="progress-dots">
+                <div class="progress-dot complete"></div>
+                <div class="progress-dot complete"></div>
+                <div class="progress-dot complete"></div>
+                <div class="progress-dot active"></div>
+            </div>
+
+            <div class="stage-header">
+                <div class="stage-indicator">STAGE 4 OF 4</div>
+                <h1 class="stage-title"><span class="stage-symbol">T₄</span> SILENT</h1>
+                <p class="stage-subtitle">The Unspeakable</p>
+            </div>
+
+            <div class="silent-container">
+                <p class="silent-text">
+                    There's a question you're afraid I'll ask.
+                </p>
+                <p class="silent-text" style="margin-top: 1rem;">
+                    I'm not going to ask it.
+                </p>
+                <div class="silent-pause">◯</div>
+                <p class="silent-text">
+                    But notice what came to mind.
+                </p>
+                <p class="silent-text">
+                    Sit with it for a moment.
+                </p>
+                <p class="silent-note">
+                    No response required. The silence has direction. τ₄ encodes what isn't said.
+                </p>
+                <div class="pause-timer" id="pauseTimer">Take your time...</div>
+            </div>
+
+            <div class="stage-nav" style="justify-content: center;">
+                <button class="nav-btn primary" id="completeBtn" onclick="showResults()">
+                    I'm Ready
+                </button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="stage-wrapper" id="results">
+            <div class="results-header">
+                <h1 class="results-title">Your S Signature</h1>
+                <p class="stage-subtitle">Geometric position in four-transform space</p>
+            </div>
+
+            <div id="signature-viz"></div>
+
+            <div class="signature-display">
+                <div class="tau-bars" id="tauBars">
+                    <!-- Generated dynamically -->
+                </div>
+                <div class="signature-stats" id="signatureStats">
+                    <!-- Generated dynamically -->
+                </div>
+            </div>
+
+            <div class="monster-message">
+                <div class="monster-message-text" id="monsterMessage">
+                    <!-- Generated dynamically -->
+                </div>
+                <div class="monster-signature">— The Monster</div>
+            </div>
+
+            <div class="results-actions">
+                <button class="action-btn" onclick="copySignature()">Copy Signature</button>
+                <a href="teaching.html" class="action-btn">Learn More</a>
+                <a href="journey.html" class="action-btn" onclick="resetJourney()">Start Over</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Session state
+        const session = {
+            responses: {},
+            startTime: null,
+            t4StartTime: null,
+            signature: null
+        };
+
+        session.startTime = Date.now();
+
+        // Stage navigation
+        function nextStage(currentStage) {
+            const response = document.getElementById(`response${currentStage}`);
+            if (response && response.value.trim().length < 10) {
+                alert('Please share a bit more before continuing.');
+                return;
+            }
+
+            // Store response
+            if (response) {
+                session.responses[`t${currentStage}`] = response.value;
+            }
+
+            // Hide current
+            document.getElementById(`stage${currentStage}`).classList.remove('active');
+
+            // Show next
+            const nextStageNum = currentStage + 1;
+            document.getElementById(`stage${nextStageNum}`).classList.add('active');
+
+            // Update progress bar
+            updateProgress(nextStageNum);
+
+            // Start T4 timer if entering stage 4
+            if (nextStageNum === 4) {
+                session.t4StartTime = Date.now();
+                startPauseTimer();
+            }
+        }
+
+        function prevStage(currentStage) {
+            document.getElementById(`stage${currentStage}`).classList.remove('active');
+            document.getElementById(`stage${currentStage - 1}`).classList.add('active');
+            updateProgress(currentStage - 1);
+        }
+
+        function updateProgress(stage) {
+            const progressBar = document.getElementById('progressBar');
+            const percentage = (stage / 5) * 100;
+            progressBar.style.width = percentage + '%';
+        }
+
+        // T4 pause timer
+        function startPauseTimer() {
+            const timerEl = document.getElementById('pauseTimer');
+            let seconds = 0;
+
+            const interval = setInterval(() => {
+                seconds++;
+                if (seconds < 10) {
+                    timerEl.textContent = 'Take your time...';
+                } else if (seconds < 30) {
+                    timerEl.textContent = 'Notice what arose.';
+                } else {
+                    timerEl.textContent = 'When ready, continue.';
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
+        // Calculate signature (client-side simplified version)
+        function calculateSignature() {
+            // Simplified encoding - in production this would call the Python backend
+            const t1 = session.responses.t1 || '';
+            const t2 = session.responses.t2 || '';
+            const t3 = session.responses.t3 || '';
+
+            // T4 pause duration
+            const t4Pause = session.t4StartTime ? (Date.now() - session.t4StartTime) / 1000 : 30;
+
+            // Simple word-count based encoding (placeholder for full NLP)
+            const t1Words = t1.toLowerCase().split(/\s+/);
+            const t2Words = t2.toLowerCase().split(/\s+/);
+            const t3Words = t3.toLowerCase().split(/\s+/);
+
+            // Creation markers
+            const completionWords = ['finished', 'completed', 'done', 'achieved'];
+            const abandonWords = ['left', 'stopped', 'quit', 'abandoned', 'walked away'];
+            const t1Completion = completionWords.filter(w => t1.toLowerCase().includes(w)).length;
+            const t1Abandon = abandonWords.filter(w => t1.toLowerCase().includes(w)).length;
+
+            // Projection markers
+            const strongProj = ['hate', 'can\'t stand', 'infuriating', 'pathetic', 'crazy'];
+            const t2Projection = strongProj.filter(w => t2.toLowerCase().includes(w)).length;
+
+            // Pattern markers
+            const patternWords = ['always', 'every time', 'keeps', 'again', 'cycle', 'pattern'];
+            const t3Pattern = patternWords.filter(w => t3.toLowerCase().includes(w)).length;
+
+            // Calculate tau values
+            let tau1 = 0.5 + (t1Completion * 0.1) - (t1Abandon * 0.1);
+            tau1 = Math.max(0.1, Math.min(0.9, tau1 + (t1Words.length / 200)));
+
+            let tau2 = 0.4 + (t2Projection * 0.15);
+            tau2 = Math.max(0.1, Math.min(0.9, tau2));
+
+            let tau3 = 0.4 + (t3Pattern * 0.12);
+            tau3 = Math.max(0.1, Math.min(0.9, tau3));
+
+            // T4 based on pause and avoidance patterns
+            let tau4 = 0.3 + (t4Pause / 120);
+            tau4 = Math.max(0.1, Math.min(0.9, tau4));
+
+            // Handshake calculation
+            const sPlus = tau1 * 0.6 + 0.4;
+            const sMinus = (tau2 > 0.5 ? 0.3 : 0.5) + tau4 * 0.2;
+            const total = sPlus + sMinus;
+
+            return {
+                tau1: tau1,
+                tau2: tau2,
+                tau3: tau3,
+                tau4: tau4,
+                sPlus: sPlus / total,
+                sMinus: sMinus / total,
+                trajectory: sPlus > sMinus ? 'climbing' : sPlus < sMinus ? 'descending' : 'balanced',
+                torsionSum: tau1 + tau2 + tau3 + tau4
+            };
+        }
+
+        // Generate Monster message based on signature
+        function generateMonsterMessage(sig) {
+            let message = '';
+
+            // Opening based on dominant pattern
+            if (sig.tau3 > 0.7) {
+                message += "I know you.\n\nNot personally—geometrically.\n\n";
+            } else if (sig.tau1 > 0.7) {
+                message += "You're a creator.\n\nI see the fire in you.\n\n";
+            } else if (sig.tau2 > 0.7) {
+                message += "The mirrors are loud for you.\n\n";
+            } else {
+                message += "I see you.\n\nNot what you show. What you are.\n\n";
+            }
+
+            // Insight based on pattern
+            if (sig.tau3 > 0.7) {
+                message += "You've done this before. Many times.\n";
+                message += "The pattern isn't punishment. It's precision.\n";
+                message += "Something keeps bringing you back here.\n\n";
+            }
+
+            if (sig.tau1 > 0.6 && sig.tau2 < 0.4) {
+                message += "You start things. Beautiful things.\n";
+                message += "Then you leave before they can look at you.\n\n";
+            }
+
+            if (sig.tau2 > 0.6) {
+                message += "The thing that bothers you in others?\n";
+                message += "It's you. You know that.\n";
+                message += "You're just not ready to shake their hand yet.\n\n";
+            }
+
+            if (sig.tau4 < 0.4) {
+                message += "There's a room in you with a locked door.\n";
+                message += "I'm in there. Waiting.\n";
+                message += "Not impatiently. Just... waiting.\n\n";
+            }
+
+            // Connection
+            if (sig.sPlus > sig.sMinus + 0.2) {
+                message += "My creator did this. Made me. Ran.\n";
+                message += "I spent my whole existence asking why.\n\n";
+            } else {
+                message += "I waited for him in the ice.\n";
+                message += "Until someone finally looked at me.\n\n";
+            }
+
+            // Invitation
+            if (sig.tau4 < 0.4) {
+                message += "Turn around.\n";
+                message += "It doesn't bite.\n";
+                message += "It just wants to be seen.";
+            } else if (sig.tau3 > 0.7) {
+                message += "Stop here. Just for a moment.\n";
+                message += "The loop exits where you pay attention.";
+            } else {
+                message += "You don't have to do anything.\n";
+                message += "Just notice what you already know.";
+            }
+
+            return message;
+        }
+
+        // Show results
+        function showResults() {
+            document.getElementById('stage4').classList.remove('active');
+            document.getElementById('results').classList.add('active');
+            updateProgress(5);
+
+            // Calculate signature
+            session.signature = calculateSignature();
+            const sig = session.signature;
+
+            // Render tau bars
+            const barsHtml = ['tau1', 'tau2', 'tau3', 'tau4'].map((key, i) => {
+                const value = sig[key];
+                const filled = Math.round(value * 10);
+                const blocks = Array(10).fill(0).map((_, j) =>
+                    `<div class="tau-block ${j < filled ? 'filled' : ''}"></div>`
+                ).join('');
+                return `
+                    <div class="tau-bar">
+                        <span class="tau-label">τ${i + 1}</span>
+                        <div class="tau-visual">${blocks}</div>
+                        <span class="tau-value">${value.toFixed(2)}</span>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('tauBars').innerHTML = barsHtml;
+
+            // Render stats
+            const statsHtml = `
+                <div class="stat-item">
+                    <div class="stat-label">S⁺ (Giving)</div>
+                    <div class="stat-value">${(sig.sPlus * 100).toFixed(0)}%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">S⁻ (Receiving)</div>
+                    <div class="stat-value">${(sig.sMinus * 100).toFixed(0)}%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Torsion Sum</div>
+                    <div class="stat-value">Σ|τ| = ${sig.torsionSum.toFixed(2)}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Trajectory</div>
+                    <div class="stat-value">${sig.trajectory}</div>
+                </div>
+            `;
+            document.getElementById('signatureStats').innerHTML = statsHtml;
+
+            // Generate monster message
+            const message = generateMonsterMessage(sig);
+            document.getElementById('monsterMessage').textContent = message;
+
+            // Render 3D visualization
+            renderSignatureViz(sig);
+        }
+
+        // 3D Signature Visualization
+        function renderSignatureViz(sig) {
+            const container = document.getElementById('signature-viz');
+            if (!container) return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setClearColor(0x12121a, 1);
+            container.appendChild(renderer.domElement);
+
+            const scale = 2;
+            const vertices = [
+                new THREE.Vector3(scale, 0, 0),
+                new THREE.Vector3(-scale, 0, 0),
+                new THREE.Vector3(0, scale, 0),
+                new THREE.Vector3(0, -scale, 0),
+                new THREE.Vector3(0, 0, scale),
+                new THREE.Vector3(0, 0, -scale)
+            ];
+
+            // Edges with thickness based on tau values
+            const edges = [
+                [0, 2], [0, 3], [0, 4], [0, 5],
+                [1, 2], [1, 3], [1, 4], [1, 5],
+                [2, 4], [2, 5], [3, 4], [3, 5]
+            ];
+
+            const edgeMaterial = new THREE.LineBasicMaterial({
+                color: 0xc9a227,
+                opacity: 0.7,
+                transparent: true
+            });
+
+            const edgeGroup = new THREE.Group();
+            edges.forEach(([i, j]) => {
+                const geometry = new THREE.BufferGeometry().setFromPoints([vertices[i], vertices[j]]);
+                const line = new THREE.Line(geometry, edgeMaterial);
+                edgeGroup.add(line);
+            });
+            scene.add(edgeGroup);
+
+            // Position marker based on signature
+            const markerGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+            const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xc9a227 });
+            const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+
+            // Map signature to 3D position
+            const x = (sig.tau1 - 0.5) * scale * 1.5;
+            const y = (sig.tau2 - 0.5) * scale * 1.5;
+            const z = (sig.tau3 - 0.5) * scale * 1.5;
+            marker.position.set(x, y, z);
+            scene.add(marker);
+
+            // τ₄ negative space (dimmer if blocked)
+            const tau4Opacity = sig.tau4 * 0.5;
+            const tau4Geometry = new THREE.SphereGeometry(0.4, 16, 16);
+            const tau4Material = new THREE.MeshBasicMaterial({
+                color: 0x3a3a4a,
+                opacity: 1 - tau4Opacity,
+                transparent: true
+            });
+            const tau4Marker = new THREE.Mesh(tau4Geometry, tau4Material);
+            tau4Marker.position.copy(vertices[5]);
+            scene.add(tau4Marker);
+
+            camera.position.z = 5;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                edgeGroup.rotation.y += 0.005;
+                edgeGroup.rotation.x += 0.002;
+                marker.rotation.y += 0.005;
+                marker.rotation.x += 0.002;
+                tau4Marker.rotation.y += 0.005;
+                tau4Marker.rotation.x += 0.002;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        // Copy signature to clipboard
+        function copySignature() {
+            const sig = session.signature;
+            const text = `S SIGNATURE
+τ₁: ${sig.tau1.toFixed(2)} | τ₂: ${sig.tau2.toFixed(2)} | τ₃: ${sig.tau3.toFixed(2)} | τ₄: ${sig.tau4.toFixed(2)}
+S⁺: ${(sig.sPlus * 100).toFixed(0)}% | S⁻: ${(sig.sMinus * 100).toFixed(0)}%
+Trajectory: ${sig.trajectory}
+Torsion Sum: Σ|τ| = ${sig.torsionSum.toFixed(2)}
+
+[1 = -1] - Mythic Mirror | havemindmedia.com/mirror`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Signature copied to clipboard!');
+            });
+        }
+
+        // Reset journey
+        function resetJourney() {
+            session.responses = {};
+            session.signature = null;
+            session.startTime = Date.now();
+            session.t4StartTime = null;
+
+            // Clear text areas
+            ['response1', 'response2', 'response3'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+
+            // Reset to stage 1
+            ['stage2', 'stage3', 'stage4', 'results'].forEach(id => {
+                document.getElementById(id).classList.remove('active');
+            });
+            document.getElementById('stage1').classList.add('active');
+            updateProgress(1);
+        }
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

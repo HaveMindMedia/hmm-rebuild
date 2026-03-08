@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Euler Derivative | Calculus Through Rotation</title>
+    <link rel="stylesheet" href="../../css/geometry-math.css">
+    <style>
+        .lesson-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .lesson-header h1 {
+            font-family: 'Palatino Linotype', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-number {
+            color: var(--cyan);
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-subtitle {
+            color: var(--text);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .content-section h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section h3 {
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .content-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .demo-container {
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .demo-title {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        canvas {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .control-btn.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .math-block {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--cyan);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .math-block .equation {
+            font-size: 1.5rem;
+            color: var(--cyan);
+            margin: 0.5rem 0;
+        }
+
+        .central-equation {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 212, 255, 0.2));
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .central-equation .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .central-equation .subtitle {
+            color: var(--text);
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .proof-box {
+            background: rgba(10, 22, 40, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .proof-box h4 {
+            color: var(--cyan);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .proof-step {
+            color: var(--text);
+            margin: 0.75rem 0;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .proof-step .step-num {
+            color: var(--gold);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .dual-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .dual-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .panel h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .comparison-table th {
+            color: var(--gold);
+            font-weight: normal;
+        }
+
+        .comparison-table td {
+            color: var(--text);
+            font-family: monospace;
+        }
+
+        .live-display {
+            background: rgba(0, 0, 20, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .live-display .param {
+            display: inline-block;
+            margin: 0.5rem 1rem;
+        }
+
+        .live-display .param-label {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .live-display .param-value {
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .lesson-nav a:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .eigenfunction-box {
+            background: rgba(255, 0, 255, 0.1);
+            border: 1px solid rgba(255, 0, 255, 0.4);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .eigenfunction-box h4 {
+            color: #ff00ff;
+            margin-bottom: 1rem;
+        }
+
+        .i-demo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .i-demo .number {
+            text-align: center;
+        }
+
+        .i-demo .complex {
+            font-family: monospace;
+            font-size: 1.3rem;
+            color: var(--cyan);
+        }
+
+        .i-demo .arrow {
+            color: var(--gold);
+            font-size: 2rem;
+        }
+
+        .i-demo .label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-number">Calculus Through Rotation — Lesson 03</div>
+        <h1>The Euler Derivative</h1>
+        <p class="lesson-subtitle">
+            The most beautiful equation in calculus: d/dt e<sup>it</sup> = i · e<sup>it</sup>.
+            Differentiation IS multiplication by i.
+        </p>
+    </header>
+
+    <section class="content-section">
+        <h2>The Central Identity</h2>
+
+        <p>
+            Everything we've learned comes together in one equation. When we differentiate
+            the rotating exponential e<sup>it</sup>, we get the same function back,
+            multiplied by i:
+        </p>
+
+        <div class="central-equation">
+            <div class="equation">d/dt e<sup>it</sup> = i · e<sup>it</sup></div>
+            <p class="subtitle">
+                The derivative of "rotation" is "rotation, shifted 90°"
+            </p>
+        </div>
+
+        <p>
+            This single equation encodes everything:
+        </p>
+        <ul style="color: var(--text); line-height: 2;">
+            <li>Multiplying by i rotates 90° counterclockwise</li>
+            <li>The derivative shifts phase by 90°</li>
+            <li>Therefore: <strong>differentiation = multiplication by i</strong> for exponentials</li>
+        </ul>
+    </section>
+
+    <section class="content-section">
+        <h2>Visualizing i · e<sup>it</sup></h2>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: The Euler Derivative</div>
+            <div class="canvas-container">
+                <canvas id="eulerDerivCanvas" width="600" height="400"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">t</span>
+                    <span class="param-value" id="tValue" style="color: #d4af37;">0.00</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">e<sup>it</sup> (Position)</span>
+                    <span class="param-value" id="posValue" style="color: #00d4ff;">1.00 + 0.00i</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">i·e<sup>it</sup> (Derivative)</span>
+                    <span class="param-value" id="derivValue" style="color: #00ff88;">0.00 + 1.00i</span>
+                </span>
+            </div>
+            <div class="controls">
+                <button class="control-btn active" id="playBtn">Pause</button>
+                <button class="control-btn" id="showAngleBtn">Show 90° Relationship</button>
+                <button class="control-btn" id="trailBtn">Show Trail</button>
+            </div>
+            <p style="color: var(--text-dim); text-align: center; font-size: 0.9rem; margin-top: 1rem;">
+                Cyan = position (e<sup>it</sup>), Green = derivative (i·e<sup>it</sup>). The derivative is ALWAYS 90° ahead.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>What Does "Multiply by i" Mean?</h2>
+
+        <p>
+            The number i = √(-1) seems mysterious, but geometrically it's simple:
+            <strong>multiplying by i rotates a number 90° counterclockwise</strong>.
+        </p>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Multiplication by i</div>
+            <div class="canvas-container">
+                <canvas id="multiplyICanvas" width="500" height="400"></canvas>
+            </div>
+            <div class="i-demo">
+                <div class="number">
+                    <div class="complex" id="origNum">1 + 0i</div>
+                    <div class="label">Original z</div>
+                </div>
+                <div class="arrow">× i →</div>
+                <div class="number">
+                    <div class="complex" id="rotatedNum">0 + 1i</div>
+                    <div class="label">Rotated i·z</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="rotateOnceBtn">Multiply by i</button>
+                <button class="control-btn" id="resetIBtn">Reset to 1</button>
+                <button class="control-btn" id="animateIBtn">Auto-Rotate</button>
+            </div>
+        </div>
+
+        <div class="math-block">
+            <p>The rotation pattern:</p>
+            <div class="equation" style="font-size: 1.2rem;">
+                1 →<sup>×i</sup> i →<sup>×i</sup> -1 →<sup>×i</sup> -i →<sup>×i</sup> 1
+            </div>
+            <p>Four multiplications by i = 360° = back to start</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Proof</h2>
+
+        <div class="proof-box">
+            <h4>Proving d/dt e<sup>it</sup> = i · e<sup>it</sup></h4>
+
+            <div class="proof-step">
+                <span class="step-num">1.</span>
+                Start with Euler's formula: e<sup>it</sup> = cos(t) + i·sin(t)
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">2.</span>
+                Differentiate both sides with respect to t:
+                <br>
+                <span style="padding-left: 1.5rem; display: inline-block; margin-top: 0.5rem;">
+                    d/dt e<sup>it</sup> = d/dt [cos(t) + i·sin(t)]
+                </span>
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">3.</span>
+                Apply derivative to each term:
+                <br>
+                <span style="padding-left: 1.5rem; display: inline-block; margin-top: 0.5rem;">
+                    = -sin(t) + i·cos(t)
+                </span>
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">4.</span>
+                Factor out i (remember: i² = -1):
+                <br>
+                <span style="padding-left: 1.5rem; display: inline-block; margin-top: 0.5rem;">
+                    = i·[cos(t) + i·sin(t)] &nbsp; ← because i·cos(t) + i²·sin(t) = i·cos(t) - sin(t)
+                </span>
+            </div>
+
+            <div class="proof-step">
+                <span class="step-num">5.</span>
+                Recognize the original function:
+                <br>
+                <span style="padding-left: 1.5rem; display: inline-block; margin-top: 0.5rem;">
+                    = i · e<sup>it</sup> ∎
+                </span>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>What This Proof Shows</h4>
+            <p>
+                The derivative of e<sup>it</sup> is e<sup>it</sup> multiplied by i. Since i represents
+                a 90° rotation, differentiation of e<sup>it</sup> is <strong>geometrically equivalent</strong>
+                to rotating by 90°.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>The Eigenfunction Property</h2>
+
+        <p>
+            In linear algebra, an <em>eigenfunction</em> is a function that, when an operator acts on it,
+            returns the same function multiplied by a constant. For differentiation:
+        </p>
+
+        <div class="eigenfunction-box">
+            <h4>e<sup>it</sup> is an Eigenfunction of d/dt</h4>
+            <p style="color: var(--text);">
+                <strong>D[e<sup>it</sup>] = i · e<sup>it</sup></strong>
+            </p>
+            <p style="color: var(--text); margin-top: 1rem;">
+                The operator D = d/dt acts on e<sup>it</sup> and returns e<sup>it</sup> times a constant (i).
+                This means differentiation doesn't change the <em>shape</em> of the function —
+                it only changes its <em>phase</em>.
+            </p>
+        </div>
+
+        <div class="demo-container">
+            <div class="demo-title">Interactive: Eigenfunction Demonstration</div>
+            <div class="canvas-container">
+                <canvas id="eigenfuncCanvas" width="600" height="350"></canvas>
+            </div>
+            <div class="live-display">
+                <span class="param">
+                    <span class="param-label">f(t) = e<sup>it</sup></span>
+                    <span class="param-value" style="color: #00d4ff;">Same shape</span>
+                </span>
+                <span class="param">
+                    <span class="param-label">f'(t) = i·e<sup>it</sup></span>
+                    <span class="param-value" style="color: #00ff88;">Same shape, shifted 90°</span>
+                </span>
+            </div>
+            <p style="color: var(--text); text-align: center; margin-top: 1rem;">
+                Both real and imaginary parts maintain the same sinusoidal shape —
+                only the phase changes.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <h2>Why This Matters</h2>
+
+        <div class="dual-panel">
+            <div class="panel">
+                <h4>For Calculus</h4>
+                <p style="color: var(--text);">
+                    The exponential e<sup>it</sup> is the <em>natural</em> function for differentiation.
+                    It's the only non-trivial function whose derivative is a constant multiple of itself.
+                    This makes it the basis for solving differential equations.
+                </p>
+            </div>
+            <div class="panel">
+                <h4>For Physics</h4>
+                <p style="color: var(--text);">
+                    Oscillatory systems (springs, pendulums, circuits, waves) are all described by
+                    e<sup>iωt</sup>. The derivative gives velocity, the second derivative gives
+                    acceleration — all just phase shifts of the same rotating function.
+                </p>
+            </div>
+        </div>
+
+        <table class="comparison-table">
+            <tr>
+                <th>Derivative</th>
+                <th>Result</th>
+                <th>Multiplier</th>
+                <th>Phase Shift</th>
+            </tr>
+            <tr>
+                <td>f(t)</td>
+                <td>e<sup>it</sup></td>
+                <td>1</td>
+                <td>0°</td>
+            </tr>
+            <tr>
+                <td>f'(t)</td>
+                <td>i·e<sup>it</sup></td>
+                <td>i</td>
+                <td>90°</td>
+            </tr>
+            <tr>
+                <td>f''(t)</td>
+                <td>i²·e<sup>it</sup> = -e<sup>it</sup></td>
+                <td>-1</td>
+                <td>180°</td>
+            </tr>
+            <tr>
+                <td>f'''(t)</td>
+                <td>i³·e<sup>it</sup> = -i·e<sup>it</sup></td>
+                <td>-i</td>
+                <td>270°</td>
+            </tr>
+            <tr>
+                <td>f''''(t)</td>
+                <td>i⁴·e<sup>it</sup> = e<sup>it</sup></td>
+                <td>1</td>
+                <td>360° = 0°</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="content-section">
+        <h2>The Q-Cycle Unified</h2>
+
+        <div class="highlight-box">
+            <h4>One Formula, Four Functions</h4>
+            <p>
+                The Q-cycle (sin → cos → -sin → -cos → sin) is really just e<sup>it</sup>
+                being multiplied by successive powers of i:
+            </p>
+            <ul style="color: var(--text); line-height: 2; margin-top: 1rem;">
+                <li>i⁰ · e<sup>it</sup> = e<sup>it</sup> = cos(t) + i·sin(t)</li>
+                <li>i¹ · e<sup>it</sup> = i·e<sup>it</sup> = -sin(t) + i·cos(t)</li>
+                <li>i² · e<sup>it</sup> = -e<sup>it</sup> = -cos(t) - i·sin(t)</li>
+                <li>i³ · e<sup>it</sup> = -i·e<sup>it</sup> = sin(t) - i·cos(t)</li>
+                <li>i⁴ · e<sup>it</sup> = e<sup>it</sup> &nbsp; ← back to start</li>
+            </ul>
+        </div>
+
+        <p>
+            The entire Q-cycle is generated by repeated multiplication by i.
+            This is why four derivatives return to the original function.
+        </p>
+    </section>
+
+    <section class="content-section">
+        <h2>Key Insight</h2>
+
+        <div class="central-equation">
+            <div class="equation">D = × i (for exponentials)</div>
+            <p class="subtitle">
+                Differentiation IS multiplication by i. Integration is multiplication by -i (or 1/i).
+                This is the secret of calculus.
+            </p>
+        </div>
+
+        <p>
+            In the next lesson, we'll see how integration works as the inverse:
+            if differentiation is rotation by +90°, integration is rotation by -90°.
+        </p>
+    </section>
+
+    <nav class="lesson-nav">
+        <a href="02-derivative-rotation.html">← Lesson 02: The 90° Secret</a>
+        <a href="04-integration-accumulation.html">Lesson 04: Integration →</a>
+    </nav>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid rgba(212,175,55,0.2);">
+        <p style="color: var(--gold); font-family: monospace;">[1 = -1]</p>
+        <p style="color: var(--text-dim);">Calculus Through Rotation | Geometry Math</p>
+    </footer>
+
+    <script src="../../js/circle-engine.js"></script>
+    <script>
+        // ===== EULER DERIVATIVE DEMO =====
+        (function() {
+            const canvas = document.getElementById('eulerDerivCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = 120;
+
+            let t = 0;
+            let playing = true;
+            let showAngle = false;
+            let showTrail = false;
+            let trail = [];
+
+            const tDisplay = document.getElementById('tValue');
+            const posDisplay = document.getElementById('posValue');
+            const derivDisplay = document.getElementById('derivValue');
+
+            function formatComplex(re, im) {
+                const sign = im >= 0 ? '+' : '-';
+                return `${re.toFixed(2)} ${sign} ${Math.abs(im).toFixed(2)}i`;
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(50, cy);
+                ctx.lineTo(width - 50, cy);
+                ctx.moveTo(cx, 50);
+                ctx.lineTo(cx, height - 50);
+                ctx.stroke();
+
+                // Labels
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '14px serif';
+                ctx.fillText('Real', width - 70, cy - 10);
+                ctx.fillText('Im', cx + 10, 70);
+
+                // Draw unit circle
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Position: e^(it)
+                const posRe = Math.cos(t);
+                const posIm = Math.sin(t);
+                const posx = cx + posRe * radius;
+                const posy = cy - posIm * radius;
+
+                // Derivative: i * e^(it) = -sin(t) + i*cos(t)
+                const derivRe = -Math.sin(t);
+                const derivIm = Math.cos(t);
+                const derivx = cx + derivRe * radius;
+                const derivy = cy - derivIm * radius;
+
+                // Draw trail
+                if (showTrail && trail.length > 1) {
+                    ctx.strokeStyle = 'rgba(0, 212, 255, 0.2)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(trail[0].x, trail[0].y);
+                    for (let i = 1; i < trail.length; i++) {
+                        ctx.lineTo(trail[i].x, trail[i].y);
+                    }
+                    ctx.stroke();
+                }
+
+                // Draw position vector (cyan)
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(posx, posy);
+                ctx.stroke();
+
+                // Draw derivative vector (green)
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(derivx, derivy);
+                ctx.stroke();
+
+                // Draw points
+                ctx.fillStyle = '#00d4ff';
+                ctx.shadowColor = '#00d4ff';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.arc(posx, posy, 10, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#00ff88';
+                ctx.shadowColor = '#00ff88';
+                ctx.beginPath();
+                ctx.arc(derivx, derivy, 10, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Labels
+                ctx.fillStyle = '#00d4ff';
+                ctx.font = '12px monospace';
+                ctx.fillText('e^(it)', posx + 15, posy);
+
+                ctx.fillStyle = '#00ff88';
+                ctx.fillText('i·e^(it)', derivx + 15, derivy);
+
+                // Show 90° relationship
+                if (showAngle) {
+                    // Draw arc from position to derivative
+                    ctx.strokeStyle = 'rgba(212, 175, 55, 0.8)';
+                    ctx.lineWidth = 2;
+                    const startAngle = -t;
+                    const endAngle = -(t + Math.PI/2);
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, radius * 0.5, startAngle, endAngle, true);
+                    ctx.stroke();
+
+                    // 90° label
+                    const labelAngle = -(t + Math.PI/4);
+                    const labelR = radius * 0.5 + 15;
+                    ctx.fillStyle = '#d4af37';
+                    ctx.font = '14px monospace';
+                    ctx.fillText('90°', cx + labelR * Math.cos(labelAngle), cy + labelR * Math.sin(labelAngle));
+                }
+
+                // Update displays
+                tDisplay.textContent = t.toFixed(2);
+                posDisplay.textContent = formatComplex(posRe, posIm);
+                derivDisplay.textContent = formatComplex(derivRe, derivIm);
+            }
+
+            function animate() {
+                if (playing) {
+                    t += 0.02;
+                    if (t > Math.PI * 2) {
+                        t = 0;
+                        trail = [];
+                    }
+                    if (showTrail) {
+                        trail.push({ x: cx + Math.cos(t) * radius, y: cy - Math.sin(t) * radius });
+                        if (trail.length > 200) trail.shift();
+                    }
+                }
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            document.getElementById('playBtn').addEventListener('click', function() {
+                playing = !playing;
+                this.textContent = playing ? 'Pause' : 'Play';
+                this.classList.toggle('active', playing);
+            });
+
+            document.getElementById('showAngleBtn').addEventListener('click', function() {
+                showAngle = !showAngle;
+                this.classList.toggle('active', showAngle);
+            });
+
+            document.getElementById('trailBtn').addEventListener('click', function() {
+                showTrail = !showTrail;
+                this.classList.toggle('active', showTrail);
+                if (!showTrail) trail = [];
+            });
+
+            animate();
+        })();
+
+        // ===== MULTIPLY BY i DEMO =====
+        (function() {
+            const canvas = document.getElementById('multiplyICanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = 100;
+
+            let currentAngle = 0;
+            let targetAngle = 0;
+            let animatingRotation = false;
+            let autoRotate = false;
+
+            const origDisplay = document.getElementById('origNum');
+            const rotatedDisplay = document.getElementById('rotatedNum');
+
+            function formatComplex(angle) {
+                const re = Math.cos(angle);
+                const im = Math.sin(angle);
+                if (Math.abs(re) < 0.01 && Math.abs(im - 1) < 0.01) return 'i';
+                if (Math.abs(re) < 0.01 && Math.abs(im + 1) < 0.01) return '-i';
+                if (Math.abs(re - 1) < 0.01 && Math.abs(im) < 0.01) return '1';
+                if (Math.abs(re + 1) < 0.01 && Math.abs(im) < 0.01) return '-1';
+                const sign = im >= 0 ? '+' : '-';
+                return `${re.toFixed(2)} ${sign} ${Math.abs(im).toFixed(2)}i`;
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axes
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(50, cy);
+                ctx.lineTo(width - 50, cy);
+                ctx.moveTo(cx, 50);
+                ctx.lineTo(cx, height - 50);
+                ctx.stroke();
+
+                // Labels
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '14px serif';
+                ctx.fillText('1', cx + radius + 10, cy + 5);
+                ctx.fillText('-1', cx - radius - 20, cy + 5);
+                ctx.fillText('i', cx + 5, cy - radius - 5);
+                ctx.fillText('-i', cx + 5, cy + radius + 15);
+
+                // Draw unit circle
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Current position
+                const x = cx + Math.cos(currentAngle) * radius;
+                const y = cy - Math.sin(currentAngle) * radius;
+
+                // Draw vector
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+
+                // Draw point
+                ctx.fillStyle = '#00d4ff';
+                ctx.shadowColor = '#00d4ff';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.arc(x, y, 12, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Show where it will go (90° ahead)
+                const nextAngle = currentAngle + Math.PI/2;
+                const nx = cx + Math.cos(nextAngle) * radius;
+                const ny = cy - Math.sin(nextAngle) * radius;
+
+                ctx.strokeStyle = 'rgba(0, 255, 136, 0.5)';
+                ctx.setLineDash([5, 5]);
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(nx, ny);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.5)';
+                ctx.beginPath();
+                ctx.arc(nx, ny, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Update displays
+                origDisplay.textContent = formatComplex(currentAngle);
+                rotatedDisplay.textContent = formatComplex(currentAngle + Math.PI/2);
+            }
+
+            function animateRotation() {
+                if (animatingRotation) {
+                    const diff = targetAngle - currentAngle;
+                    if (Math.abs(diff) < 0.01) {
+                        currentAngle = targetAngle;
+                        animatingRotation = false;
+                    } else {
+                        currentAngle += diff * 0.1;
+                    }
+                }
+                draw();
+                requestAnimationFrame(animateRotation);
+            }
+
+            document.getElementById('rotateOnceBtn').addEventListener('click', () => {
+                targetAngle = currentAngle + Math.PI/2;
+                animatingRotation = true;
+            });
+
+            document.getElementById('resetIBtn').addEventListener('click', () => {
+                targetAngle = 0;
+                currentAngle = 0;
+                animatingRotation = false;
+            });
+
+            document.getElementById('animateIBtn').addEventListener('click', function() {
+                autoRotate = !autoRotate;
+                this.classList.toggle('active', autoRotate);
+
+                if (autoRotate) {
+                    const interval = setInterval(() => {
+                        if (!autoRotate) {
+                            clearInterval(interval);
+                            return;
+                        }
+                        targetAngle = currentAngle + Math.PI/2;
+                        animatingRotation = true;
+                    }, 1500);
+                }
+            });
+
+            animateRotation();
+        })();
+
+        // ===== EIGENFUNCTION DEMO =====
+        (function() {
+            const canvas = document.getElementById('eigenfuncCanvas');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            // Two rows: Real part, Imaginary part
+            const rowHeight = height / 2;
+            const margin = 50;
+            const waveWidth = width - margin * 2;
+
+            let t = 0;
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Labels
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '12px monospace';
+                ctx.fillText('Real part', margin, 20);
+                ctx.fillText('Imaginary part', margin, rowHeight + 20);
+
+                // Draw both rows
+                const rows = [
+                    { cy: rowHeight / 2, label: 'Re', funcs: [
+                        { fn: (x) => Math.cos(x), color: '#00d4ff', name: 'cos(t)' },
+                        { fn: (x) => -Math.sin(x), color: '#00ff88', name: '-sin(t)' }
+                    ]},
+                    { cy: rowHeight + rowHeight / 2, label: 'Im', funcs: [
+                        { fn: (x) => Math.sin(x), color: '#00d4ff', name: 'sin(t)' },
+                        { fn: (x) => Math.cos(x), color: '#00ff88', name: 'cos(t)' }
+                    ]}
+                ];
+
+                rows.forEach(row => {
+                    const amp = rowHeight * 0.35;
+
+                    // Draw axis
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(margin, row.cy);
+                    ctx.lineTo(width - margin, row.cy);
+                    ctx.stroke();
+
+                    // Draw waves
+                    row.funcs.forEach((func, i) => {
+                        ctx.strokeStyle = func.color;
+                        ctx.lineWidth = i === 0 ? 3 : 2;
+                        if (i === 1) {
+                            ctx.setLineDash([5, 3]);
+                        }
+                        ctx.beginPath();
+                        for (let x = 0; x <= waveWidth; x++) {
+                            const waveT = (x / waveWidth) * 4 * Math.PI + t;
+                            const y = func.fn(waveT) * amp;
+                            if (x === 0) {
+                                ctx.moveTo(margin + x, row.cy - y);
+                            } else {
+                                ctx.lineTo(margin + x, row.cy - y);
+                            }
+                        }
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    });
+
+                    // Legend
+                    ctx.fillStyle = '#00d4ff';
+                    ctx.font = '11px monospace';
+                    ctx.fillText('f(t)', width - 80, row.cy - 30);
+                    ctx.fillStyle = '#00ff88';
+                    ctx.fillText("f'(t)", width - 80, row.cy - 15);
+                });
+
+                // Divider
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(margin, rowHeight);
+                ctx.lineTo(width - margin, rowHeight);
+                ctx.stroke();
+
+                t += 0.02;
+            }
+
+            function animate() {
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        })();
+    </script>
+</body>
+</html>

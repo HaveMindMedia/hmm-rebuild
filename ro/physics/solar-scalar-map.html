@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Scalar Map | 1729 Navigation System | Have Mind Media</title>
+    <meta name="description" content="Earth-centered scalar map of the solar system. Sun at s=+1729 (Wush/Future). Ro at s=-1729. Both directions lead forward. The system is deterministic.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a14;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        /* Info Panel */
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 10, 30, 0.9);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            max-width: 280px;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        #info-panel h1 {
+            color: #00ffff;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        #info-panel p {
+            color: #aaa;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-label {
+            color: #888;
+        }
+
+        .stat-value {
+            color: #00ffff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Controls Panel */
+        #controls-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(10, 10, 30, 0.9);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            width: 220px;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        #controls-panel h3 {
+            color: #FFD700;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .control-group {
+            margin-bottom: 12px;
+        }
+
+        .control-group label {
+            display: block;
+            color: #888;
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .control-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            color: #aaa;
+            cursor: pointer;
+            padding: 4px 0;
+        }
+
+        /* Planet tooltip */
+        #planet-tooltip {
+            position: absolute;
+            background: rgba(10, 10, 30, 0.95);
+            border: 1px solid #00ffff;
+            border-radius: 6px;
+            padding: 10px 15px;
+            pointer-events: none;
+            display: none;
+            z-index: 200;
+            min-width: 180px;
+        }
+
+        #planet-tooltip h4 {
+            color: #00ffff;
+            margin-bottom: 6px;
+        }
+
+        #planet-tooltip .tooltip-stat {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            padding: 2px 0;
+        }
+
+        /* Key insight box */
+        #key-insight {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            padding: 12px 25px;
+            text-align: center;
+            z-index: 100;
+        }
+
+        #key-insight p {
+            color: #00ff88;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        /* Audio controls */
+        #audio-panel {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(10, 10, 30, 0.9);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 100;
+        }
+
+        #audio-panel h3 {
+            color: #FFD700;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .freq-button {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(0, 40, 60, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 4px;
+            color: #00ffff;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s;
+        }
+
+        .freq-button:hover {
+            background: rgba(0, 60, 90, 0.9);
+            border-color: #00ffff;
+        }
+
+        .freq-button.wush { border-color: #FFD700; color: #FFD700; }
+        .freq-button.earth { border-color: #00ffff; color: #00ffff; }
+        .freq-button.ro { border-color: #4466aa; color: #4466aa; }
+
+        /* Back link */
+        #back-link {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        #back-link:hover {
+            color: #00ffff;
+        }
+
+        /* Signature */
+        #signature {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FFD700;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div id="info-panel">
+        <h1>SOLAR SCALAR MAP</h1>
+        <p>Earth-centered 1729 Navigation System. Both directions lead FORWARD.</p>
+        <div class="stat">
+            <span class="stat-label">Earth (Observer)</span>
+            <span class="stat-value">s = 0</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Sun (Wush)</span>
+            <span class="stat-value">s = +1729</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Ro Boundary</span>
+            <span class="stat-value">s = -1729</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Microscope</span>
+            <span class="stat-value">→ FUTURE</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Telescope</span>
+            <span class="stat-value">→ FUTURE</span>
+        </div>
+    </div>
+
+    <div id="controls-panel">
+        <h3>Controls</h3>
+        <div class="control-group">
+            <label>Zoom: <span id="zoom-value">50</span></label>
+            <input type="range" id="zoom-slider" min="20" max="200" value="50">
+        </div>
+        <div class="control-group">
+            <label>Rotation Speed</label>
+            <input type="range" id="rotation-slider" min="0" max="100" value="30">
+        </div>
+        <div class="control-group">
+            <label>Planet Size</label>
+            <input type="range" id="size-slider" min="1" max="10" value="5">
+        </div>
+        <div class="control-group">
+            <label class="checkbox-label">
+                <input type="checkbox" id="show-orbits" checked>
+                Show Scalar Shells
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" id="show-labels" checked>
+                Show Labels
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" id="show-sun" checked>
+                Show Sun Direction
+            </label>
+        </div>
+    </div>
+
+    <div id="audio-panel">
+        <h3>Solar System Chord</h3>
+        <button class="freq-button wush" onclick="playTone(1729)">Wush: 1729 Hz</button>
+        <button class="freq-button earth" onclick="playTone(432)">Earth: 432 Hz</button>
+        <button class="freq-button ro" onclick="playTone(133)">Ro: 133 Hz</button>
+        <button class="freq-button" onclick="playChord()">Play Chord</button>
+    </div>
+
+    <div id="key-insight">
+        <p>BOTH DIRECTIONS ARE FUTURE - The system is in BALANCE</p>
+    </div>
+
+    <div id="signature">[1 = -1]</div>
+
+    <a id="back-link" href="index.html">← Back to Physics</a>
+
+    <div id="planet-tooltip">
+        <h4 id="tooltip-name"></h4>
+        <div class="tooltip-stat">
+            <span>Scalar Position:</span>
+            <span id="tooltip-scalar"></span>
+        </div>
+        <div class="tooltip-stat">
+            <span>Period Ratio:</span>
+            <span id="tooltip-period"></span>
+        </div>
+        <div class="tooltip-stat">
+            <span>Direction:</span>
+            <span id="tooltip-direction"></span>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        // Epoch Framework Constants
+        const ALPHA = 4.5594532639;
+        const S_WUSH = 1729;
+        const S_RO = -1729;
+
+        // Planetary data (scalar positions calculated from periods)
+        const planets = [
+            { name: 'Mercury', s: 6.49, period_ratio: 0.2408, color: 0xB5B5B5, direction: 'quantum' },
+            { name: 'Venus', s: 2.22, period_ratio: 0.6152, color: 0xE6C35C, direction: 'quantum' },
+            { name: 'Earth', s: 0, period_ratio: 1.0, color: 0x4A90D9, direction: 'observer' },
+            { name: 'Mars', s: -2.88, period_ratio: 1.8808, color: 0xD9534F, direction: 'cosmic' },
+            { name: 'Jupiter', s: -11.28, period_ratio: 11.862, color: 0xD9A066, direction: 'cosmic' },
+            { name: 'Saturn', s: -15.42, period_ratio: 29.457, color: 0xE6D690, direction: 'cosmic' },
+            { name: 'Uranus', s: -20.20, period_ratio: 84.011, color: 0x7EC8E3, direction: 'cosmic' },
+            { name: 'Neptune', s: -23.27, period_ratio: 164.79, color: 0x4169E1, direction: 'cosmic' },
+            { name: 'Pluto', s: -25.14, period_ratio: 247.94, color: 0xA0785A, direction: 'cosmic' }
+        ];
+
+        // Three.js setup
+        let scene, camera, renderer, controls;
+        let planetMeshes = [];
+        let labelSprites = [];
+        let scalarShells = [];
+        let sunArrow;
+
+        // Audio context
+        let audioContext = null;
+
+        function init() {
+            const container = document.getElementById('canvas-container');
+
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a14);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(30, 20, 40);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.3;
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(50, 50, 50);
+            scene.add(pointLight);
+
+            // Create visualization
+            createScalarShells();
+            createPlanets();
+            createSunDirection();
+            createStarfield();
+
+            // Event listeners
+            setupControls();
+            window.addEventListener('resize', onWindowResize);
+
+            animate();
+        }
+
+        function createScalarShells() {
+            // Create concentric shells at scalar positions
+            const shellPositions = [5, 10, 15, 20, 25, 30];
+
+            shellPositions.forEach(s => {
+                const geometry = new THREE.RingGeometry(s - 0.05, s + 0.05, 64);
+                const material = new THREE.MeshBasicMaterial({
+                    color: 0x333344,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.3
+                });
+                const ring = new THREE.Mesh(geometry, material);
+                ring.rotation.x = Math.PI / 2;
+                scene.add(ring);
+                scalarShells.push(ring);
+            });
+
+            // Add axis lines
+            const axisMaterial = new THREE.LineBasicMaterial({ color: 0x444466, transparent: true, opacity: 0.5 });
+
+            // X axis (toward Sun direction)
+            const xGeom = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(-40, 0, 0),
+                new THREE.Vector3(40, 0, 0)
+            ]);
+            scene.add(new THREE.Line(xGeom, axisMaterial));
+
+            // Z axis
+            const zGeom = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(0, 0, -40),
+                new THREE.Vector3(0, 0, 40)
+            ]);
+            scene.add(new THREE.Line(zGeom, axisMaterial));
+        }
+
+        function createPlanets() {
+            planets.forEach((planet, index) => {
+                // Calculate position - spread planets in a spiral for visibility
+                const angle = index * (Math.PI / 4.5);
+                const radius = Math.abs(planet.s) || 1;
+
+                // Position based on scalar (radial) and angle (visual spread)
+                const x = radius * Math.cos(angle);
+                const z = radius * Math.sin(angle);
+                const y = planet.s > 0 ? 1 : (planet.s < 0 ? -0.5 : 0); // Slight y offset by direction
+
+                // Create planet mesh
+                const size = planet.name === 'Earth' ? 1.2 :
+                            (planet.name === 'Jupiter' || planet.name === 'Saturn') ? 0.9 : 0.6;
+                const geometry = new THREE.SphereGeometry(size, 32, 32);
+                const material = new THREE.MeshPhongMaterial({
+                    color: planet.color,
+                    emissive: planet.color,
+                    emissiveIntensity: 0.3
+                });
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(x, y, z);
+                mesh.userData = planet;
+                scene.add(mesh);
+                planetMeshes.push(mesh);
+
+                // Create label
+                const label = createLabel(planet.name, `s=${planet.s.toFixed(1)}`);
+                label.position.set(x, y + 2, z);
+                scene.add(label);
+                labelSprites.push(label);
+            });
+        }
+
+        function createLabel(name, value) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = 'rgba(10, 10, 30, 0.8)';
+            ctx.fillRect(0, 0, 256, 128);
+
+            ctx.fillStyle = '#00ffff';
+            ctx.font = 'bold 28px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(name, 128, 45);
+
+            ctx.fillStyle = '#888888';
+            ctx.font = '22px monospace';
+            ctx.fillText(value, 128, 85);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(8, 4, 1);
+
+            return sprite;
+        }
+
+        function createSunDirection() {
+            // Arrow pointing toward Sun (positive s direction)
+            const arrowLength = 35;
+            const arrowColor = 0xFFD700;
+
+            const dir = new THREE.Vector3(1, 0.3, 0).normalize();
+            const origin = new THREE.Vector3(0, 0, 0);
+
+            sunArrow = new THREE.ArrowHelper(dir, origin, arrowLength, arrowColor, 3, 1.5);
+            scene.add(sunArrow);
+
+            // Label for Sun direction
+            const sunLabel = createSunLabel();
+            sunLabel.position.set(38, 12, 0);
+            scene.add(sunLabel);
+            labelSprites.push(sunLabel);
+        }
+
+        function createSunLabel() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#FFD700';
+            ctx.font = 'bold 24px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('→ SUN (WUSH)', 128, 45);
+            ctx.fillText('s = +1729', 128, 75);
+            ctx.font = '18px sans-serif';
+            ctx.fillText('FUTURE', 128, 105);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(12, 6, 1);
+
+            return sprite;
+        }
+
+        function createStarfield() {
+            const starGeometry = new THREE.BufferGeometry();
+            const starCount = 2000;
+            const positions = new Float32Array(starCount * 3);
+
+            for (let i = 0; i < starCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 500;
+                positions[i + 1] = (Math.random() - 0.5) * 500;
+                positions[i + 2] = (Math.random() - 0.5) * 500;
+            }
+
+            starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const starMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.5,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            const stars = new THREE.Points(starGeometry, starMaterial);
+            scene.add(stars);
+        }
+
+        function setupControls() {
+            // Zoom slider
+            document.getElementById('zoom-slider').addEventListener('input', (e) => {
+                const zoom = e.target.value;
+                document.getElementById('zoom-value').textContent = zoom;
+                camera.position.normalize().multiplyScalar(zoom);
+            });
+
+            // Rotation speed
+            document.getElementById('rotation-slider').addEventListener('input', (e) => {
+                controls.autoRotateSpeed = e.target.value / 100;
+            });
+
+            // Planet size
+            document.getElementById('size-slider').addEventListener('input', (e) => {
+                const scale = e.target.value / 5;
+                planetMeshes.forEach(mesh => {
+                    mesh.scale.setScalar(scale);
+                });
+            });
+
+            // Toggle shells
+            document.getElementById('show-orbits').addEventListener('change', (e) => {
+                scalarShells.forEach(shell => shell.visible = e.target.checked);
+            });
+
+            // Toggle labels
+            document.getElementById('show-labels').addEventListener('change', (e) => {
+                labelSprites.forEach(label => label.visible = e.target.checked);
+            });
+
+            // Toggle sun direction
+            document.getElementById('show-sun').addEventListener('change', (e) => {
+                sunArrow.visible = e.target.checked;
+            });
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Audio functions
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTone(frequency) {
+            initAudio();
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 2);
+        }
+
+        function playChord() {
+            initAudio();
+
+            [1729, 432, 133].forEach(freq => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+
+                gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 3);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 3);
+            });
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

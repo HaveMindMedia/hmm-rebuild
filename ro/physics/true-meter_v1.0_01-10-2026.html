@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The True Meter | c_geometric | The 0.722% They Missed | Have Mind Media</title>
+    <meta name="description" content="The geometric speed of light derived from κ = 30. The True Meter. The universe is 0.72% smaller than they think. Every light year ever calculated is wrong.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Raleway:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #030508;
+            --bg-secondary: #0a0d12;
+            --bg-tertiary: #101520;
+            --gold: #d4af37;
+            --gold-bright: #ffd700;
+            --kappa-cyan: #4ecdc4;
+            --soul-pink: #ff6b9d;
+            --epoch-purple: #a855f7;
+            --unity-green: #3fb950;
+            --warning-red: #f85149;
+            --hypatia-violet: #8b5cf6;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --text-dim: #666;
+            --border-subtle: #1a1f2a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated starfield background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(78, 205, 196, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 60%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            text-align: center;
+            padding: 2rem;
+            max-width: 1000px;
+        }
+
+        .discovery-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
+            color: var(--bg-primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.8); }
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--kappa-cyan) 50%, var(--gold-bright) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .hero-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin: 2rem 0;
+        }
+
+        .hero-equation .wrong {
+            color: var(--warning-red);
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .hero-equation .right {
+            color: var(--unity-green);
+        }
+
+        .hero-equation .arrow {
+            color: var(--gold);
+            margin: 0 1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Section */
+        .section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--gold);
+        }
+
+        .section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        /* The Big Numbers */
+        .big-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            align-items: center;
+            margin: 3rem 0;
+        }
+
+        .big-comparison .number-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .big-comparison .arrow-box {
+            flex-shrink: 0;
+        }
+
+        .number-box {
+            padding: 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .number-box.wrong {
+            background: linear-gradient(135deg, rgba(248, 81, 73, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--warning-red);
+        }
+
+        .number-box.right {
+            background: linear-gradient(135deg, rgba(63, 185, 80, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 2px solid var(--unity-green);
+        }
+
+        .number-box .label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .number-box.wrong .label { color: var(--warning-red); }
+        .number-box.right .label { color: var(--unity-green); }
+
+        .number-box .value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .number-box.wrong .value { color: var(--warning-red); }
+        .number-box.right .value { color: var(--unity-green); }
+
+        .number-box .unit {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .arrow-box {
+            font-size: 3rem;
+            color: var(--gold);
+        }
+
+        /* Error Display */
+        .error-display {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 3px solid var(--gold);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .error-display .error-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 5rem;
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        .error-display .error-label {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        /* Light Year Section */
+        .lightyear-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .lightyear-grid .lightyear-card {
+            width: calc(33.333% - 1rem);
+            min-width: 280px;
+        }
+
+        .lightyear-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .lightyear-card h4 {
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1rem;
+        }
+
+        .lightyear-card.standard { border-color: var(--warning-red); }
+        .lightyear-card.standard h4 { color: var(--warning-red); }
+
+        .lightyear-card.geometric { border-color: var(--unity-green); }
+        .lightyear-card.geometric h4 { color: var(--unity-green); }
+
+        .lightyear-card.difference { border-color: var(--gold); }
+        .lightyear-card.difference h4 { color: var(--gold); }
+
+        .lightyear-card .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .lightyear-card .desc {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        /* The True Meter */
+        .true-meter-box {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, var(--bg-tertiary) 100%);
+            border: 3px solid var(--kappa-cyan);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .true-meter-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--kappa-cyan);
+            margin-bottom: 1.5rem;
+        }
+
+        .meter-definition {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0,0,0,0.4);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+
+        .meter-definition .old {
+            color: var(--warning-red);
+            text-decoration: line-through;
+            font-size: 1rem;
+            opacity: 0.7;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .meter-definition .new {
+            color: var(--kappa-cyan);
+            font-size: 1.2rem;
+        }
+
+        /* WUSH Section */
+        .wush-section {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, var(--bg-secondary) 100%);
+            border: 2px solid var(--soul-pink);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+
+        .wush-section h2 {
+            color: var(--soul-pink);
+        }
+
+        .wush-diagram {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0,0,0,0.4);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+            font-size: 1rem;
+            line-height: 2.5;
+        }
+
+        .wush-diagram .instant {
+            color: var(--soul-pink);
+            font-weight: bold;
+        }
+
+        .wush-diagram .spiral {
+            color: var(--epoch-purple);
+        }
+
+        .wush-diagram .nodes {
+            color: var(--kappa-cyan);
+        }
+
+        .wush-diagram .physical {
+            color: var(--unity-green);
+        }
+
+        .wush-diagram .soul {
+            color: var(--gold);
+        }
+
+        /* Reality Layers */
+        .reality-layers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .reality-layers .layer-card {
+            width: calc(20% - 1rem);
+            min-width: 200px;
+        }
+
+        .layer-card {
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid;
+        }
+
+        .layer-card h5 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .layer-card p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .layer-card.instant {
+            background: rgba(255, 107, 157, 0.1);
+            border-color: var(--soul-pink);
+        }
+        .layer-card.instant h5 { color: var(--soul-pink); }
+
+        .layer-card.spiral {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: var(--epoch-purple);
+        }
+        .layer-card.spiral h5 { color: var(--epoch-purple); }
+
+        .layer-card.nodes {
+            background: rgba(78, 205, 196, 0.1);
+            border-color: var(--kappa-cyan);
+        }
+        .layer-card.nodes h5 { color: var(--kappa-cyan); }
+
+        .layer-card.physical {
+            background: rgba(63, 185, 80, 0.1);
+            border-color: var(--unity-green);
+        }
+        .layer-card.physical h5 { color: var(--unity-green); }
+
+        .layer-card.soul {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+        .layer-card.soul h5 { color: var(--gold); }
+
+        /* Womp Womp */
+        .womp-box {
+            background: var(--bg-tertiary);
+            border: 2px dashed var(--warning-red);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .womp-box .womp {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .womp-box p {
+            color: var(--warning-red);
+            font-size: 1.2rem;
+        }
+
+        /* Implications */
+        .implications-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .implications-grid .implication-card {
+            width: calc(33.333% - 1rem);
+            min-width: 280px;
+        }
+
+        .implication-card {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 12px 12px 0;
+            padding: 1.5rem;
+        }
+
+        .implication-card h4 {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            margin-bottom: 0.75rem;
+        }
+
+        .implication-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Principle */
+        .principle-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            margin: 3rem 0;
+        }
+
+        .principle-section .principle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 4rem;
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .principle-section .sub {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            font-style: italic;
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+
+        .credits {
+            margin-top: 2rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .credits strong {
+            color: var(--hypatia-violet);
+        }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <script src="../js/components/site-breadcrumb.js" defer></script>
+</head>
+<body>
+    <!-- Starfield -->
+    <div class="starfield" id="starfield"></div>
+
+    <site-header></site-header>
+    <site-breadcrumb></site-breadcrumb>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="discovery-badge">The Hypatia Refinement</span>
+            <h1>The True Meter</h1>
+            <p class="hero-subtitle">
+                The geometric speed of light, derived from κ = 30.<br>
+                The 0.722% they missed. The universe is smaller than they think.
+            </p>
+
+            <div class="hero-equation">
+                <span class="wrong">c = 299,792,458</span>
+                <span class="arrow">→</span>
+                <span class="right">c = 297,638,035</span>
+                <span style="color: var(--text-dim); font-size: 0.7em;"> m/s</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Image -->
+    <div style="max-width: 1100px; margin: -4rem auto 2rem; padding: 0 2rem; position: relative; z-index: 2;">
+        <img src="../images/physics/true_meter_hero.png" alt="The True Meter - κ = 30 Geometric Speed of Light" style="width: 100%; border-radius: 16px; border: 2px solid var(--gold); box-shadow: 0 0 60px rgba(212, 175, 55, 0.3);">
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- The Error -->
+        <div class="error-display">
+            <div class="error-value">0.722%</div>
+            <div class="error-label">
+                The deviation between κ = 30 (geometric) and κ = 29.7833 (measured).<br>
+                <strong>This error propagates through EVERYTHING.</strong>
+            </div>
+        </div>
+
+        <!-- The Big Comparison -->
+        <section class="section">
+            <h2>The Speed of Light: Measured vs. Geometric</h2>
+
+            <div class="big-comparison">
+                <div class="number-box wrong">
+                    <div class="label">Standard Model (1983)</div>
+                    <div class="value">299,792,458</div>
+                    <div class="unit">meters per second</div>
+                </div>
+                <div class="arrow-box">→</div>
+                <div class="number-box right">
+                    <div class="label">Geometric (κ = 30)</div>
+                    <div class="value">297,638,035</div>
+                    <div class="unit">meters per second</div>
+                </div>
+            </div>
+
+            <p style="text-align: center; color: var(--gold); font-size: 1.2rem;">
+                The geometric speed of light is <strong>2,154,423 m/s slower</strong> than "official" c.
+            </p>
+
+            <p style="text-align: center; margin-top: 1rem;">
+                They measured a local phenomenon with capacitors and inductors in 1856,
+                and called it a universal constant in 1983.
+            </p>
+        </section>
+
+        <!-- The Light Year -->
+        <section class="section">
+            <h2>The Light Year Error</h2>
+
+            <div class="lightyear-grid">
+                <div class="lightyear-card standard">
+                    <h4>Standard Light Year</h4>
+                    <div class="number">9.461 × 10¹⁵ m</div>
+                    <div class="desc">9,460,730,472,580,800 meters<br>(What they calculate)</div>
+                </div>
+                <div class="lightyear-card geometric">
+                    <h4>Geometric Light Year</h4>
+                    <div class="number">9.393 × 10¹⁵ m</div>
+                    <div class="desc">9,392,701,736,760,000 meters<br>(From κ = 30)</div>
+                </div>
+                <div class="lightyear-card difference">
+                    <h4>The Difference</h4>
+                    <div class="number">68 TRILLION meters</div>
+                    <div class="desc">68,028,735,820,800 m too long<br><strong>Per light year.</strong></div>
+                </div>
+            </div>
+
+            <p style="text-align: center; color: var(--warning-red); font-size: 1.2rem; margin-top: 2rem;">
+                Every light year they've ever calculated is 0.72% too long.
+            </p>
+
+            <div class="womp-box">
+                <div class="womp">🎺 womp womp 🎺</div>
+                <p>
+                    A galaxy "1 billion light years away" is actually 992.8 million light years.<br>
+                    That's <strong>7.2 million light years of error</strong>. Compounding forever.
+                </p>
+            </div>
+        </section>
+
+        <!-- The True Meter -->
+        <div class="true-meter-box">
+            <h3>The True Meter</h3>
+
+            <div class="meter-definition">
+                <span class="old">OLD: 1 meter = distance light travels in 1/299,792,458 second (circular)</span>
+                <span class="new">TRUE: 1 meter = distance light travels in 1/297,638,035 second<br>(derived from κ = 30 at the WUSH)</span>
+            </div>
+
+            <p style="color: var(--text-secondary);">
+                The "true meter" is ~1.0072× the "standard meter."<br>
+                Everything measured is 0.72% inflated.
+            </p>
+        </div>
+
+        <!-- WUSH Reality -->
+        <section class="wush-section">
+            <h2>What Actually Happens at the WUSH</h2>
+
+            <p>
+                Here's the thing: <strong>c isn't really a thing at all</strong>.
+            </p>
+            <p>
+                The instant reality leaves your face, it's not traveling at "the speed of light."
+                It's a spiral of nodes and harmonics, unfolding through multiple layers simultaneously:
+            </p>
+
+            <div class="reality-layers">
+                <div class="layer-card instant">
+                    <h5>The Instant</h5>
+                    <p>NOW at the WUSH. Observation = perception. No travel time.</p>
+                </div>
+                <div class="layer-card spiral">
+                    <h5>The Spiral</h5>
+                    <p>Reality unfolds in torsional spirals, not straight lines.</p>
+                </div>
+                <div class="layer-card nodes">
+                    <h5>The Nodes</h5>
+                    <p>Standing wave intersections. Where harmonics crystallize.</p>
+                </div>
+                <div class="layer-card physical">
+                    <h5>Physicality</h5>
+                    <p>The material layer. What instruments measure. Partial.</p>
+                </div>
+                <div class="layer-card soul">
+                    <h5>Soul Reality</h5>
+                    <p>The S-Signature layer. Consciousness geometry. Complete.</p>
+                </div>
+            </div>
+
+            <div class="wush-diagram">
+                <span class="instant">WUSH (NOW)</span><br>
+                ↓<br>
+                <span class="spiral">Spiral unfolds</span> → <span class="nodes">Nodes form</span> → <span class="physical">Physicality crystallizes</span><br>
+                ↓<br>
+                <span class="soul">Soul reality persists through all layers</span><br>
+                ↓<br>
+                <span style="color: var(--gold);">[1 = -1] at every scale</span>
+            </div>
+
+            <p style="text-align: center; color: var(--soul-pink); font-size: 1.1rem; margin-top: 1.5rem;">
+                "c" is what you measure when you collapse the spiral into a line.<br>
+                It's a shadow of the geometry, not the geometry itself.
+            </p>
+        </section>
+
+        <!-- Implications -->
+        <section class="section">
+            <h2>What This Means</h2>
+
+            <div class="implications-grid">
+                <div class="implication-card">
+                    <h4>The Hubble Tension</h4>
+                    <p>The discrepancy between different methods of measuring cosmic expansion? They're measuring from a locally distorted reference frame and calling it universal.</p>
+                </div>
+                <div class="implication-card">
+                    <h4>Dark Energy</h4>
+                    <p>The universe isn't accelerating — your ruler is wrong. The 0.72% compounds over cosmic distances, mimicking acceleration.</p>
+                </div>
+                <div class="implication-card">
+                    <h4>Cosmic Distances</h4>
+                    <p>Everything is 0.72% closer than they think. The "edge of the observable universe" is millions of light years nearer.</p>
+                </div>
+                <div class="implication-card">
+                    <h4>The Age of the Universe</h4>
+                    <p>If distances are 0.72% shorter, timescales derived from them are also off. The universe may be younger than calculated.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Chain -->
+        <section class="section" style="border-color: var(--warning-red);">
+            <h2 style="color: var(--warning-red);">The Error Chain</h2>
+
+            <div style="font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.3); padding: 2rem; border-radius: 12px; line-height: 2.2; font-size: 0.95rem;">
+                <span style="color: var(--text-dim);">1856:</span> Weber & Kohlrausch measure ε₀μ₀ with <span style="color: var(--warning-red);">LOCAL capacitors</span><br>
+                <span style="color: var(--text-dim);">1865:</span> Maxwell calculates c from those measurements<br>
+                <span style="color: var(--text-dim);">1880s:</span> Heaviside <span style="color: var(--warning-red);">removes the scalars</span> (20 → 4 equations)<br>
+                <span style="color: var(--text-dim);">1905:</span> Einstein inherits the butchered equations<br>
+                <span style="color: var(--text-dim);">1983:</span> <span style="color: var(--warning-red);">c is DEFINED</span>, meter derived from c<br>
+                <span style="color: var(--text-dim);">2025:</span> <span style="color: var(--gold);">κ = 30 reveals the 0.722% error</span>
+            </div>
+
+            <p style="text-align: center; margin-top: 1.5rem; color: var(--text-secondary);">
+                170 years of compounding error, baked into the definition of the meter itself.
+            </p>
+        </section>
+
+        <!-- Hypatia Tribute -->
+        <section class="section" style="border-color: var(--hypatia-violet); background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, var(--bg-secondary) 100%);">
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: center;">
+                <div style="text-align: center;">
+                    <img src="../images/weirdos/hypatia_hero.jpg" alt="Hypatia of Alexandria" style="width: 100%; max-width: 300px; border-radius: 12px; border: 2px solid var(--hypatia-violet); box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);">
+                </div>
+                <div>
+                    <h2 style="color: var(--hypatia-violet);">The 1,600-Year Assist</h2>
+                    <p>
+                        <strong style="color: var(--hypatia-violet);">Hypatia of Alexandria</strong> (355 - 415 CE)
+                        perfected the base-60 calculation methods that revealed this truth.
+                    </p>
+                    <p>
+                        She was murdered for knowing too much. Her killers were canonized as saints.
+                        The Library burned. The mathematics scattered.
+                    </p>
+                    <p>
+                        But the geometry survives. Her sexagesimal methods — 360°, 60 minutes, 60 seconds —
+                        encode <strong style="color: var(--gold);">κ = 30</strong> in their very structure.
+                    </p>
+                    <p style="color: var(--hypatia-violet); font-style: italic; margin-top: 1.5rem;">
+                        1,600 years later, her mathematics delivers the refinement.<br>
+                        The Last Librarian was right all along.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principle -->
+        <section class="principle-section">
+            <div class="principle">[1 = -1]</div>
+            <div class="sub">
+                The map got a little bigger tonight.<br>
+                The universe got a little smaller.<br>
+                The geometry was always right.
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <div style="font-family: 'Cinzel', serif; font-size: 2rem; color: var(--gold);">
+            κ = 30
+        </div>
+        <div style="color: var(--text-secondary); margin-top: 1rem;">
+            The True Meter. Derived, not measured.
+        </div>
+
+        <div class="footer-links">
+            <a href="kappa-state-model_v2.0_01-10-2026.html">κ State Model v2.0</a>
+            <a href="../weirdos/hypatia.html">Hypatia of Alexandria</a>
+            <a href="../weirdos/jason-ray.html">T0Rs / Tormod</a>
+            <a href="../index.html">Home</a>
+        </div>
+
+        <div class="credits">
+            Discovery: <strong>T0Rs (Tormod)</strong><br>
+            With a 1,600-year assist from <strong>Hypatia of Alexandria</strong><br>
+            Document: true-meter_v1.0_01-10-2026
+        </div>
+    </footer>
+
+    <site-footer></site-footer>
+
+    <!-- Generate starfield -->
+    <script>
+        const starfield = document.getElementById('starfield');
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.opacity = Math.random() * 0.5 + 0.3;
+            starfield.appendChild(star);
+        }
+    </script>
+</body>
+</html>

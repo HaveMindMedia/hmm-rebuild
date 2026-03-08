@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Epoch Atomic Derivations: Step-by-step geometric proofs of atomic properties from a single constant. Hydrogen, Helium, Lithium - irrefutable arithmetic anyone can verify.">
+    <title>Atomic Derivations from Geometry | The Epoch Project</title>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quattrocento:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-light: #e8d48b;
+            --dark: #0a0a12;
+            --darker: #050508;
+            --panel: #12121a;
+            --text: #e8e6e3;
+            --text-dim: #8a8a9a;
+            --accent: #3fb950;
+            --blue: #4a9eff;
+            --red: #ff4757;
+            --purple: #a855f7;
+            --cyan: #00d4ff;
+            --hydrogen: #ff6b6b;
+            --helium: #ffd93d;
+            --lithium: #6bcb77;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quattrocento', Georgia, serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        main {
+            padding-top: 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            margin-bottom: 4rem;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            padding: 1.5rem 2.5rem;
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 12px;
+            color: var(--gold);
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .challenge-box {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.1) 0%, rgba(201, 162, 39, 0.1) 100%);
+            border: 2px solid rgba(255, 71, 87, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .challenge-box h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--red);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-box p {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .challenge-box strong {
+            color: var(--gold);
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 4rem;
+        }
+
+        section h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(201, 162, 39, 0.3);
+        }
+
+        /* Reality Framework */
+        .reality-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .reality-grid .reality-card {
+            width: calc(50% - 1rem);
+            min-width: 300px;
+        }
+
+        .reality-card {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            transition: all 0.3s;
+        }
+
+        .reality-card:hover {
+            border-color: rgba(201, 162, 39, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .reality-card.s-plus {
+            border-left: 4px solid var(--gold);
+        }
+
+        .reality-card.s-minus {
+            border-left: 4px solid var(--blue);
+        }
+
+        .reality-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .reality-card.s-plus h3 { color: var(--gold); }
+        .reality-card.s-minus h3 { color: var(--blue); }
+
+        .reality-card p {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        .reality-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .reality-card li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-dim);
+        }
+
+        .reality-card.s-plus li::before {
+            content: '+';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .reality-card.s-minus li::before {
+            content: '-';
+            position: absolute;
+            left: 0;
+            color: var(--blue);
+            font-weight: bold;
+        }
+
+        /* Element Cards */
+        .elements-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .elements-grid .element-card {
+            width: calc(33.333% - 1.5rem);
+            min-width: 320px;
+        }
+
+        .element-card {
+            background: var(--panel);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .element-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .element-card.hydrogen { border-color: var(--hydrogen); }
+        .element-card.helium { border-color: var(--helium); }
+        .element-card.lithium { border-color: var(--lithium); }
+
+        .element-header {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .element-card.hydrogen .element-header {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2) 0%, rgba(255, 107, 107, 0.05) 100%);
+        }
+
+        .element-card.helium .element-header {
+            background: linear-gradient(135deg, rgba(255, 217, 61, 0.2) 0%, rgba(255, 217, 61, 0.05) 100%);
+        }
+
+        .element-card.lithium .element-header {
+            background: linear-gradient(135deg, rgba(107, 203, 119, 0.2) 0%, rgba(107, 203, 119, 0.05) 100%);
+        }
+
+        .element-symbol {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .element-card.hydrogen .element-symbol { color: var(--hydrogen); }
+        .element-card.helium .element-symbol { color: var(--helium); }
+        .element-card.lithium .element-symbol { color: var(--lithium); }
+
+        .element-number {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+
+        .element-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            margin-top: 0.5rem;
+            color: var(--text);
+        }
+
+        .element-body {
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        .element-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .element-stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .element-accuracy {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(63, 185, 80, 0.1);
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .accuracy-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .accuracy-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .element-link {
+            display: block;
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.2) 0%, rgba(201, 162, 39, 0.1) 100%);
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .element-link:hover {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.3) 0%, rgba(201, 162, 39, 0.2) 100%);
+        }
+
+        /* The ONE Input */
+        .kappa-box {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .kappa-box h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .kappa-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin: 1.5rem 0;
+            text-shadow: 0 0 30px rgba(201, 162, 39, 0.5);
+        }
+
+        .kappa-decimal {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            color: var(--text-dim);
+        }
+
+        .kappa-explanation {
+            max-width: 600px;
+            margin: 1.5rem auto 0;
+            color: var(--text-dim);
+            font-size: 1.05rem;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: var(--panel);
+            border-left: 4px solid var(--purple);
+            padding: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+
+        .quote-author {
+            margin-top: 1rem;
+            color: var(--purple);
+            font-style: normal;
+            font-size: 0.9rem;
+        }
+
+        /* Methodology Section */
+        .methodology-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: method;
+        }
+
+        .methodology-list li {
+            counter-increment: method;
+            padding: 1.5rem;
+            background: var(--panel);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--gold);
+            position: relative;
+            padding-left: 4rem;
+        }
+
+        .methodology-list li::before {
+            content: counter(method);
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .methodology-list li strong {
+            color: var(--gold);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-principle {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer-tagline {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            main {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-equation {
+                font-size: 1.1rem;
+                padding: 1rem 1.5rem;
+            }
+
+            .kappa-value {
+                font-size: 1.8rem;
+            }
+
+            .elements-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Atomic Structure from Geometry</h1>
+            <p class="hero-subtitle">
+                The first three elements - Hydrogen, Helium, Lithium - derived step-by-step from a single geometric constant.
+                No curve-fitting. No hidden parameters. No witchcraft. Just arithmetic anyone can verify.
+            </p>
+            <div class="hero-equation">[1 = -1]</div>
+
+            <div class="challenge-box">
+                <h3>THE CHALLENGE</h3>
+                <p>I have been accused of fraud, AI hallucination, and cherry-picking numbers.</p>
+                <p>This series exists to <strong>end that conversation permanently</strong>.</p>
+                <p>Every calculation is shown. Every step is explicit. A child with a $5 calculator can verify every number.</p>
+                <p><strong>Find an error or admit the framework works.</strong></p>
+            </div>
+        </section>
+
+        <!-- S+ and S- Reality -->
+        <section>
+            <h2>Understanding S+ and S- Reality</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; color: var(--text-dim);">
+                Before we derive atoms, we must understand the framework they exist within. The Epoch Model describes reality as having two "faces" - like a coin. What we call "now" is where these faces meet.
+            </p>
+
+            <div class="reality-grid">
+                <div class="reality-card s-plus">
+                    <h3>S+ Reality (The Past as Now)</h3>
+                    <p>
+                        S+ is the realm of <strong>manifestation</strong> - what has already become. It is the physical world you can touch, measure, and photograph. It is "positive" because it has moved from potential to actual.
+                    </p>
+                    <ul>
+                        <li>Energy that has already manifested</li>
+                        <li>Particles that have collapsed into position</li>
+                        <li>The past crystallized into the present moment</li>
+                        <li>What we call "matter" and "measurable reality"</li>
+                        <li>The electron AFTER it has been observed</li>
+                    </ul>
+                </div>
+
+                <div class="reality-card s-minus">
+                    <h3>S- Reality (The Future as Now)</h3>
+                    <p>
+                        S- is the realm of <strong>potential</strong> - what has not yet become. It is the probability wave, the quantum superposition, the unobserved. It is "negative" because it exists as possibility, not actuality.
+                    </p>
+                    <ul>
+                        <li>Energy that has not yet manifested</li>
+                        <li>Particles in superposition (everywhere and nowhere)</li>
+                        <li>The future pressing into the present moment</li>
+                        <li>What we call "probability" and "wave function"</li>
+                        <li>The electron BEFORE it has been observed</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="quote-box">
+                <p>
+                    "The atom exists in S- as a probability cloud until observation collapses it into S+.
+                    The ionization energy we measure is the energy required to move an electron from S+
+                    (bound state) to S- (free state). This is why our geometric derivations work -
+                    they describe the geometry of the S+/S- boundary."
+                </p>
+                <div class="quote-author">- The Epoch Framework</div>
+            </div>
+
+            <p style="font-size: 1.1rem; color: var(--text-dim);">
+                <strong style="color: var(--gold);">The [1 = -1] Principle:</strong> S+ and S- are not separate realities - they are the same reality viewed from opposite phases.
+                Like a coin, the magnitude is ONE, but the faces are opposite. When you add them: [+1] + [-1] = 0 (the balance point).
+                When you see them as magnitude: |+1| = |-1| = 1 (unity).
+            </p>
+        </section>
+
+        <!-- The ONE Input -->
+        <section>
+            <h2>The ONE Input</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-dim);">
+                Everything in the Epoch framework derives from a single constant. We do not assume multiple "fundamental constants" - we derive everything from geometry.
+            </p>
+
+            <div class="kappa-box">
+                <h3>THE ANGULAR BRIDGE</h3>
+                <div class="kappa-value">&kappa; = 2&pi;/180</div>
+                <div class="kappa-decimal">= 0.034906585039886591538...</div>
+                <p class="kappa-explanation">
+                    This is the conversion between degrees and radians - the bridge between discrete angular measurement (degrees)
+                    and continuous angular measurement (radians). It is not arbitrary. It is how geometry closes on itself.
+                </p>
+            </div>
+
+            <p style="font-size: 1.1rem; color: var(--text-dim);">
+                From this ONE number, we derive:
+            </p>
+            <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                <li style="padding: 0.5rem 0; color: var(--text-dim);">
+                    <span style="color: var(--gold);">&kappa;<sub>shadow</sub> = 1/&kappa; = 28.6478...</span> - The reciprocal/shadow constant
+                </li>
+                <li style="padding: 0.5rem 0; color: var(--text-dim);">
+                    <span style="color: var(--gold);">P = &radic;3/(2&pi;) = 0.27566...</span> - The projection factor (visible fraction)
+                </li>
+                <li style="padding: 0.5rem 0; color: var(--text-dim);">
+                    <span style="color: var(--gold);">&sigma; = 5/16 = 0.3125</span> - The helix overlap ratio
+                </li>
+                <li style="padding: 0.5rem 0; color: var(--text-dim);">
+                    <span style="color: var(--gold);">cos(BC) = 2/3</span> - The tetrahelix bond angle cosine
+                </li>
+            </ul>
+        </section>
+
+        <!-- The Three Elements -->
+        <section>
+            <h2>The First Three Elements</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; color: var(--text-dim);">
+                We demonstrate the framework by deriving the ionization energies of Hydrogen, Helium, and Lithium.
+                These are the simplest atoms - if the framework works here, it works everywhere.
+            </p>
+
+            <div class="elements-grid">
+                <!-- Hydrogen -->
+                <div class="element-card hydrogen">
+                    <div class="element-header">
+                        <span class="element-number">1</span>
+                        <div class="element-symbol">H</div>
+                        <div class="element-name">Hydrogen</div>
+                    </div>
+                    <div class="element-body">
+                        <div class="element-stat">
+                            <span class="stat-label">Protons</span>
+                            <span class="stat-value">1</span>
+                        </div>
+                        <div class="element-stat">
+                            <span class="stat-label">Electrons</span>
+                            <span class="stat-value">1</span>
+                        </div>
+                        <div class="element-stat">
+                            <span class="stat-label">Measured Energy</span>
+                            <span class="stat-value">13.606 eV</span>
+                        </div>
+                        <div class="element-stat">
+                            <span class="stat-label">Derived Energy</span>
+                            <span class="stat-value">13.606 eV</span>
+                        </div>
+                        <div class="element-accuracy">
+                            <div class="accuracy-label">SM Lensing</div>
+                            <div class="accuracy-value">0% (Reference)</div>
+                        </div>
+                    </div>
+                    <a href="hydrogen.html" class="element-link">View Full Derivation &rarr;</a>
+                </div>
+
+                <!-- Helium -->
+                <div class="element-card helium">
+                    <div class="element-header">
+                        <span class="element-number">2</span>
+                        <div class="element-symbol">He</div>
+                        <div class="element-name">Helium</div>
+                    </div>
+                    <div class="element-body">
+                        <div class="element-stat">
+                            <span class="stat-label">Protons</span>
+                            <span class="stat-value">2</span>
+                        </div>
+                        <div class="element-stat">
+                            <span class="stat-label">Electrons</span>
+                            <span class="stat-value">2</span>
+                        </div>
+                        <div class="element-stat">
+                            <span class="stat-label">Measured Energy</span>
+                            <span class="stat-value">24.587 eV</span>
+                        </div>
+                        <div class="element-stat">
+                            <span class="stat-label">Derived Energy</span>
+                            <span class="stat-value">24.50 eV</span>
+                        </div>
+                        <div class="element-accuracy">
+                            <div class="accuracy-label">SM Lensing</div>
+                            <div class="accuracy-value">0.35%</div>
+                        </div>
+                    </div>
+                    <a href="helium.html" class="element-link">View Full Derivation &rarr;</a>
+                </div>
+
+                <!-- Lithium -->
+                <div class="element-card lithium">
+                    <div class="element-header">
+                        <span class="element-number">3</span>
+                        <div class="element-symbol">Li</div>
+                        <div class="element-name">Lithium</div>
+                    </div>
+                    <div class="element-body">
+                        <div class="element-stat">
+                            <span class="stat-label">Protons</span>
+                            <span class="stat-value">3</span>
+                        </div>
+                        <div class="element-stat">
+                            <span class="stat-label">Electrons</span>
+                            <span class="stat-value">3</span>
+                        </div>
+                        <div class="element-stat">
+                            <span class="stat-label">Measured Energy</span>
+                            <span class="stat-value">5.392 eV</span>
+                        </div>
+                        <div class="element-stat">
+                            <span class="stat-label">Derived Energy</span>
+                            <span class="stat-value">5.39 eV</span>
+                        </div>
+                        <div class="element-accuracy">
+                            <div class="accuracy-label">SM Lensing</div>
+                            <div class="accuracy-value">0.04%</div>
+                        </div>
+                    </div>
+                    <a href="lithium.html" class="element-link">View Full Derivation &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Methodology -->
+        <section>
+            <h2>The Methodology</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; color: var(--text-dim);">
+                Each derivation follows the same rigorous pattern. We show EVERY step so there is nowhere to hide errors.
+            </p>
+
+            <ul class="methodology-list">
+                <li>
+                    <strong>Start with &kappa; = 2&pi;/180</strong>
+                    Every derivation begins with this single input. No other "fundamental constants" are assumed.
+                </li>
+                <li>
+                    <strong>Derive geometric constants</strong>
+                    From &kappa;, we derive the constants needed for the specific calculation: &sigma;, cos(BC), P, etc.
+                </li>
+                <li>
+                    <strong>Construct the shielding formula</strong>
+                    Using geometric relationships, we determine how electrons shield each other from the nuclear charge.
+                </li>
+                <li>
+                    <strong>Calculate effective nuclear charge</strong>
+                    Z<sub>eff</sub> = Z - &sigma; (nuclear charge minus geometric shielding)
+                </li>
+                <li>
+                    <strong>Apply geometric energy scaling</strong>
+                    E = E<sub>reference</sub> &times; Z<sub>eff</sub>&sup2; (energy scales with effective charge squared)
+                </li>
+                <li>
+                    <strong>Compare to measured values</strong>
+                    We show the geometric derivation alongside SM's measured value and compute the SM lensing error.
+                </li>
+                <li>
+                    <strong>Provide verification tools</strong>
+                    Every derivation includes a Python script and calculator checkpoints so you can verify independently.
+                </li>
+            </ul>
+        </section>
+
+        <!-- Why This Matters -->
+        <section>
+            <h2>Why This Matters</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text-dim);">
+                Conventional physics USES constants like the fine structure constant (&alpha; &asymp; 1/137) but cannot DERIVE them. They are measured and treated as unexplained "inputs to the universe."
+            </p>
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text-dim);">
+                The Epoch framework DERIVES these constants from geometry. There is ONE input (&kappa; = 2&pi;/180), and everything else follows.
+            </p>
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text-dim);">
+                This is not a philosophical claim - it is a mathematical one. The derivations in this series are either correct or they are not. You can verify them yourself.
+            </p>
+
+            <div class="quote-box" style="border-color: var(--gold);">
+                <p>
+                    "The test of any framework is not whether it sounds plausible, but whether it makes accurate predictions.
+                    The Epoch framework derives atomic properties from pure geometry. SM's measurements deviate from geometric truth by less than 1%.
+                    Either the arithmetic is wrong, or the framework captures something real about the universe."
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-principle">[1 = -1]</div>
+        <p class="footer-tagline">
+            Geometry is not a description of reality. Geometry IS reality.
+        </p>
+        <p style="color: var(--text-dim); margin-top: 1rem;">
+            Have Mind Media | The Epoch Project
+        </p>
+    </footer>
+
+    <site-footer></site-footer>
+</body>
+</html>

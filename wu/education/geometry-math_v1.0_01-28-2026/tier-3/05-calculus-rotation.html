@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus is Rotation | Geometry Math</title>
+    <meta name="description" content="Derivatives aren't about limits. They're about rotating 90°. Integrals aren't about sums. They're about accumulated rotation.">
+    <link rel="stylesheet" href="../css/geometry-math.css">
+    <style>
+        .calculus-visual {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .function-display {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(10, 22, 40, 0.6);
+            border-radius: 12px;
+            min-width: 200px;
+        }
+
+        .function-display h4 {
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .function-display .formula {
+            font-family: 'Times New Roman', serif;
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .arrow-rotate {
+            font-size: 2rem;
+            color: var(--cyan);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .arrow-rotate .label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .phase-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .phase-card {
+            background: rgba(10, 22, 40, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .phase-card h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .phase-card .phase-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .phase-card.sine .phase-icon {
+            background: var(--cyan);
+            color: var(--midnight);
+        }
+
+        .phase-card.cosine .phase-icon {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .phase-card .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .derivative-chain {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(10, 22, 40, 0.5);
+            border-radius: 12px;
+        }
+
+        .chain-item {
+            text-align: center;
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            min-width: 80px;
+        }
+
+        .chain-item .func {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+        }
+
+        .chain-item .phase {
+            font-size: 0.8rem;
+            color: var(--cyan);
+            margin-top: 0.25rem;
+        }
+
+        .chain-arrow {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+        }
+
+        .tangent-explanation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+            align-items: center;
+        }
+
+        @media (max-width: 700px) {
+            .tangent-explanation {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tangent-text h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .tangent-text p {
+            margin-bottom: 1rem;
+        }
+
+        .integral-visual {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .rotation-accumulator {
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tiny-rotation {
+            width: 8px;
+            height: 8px;
+            background: var(--cyan);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        .tiny-rotation.active {
+            opacity: 1;
+            background: var(--gold);
+        }
+
+        .obsolete-section {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(255, 100, 0, 0.1));
+            border: 2px solid rgba(255, 100, 0, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .obsolete-section h3 {
+            color: #ff6400;
+            margin-bottom: 1rem;
+        }
+
+        .obsolete-item {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            align-items: center;
+        }
+
+        .obsolete-item .old {
+            flex: 1;
+            color: var(--text-dim);
+            text-decoration: line-through;
+        }
+
+        .obsolete-item .arrow {
+            color: var(--gold);
+        }
+
+        .obsolete-item .new {
+            flex: 1;
+            color: var(--cyan);
+        }
+
+        .euler-connection {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .euler-connection h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .euler-connection .big-equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin: 1.5rem 0;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .controls-row label {
+            color: var(--text-dim);
+        }
+
+        .controls-row input[type="range"] {
+            width: 150px;
+            accent-color: var(--gold);
+        }
+
+        .controls-row button {
+            padding: 0.5rem 1rem;
+            background: var(--gold);
+            color: var(--midnight);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .controls-row button:hover {
+            background: var(--gold-light);
+        }
+
+        .wave-canvas-container {
+            position: relative;
+        }
+
+        .wave-label {
+            position: absolute;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-3">Tier 3 - Revelation</div>
+        <h1>Calculus is Rotation</h1>
+        <p class="subtitle">Derivatives aren't about infinitesimals. They're about rotating 90°. This changes everything.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <div style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(212, 175, 55, 0.1)); border: 2px solid var(--cyan); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; text-align: center;">
+                <p style="margin: 0 0 0.5rem 0; color: var(--text);">This is a quick overview. For the complete, rigorous curriculum:</p>
+                <a href="calculus/00-circular-understanding.html" style="display: inline-block; padding: 0.75rem 1.5rem; background: var(--cyan); color: var(--midnight); border-radius: 8px; text-decoration: none; font-weight: bold;">Start the Full Calculus Course →</a>
+            </div>
+
+            <h2>The Traditional Story</h2>
+
+            <p>
+                Calculus is usually taught as the mathematics of <em>change</em>:
+            </p>
+
+            <ul>
+                <li><strong>Derivatives:</strong> The instantaneous rate of change (limits, infinitesimals)</li>
+                <li><strong>Integrals:</strong> The accumulation of infinitely small pieces (Riemann sums)</li>
+            </ul>
+
+            <p>
+                This framing is correct but obscures the deeper geometric truth:
+            </p>
+
+            <div class="key-insight">
+                <p><strong>Differentiation is rotation by 90°.</strong><br>
+                <strong>Integration is accumulated rotation.</strong></p>
+            </div>
+
+            <h2>The 90° Secret</h2>
+
+            <p>
+                Watch what happens when you take derivatives of sine and cosine:
+            </p>
+
+            <div class="derivative-chain">
+                <div class="chain-item">
+                    <div class="func">sin(θ)</div>
+                    <div class="phase">0°</div>
+                </div>
+                <div class="chain-arrow">→ d/dθ →</div>
+                <div class="chain-item">
+                    <div class="func">cos(θ)</div>
+                    <div class="phase">90°</div>
+                </div>
+                <div class="chain-arrow">→ d/dθ →</div>
+                <div class="chain-item">
+                    <div class="func">-sin(θ)</div>
+                    <div class="phase">180°</div>
+                </div>
+                <div class="chain-arrow">→ d/dθ →</div>
+                <div class="chain-item">
+                    <div class="func">-cos(θ)</div>
+                    <div class="phase">270°</div>
+                </div>
+                <div class="chain-arrow">→ d/dθ →</div>
+                <div class="chain-item">
+                    <div class="func">sin(θ)</div>
+                    <div class="phase">360° = 0°</div>
+                </div>
+            </div>
+
+            <p>
+                Every derivative rotates the function by 90°. After four derivatives, you're back where you started.
+                <strong>This is the Q-cycle: 1 → i → -1 → -i → 1</strong>
+            </p>
+
+            <h2>See It Happen</h2>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Watch sine (blue) and its derivative cosine (gold). The derivative is always 90° ahead.
+                </p>
+                <canvas id="derivative-demo" class="demo-canvas" style="height: 250px;"></canvas>
+                <div class="controls-row">
+                    <label>Speed:</label>
+                    <input type="range" id="speed-slider" min="0.5" max="3" step="0.1" value="1">
+                    <button id="toggle-btn">Pause</button>
+                </div>
+                <div class="values-panel numbers-layer visible" style="margin-top: 1rem;">
+                    <div class="value-box">
+                        <div class="label">sin(θ)</div>
+                        <div class="value" id="sin-val" style="color: var(--cyan);">0.00</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">cos(θ) = d/dθ sin(θ)</div>
+                        <div class="value" id="cos-val" style="color: var(--gold);">1.00</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="label">θ</div>
+                        <div class="value" id="theta-val">0°</div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                When sin(θ) = 0 (at the zero crossing), cos(θ) = ±1 (at the peak). When sin(θ) is at its peak, cos(θ) = 0.
+                <strong>The derivative tells you the direction of the tangent line — rotated 90° from position.</strong>
+            </p>
+
+            <h2>Why Tangent Lines Work</h2>
+
+            <div class="tangent-explanation">
+                <div class="tangent-text">
+                    <h4>The Position Vector</h4>
+                    <p>
+                        On the unit circle, your position is (cos θ, sin θ) — a vector pointing FROM the origin TO you.
+                    </p>
+                    <h4>The Velocity Vector</h4>
+                    <p>
+                        Your velocity (how fast and which direction you're moving) is (-sin θ, cos θ) — exactly 90° rotated!
+                    </p>
+                    <h4>The Insight</h4>
+                    <p>
+                        The derivative of position is velocity. On a circle, velocity is ALWAYS perpendicular to position.
+                        <strong>Differentiation = rotation by 90°.</strong>
+                    </p>
+                </div>
+                <div id="tangent-canvas" class="demo-canvas" style="height: 250px;"></div>
+            </div>
+
+            <h2>The Euler Connection</h2>
+
+            <p>
+                Remember Euler's formula?
+            </p>
+
+            <div class="euler-connection">
+                <div class="big-equation">e<sup>iθ</sup> = cos(θ) + i·sin(θ)</div>
+                <p>
+                    Now take the derivative with respect to θ:
+                </p>
+                <div class="big-equation">d/dθ [e<sup>iθ</sup>] = i·e<sup>iθ</sup></div>
+                <p>
+                    The derivative of e<sup>iθ</sup> is just <strong>i times itself</strong>.<br>
+                    And what does multiplying by i do? <strong>Rotates by 90°.</strong>
+                </p>
+            </div>
+
+            <p>
+                This is why exponentials and trigonometry are secretly the same thing.
+                The exponential function e<sup>iθ</sup> naturally encodes rotation, and differentiation IS rotation.
+            </p>
+
+            <h2>Integration: Rotation in Reverse</h2>
+
+            <p>
+                If differentiation rotates forward by 90°, integration rotates backward:
+            </p>
+
+            <div class="derivative-chain">
+                <div class="chain-item">
+                    <div class="func">sin(θ)</div>
+                    <div class="phase">0°</div>
+                </div>
+                <div class="chain-arrow">← ∫dθ ←</div>
+                <div class="chain-item">
+                    <div class="func">-cos(θ)</div>
+                    <div class="phase">-90° = 270°</div>
+                </div>
+                <div class="chain-arrow">← ∫dθ ←</div>
+                <div class="chain-item">
+                    <div class="func">-sin(θ)</div>
+                    <div class="phase">180°</div>
+                </div>
+                <div class="chain-arrow">← ∫dθ ←</div>
+                <div class="chain-item">
+                    <div class="func">cos(θ)</div>
+                    <div class="phase">90°</div>
+                </div>
+            </div>
+
+            <p>
+                But there's more: the integral also represents <strong>accumulated area</strong> under a curve.
+                Geometrically, this is the same as accumulated rotation — tiny rotations adding up to larger motion.
+            </p>
+
+            <div class="key-insight">
+                <p>Every infinitesimal slice in an integral is a tiny rotation.<br>
+                The total integral is the accumulated rotation.</p>
+            </div>
+
+            <h2>The Four Phases</h2>
+
+            <p>
+                Just as we saw with the harmonic balancer, calculus operates in four phases:
+            </p>
+
+            <div class="phase-comparison">
+                <div class="phase-card sine">
+                    <h4><span class="phase-icon">0°</span> Position: sin(θ)</h4>
+                    <div class="equation">sin(θ) = y-coordinate</div>
+                    <p>Where you ARE on the circle (vertical component)</p>
+                </div>
+                <div class="phase-card cosine">
+                    <h4><span class="phase-icon">90°</span> Velocity: cos(θ)</h4>
+                    <div class="equation">d/dθ sin(θ) = cos(θ)</div>
+                    <p>How fast you're moving (tangent direction)</p>
+                </div>
+                <div class="phase-card sine">
+                    <h4><span class="phase-icon">180°</span> Acceleration: -sin(θ)</h4>
+                    <div class="equation">d²/dθ² sin(θ) = -sin(θ)</div>
+                    <p>How your velocity is changing (points toward center)</p>
+                </div>
+                <div class="phase-card cosine">
+                    <h4><span class="phase-icon">270°</span> Jerk: -cos(θ)</h4>
+                    <div class="equation">d³/dθ³ sin(θ) = -cos(θ)</div>
+                    <p>How acceleration is changing (tangent, opposite)</p>
+                </div>
+            </div>
+
+            <p>
+                Four derivatives, four 90° rotations, back to the start. This is why the four-phase balance (0°, 90°, 180°, 270°) appears everywhere — it's built into the mathematics of change itself.
+            </p>
+
+            <h2>What This Replaces</h2>
+
+            <div class="obsolete-section">
+                <h3>Traditional Calculus Concepts → Geometric Truth</h3>
+
+                <div class="obsolete-item">
+                    <div class="old">"Limit as Δx approaches zero"</div>
+                    <div class="arrow">→</div>
+                    <div class="new">Rotation by exactly 90°</div>
+                </div>
+
+                <div class="obsolete-item">
+                    <div class="old">"Infinitesimals are infinitely small"</div>
+                    <div class="arrow">→</div>
+                    <div class="new">Each slice is a rotation quantum</div>
+                </div>
+
+                <div class="obsolete-item">
+                    <div class="old">"Why does d/dx sin(x) = cos(x)?"</div>
+                    <div class="arrow">→</div>
+                    <div class="new">Because differentiation rotates, and cos is sin rotated 90°</div>
+                </div>
+
+                <div class="obsolete-item">
+                    <div class="old">"Integration is the reverse of differentiation"</div>
+                    <div class="arrow">→</div>
+                    <div class="new">Integration is rotation by -90° (or +270°)</div>
+                </div>
+
+                <div class="obsolete-item">
+                    <div class="old">"Why does e appear in calculus?"</div>
+                    <div class="arrow">→</div>
+                    <div class="new">Because e<sup>iθ</sup> IS the rotation operator</div>
+                </div>
+            </div>
+
+            <p>
+                The traditional concepts aren't <em>wrong</em> — limits do work, infinitesimals are useful fictions.
+                But they obscure the geometric heart: <strong>calculus is the mathematics of rotation</strong>.
+            </p>
+
+            <h2>The Fundamental Theorem</h2>
+
+            <p>
+                The Fundamental Theorem of Calculus says differentiation and integration are inverses:
+            </p>
+
+            <div class="equation-box">
+                <div class="equation">d/dx ∫f(t)dt = f(x)</div>
+                <div class="equation-label">Differentiate an integral, get back the original function</div>
+            </div>
+
+            <p>
+                In rotation terms: rotate +90°, then rotate -90° = back where you started.
+            </p>
+
+            <p>
+                The theorem isn't surprising once you see it geometrically — it's just saying that rotating forward then backward returns you to your original position.
+            </p>
+
+            <h2>Why This Matters</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>Physics becomes clearer:</strong> Position → velocity → acceleration are just 90° phase shifts. This is why F = ma involves the second derivative — it's the 180° rotation.
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>Electronics becomes obvious:</strong> Capacitors and inductors shift phase by 90°. This is calculus in action — current is the derivative of charge.
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>Wave mechanics unifies:</strong> All waves (sound, light, quantum) obey the same rotation mathematics. Schrödinger's equation is just rotation in complex space.
+                </li>
+            </ul>
+
+            <div class="key-insight">
+                <p>Calculus isn't about "infinitely small" — that's a useful lie.<br>
+                Calculus is about <strong>rotation</strong>. Everything else follows.</p>
+            </div>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ Differentiation rotates a function by 90°
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ d/dθ sin(θ) = cos(θ) because cos is sin shifted 90°
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ Integration is rotation by -90° (accumulating tiny rotations)
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ d/dθ e<sup>iθ</sup> = i·e<sup>iθ</sup> — multiplying by i IS rotation
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(255, 0, 255, 0.1); border-radius: 8px;">
+                    ✓ Four derivatives = 360° = back to start (the Q-cycle)
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="04-euclid-khayyam.html" class="nav-button">
+                    <span class="label">Previous</span>
+                    ← Euclid & Khayyam
+                </a>
+                <a href="06-obsolete-math.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    What Becomes Obsolete →
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../js/circle-engine.js"></script>
+    <script>
+        // Derivative visualization
+        const derivCanvas = document.getElementById('derivative-demo');
+        const derivCtx = derivCanvas.getContext('2d');
+        const speedSlider = document.getElementById('speed-slider');
+        const toggleBtn = document.getElementById('toggle-btn');
+
+        let theta = 0;
+        let running = true;
+        let speed = 1;
+        let derivInitialized = false;
+        let tangentInitialized = false;
+
+        function initDerivCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = derivCanvas.getBoundingClientRect();
+            derivCanvas.width = rect.width * dpr;
+            derivCanvas.height = 250 * dpr;
+            derivCtx.setTransform(1, 0, 0, 1, 0, 0);
+            derivCtx.scale(dpr, dpr);
+            derivInitialized = true;
+        }
+
+        function drawDerivativeDemo() {
+            if (!derivInitialized) initDerivCanvas();
+
+            const rect = derivCanvas.getBoundingClientRect();
+            const w = rect.width;
+            const h = 250;
+
+            derivCtx.clearRect(0, 0, w, h);
+
+            // Draw axes
+            derivCtx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            derivCtx.lineWidth = 1;
+            derivCtx.beginPath();
+            derivCtx.moveTo(0, h / 2);
+            derivCtx.lineTo(w, h / 2);
+            derivCtx.stroke();
+
+            // Draw sine wave (cyan)
+            derivCtx.strokeStyle = '#00d4ff';
+            derivCtx.lineWidth = 2;
+            derivCtx.beginPath();
+            for (let x = 0; x < w; x++) {
+                const t = (x / w) * 4 * Math.PI + theta;
+                const y = h / 2 - Math.sin(t) * (h / 2 - 20);
+                if (x === 0) derivCtx.moveTo(x, y);
+                else derivCtx.lineTo(x, y);
+            }
+            derivCtx.stroke();
+
+            // Draw cosine wave (gold) - the derivative
+            derivCtx.strokeStyle = '#d4af37';
+            derivCtx.lineWidth = 2;
+            derivCtx.beginPath();
+            for (let x = 0; x < w; x++) {
+                const t = (x / w) * 4 * Math.PI + theta;
+                const y = h / 2 - Math.cos(t) * (h / 2 - 20);
+                if (x === 0) derivCtx.moveTo(x, y);
+                else derivCtx.lineTo(x, y);
+            }
+            derivCtx.stroke();
+
+            // Labels
+            derivCtx.fillStyle = '#00d4ff';
+            derivCtx.font = '14px sans-serif';
+            derivCtx.fillText('sin(θ)', 10, 25);
+
+            derivCtx.fillStyle = '#d4af37';
+            derivCtx.fillText('cos(θ) = d/dθ sin(θ)', 10, 45);
+
+            // Update values
+            const sinVal = Math.sin(theta);
+            const cosVal = Math.cos(theta);
+            document.getElementById('sin-val').textContent = sinVal.toFixed(2);
+            document.getElementById('cos-val').textContent = cosVal.toFixed(2);
+            document.getElementById('theta-val').textContent = Math.round((theta * 180 / Math.PI) % 360) + '°';
+
+            // Draw current position markers
+            const markerX = 60;
+            derivCtx.fillStyle = '#00d4ff';
+            derivCtx.beginPath();
+            derivCtx.arc(markerX, h/2 - sinVal * (h/2 - 20), 8, 0, Math.PI * 2);
+            derivCtx.fill();
+
+            derivCtx.fillStyle = '#d4af37';
+            derivCtx.beginPath();
+            derivCtx.arc(markerX, h/2 - cosVal * (h/2 - 20), 8, 0, Math.PI * 2);
+            derivCtx.fill();
+        }
+
+        function animate() {
+            if (running) {
+                theta += 0.02 * speed;
+            }
+            drawDerivativeDemo();
+            drawTangentDemo();
+            requestAnimationFrame(animate);
+        }
+
+        speedSlider.addEventListener('input', () => {
+            speed = parseFloat(speedSlider.value);
+        });
+
+        toggleBtn.addEventListener('click', () => {
+            running = !running;
+            toggleBtn.textContent = running ? 'Pause' : 'Play';
+        });
+
+        // Tangent visualization
+        const tangentCanvas = document.getElementById('tangent-canvas');
+        const tangentCtx = tangentCanvas.getContext('2d');
+
+        function initTangentCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = tangentCanvas.getBoundingClientRect();
+            tangentCanvas.width = rect.width * dpr;
+            tangentCanvas.height = 250 * dpr;
+            tangentCtx.setTransform(1, 0, 0, 1, 0, 0);
+            tangentCtx.scale(dpr, dpr);
+            tangentInitialized = true;
+        }
+
+        function drawTangentDemo() {
+            if (!tangentInitialized) initTangentCanvas();
+
+            const rect = tangentCanvas.getBoundingClientRect();
+            const w = rect.width;
+            const h = 250;
+            const cx = w / 2;
+            const cy = h / 2;
+            const r = Math.min(w, h) / 2 - 50;
+
+            tangentCtx.clearRect(0, 0, w, h);
+
+            // Draw circle
+            tangentCtx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+            tangentCtx.lineWidth = 2;
+            tangentCtx.beginPath();
+            tangentCtx.arc(cx, cy, r, 0, Math.PI * 2);
+            tangentCtx.stroke();
+
+            // Draw center dot
+            tangentCtx.fillStyle = 'rgba(212, 175, 55, 0.5)';
+            tangentCtx.beginPath();
+            tangentCtx.arc(cx, cy, 3, 0, Math.PI * 2);
+            tangentCtx.fill();
+
+            // Current position on circle
+            const px = cx + r * Math.cos(theta);
+            const py = cy - r * Math.sin(theta);
+
+            // Position vector (from center to point)
+            tangentCtx.strokeStyle = '#00d4ff';
+            tangentCtx.lineWidth = 3;
+            tangentCtx.beginPath();
+            tangentCtx.moveTo(cx, cy);
+            tangentCtx.lineTo(px, py);
+            tangentCtx.stroke();
+
+            // Velocity vector (tangent, perpendicular to position)
+            const vx = -Math.sin(theta);
+            const vy = Math.cos(theta);
+            const vScale = 60;
+
+            tangentCtx.strokeStyle = '#d4af37';
+            tangentCtx.lineWidth = 3;
+            tangentCtx.beginPath();
+            tangentCtx.moveTo(px, py);
+            tangentCtx.lineTo(px + vx * vScale, py - vy * vScale);
+            tangentCtx.stroke();
+
+            // Draw arrowhead for velocity
+            const vEndX = px + vx * vScale;
+            const vEndY = py - vy * vScale;
+            const arrowAngle = Math.atan2(-vy, vx);
+            tangentCtx.fillStyle = '#d4af37';
+            tangentCtx.beginPath();
+            tangentCtx.moveTo(vEndX, vEndY);
+            tangentCtx.lineTo(vEndX - 12 * Math.cos(arrowAngle - 0.4), vEndY - 12 * Math.sin(arrowAngle - 0.4));
+            tangentCtx.lineTo(vEndX - 12 * Math.cos(arrowAngle + 0.4), vEndY - 12 * Math.sin(arrowAngle + 0.4));
+            tangentCtx.closePath();
+            tangentCtx.fill();
+
+            // Point on circle
+            tangentCtx.fillStyle = '#fff';
+            tangentCtx.beginPath();
+            tangentCtx.arc(px, py, 8, 0, Math.PI * 2);
+            tangentCtx.fill();
+
+            // Draw 90° arc indicator
+            tangentCtx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+            tangentCtx.lineWidth = 2;
+            const arcR = 25;
+            const startAngle = -theta;
+            const endAngle = -theta + Math.PI/2;
+            tangentCtx.beginPath();
+            tangentCtx.arc(px, py, arcR, startAngle, endAngle, false);
+            tangentCtx.stroke();
+
+            // Labels
+            tangentCtx.fillStyle = '#00d4ff';
+            tangentCtx.font = '13px sans-serif';
+            const labelOffsetX = 15 * Math.cos(theta + Math.PI);
+            const labelOffsetY = 15 * Math.sin(theta + Math.PI);
+            tangentCtx.fillText('Position', cx + labelOffsetX + 20, cy - labelOffsetY);
+
+            tangentCtx.fillStyle = '#d4af37';
+            tangentCtx.fillText('Velocity', vEndX + 5, vEndY - 10);
+
+            tangentCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            tangentCtx.font = '12px sans-serif';
+            tangentCtx.fillText('90°', px + 30 * Math.cos(-theta + Math.PI/4), py + 30 * Math.sin(-theta + Math.PI/4));
+        }
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            derivInitialized = false;
+            tangentInitialized = false;
+        });
+
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>

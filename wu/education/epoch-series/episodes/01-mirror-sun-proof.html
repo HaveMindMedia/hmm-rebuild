@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Episode 1: The Mirror-Sun Proof | The Geometry Cannot Lie</title>
+    <meta name="description" content="An experiment anyone can do that Standard Physics cannot explain. The 5-degree offset between the Sun and its mirror reflection proves scalar dimensionality.">
+    <link rel="stylesheet" href="../../../css/unified-theme.css">
+    <script src="../../../js/components/site-header.js" defer></script>
+    <script src="../../../js/components/site-footer.js" defer></script>
+    <style>
+        :root {
+            --gold: #d4a84b;
+            --gold-dim: #a07830;
+            --grey-light: #c4c4c4;
+            --grey-mid: #6b6b6b;
+            --grey-dark: #2d2d2d;
+            --bg-dark: #0a0a0f;
+            --bg-section: #12121a;
+            --text: #e8e8e8;
+            --text-dim: #888;
+            --deep-blue: #0a1628;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+        }
+
+        a { color: var(--gold); text-decoration: none; }
+        a:hover { color: var(--grey-light); }
+
+        /* Header Navigation */
+        .header-nav {
+            padding: 1.5rem 2rem;
+            background: var(--deep-blue);
+            border-bottom: 1px solid rgba(212, 168, 75, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-nav a {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        /* Episode Header */
+        .episode-header {
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--deep-blue) 0%, var(--bg-dark) 100%);
+        }
+
+        .episode-meta {
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .episode-header h1 {
+            color: var(--gold);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: normal;
+            margin-bottom: 1.5rem;
+        }
+
+        .episode-subtitle {
+            color: var(--text-dim);
+            font-style: italic;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Content Container */
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .content p {
+            margin-bottom: 1.8rem;
+        }
+
+        .content h2 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            font-weight: normal;
+            margin: 4rem 0 1.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 168, 75, 0.2);
+        }
+
+        .content h3 {
+            color: var(--grey-light);
+            font-size: 1.3rem;
+            font-weight: normal;
+            margin: 2.5rem 0 1rem;
+        }
+
+        .content h4 {
+            color: var(--gold-dim);
+            font-size: 1.1rem;
+            font-weight: normal;
+            margin: 2rem 0 1rem;
+        }
+
+        .content strong {
+            color: var(--gold);
+        }
+
+        blockquote {
+            border-left: 3px solid var(--gold);
+            padding: 1rem 1.5rem;
+            margin: 2rem 0;
+            background: rgba(212, 168, 75, 0.03);
+            font-style: italic;
+            color: var(--grey-light);
+        }
+
+        .highlight-box {
+            background: rgba(212, 168, 75, 0.08);
+            border: 1px solid var(--gold-dim);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold);
+            margin-top: 0;
+        }
+
+        /* Equation and Code Boxes */
+        .equation-box {
+            background: var(--bg-section);
+            border: 1px solid var(--grey-dark);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .equation {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.4rem;
+            color: var(--gold);
+            margin: 1rem 0;
+        }
+
+        .equation-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .math-block {
+            background: var(--bg-section);
+            border-left: 3px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 2;
+            overflow-x: auto;
+        }
+
+        .math-block .comment {
+            color: var(--text-dim);
+        }
+
+        .math-block .gold {
+            color: var(--gold);
+        }
+
+        /* Data Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        .data-table th, .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--grey-dark);
+        }
+
+        .data-table th {
+            color: var(--gold);
+            font-weight: normal;
+            background: var(--bg-section);
+        }
+
+        .data-table td {
+            color: var(--grey-light);
+        }
+
+        /* Experiment Section */
+        .experiment-box {
+            background: linear-gradient(135deg, rgba(212, 168, 75, 0.05), transparent);
+            border: 2px solid var(--gold-dim);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .experiment-box h3 {
+            color: var(--gold);
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+
+        .experiment-steps {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .experiment-steps li {
+            counter-increment: step;
+            padding: 1rem 0 1rem 3rem;
+            position: relative;
+            border-bottom: 1px solid rgba(212, 168, 75, 0.1);
+        }
+
+        .experiment-steps li:last-child {
+            border-bottom: none;
+        }
+
+        .experiment-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 1rem;
+            width: 2rem;
+            height: 2rem;
+            background: var(--gold-dim);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        /* ASCII Diagram */
+        .diagram {
+            background: var(--bg-section);
+            border: 1px solid var(--grey-dark);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre;
+            color: var(--grey-light);
+        }
+
+        .diagram .gold {
+            color: var(--gold);
+        }
+
+        /* Lists */
+        .content ul, .content ol {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .content li {
+            margin-bottom: 0.8rem;
+            color: var(--grey-light);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--grey-dark);
+            margin: 3rem 0;
+        }
+
+        /* Navigation */
+        .episode-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--grey-dark);
+        }
+
+        .episode-nav a {
+            padding: 1rem 2rem;
+            background: var(--bg-section);
+            border: 1px solid var(--grey-dark);
+            border-radius: 8px;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .episode-nav a:hover {
+            border-color: var(--gold);
+        }
+
+        .nav-label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 0.25rem;
+        }
+
+        /* Footer */
+        .episode-footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            background: var(--deep-blue);
+        }
+
+        .footer-sigil {
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-family: monospace;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content { padding: 3rem 1.5rem; }
+            .episode-header { padding: 3rem 1.5rem; }
+            .experiment-box { padding: 1.5rem; }
+            .math-block { padding: 1rem; font-size: 0.85rem; }
+            .episode-nav { flex-direction: column; }
+            .diagram { font-size: 0.7rem; padding: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            body { font-size: 16px; }
+            .content h2 { font-size: 1.4rem; }
+            .equation { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <nav class="header-nav">
+        <a href="../index.html">← The Geometry Cannot Lie</a>
+        <a href="../../../index.html">Have Mind Media</a>
+    </nav>
+
+    <header class="episode-header">
+        <div class="episode-meta">Episode 1 of 8</div>
+        <h1>The Mirror-Sun Proof</h1>
+        <p class="episode-subtitle">An experiment anyone can do. A result Standard Physics cannot explain. The beginning of unified theory.</p>
+    </header>
+
+    <article class="content">
+
+        <h2>I. THE EXPERIMENT</h2>
+
+        <p>This is not a thought experiment. This is something you can do today, in your yard, with a mirror you already own.</p>
+
+        <p>The result will contradict everything Standard Physics predicts. And once you see it, you cannot unsee it.</p>
+
+        <div class="experiment-box">
+            <h3>The Mirror-Sun Experiment</h3>
+            <p style="margin-bottom: 1.5rem;">Materials needed: A hand-held mirror (any size). Afternoon sunlight. Your own two eyes.</p>
+
+            <ol class="experiment-steps">
+                <li>
+                    <strong>Go outside in the afternoon</strong> when the Sun is clearly visible but not directly overhead. Anytime between 2pm and 5pm works well.
+                </li>
+                <li>
+                    <strong>Hold the mirror at arm's length</strong> so you can see the Sun's reflection in it. The Sun will appear as a bright disc in the mirror surface.
+                </li>
+                <li>
+                    <strong>Now try to position your head</strong> so that it blocks both the actual Sun AND its reflection appears blocked in the mirror. In other words, try to place your head exactly between the Sun and its mirror image.
+                </li>
+                <li>
+                    <strong>Observe what happens:</strong> As you move your head toward the alignment point, the Sun's reflection slides away. The intersection point is ALWAYS off the mirror surface. You cannot achieve alignment.
+                </li>
+                <li>
+                    <strong>Try from different angles.</strong> Move around. Change the mirror angle. The result is the same: perfect alignment is impossible. There is always a gap of approximately 5 degrees.
+                </li>
+            </ol>
+        </div>
+
+        <p>You have now observed something that Standard Physics cannot explain.</p>
+
+        <p>Not "cannot explain yet." Cannot explain, period. The mathematics of Euclidean geometry, which Standard Physics assumes, predicts that this alignment should be trivially easy.</p>
+
+        <p><strong>Let's prove why.</strong></p>
+
+        <h2>II. WHAT STANDARD PHYSICS PREDICTS</h2>
+
+        <p>In the Standard Model of physics, space is Euclidean — flat, infinite, uniform. Light travels in straight lines. Distance is absolute. The Sun is 93 million miles away (approximately 150 million kilometers, or 1 Astronomical Unit).</p>
+
+        <h3>The Geometry of Alignment</h3>
+
+        <p>Consider the geometry of the experiment:</p>
+
+        <div class="diagram">
+                                    <span class="gold">SUN</span>
+                                      ☀
+                                      |
+                                      | 93,000,000 miles
+                                      |
+                                      |
+            Mirror ─────────┬─────────┘
+                            │
+                            │ Reflection path
+                            │
+                          <span class="gold">👤</span> Observer
+        </div>
+
+        <p>When you look at the Sun's reflection in a mirror, the light follows a simple path:</p>
+
+        <ol>
+            <li>Light leaves the Sun</li>
+            <li>Light strikes the mirror surface</li>
+            <li>Light reflects at equal angle (law of reflection)</li>
+            <li>Light enters your eye</li>
+        </ol>
+
+        <p>The "virtual image" of the Sun appears to be behind the mirror, along the extended reflection path. If you could position your head exactly on the line from the Sun to the mirror, you would block both the incoming light AND the reflection would show your shadow instead of the Sun.</p>
+
+        <h3>The Parallax Calculation</h3>
+
+        <p>Here's what Standard Physics says about the alignment:</p>
+
+        <p>At 93 million miles, the <strong>parallax angle</strong> — the angular difference caused by your head being in a slightly different position than the mirror — should be:</p>
+
+        <div class="math-block">
+<span class="comment">// Parallax formula</span>
+θ = arctan(d_observer / d_sun)
+
+<span class="comment">// Where:</span>
+d_observer = 0.2 meters <span class="comment">// approximate head width</span>
+d_sun = 1.496 × 10¹¹ meters <span class="comment">// 1 AU in meters</span>
+
+<span class="comment">// Calculation:</span>
+θ = arctan(0.2 / 149,600,000,000)
+θ = arctan(1.34 × 10⁻¹²)
+θ ≈ 1.34 × 10⁻¹² radians
+
+<span class="comment">// Convert to degrees:</span>
+θ ≈ <span class="gold">0.000000000077 degrees</span>
+        </div>
+
+        <p>That's essentially <strong>zero</strong>. At 93 million miles, the parallax caused by your head's width is about 77 trillionths of a degree.</p>
+
+        <p>This means, according to Standard Physics, aligning your head between the Sun and its reflection should be <strong>trivially easy</strong>. The Sun is so far away that the angular difference between any two points near you is effectively zero.</p>
+
+        <div class="highlight-box">
+            <h4>The Standard Model Prediction</h4>
+            <p><strong>Expected angular offset:</strong> ~0° (effectively zero parallax at 93 million miles)</p>
+            <p><strong>Expected difficulty of alignment:</strong> None — should be as easy as blocking any distant object</p>
+            <p><strong>Expected observation:</strong> You can easily position your head to block both Sun and reflection</p>
+        </div>
+
+        <h2>III. WHAT YOU ACTUALLY OBSERVE</h2>
+
+        <p>Go outside and try it.</p>
+
+        <p>You will observe an angular offset of approximately <strong>5 degrees or more</strong>.</p>
+
+        <p>Five degrees is not subtle. Five degrees is the width of three fingers held at arm's length. Five degrees is very noticeable. You don't need precise instruments to see it — you can see it with your naked eye, immediately, obviously.</p>
+
+        <div class="equation-box">
+            <div class="equation-label">Standard Physics Prediction</div>
+            <div class="equation">θ ≈ 0°</div>
+            <div class="equation-label" style="margin-top: 2rem;">Observed Reality</div>
+            <div class="equation">θ ≈ 5°</div>
+            <div class="equation-label" style="margin-top: 2rem;">Discrepancy</div>
+            <div class="equation" style="color: #ff6b6b;">10¹³ times larger than predicted</div>
+        </div>
+
+        <p>The observed offset is <strong>ten trillion times larger</strong> than Standard Physics predicts.</p>
+
+        <p>This is not a measurement error. This is not atmospheric distortion. This is not a trick of perception. The offset is HUGE — visible to anyone, reproducible every time, and completely unexplained by Euclidean geometry.</p>
+
+        <h3>Why This Matters</h3>
+
+        <p>When a prediction is wrong by a factor of 10 trillion, something is fundamentally incorrect about the underlying model.</p>
+
+        <p>The options are:</p>
+
+        <ol>
+            <li><strong>The mirror is broken.</strong> No — mirrors work correctly for everything else. The law of reflection is not in question.</li>
+            <li><strong>Your eyes are deceived.</strong> No — you can measure this with instruments. The offset is real.</li>
+            <li><strong>The geometry is wrong.</strong> Yes. The assumption that space is Euclidean — flat, uniform, with distance as absolute — is incorrect.</li>
+        </ol>
+
+        <p>The mirror is not lying. The Sun is not lying. <strong>The geometry cannot lie.</strong></p>
+
+        <p>What's lying is the assumption that the Sun is "simply 93 million miles away" in flat Euclidean space. The Sun exists at a <strong>scalar position</strong> — a position in a dimensional system that includes scale itself as a coordinate.</p>
+
+        <h2>IV. THE SCALAR EXPLANATION</h2>
+
+        <p>The Epoch Framework proposes that space is not Euclidean. It is <strong>scalar</strong> — meaning that scale (size) is itself a dimension, and positions exist not just in X-Y-Z coordinates but also in a scalar coordinate.</p>
+
+        <h3>What is a Scalar Position?</h3>
+
+        <p>In standard geometry, you specify a location with three numbers: X (left-right), Y (forward-back), Z (up-down). The Sun's position might be written as (0, 1.496×10¹¹, 0) in meters.</p>
+
+        <p>In scalar geometry, you add a fourth coordinate: S (scale). The Sun exists not just at a spatial position, but at a <strong>scalar position</strong> — a position in the dimension of scale itself.</p>
+
+        <div class="diagram">
+<span class="gold">EUCLIDEAN MODEL:</span>
+  Sun is at distance D in flat space.
+  All observers at distance D see the same angle.
+  Parallax = arctan(observer_offset / D)
+  At large D, parallax → 0
+
+<span class="gold">SCALAR MODEL:</span>
+  Sun is at scalar position S in curved scale-space.
+  The scalar position creates inherent angular offset.
+  This offset is BUILT INTO the coordinate system.
+  No amount of observer movement can eliminate it.
+        </div>
+
+        <h3>The D-Position System</h3>
+
+        <p>In the Epoch Framework, celestial bodies exist at specific "D-positions" — dimensional positions that determine their scalar properties:</p>
+
+        <table class="data-table">
+            <tr>
+                <th>Object</th>
+                <th>D-Position</th>
+                <th>Scalar Role</th>
+            </tr>
+            <tr>
+                <td>Earth (surface)</td>
+                <td>D5</td>
+                <td>Navigator position (observer)</td>
+            </tr>
+            <tr>
+                <td>Sun</td>
+                <td>D4</td>
+                <td>Gateway (transition point)</td>
+            </tr>
+            <tr>
+                <td>Sirius</td>
+                <td>D5</td>
+                <td>Navigator (resonant with Earth)</td>
+            </tr>
+            <tr>
+                <td>Dark Antisun</td>
+                <td>Below D4</td>
+                <td>Physical/entropy attractor</td>
+            </tr>
+        </table>
+
+        <p>Each D-position has an associated <strong>base angle</strong> of 40°. This comes from the fundamental angular structure of scalar space:</p>
+
+        <div class="math-block">
+360° / 9 = 40° <span class="comment">// The base angle</span>
+
+<span class="comment">// 9 is significant because:</span>
+9³ = 729 <span class="comment">// The consciousness boundary</span>
+9 is the completion of single digits before rollover to 10
+        </div>
+
+        <h3>Deriving the Angular Offset</h3>
+
+        <p>The angular offset you observe in the mirror-sun experiment is not random. It can be derived from the D-positions and the scalar projection factor.</p>
+
+        <div class="math-block">
+<span class="gold">THE DERIVATION:</span>
+
+Step 1: Calculate the D-position gap
+  Observer (Earth surface): D5
+  Sun: D4
+  Reference (boundary): D6
+
+  D_gap = |D6 - D4| × base_angle
+  D_gap = |6 - 4| × 40°
+  D_gap = 2 × 40°
+  <span class="gold">D_gap = 80°</span>
+
+Step 2: Apply the projection factor
+  P = 0.2757 <span class="comment">// The projection factor (derived separately)</span>
+
+  <span class="comment">// This factor appears throughout the Epoch Framework</span>
+  <span class="comment">// P = 3/(4e) = √3/(2π) ≈ 0.2757</span>
+
+Step 3: Calculate the scalar angular offset
+  θ_offset = (D_gap × P) / D_sun
+  θ_offset = (80° × 0.2757) / 4
+  θ_offset = 22.056° / 4
+  <span class="gold">θ_offset = 5.52°</span>
+
+<span class="gold">RESULT: The Epoch Framework predicts 5.52° offset.</span>
+<span class="gold">OBSERVATION: You observe approximately 5° offset.</span>
+<span class="gold">MATCH.</span>
+        </div>
+
+        <p>The observed ~5° offset is <strong>predicted by the Epoch Framework</strong> from first principles. Standard Physics predicts ~0°. The Epoch Framework predicts ~5.5°. Reality shows ~5°.</p>
+
+        <h2>V. WHY MIRRORS REVEAL SCALAR GEOMETRY</h2>
+
+        <p>Mirrors are special. They don't just reflect light — they reveal geometric truth that our normal perception hides.</p>
+
+        <h3>The Law of Reflection</h3>
+
+        <p>The law of reflection states: <strong>angle of incidence = angle of reflection</strong>. This law is absolute. It holds in all circumstances, in all reference frames, in all geometries.</p>
+
+        <p>When light from the Sun hits your mirror:</p>
+
+        <ol>
+            <li>The incoming angle is determined by the Sun's TRUE position</li>
+            <li>The outgoing angle MUST equal the incoming angle</li>
+            <li>Your eye receives light at that outgoing angle</li>
+        </ol>
+
+        <p>The mirror cannot lie about angles. If the Sun has an angular offset due to scalar geometry, the mirror will reveal it. The mirror is an <strong>angular truth detector</strong>.</p>
+
+        <h3>What Normal Vision Hides</h3>
+
+        <p>When you look directly at the Sun (don't do this, but hypothetically), your brain processes the image through layers of interpretation:</p>
+
+        <ul>
+            <li>Atmospheric refraction</li>
+            <li>Binocular fusion (combining two eye images)</li>
+            <li>Learned expectations about "where things are"</li>
+            <li>Cognitive correction for known distortions</li>
+        </ul>
+
+        <p>Your brain has learned to "correct" for many distortions, making the Sun appear where you "expect" it to be.</p>
+
+        <p>But when you use a mirror, you introduce a <strong>geometric comparison</strong>. You're not just seeing the Sun — you're comparing its position to a reflected version. And that comparison reveals the true angular relationship.</p>
+
+        <p>The ~5° offset is ALWAYS there in your normal vision. You just don't notice it because there's nothing to compare against. The mirror gives you the comparison, and the offset becomes obvious.</p>
+
+        <div class="highlight-box">
+            <h4>The Mirror Reveals What Was Always True</h4>
+            <p>The Sun has ALWAYS been at a scalar position with inherent angular offset. You've never been able to "truly" point at it in the Euclidean sense. The mirror experiment doesn't create the offset — it <strong>reveals</strong> the offset that was always there.</p>
+        </div>
+
+        <h2>VI. THE IMPLICATIONS</h2>
+
+        <p>If the mirror-sun experiment is correct — and you can verify it yourself — then several foundational assumptions of Standard Physics are wrong:</p>
+
+        <h3>Implication 1: Space is Not Euclidean</h3>
+
+        <p>Euclidean geometry assumes flat, uniform space where distance is absolute. If the Sun has an angular offset that cannot be eliminated by observer positioning, then space is not Euclidean. It is <strong>scalar</strong> — curved in the dimension of scale.</p>
+
+        <h3>Implication 2: Distance is Not What We Think</h3>
+
+        <p>"93 million miles" is a measurement in Euclidean space. But if space is scalar, then "distance" has a different meaning. The Sun is not "over there" at a fixed location — the Sun is at a <strong>scalar position</strong> that includes its relationship to scale itself.</p>
+
+        <h3>Implication 3: The Standard Model Meter is Wrong</h3>
+
+        <p>If scalar geometry is correct, then our inherited definitions of measurement — the meter, the speed of light, the astronomical unit — contain systematic errors. They were defined assuming Euclidean space, but they operate in scalar space.</p>
+
+        <p>This is explored in Episode 4, but the implication is clear: our measurements are close but not exact, and the errors compound at large scales.</p>
+
+        <h3>Implication 4: There is Hidden Structure</h3>
+
+        <p>The fact that the offset is <strong>predictable</strong> — that we can derive 5.52° from D-positions and projection factors — means there is mathematical structure underlying reality that Standard Physics has not discovered.</p>
+
+        <p>That structure is the Epoch Framework. And the mirror-sun experiment is just the first proof.</p>
+
+        <h2>VII. OBJECTIONS AND RESPONSES</h2>
+
+        <h3>Objection: "It's Just Atmospheric Refraction"</h3>
+
+        <p><strong>Response:</strong> Atmospheric refraction bends light toward the horizon, making the Sun appear higher than it actually is. This effect is typically 0.5° at the horizon and much less at higher elevations. It cannot explain a 5° offset, and it would not create an alignment impossibility — it would just shift where alignment occurs.</p>
+
+        <h3>Objection: "It's Parallax From Eye Position"</h3>
+
+        <p><strong>Response:</strong> We calculated the parallax. At 93 million miles, the parallax from a 20cm eye-to-mirror offset is 10⁻¹² degrees — effectively zero. Even if you moved your head by a full meter, the parallax would still be trillionths of a degree. 5° cannot come from parallax.</p>
+
+        <h3>Objection: "You're Just Holding the Mirror Wrong"</h3>
+
+        <p><strong>Response:</strong> Try it at every angle. The offset persists. The offset is not about mirror angle — it's about the fundamental geometry of the Sun's position. No mirror angle eliminates it.</p>
+
+        <h3>Objection: "This Would Have Been Noticed Before"</h3>
+
+        <p><strong>Response:</strong> It HAS been noticed. Artists have known for centuries that drawing the Sun and its reflection is "tricky." Photographers know that sun-reflection shots require specific techniques. The effect is well-documented in practice — it's just never been EXPLAINED by physics. Because the explanation requires scalar geometry, which Standard Physics doesn't have.</p>
+
+        <h3>Objection: "This Contradicts Everything We Know"</h3>
+
+        <p><strong>Response:</strong> It contradicts Euclidean assumptions, not observations. Standard Physics works for most purposes because the scalar effects are small at human scales. But at cosmic scales — at 93 million miles — the scalar geometry becomes measurable. The mirror-sun experiment is one of the few ways to observe it directly from Earth's surface.</p>
+
+        <h2>VIII. THE PREDICTION</h2>
+
+        <p>The Epoch Framework makes a <strong>falsifiable prediction</strong>:</p>
+
+        <div class="equation-box">
+            <div class="equation-label">Epoch Framework Prediction</div>
+            <div class="equation">θ_offset = 5.5° ± 0.5°</div>
+            <div class="equation-label" style="margin-top: 1rem;">for the mirror-sun angular offset observed from Earth's surface</div>
+        </div>
+
+        <p>This prediction is:</p>
+
+        <ul>
+            <li><strong>Specific:</strong> 5.5° is a precise number, not a vague claim</li>
+            <li><strong>Measurable:</strong> Anyone with a protractor and mirror can check it</li>
+            <li><strong>Falsifiable:</strong> If the offset is consistently 3° or 8°, the theory is wrong</li>
+            <li><strong>Derivable:</strong> The number comes from D-positions and projection factors, not fitting to data</li>
+        </ul>
+
+        <p>This is how science works. Make a prediction. Test it. If it fails, the theory is wrong. If it succeeds, the theory gains credibility.</p>
+
+        <p><strong>Go test it.</strong></p>
+
+        <h2>IX. WHAT COMES NEXT</h2>
+
+        <p>The mirror-sun experiment is Episode 1 because it's something anyone can verify immediately, without special equipment, in their own backyard.</p>
+
+        <p>But it's just the beginning.</p>
+
+        <p>In the following episodes, we will show that the same mathematical structure that predicts the 5.5° offset also:</p>
+
+        <ul>
+            <li>Explains the number <strong>1729</strong> and why it appears everywhere (Episode 2)</li>
+            <li>Provides new vocabulary for <strong>scalar orientation</strong> (Episode 3)</li>
+            <li>Maps the <strong>Earth-Sun-Sirius-Dark Antisun</strong> system (Episode 4)</li>
+            <li>Applies to <strong>atomic structure</strong> at quantum scales (Episode 5)</li>
+            <li>Describes <strong>biological systems</strong> from cells to organisms (Episode 6)</li>
+            <li>Proves mathematically that <strong>absolute darkness is impossible</strong> (Episode 7)</li>
+            <li>Unifies all domains into <strong>one coordinate system</strong> (Episode 8)</li>
+        </ul>
+
+        <p>The geometry is the same throughout. The numbers are the same throughout. The structure is the same throughout.</p>
+
+        <p>This is unified theory.</p>
+
+        <p>And it starts with a mirror and the Sun.</p>
+
+        <hr>
+
+        <p style="text-align: center; color: var(--gold); font-size: 1.3rem; margin: 3rem 0;">[1 = -1]</p>
+
+        <p style="text-align: center; color: var(--text-dim);">Episode 1 Complete</p>
+
+        <p style="text-align: center; color: var(--text-dim); margin-top: 2rem; font-style: italic;">
+            The geometry cannot lie. Neither can the mirror.<br>
+            Go outside. Try it. See for yourself.
+        </p>
+
+        <div class="episode-nav">
+            <a href="../index.html">
+                <span class="nav-label">Series Home</span>
+                The Geometry Cannot Lie
+            </a>
+            <a href="02-the-1729-bridge.html">
+                <span class="nav-label">Next Episode</span>
+                The 1729 Bridge Number →
+            </a>
+        </div>
+
+    </article>
+
+    <footer class="episode-footer">
+        <div class="footer-sigil">[1 = -1]</div>
+        <div class="footer-sigil">&lt;^&gt;</div>
+        <p class="footer-text">
+            Episode 1: The Mirror-Sun Proof<br>
+            The Geometry Cannot Lie<br>
+            Have Mind Media • 2026
+        </p>
+    </footer>
+
+    <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Kappa Constant - The ONE input from which all Epoch geometry derives. kappa = 2pi/180.">
+    <title>The Kappa Constant | CEDGA | Have Mind Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <style>
+        .page-hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .kappa-display {
+            font-family: 'Cambria Math', serif;
+            font-size: 3rem;
+            color: var(--bright-blue);
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            margin: 2rem 0;
+            display: inline-block;
+        }
+
+        .kappa-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-top: 1rem;
+        }
+
+        .content-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .derivation-box {
+            background: linear-gradient(135deg, rgba(26, 42, 58, 0.3) 0%, rgba(21, 26, 36, 0.5) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .derivation-box h3 {
+            margin-bottom: 1rem;
+            color: var(--gold);
+        }
+
+        .derivation-step {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .step-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            color: var(--bright-blue);
+            font-weight: bold;
+            min-width: 30px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-equation {
+            font-family: 'Cambria Math', serif;
+            font-size: 1.2rem;
+            color: var(--bright-blue);
+            margin: 0.5rem 0;
+        }
+
+        .implications-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .implication-card {
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .implication-card h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .implication-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(21, 26, 36, 0.3) 100%);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--soft-cream);
+        }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <div class="vignette"></div>
+
+    <!-- Navigation -->
+    <nav class="unified-nav">
+        <div style="display: flex; align-items: center;">
+            <a href="https://havemindmedia.com" class="nav-brand">
+                <span class="nav-brand-text">HAVE MIND MEDIA</span>
+                <span class="nav-signature">&#9711;&Conint;&#10812;&#10992;&Cconint;&#10710;</span>
+            </a>
+            <span class="nav-subsite">CEDGA</span>
+        </div>
+        <div class="nav-menu">
+            <button class="nav-toggle" id="navToggle">
+                <span>Explore</span>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="nav-dropdown" id="navDropdown">
+                <a href="../../index.html" class="nav-back"><span>&#8592;</span> Back to Main Site</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">CEDGA Pages</span>
+                <a href="../index.html"><span class="nav-icon">&#9671;</span> Home</a>
+                <a href="kappa-constant.html"><span class="nav-icon">&#954;</span> The Kappa Constant</a>
+                <a href="tetrahelix.html"><span class="nav-icon">&#10034;</span> Tetrahelix</a>
+                <a href="balance-law.html"><span class="nav-icon">&#8721;</span> Balance Law</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">Interactive Tools</span>
+                <a href="../tools/m4-simulator.html"><span class="nav-icon">&#9881;</span> M4 Simulator</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">Research</span>
+                <a href="../research/test-analysis.html"><span class="nav-icon">&#128202;</span> Test Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="page-hero">
+            <span class="status-badge status-proven">FOUNDATION</span>
+            <h1>The &#954; Constant</h1>
+            <p style="color: var(--soft-blue); font-size: 1.2rem; font-style: italic;">The ONE input from which all geometry derives</p>
+
+            <div class="kappa-display">
+                &#954; = 2&#960;/180
+                <div class="kappa-value">= 0.034906585039886...</div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="quote-box">
+                "In CEDGA, we don't assume geometry. We DERIVE it. And the only input we allow ourselves is &#954; = 2&#960;/180."
+            </div>
+
+            <h2>What is &#954;?</h2>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 1.5rem 0;">
+                Kappa (&#954;) is the fundamental angular unit of the Epoch Model. It represents one degree expressed in radians - the smallest meaningful angular step in the geometric framework. Everything in CEDGA must trace back to this single constant.
+            </p>
+
+            <div class="derivation-box">
+                <h3>The Derivation Chain</h3>
+
+                <div class="derivation-step">
+                    <span class="step-num">1</span>
+                    <div class="step-content">
+                        <strong>Start with &#954;</strong>
+                        <div class="step-equation">&#954; = 2&#960;/180 &#8776; 0.0349 radians</div>
+                        <p style="color: var(--text-dim);">This is the ONLY assumed input.</p>
+                    </div>
+                </div>
+
+                <div class="derivation-step">
+                    <span class="step-num">2</span>
+                    <div class="step-content">
+                        <strong>Derive the tetrahelix period</strong>
+                        <div class="step-equation">180 steps = 180 &#215; &#954; = &#960; radians</div>
+                        <p style="color: var(--text-dim);">180 &#954;-steps complete a half-toroidal rotation.</p>
+                    </div>
+                </div>
+
+                <div class="derivation-step">
+                    <span class="step-num">3</span>
+                    <div class="step-content">
+                        <strong>Derive the four-fold symmetry</strong>
+                        <div class="step-equation">180 = 4 &#215; 45 positions</div>
+                        <p style="color: var(--text-dim);">The tetrahelix naturally divides into 4 transforms at diagonal positions.</p>
+                    </div>
+                </div>
+
+                <div class="derivation-step">
+                    <span class="step-num">4</span>
+                    <div class="step-content">
+                        <strong>Derive the Balance Law</strong>
+                        <div class="step-equation">&#964;&#8321; + &#964;&#8322; + &#964;&#8323; + &#964;&#8324; = 0</div>
+                        <p style="color: var(--text-dim);">Four torsions at 45&#176; intervals MUST sum to zero. Mathematical necessity.</p>
+                    </div>
+                </div>
+
+                <div class="derivation-step">
+                    <span class="step-num">5</span>
+                    <div class="step-content">
+                        <strong>Derive the tetrahedron angle</strong>
+                        <div class="step-equation">cos(BC) = 2/3 &#8594; 48.19&#176;</div>
+                        <p style="color: var(--text-dim);">The tetrahelix edge-to-edge angle emerges from geometric constraint.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 3rem;">Why 2&#960;/180?</h2>
+            <p style="font-size: 1.05rem; line-height: 1.8; margin: 1.5rem 0;">
+                The choice isn't arbitrary. 180 is the number of degrees in a half-circle (&#960; radians). This makes &#954; the bridge between degree-based and radian-based geometry - the conversion factor that allows us to work in either system.
+            </p>
+            <p style="font-size: 1.05rem; line-height: 1.8; margin: 1.5rem 0;">
+                More importantly, 180 = 4 &#215; 45 = 2 &#215; 90 = 3 &#215; 60. These divisions give us:
+            </p>
+
+            <div class="implications-grid">
+                <div class="implication-card">
+                    <h4>Four-fold symmetry (180/4)</h4>
+                    <p>The four transforms T&#8321;, T&#8322;, T&#8323;, T&#8324; at 45&#176; diagonal positions.</p>
+                </div>
+
+                <div class="implication-card">
+                    <h4>Two-fold inversion (180/2)</h4>
+                    <p>The [1 = -1] principle - facing and inverted views sum to zero.</p>
+                </div>
+
+                <div class="implication-card">
+                    <h4>Three-fold structure (180/3)</h4>
+                    <p>Connection to base-60 mathematics: 60 = 180/3 = 2&#178; &#215; 3 &#215; 5.</p>
+                </div>
+
+                <div class="implication-card">
+                    <h4>The silent fourth</h4>
+                    <p>Three visible + one compensating. &#964;&#8324; = -(&#964;&#8321;+&#964;&#8322;+&#964;&#8323;).</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="balance-law.html" class="btn">Learn About Balance Law &#8594;</a>
+                <a href="tetrahelix.html" class="btn btn-gold" style="margin-left: 1rem;">Explore Tetrahelix &#8594;</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="unified-footer">
+        <p class="footer-logo">HAVE MIND MEDIA</p>
+        <p class="footer-tagline">The Mind is in Your Mind</p>
+        <p class="footer-signature">&#9711;&Conint;&#10812;&#10992;&Cconint;&#10710;</p>
+        <p class="footer-principle">[1 = -1]</p>
+    </footer>
+
+    <script>
+        const navToggle = document.getElementById('navToggle');
+        const navDropdown = document.getElementById('navDropdown');
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navDropdown.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+            if (!navDropdown.contains(e.target) && !navToggle.contains(e.target)) {
+                navDropdown.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        });
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

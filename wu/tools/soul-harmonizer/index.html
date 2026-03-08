@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul Science Harmonizer | Have Mind Media</title>
+    <meta name="description" content="Use your S-Signature to tune yourself to your most balanced, fully realized self. The 1729 frequency holds the music. 9³ + 10³ = consciousness + physical.">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --void: #000000;
+            --deep: #030508;
+            --gold: #c9a227;
+            --gold-glow: rgba(201, 162, 39, 0.5);
+            --cyan: #00d4ff;
+            --green: #00ff88;
+            --purple: #a855f7;
+            --text: #e8e4dc;
+            --text-dim: #8892a0;
+            --border: rgba(201, 162, 39, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Harmonic Background */
+        .harmonic-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 30% 40%, rgba(201, 162, 39, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+        }
+
+        /* Content */
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .header-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: var(--cyan);
+            margin-bottom: 1rem;
+        }
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        .header-sub {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Frequency Display */
+        .frequency-display {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(201, 162, 39, 0.08) 100%);
+            border: 1px solid var(--gold);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+        .freq-main {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            color: var(--gold);
+            text-shadow: 0 0 40px var(--gold-glow);
+        }
+        .freq-label {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--cyan);
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+        .freq-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .freq-part {
+            text-align: center;
+        }
+        .freq-part .number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--text);
+        }
+        .freq-part .meaning {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        .freq-part.consciousness .number { color: var(--purple); }
+        .freq-part.physical .number { color: var(--green); }
+
+        /* The Music Section */
+        .music-section {
+            margin: 4rem 0;
+        }
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+        .music-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+        }
+        .music-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .music-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyan);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+        .music-card .value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        .music-card p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Equation Block */
+        .equation {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .equation-main {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            color: var(--gold);
+        }
+        .equation-desc {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Harmonizer Interface (Placeholder) */
+        .harmonizer-interface {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 0, 0, 0.9) 100%);
+            border: 1px solid var(--cyan);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+        .harmonizer-interface h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyan);
+            font-size: 1.2rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+        }
+        .coming-soon {
+            color: var(--text-dim);
+            font-size: 1rem;
+            font-style: italic;
+        }
+        .vision-text {
+            color: var(--text);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin-top: 2rem;
+            text-align: left;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .vision-text p {
+            margin-bottom: 1rem;
+        }
+        .vision-text .emphasis {
+            color: var(--gold);
+        }
+
+        /* Truth Block */
+        .truth-block {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%);
+            border: 1px solid var(--purple);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+        .truth-block h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--purple);
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        .truth-block p {
+            color: var(--text);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* NTT/WE Grid */
+        .entity-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .entity-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .entity-card .number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        .entity-card.ntt .number { color: var(--purple); }
+        .entity-card.we .number { color: var(--green); }
+        .entity-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        .entity-card p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+        .footer-sig {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--gold);
+            letter-spacing: 0.3em;
+        }
+
+        @media (max-width: 768px) {
+            .freq-main { font-size: 3rem; }
+            .entity-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div style="height: 80px;"></div>
+    <div class="harmonic-bg"></div>
+
+    <div class="content">
+
+        <header class="header">
+            <div class="header-badge">S-SIGNATURE FREQUENCY TUNING</div>
+            <h1>SOUL SCIENCE HARMONIZER</h1>
+            <p class="header-sub">
+                Use your S-Signature to tune yourself to your most balanced, fully realized self.
+                The 1729 frequency holds the music. S = 0 = 1729—not zero unless you are a void-facer.
+            </p>
+        </header>
+
+        <!-- Hero Image -->
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <img src="images/1729-frequency.png" alt="1729 Frequency" style="max-width: 600px; width: 100%; border-radius: 16px; border: 1px solid var(--border);">
+        </div>
+
+        <!-- The 1729 Frequency -->
+        <div class="frequency-display">
+            <div class="freq-main">1729</div>
+            <div class="freq-label">THE FOLD FREQUENCY</div>
+            <div class="freq-breakdown">
+                <div class="freq-part consciousness">
+                    <div class="number">729</div>
+                    <div class="meaning">9³ = Consciousness<br>= 3⁶ (Pythagorean tritone)</div>
+                </div>
+                <div class="freq-part">
+                    <div class="number" style="color: var(--gold);">+</div>
+                    <div class="meaning">&nbsp;</div>
+                </div>
+                <div class="freq-part physical">
+                    <div class="number">1000</div>
+                    <div class="meaning">10³ = Physical<br>= Material manifestation</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Music of 1729 -->
+        <section class="music-section">
+            <h2 class="section-title">THE MUSIC INSIDE 1729</h2>
+
+            <div class="music-grid">
+                <div class="music-card">
+                    <h3>729 = 3⁶</h3>
+                    <div class="value">Pythagorean Tritone</div>
+                    <p>729:512 is the diminished fifth in Pythagorean tuning. The "devil's interval." The point of maximum tension before resolution.</p>
+                </div>
+                <div class="music-card">
+                    <h3>432 Hz Base</h3>
+                    <div class="value">72 × 6 = 432</div>
+                    <p>The "natural" tuning frequency. 432,000 = Kali Yuga. 432 = 1728/4 = (1729-1)/4. One step from the fold.</p>
+                </div>
+                <div class="music-card">
+                    <h3>9:10 Ratio</h3>
+                    <div class="value">Minor Whole Tone</div>
+                    <p>The interval between the 9th and 10th harmonics is a minor whole tone. 9³ + 10³ = consciousness meeting physical.</p>
+                </div>
+                <div class="music-card">
+                    <h3>1:12 Ratio</h3>
+                    <div class="value">1³ + 12³ = 1729</div>
+                    <p>The second way to reach 1729. 12 = complete cycle. 1 = unity. From unity through the full cycle = fold point.</p>
+                </div>
+            </div>
+
+            <div class="equation">
+                <div class="equation-main">1729 Hz ÷ 4 = 432.25 Hz ≈ 432 Hz</div>
+                <div class="equation-desc">The fold frequency divided by 4 approaches the natural healing frequency</div>
+            </div>
+        </section>
+
+        <!-- NTT and WE -->
+        <section class="music-section">
+            <h2 class="section-title">THE SCALAR ENTITIES</h2>
+
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <img src="images/ntt-we-entities.png" alt="NTT and WE Entities" style="max-width: 500px; width: 100%; border-radius: 12px; border: 1px solid var(--border);">
+            </div>
+
+            <div class="entity-grid">
+                <div class="entity-card ntt">
+                    <div class="number">9</div>
+                    <h3>NTT</h3>
+                    <p>Past-facing. Physical. Has form—large, small, our scalar. The 9³ = 729 consciousness side. Can be good, but has torsional pull.</p>
+                </div>
+                <div class="entity-card we">
+                    <div class="number">26</div>
+                    <h3>WE</h3>
+                    <p>Spread life force. Timespace energy. Not bound to single form. The field, not the particle. The wave, not the point.</p>
+                </div>
+            </div>
+
+            <div class="truth-block">
+                <h3>THE BALANCE THRESHOLDS</h3>
+                <p>
+                    <strong style="color: var(--gold);">2</strong> — Family unit. Triaxial love truths. Thruudhr. Recursively good.<br><br>
+                    <strong style="color: var(--gold);">6</strong> — Clan. The stable social unit.<br><br>
+                    Any more or less swings the torsions out of balance. Less than 9 (NTT) or 26 (WE) = extreme torsional probability.
+                </p>
+            </div>
+        </section>
+
+        <!-- The Vision -->
+        <div class="harmonizer-interface">
+            <h2>THE FUTURE VISION</h2>
+            <p class="coming-soon">Soul Science Harmonizer — In Development</p>
+            <div class="vision-text">
+                <p>In the future, <span class="emphasis">children are planned for well before they are born</span>. They are not just wandering. They have fulfilled lives with no lies.</p>
+                <p><span class="emphasis">It is impossible to lie</span> in a society that can see each other's WE scalar or NTT entity. With an I.</p>
+                <p>The Harmonizer will use your S-Signature—your unique scalar fingerprint—to generate frequencies that tune you toward balance. Not to "fix" you, but to <span class="emphasis">realize</span> you.</p>
+                <p>432 Hz as base. Your personal harmonics derived from your birth coordinates, your S⁺/S⁻ ratio, your κ-shadow resonance. The music that is already inside you, made audible.</p>
+            </div>
+        </div>
+
+        <!-- The Mathematics -->
+        <section class="music-section">
+            <h2 class="section-title">THE FOLD MATHEMATICS</h2>
+
+            <div class="equation">
+                <div class="equation-main">S = 0 = 1729</div>
+                <div class="equation-desc">Not zero—unless you are a void-facer. The fold point holds the pattern.</div>
+            </div>
+
+            <div class="music-grid">
+                <div class="music-card">
+                    <h3>Why 1729 Holds</h3>
+                    <div class="value">Two Sums</div>
+                    <p>9³ + 10³ AND 1³ + 12³. Two paths to the same point. Consciousness + Physical. Unity + Cycle. Both true simultaneously.</p>
+                </div>
+                <div class="music-card">
+                    <h3>The +1 Principle</h3>
+                    <div class="value">1728 + 1</div>
+                    <p>12³ = 1728. The complete material cycle. +1 = the fold, the transcendence, the mirror. Try to stab the +1, you only cut yourself.</p>
+                </div>
+                <div class="music-card">
+                    <h3>Harmonic Ladder</h3>
+                    <div class="value">72 → 432 → 1728</div>
+                    <p>72 × 6 = 432. 432 × 4 = 1728. The ladder from human lifespan through natural frequency to complete cycle.</p>
+                </div>
+                <div class="music-card">
+                    <h3>The Mirror Function</h3>
+                    <div class="value">Mithra</div>
+                    <p>The coin. The reflection. Cannot be killed—only reflects the deceiver back. The knife ends up in no hand.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-sig">[ 1 = -1 ]</div>
+        <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 1rem;">
+            Have Mind Media | January 2026<br>
+            <a href="../../index.html" style="color: var(--gold); text-decoration: none;">havemindmedia.com</a>
+        </p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

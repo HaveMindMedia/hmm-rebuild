@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Watch of TORS | Springs of Reality | Have Mind Media</title>
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <style>
+        .header-space { height: 80px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0f;
+            color: #e8e4d9;
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* The Watch Container */
+        .watch-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .subtitle {
+            color: #888;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .tagline {
+            color: #4a9eff;
+            font-family: monospace;
+            margin-bottom: 2rem;
+        }
+
+        /* The Watch Face */
+        .watch-face {
+            position: relative;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%);
+            border: 4px solid #d4af37;
+            box-shadow:
+                0 0 60px rgba(212, 175, 55, 0.3),
+                inset 0 0 100px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Center point - The WUSH */
+        .center-wush {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #fff 0%, #d4af37 50%, #0a0a0f 100%);
+            border-radius: 50%;
+            z-index: 100;
+            box-shadow: 0 0 20px #d4af37;
+        }
+
+        .center-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 25px);
+            color: #d4af37;
+            font-size: 0.7rem;
+            font-family: monospace;
+            white-space: nowrap;
+            z-index: 101;
+        }
+
+        /* The κ Spring Rings */
+        .kappa-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .k1 { width: 100px; height: 100px; border-color: #ff6b6b; }
+        .k2 { width: 160px; height: 160px; border-color: #ffa94d; }
+        .k3 { width: 220px; height: 220px; border-color: #ffd43b; }
+        .k4 { width: 280px; height: 280px; border-color: #69db7c; }
+        .k5 { width: 340px; height: 340px; border-color: #4dabf7; }
+        .k6 { width: 400px; height: 400px; border-color: #9775fa; border-width: 3px; }
+        .k7 { width: 480px; height: 480px; border-color: #e599f7; border-style: dashed; }
+        .k8 { width: 560px; height: 560px; border-color: #fcc2d7; border-style: dotted; }
+
+        /* Ring Labels */
+        .ring-label {
+            position: absolute;
+            font-size: 0.75rem;
+            font-family: monospace;
+            white-space: nowrap;
+        }
+
+        /* The Springs - Spiral Arms */
+        .spring-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+        }
+
+        .spring-arm {
+            position: absolute;
+            transform-origin: 0 0;
+        }
+
+        /* S+ Spring (Forward/Builder) */
+        .spring-plus {
+            width: 280px;
+            height: 4px;
+            background: linear-gradient(90deg,
+                #d4af37 0%,
+                #4a9eff 30%,
+                #69db7c 60%,
+                #ffd43b 100%
+            );
+            transform: rotate(0deg);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(74, 158, 255, 0.5);
+            animation: wind-spring-plus 8s ease-in-out infinite;
+        }
+
+        /* S- Spring (Backward/Shadow) */
+        .spring-minus {
+            width: 280px;
+            height: 4px;
+            background: linear-gradient(90deg,
+                #d4af37 0%,
+                #9775fa 30%,
+                #e599f7 60%,
+                #fcc2d7 100%
+            );
+            transform: rotate(180deg);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(151, 117, 250, 0.5);
+            animation: wind-spring-minus 8s ease-in-out infinite;
+        }
+
+        @keyframes wind-spring-plus {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-15deg); }
+        }
+
+        @keyframes wind-spring-minus {
+            0%, 100% { transform: rotate(180deg); }
+            25% { transform: rotate(165deg); }
+            50% { transform: rotate(180deg); }
+            75% { transform: rotate(195deg); }
+        }
+
+        /* The Torsion Coils */
+        .torsion-coil {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .coil-svg {
+            width: 600px;
+            height: 600px;
+            animation: rotate-coil 60s linear infinite;
+        }
+
+        @keyframes rotate-coil {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* D-Position Markers (Hour positions) */
+        .d-marker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .d-marker:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .d1 { background: #1a1a2e; border: 2px solid #fff; color: #fff; }
+        .d2 { background: #1a1a2e; border: 2px solid #69db7c; color: #69db7c; }
+        .d3 { background: #1a1a2e; border: 2px solid #4dabf7; color: #4dabf7; }
+        .d4 { background: #1a1a2e; border: 2px solid #ffd43b; color: #ffd43b; }
+        .d5 { background: #1a1a2e; border: 2px solid #d4af37; color: #d4af37; }
+        .d6 { background: #1a1a2e; border: 2px solid #ff6b6b; color: #ff6b6b; }
+        .d7 { background: #1a1a2e; border: 2px solid #e599f7; color: #e599f7; }
+        .d8 { background: #1a1a2e; border: 2px solid #4a9eff; color: #4a9eff; }
+        .d9 { background: #1a1a2e; border: 2px solid #fcc2d7; color: #fcc2d7; }
+
+        /* Observer Eyes */
+        .observer {
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.6rem;
+            font-family: monospace;
+        }
+
+        .eye {
+            font-size: 1.5rem;
+        }
+
+        .observer-a {
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #4a9eff;
+        }
+
+        .observer-b {
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #4a9eff;
+        }
+
+        /* The Witness positions (κ₇ and κ₈) */
+        .watcher {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .watcher:hover {
+            transform: scale(1.1);
+        }
+
+        .watcher-sw {
+            top: 100px;
+            right: 30px;
+            border: 1px solid #b87333;
+        }
+
+        .watcher-hw {
+            bottom: 100px;
+            left: 30px;
+            border: 1px solid #5a9aaa;
+        }
+
+        /* Scalar Number Line (integrated from Crossroads) */
+        .scalar-line {
+            position: absolute;
+            top: 50%;
+            left: 80px;
+            right: 80px;
+            height: 2px;
+            background: linear-gradient(90deg,
+                #4a9eff 0%,      /* s- */
+                #d4af37 50%,     /* balance */
+                #ff6b6b 100%    /* s+ */
+            );
+            transform: translateY(-50%);
+            opacity: 0.4;
+        }
+
+        .scalar-marker {
+            position: absolute;
+            top: 50%;
+            font-family: monospace;
+            font-size: 0.7rem;
+            transform: translateY(15px);
+        }
+
+        .scalar-marker.s-minus { color: #4a9eff; }
+        .scalar-marker.s-plus { color: #ff6b6b; }
+
+        /* The 8th Day Indicator */
+        .eighth-day {
+            position: absolute;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid #4a9eff;
+            border-radius: 8px;
+            background: rgba(74, 158, 255, 0.1);
+        }
+
+        .eighth-day .infinity {
+            font-size: 2rem;
+            color: #4a9eff;
+        }
+
+        .eighth-day .label {
+            font-size: 0.7rem;
+            color: #888;
+        }
+
+        /* Info Panel */
+        .info-panel {
+            max-width: 800px;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+
+        .info-panel h2 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .info-panel p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #aaa;
+        }
+
+        .formula {
+            font-family: monospace;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 1rem;
+            border-left: 3px solid #d4af37;
+            margin: 1rem 0;
+            color: #d4af37;
+        }
+
+        .kappa-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .kappa-table th, .kappa-table td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .kappa-table th {
+            color: #d4af37;
+        }
+
+        .legend {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        /* Pulse animation for active springs */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .spring-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            height: 400px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center,
+                rgba(212, 175, 55, 0.1) 0%,
+                transparent 70%
+            );
+            animation: pulse 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* Moon phase indicator */
+        .moon-phase {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            text-align: center;
+        }
+
+        .moon {
+            font-size: 2rem;
+            animation: moon-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes moon-glow {
+            0%, 100% { text-shadow: 0 0 10px #ffd43b; }
+            50% { text-shadow: 0 0 20px #ffd43b, 0 0 30px #ffd43b; }
+        }
+
+        .moon-label {
+            font-size: 0.6rem;
+            color: #888;
+            font-family: monospace;
+        }
+
+        /* Spiral path animation */
+        .spiral-path {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .spiral-svg {
+            width: 500px;
+            height: 500px;
+        }
+
+        .spiral-line {
+            fill: none;
+            stroke: url(#spiralGradient);
+            stroke-width: 1.5;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw-spiral 10s linear infinite;
+        }
+
+        @keyframes draw-spiral {
+            0% { stroke-dashoffset: 1000; }
+            50% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -1000; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="header-space"></div>
+    <div class="watch-container">
+        <h1>THE WATCH OF TORS</h1>
+        <div class="subtitle">The Springs of Reality × The Scalar Crossroads</div>
+        <div class="tagline">[1 = -1]</div>
+        <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem;">
+            <a href="../physics-viz/scalar-crossroads-animated.html" style="color: #4a9eff; text-decoration: none;">
+                → View The Scalar Crossroads (Animated)
+            </a>
+        </div>
+
+        <div class="watch-face">
+            <!-- Center WUSH Point -->
+            <div class="center-wush"></div>
+            <div class="center-label">WUSH<br>s=0</div>
+
+            <!-- Spring Glow -->
+            <div class="spring-glow"></div>
+
+            <!-- Scalar Number Line (from The Scalar Crossroads) -->
+            <div class="scalar-line"></div>
+            <div class="scalar-marker s-minus" style="left: 100px;">7</div>
+            <div class="scalar-marker s-minus" style="left: 140px;">6</div>
+            <div class="scalar-marker s-minus" style="left: 180px;">5</div>
+            <div class="scalar-marker s-minus" style="left: 220px;">4</div>
+            <div class="scalar-marker s-minus" style="left: 260px;">3</div>
+            <div class="scalar-marker s-minus" style="left: 300px;">2</div>
+            <div class="scalar-marker s-minus" style="left: 340px;">1</div>
+            <div class="scalar-marker s-plus" style="right: 340px;">1</div>
+            <div class="scalar-marker s-plus" style="right: 300px;">2</div>
+            <div class="scalar-marker s-plus" style="right: 260px;">3</div>
+            <div class="scalar-marker s-plus" style="right: 220px;">4</div>
+            <div class="scalar-marker s-plus" style="right: 180px;">5</div>
+            <div class="scalar-marker s-plus" style="right: 140px;">6</div>
+            <div class="scalar-marker s-plus" style="right: 100px;">7</div>
+            <div class="scalar-marker" style="left: 60px; color: #4a9eff; font-size: 1.2rem;">∞</div>
+            <div class="scalar-marker" style="right: 60px; color: #ff6b6b; font-size: 1.2rem;">∞</div>
+
+            <!-- κ Rings (Springs as Concentric Circles) -->
+            <div class="kappa-ring k1"></div>
+            <div class="kappa-ring k2"></div>
+            <div class="kappa-ring k3"></div>
+            <div class="kappa-ring k4"></div>
+            <div class="kappa-ring k5"></div>
+            <div class="kappa-ring k6"></div>
+            <div class="kappa-ring k7"></div>
+            <div class="kappa-ring k8"></div>
+
+            <!-- Spiral Torsion Path -->
+            <div class="spiral-path">
+                <svg class="spiral-svg" viewBox="-250 -250 500 500">
+                    <defs>
+                        <linearGradient id="spiralGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#4a9eff;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#9775fa;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path class="spiral-line" d="
+                        M 0,0
+                        C 20,-20 40,0 40,40
+                        C 40,80 0,100 -40,100
+                        C -80,100 -120,60 -120,0
+                        C -120,-60 -80,-120 0,-120
+                        C 80,-120 160,-60 160,20
+                        C 160,100 80,180 -20,180
+                        C -120,180 -200,100 -200,-20
+                        C -200,-140 -100,-220 40,-220
+                    "/>
+                </svg>
+            </div>
+
+            <!-- Spring Arms (S+ and S-) -->
+            <div class="spring-container">
+                <div class="spring-arm spring-plus"></div>
+                <div class="spring-arm spring-minus"></div>
+            </div>
+
+            <!-- D-Position Markers (The Hours) -->
+            <!-- Positioned in a circle, D9 at top (12 o'clock), going clockwise -->
+            <div class="d-marker d9" style="top: 40px; left: 50%; transform: translateX(-50%);" title="D₉: Anchor/Love">D₉</div>
+            <div class="d-marker d1" style="top: 100px; right: 100px;" title="D₁: Origin/WE">D₁</div>
+            <div class="d-marker d2" style="top: 50%; right: 40px; transform: translateY(-50%);" title="D₂: Healing">D₂</div>
+            <div class="d-marker d3" style="bottom: 100px; right: 100px;" title="D₃: Healer">D₃</div>
+            <div class="d-marker d4" style="bottom: 40px; left: 50%; transform: translateX(-50%);" title="D₄: Crossroads">D₄</div>
+            <div class="d-marker d5" style="bottom: 100px; left: 100px;" title="D₅: Navigator">D₅</div>
+            <div class="d-marker d6" style="top: 50%; left: 40px; transform: translateY(-50%);" title="D₆: Power/Self">D₆</div>
+            <div class="d-marker d7" style="top: 100px; left: 100px;" title="D₇: Present Moment">D₇</div>
+            <div class="d-marker d8" style="top: 170px; left: 50%; transform: translateX(-50%);" title="D₈: Deep Water/Osiris">D₈</div>
+
+            <!-- The Four Watchers (from Scalar Crossroads) -->
+            <div class="observer observer-a" title="HO - Hidden Observer: Inventory of ACTUAL balance">
+                <span class="eye">👁</span>
+                <span>HO</span>
+                <span style="color: #d4af37;">Hidden Observer</span>
+            </div>
+            <div class="observer observer-b" title="SO - Silent Observer: JUDGES the obvious presentation">
+                <span class="eye">👁</span>
+                <span>SO</span>
+                <span style="color: #4a9eff;">Silent Observer</span>
+            </div>
+
+            <!-- κ₇ and κ₈ as the witness positions -->
+            <div class="watcher watcher-sw" title="SW - Silent Witness (κ₇): Watches from S⁺ position">
+                <span style="font-size: 1rem; color: #b87333;">M2-</span>
+                <span style="font-size: 0.5rem; color: #888;">κ₇ / SW</span>
+            </div>
+            <div class="watcher watcher-hw" title="HW - Hidden Witness (κ₈): Watches from S⁻ position">
+                <span style="font-size: 1rem; color: #5a9aaa;">MH</span>
+                <span style="font-size: 0.5rem; color: #888;">κ₈ / HW</span>
+            </div>
+
+            <!-- Moon Phase (100-moon renewal cycle) -->
+            <div class="moon-phase">
+                <div class="moon">🌙</div>
+                <div class="moon-label">100 MOONS</div>
+            </div>
+
+            <!-- 8th Day Indicator -->
+            <div class="eighth-day">
+                <div class="infinity">∞</div>
+                <div class="label">8th DAY</div>
+                <div class="label">D₈ = Ω</div>
+            </div>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <h2>THE MECHANICS OF TORSION</h2>
+
+            <p>
+                The Watch of TORS reveals a fundamental truth: there are not two springs in opposition.
+                There is <strong>ONE spring viewed from TWO positions</strong>. This is base 2 life mathematics—
+                not +1 and -1 as separate values, but 1 observed from different perspectives.
+            </p>
+
+            <div class="formula">
+                κ₇ × κ₈ = 1<br>
+                κ_forward × κ_shadow = 1<br>
+                [1 = -1]
+            </div>
+
+            <h2>THE SCALAR CROSSROADS</h2>
+
+            <p>
+                The horizontal number line across the watch face encodes the <strong>Scalar Crossroads</strong>:
+                numbers 1-7 mirrored on each side, with the © (crossroads) at center. This IS [1 = -1] made visible.
+            </p>
+
+            <div class="formula">
+                ∞ ← 7 6 5 4 3 2 1 [©] 1 2 3 4 5 6 7 → ∞<br>
+                &nbsp;&nbsp;&nbsp;←—— s⁻ ——&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;—— s⁺ ——→<br><br>
+                1+2+3+4+5+6+7 = 28 ≈ κ_shadow<br>
+                (28 × 2) + 4 watchers = 60
+            </div>
+
+            <h3>The Four Watchers</h3>
+
+            <table class="kappa-table">
+                <tr>
+                    <th>Position</th>
+                    <th>Watcher</th>
+                    <th>Function</th>
+                </tr>
+                <tr><td style="color: #d4af37;">TOP</td><td>HO (Hidden Observer)</td><td>Inventory of ACTUAL balance</td></tr>
+                <tr><td style="color: #4a9eff;">BOTTOM</td><td>SO (Silent Observer)</td><td>JUDGES the obvious presentation</td></tr>
+                <tr><td style="color: #b87333;">TOP RIGHT (M2-)</td><td>SW (Silent Witness) = κ₇</td><td>Watches from S⁺ position</td></tr>
+                <tr><td style="color: #5a9aaa;">BOTTOM LEFT (MH)</td><td>HW (Hidden Witness) = κ₈</td><td>Watches from S⁻ position</td></tr>
+            </table>
+
+            <p>
+                The Four Watchers are not just observers—they are <strong>MIRRORS of each other</strong>.
+                HO ↔ SO (vertical mirror), HW ↔ SW (diagonal mirror + recurse).
+                The recursion creates the depth: watchers watching watchers watching watchers...
+            </p>
+
+            <p>
+                <strong>κ₇ (Silent Witness)</strong> and <strong>κ₈ (Hidden Witness)</strong> are the two observer positions
+                of the ONE spring. M2- is SW flipped upside-down and mirrored. MH is HW mirrored horizontally.
+                The transformation itself encodes [1 = -1].
+            </p>
+
+            <h2>THE τ₄ FOUR CONFIGURATIONS</h2>
+
+            <p>
+                The Watch maps ALL possible movements. At the core is the <strong>Four Torsion Balance</strong>:
+            </p>
+
+            <div class="formula">
+                τ₁ + τ₂ + τ₃ + τ₄ = 0 (always)<br><br>
+                τ₄ = -(τ₁ + τ₂ + τ₃)<br>
+                <em>The silent fourth is DETERMINED, not chosen.</em>
+            </div>
+
+            <table class="kappa-table">
+                <tr>
+                    <th>Torsion</th>
+                    <th>Role</th>
+                    <th>Watcher</th>
+                    <th>Transform</th>
+                </tr>
+                <tr><td style="color: #d4af37;">τ₁</td><td>FACING</td><td>HO (Hidden Observer)</td><td>Direct observation</td></tr>
+                <tr><td style="color: #4a9eff;">τ₂</td><td>MIRROR</td><td>SO (Silent Observer)</td><td>Flipped view</td></tr>
+                <tr><td style="color: #b87333;">τ₃</td><td>RECURSIVE</td><td>SW (Silent Witness) = κ₇</td><td>Inverted + mirrored</td></tr>
+                <tr><td style="color: #5a9aaa;">τ₄</td><td>SILENT (Ammit)</td><td>HW (Hidden Witness) = κ₈</td><td>Determined by others</td></tr>
+            </table>
+
+            <h3>The Four Configurations of τ₄</h3>
+
+            <p>τ₄ is the MOST COMPLEX because it can face ANY direction OR remain unknown:</p>
+
+            <table class="kappa-table">
+                <tr>
+                    <th>Config</th>
+                    <th>Symbol</th>
+                    <th>State</th>
+                    <th>Meaning</th>
+                </tr>
+                <tr><td style="color: #888;">Unknown</td><td>?</td><td>True uncertainty</td><td>Unresolved shadow, Wush-facing</td></tr>
+                <tr><td style="color: #ff6b6b;">Facing S⁺</td><td>→</td><td>Physical</td><td>Grounded in spacetime extension</td></tr>
+                <tr><td style="color: #4a9eff;">Facing S⁻</td><td>←</td><td>Soul</td><td>Oriented inward through awareness</td></tr>
+                <tr><td style="color: #d4af37;">Facing ◯</td><td>◯</td><td>Coin</td><td>Observer-observed boundary</td></tr>
+            </table>
+
+            <h3>The Coin-Mirror Identity</h3>
+
+            <div class="formula">
+                MIRROR = D₁ (Origin — where you ARE)<br>
+                COIN = D₅ (Navigator — where you GO)<br>
+                AMMIT = D₂ (Consequence function)<br><br>
+                Coins and Mirrors are THE SAME OBJECT from different transforms:<br>
+                • Mirror = coin viewed from T₂ transform<br>
+                • Coin = all four transforms in balance<br>
+                • Ammit IS τ₄ (the silent fourth)<br>
+                • <strong>Ammit ALWAYS collects.</strong>
+            </div>
+
+            <h2>THE EIGHT κ MODES</h2>
+
+            <table class="kappa-table">
+                <tr>
+                    <th>Mode</th>
+                    <th>Domain</th>
+                    <th>Spring Character</th>
+                </tr>
+                <tr><td style="color: #ff6b6b;">κ₁</td><td>Electromagnetic</td><td>Fast oscillation — the quick wind</td></tr>
+                <tr><td style="color: #ffa94d;">κ₂</td><td>Gravitational</td><td>Slow accumulation — the deep wind</td></tr>
+                <tr><td style="color: #ffd43b;">κ₃</td><td>Nuclear Strong</td><td>Tight binding — the coiled core</td></tr>
+                <tr><td style="color: #69db7c;">κ₄</td><td>Nuclear Weak</td><td>Decay/transformation — the release</td></tr>
+                <tr><td style="color: #4dabf7;">κ₅</td><td>Consciousness</td><td>Navigation/perception — the witness</td></tr>
+                <tr><td style="color: #9775fa;">κ₆</td><td>Meta-Controller</td><td>Governs resolution vs divergence</td></tr>
+                <tr><td style="color: #e599f7;">κ₇</td><td>Observer Mode (SW)</td><td>D₇ = Present Moment = τ₃ = Position A</td></tr>
+                <tr><td style="color: #fcc2d7;">κ₈</td><td>Return Mode (HW)</td><td>D₈ = Deep Water = τ₄ = Position B</td></tr>
+            </table>
+
+            <h2>THE D-WHEEL (HOURS OF REALITY)</h2>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background: #fff;"></div>D₁ Origin/WE</div>
+                <div class="legend-item"><div class="legend-color" style="background: #69db7c;"></div>D₂ Healing</div>
+                <div class="legend-item"><div class="legend-color" style="background: #4dabf7;"></div>D₃ Healer</div>
+                <div class="legend-item"><div class="legend-color" style="background: #ffd43b;"></div>D₄ Crossroads</div>
+                <div class="legend-item"><div class="legend-color" style="background: #d4af37;"></div>D₅ Navigator</div>
+                <div class="legend-item"><div class="legend-color" style="background: #ff6b6b;"></div>D₆ Power/Self</div>
+                <div class="legend-item"><div class="legend-color" style="background: #e599f7;"></div>D₇ Present Moment</div>
+                <div class="legend-item"><div class="legend-color" style="background: #4a9eff;"></div>D₈ Deep Water (Osiris)</div>
+                <div class="legend-item"><div class="legend-color" style="background: #fcc2d7;"></div>D₉ Anchor/Love</div>
+            </div>
+
+            <h2>THE EIGHTH DAY</h2>
+
+            <p>
+                When 8 is turned on its side, it becomes ∞ — infinity. The 8th day is not the 1st day repeated;
+                it is the 1st day of the next octave. The spring completes its wind and begins again.
+            </p>
+
+            <p>
+                D₇ + D₁ = D₈<br>
+                <em>Present Moment + Origin = Deep Water</em>
+            </p>
+
+            <p>
+                The hidden observer (κ₄ = S∿) watches all cycles, noting each turn of the spring.
+                Every 100 moons, the signature renews. The Watch never stops—it cannot,
+                for time itself is the spring unwinding.
+            </p>
+
+            <div class="formula">
+                The geometry is pure. The measurements carry error. Trust the geometry.<br>
+                — The Epoch Project
+            </div>
+
+            <h2>THE TORSION SPRING MATHEMATICS</h2>
+
+            <p>
+                Classical physics gives Hooke's Law: <code>F = -kx</code>. But the negative sign implies two separate things (push and pull).
+                This violates [1 = -1]. There are not two forces—there is <strong>ONE force viewed from two positions</strong>.
+            </p>
+
+            <h3>The Epoch Reformulation</h3>
+
+            <div class="formula">
+                τ = κ · θ · cos(φ)<br><br>
+                Where:<br>
+                τ = torsion (replaces force F)<br>
+                κ = the kappa constant (30 pure)<br>
+                θ = angular displacement from equilibrium<br>
+                φ = observer phase angle
+            </div>
+
+            <p>
+                When φ = 0° (Observer A / κ₇ / S⁺): τ = κ · θ · 1 = <em>winding</em><br>
+                When φ = 180° (Observer B / κ₈ / S⁻): τ = κ · θ · (-1) = <em>unwinding</em>
+            </p>
+
+            <p><strong>But these are the SAME τ.</strong> The sign emerges from observer position, not from the spring itself.</p>
+
+            <h3>Newton's 3rd Law Compliance</h3>
+
+            <p>
+                Newton: "For every action, there is an equal and opposite reaction."<br>
+                Epoch: "Every action IS its reaction, viewed from the complementary position."
+            </p>
+
+            <div class="formula">
+                τ_A = τ_B &nbsp;&nbsp;(not τ_A = -τ_B)<br><br>
+                The "opposite" is not negation—it is rotation by π.
+            </div>
+
+            <h3>The Harmonic Product</h3>
+
+            <div class="formula">
+                τ₇ × τ₈ = κ²θ² · cos(0) · cos(π)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= κ²θ² · (1) · (-1)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= -κ²θ²<br><br>
+                Under [1 = -1]:<br>
+                τ₇ × τ₈ = |κ²θ²| = κ²θ²<br><br>
+                The product of two observer views = absolute energy stored.
+            </div>
+
+            <h3>Energy in the Spring</h3>
+
+            <p>Classical: E = ½kx²</p>
+
+            <div class="formula">
+                Epoch: E = ½κθ² · (1 + cos(2φ))<br><br>
+                At equilibrium (φ = π/2): E = ½κθ²<br>
+                At extremes (φ = 0 or π): E = κθ²<br><br>
+                Energy oscillates between manifest (S⁺) and hidden (S⁻), never destroyed.
+            </div>
+
+            <h3>The Complete State Evolution</h3>
+
+            <div class="formula">
+                S(t) = (ε(t), ν(t), φ(t))<br><br>
+                dS/dt = κ × S × e^(iωt)<br><br>
+                Where ω = 2π / T<br>
+                T = 100 moons = 2953.059 days ≈ 8.085 years
+            </div>
+
+            <p>
+                This is the heartbeat of reality. The spring winds and unwinds over 100 lunar cycles.
+                Each turn of the watch advances the signature. The observer at κ₇ sees progress.
+                The observer at κ₈ sees return. Both are correct. Both are one.
+            </p>
+
+            <div class="formula" style="text-align: center; font-size: 1.2rem;">
+                κ₇ × κ₈ = 1<br>
+                Forward × Shadow = Unity<br>
+                <strong>[1 = -1]</strong>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animate the spring arms to show torsion
+        const springPlus = document.querySelector('.spring-plus');
+        const springMinus = document.querySelector('.spring-minus');
+
+        // Add subtle random variations to make it feel organic
+        function addJitter() {
+            const jitter = (Math.random() - 0.5) * 2;
+            springPlus.style.filter = `blur(${0.5 + jitter * 0.1}px)`;
+            springMinus.style.filter = `blur(${0.5 - jitter * 0.1}px)`;
+        }
+
+        setInterval(addJitter, 100);
+
+        // D-marker tooltips on click
+        document.querySelectorAll('.d-marker').forEach(marker => {
+            marker.addEventListener('click', () => {
+                const title = marker.getAttribute('title');
+                console.log(title);
+            });
+        });
+
+        // Update moon phase based on actual lunar cycle (simplified)
+        function updateMoonPhase() {
+            const moons = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+            const now = new Date();
+            const lunarCycle = 29.53059; // days
+            const knownNewMoon = new Date('2024-01-11'); // A known new moon
+            const daysSinceNew = (now - knownNewMoon) / (1000 * 60 * 60 * 24);
+            const phase = Math.floor((daysSinceNew % lunarCycle) / lunarCycle * 8);
+            document.querySelector('.moon').textContent = moons[phase];
+        }
+
+        updateMoonPhase();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

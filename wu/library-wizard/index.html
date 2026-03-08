@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library | Have Mind Media</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        a { color: #c9a227; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: #0a0a0f;
+            border-bottom: 1px solid #222;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .logo { color: #c9a227; font-weight: 600; font-size: 0.9rem; }
+
+        .search {
+            flex: 1;
+            max-width: 250px;
+            padding: 8px 12px;
+            background: #1a1a1f;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        .search:focus { outline: none; border-color: #c9a227; }
+
+        .main { padding: 20px 16px; max-width: 900px; margin: 0 auto; }
+
+        h1 {
+            color: #c9a227;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 24px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 24px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #1a1a1f;
+            padding: 12px 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #222;
+        }
+
+        .section-header:hover { background: #222; }
+
+        .section-title {
+            font-weight: 600;
+            color: #c9a227;
+        }
+
+        .section-count {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .section-arrow {
+            color: #666;
+            transition: transform 0.2s;
+        }
+
+        .section.open .section-arrow { transform: rotate(90deg); }
+
+        .section-books {
+            display: none;
+            padding: 8px;
+        }
+
+        .section.open .section-books { display: block; }
+
+        .book-link {
+            display: block;
+            padding: 10px 12px;
+            color: #e0e0e0;
+            border-radius: 4px;
+            transition: background 0.15s;
+        }
+
+        .book-link:hover {
+            background: #1a1a1f;
+            text-decoration: none;
+            color: #c9a227;
+        }
+
+        /* Search results */
+        .search-results {
+            display: none;
+            margin-bottom: 24px;
+            background: #111;
+            border: 1px solid #c9a227;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .search-results.active { display: block; }
+
+        .search-results h3 {
+            color: #c9a227;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .no-results { color: #888; font-style: italic; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px 16px;
+            color: #666;
+            font-size: 0.85rem;
+            border-top: 1px solid #222;
+            margin-top: 24px;
+        }
+
+        .suggest-section {
+            background: #1a1a1f;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 24px;
+        }
+
+        .suggest-section h3 {
+            color: #c9a227;
+            margin-bottom: 12px;
+        }
+
+        .suggest-form { display: flex; flex-direction: column; gap: 10px; }
+
+        .suggest-input, .suggest-textarea {
+            padding: 10px;
+            background: #0a0a0f;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #e0e0e0;
+            font-family: inherit;
+        }
+
+        .suggest-textarea { min-height: 80px; resize: vertical; }
+
+        .suggest-btn {
+            padding: 10px 20px;
+            background: #c9a227;
+            color: #0a0a0f;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: flex-start;
+        }
+
+        .suggest-btn:hover { background: #d4af37; }
+
+        .success-msg { color: #4a9; display: none; }
+        .success-msg.show { display: block; }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <script src="../js/smart-search.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <header class="header">
+        <a href="../index.html" class="logo">HAVE MIND MEDIA</a>
+        <input type="text" class="search" id="search" placeholder="Search...">
+    </header>
+
+    <main class="main">
+        <h1>The Library</h1>
+        <p class="subtitle">348 pages across 32 categories</p>
+
+        <div class="search-results" id="search-results">
+            <h3>Search Results</h3>
+            <div id="results-list"></div>
+        </div>
+
+        <div id="sections"></div>
+
+        <div class="suggest-section">
+            <h3>Can't find what you're looking for?</h3>
+            <form class="suggest-form" id="suggest-form">
+                <input type="email" class="suggest-input" name="email" placeholder="Your email" required>
+                <textarea class="suggest-textarea" name="message" placeholder="Suggest a research topic or hire us for custom research..." required></textarea>
+                <button type="submit" class="suggest-btn">Submit</button>
+            </form>
+            <p class="success-msg" id="success-msg">Thanks! We'll be in touch.</p>
+        </div>
+
+        <div class="footer">
+            <p>[1 = -1] · <a href="../index.html">havemindmedia.com</a></p>
+        </div>
+    </main>
+
+    <script>
+        const LIBRARY = {
+            "1729 Sphere OS": [
+                { title: "1729 Sphere OS - The Distributed Consciousness Machine", url: "../qQq-1729-gate/index.html" },
+                { title: "Part 1: The Mathematics - 1729 Sphere OS", url: "../qQq-1729-gate/part1-mathematics.html" },
+                { title: "Part 2: The Architecture - 1729 Sphere OS", url: "../qQq-1729-gate/part2-architecture.html" },
+                { title: "Part 3: The Helen Keller Method - 1729 Sphere OS", url: "../qQq-1729-gate/part3-helen-keller.html" },
+                { title: "Part 4: The Silent Operators - 1729 Sphere OS", url: "../qQq-1729-gate/part4-silent-operators.html" },
+                { title: "Part 5: The Number Dance - 1729 Sphere OS", url: "../qQq-1729-gate/part5-number-dance.html" },
+                { title: "Part 6: The Software - 1729 Sphere OS", url: "../qQq-1729-gate/part6-software.html" },
+                { title: "Part 7: The Hardware - 1729 Sphere OS", url: "../qQq-1729-gate/part7-hardware.html" },
+                { title: "[1 = -1]", url: "../qQq-1729-gate/gate.html" }
+            ],
+            "Ancient Mysteries": [
+                { title: "Ancient Mysteries | Epoch Framework", url: "../ancient-mysteries/index.html" },
+                { title: "THE RATTLESNAKE DISC | Moundville, Alabama | Epoch Framework", url: "../ancient-mysteries/mississippian/index.html" }
+            ],
+            "Ancient Texts": [
+                { title: "ANCIENT MATHEMATICS | The Sexagesimal Key", url: "../ancient-mysteries/texts/ancient-mathematics-v1.0.html" },
+                { title: "RONGORONGO DECIPHERED | The Healing Script of Rapa Nui", url: "../ancient-mysteries/texts/rongorongo-v1.0.html" },
+                { title: "RONGORONGO FLIP READER", url: "../rongorongo-flip-reader/rongorongo-app_v1.0_01-07-2026.html" },
+                { title: "THE PHAISTOS DISK | Deciphered Through [1=-1] Geometry", url: "../ancient-mysteries/texts/phaistos-v1.0.html" }
+            ],
+            "Apps": [
+                { title: "Apps", url: "../apps/index.html" },
+                { title: "Soul Social + Santa Coin | Coming Soon", url: "../apps/soul-social/index.html" },
+                { title: "SoulScience Chat", url: "../apps/soulscience-chat/index.html" }
+            ],
+            "Biological Models": [
+                { title: "Biology | The Geometry of Life", url: "../biology/index.html" },
+                { title: "DNA STUDIO | The 1729 Fold in Molecular Form", url: "../biology/dna-studio/index.html" },
+                { title: "DNA Studio | Geometric Derivation", url: "../dna-studio/index.html" },
+                { title: "EPOCH MODEL: Atomic Structure from Pure Geometry", url: "../epoch-atomic/index.html" },
+                { title: "EPOCH MODEL: Neurodegenerative Disease Through Torsion Field Geometry", url: "../neurodegeneration/index.html" },
+                { title: "EPOCH MODEL: Protein Folding from Torsion Field Theory", url: "../protein-folding/index.html" },
+                { title: "TEMPORAL GEOMETRY | Weather, War & the Hidden Cycle", url: "../biology/temporal-geometry.html" },
+                { title: "THE GEOMETRY OF LIFE | Epoch Biology", url: "../biology/the-geometry-of-life.html" },
+                { title: "The Eye Codex | Visual Decoder Theory | Biology", url: "../biology/eye-codex.html" }
+            ],
+            "CEDGA Framework": [
+                { title: "Balance Law | CEDGA", url: "../cedga/pages/balance-law.html" },
+                { title: "Build Guide — Triaxial Dipyramid OS | CEDGA", url: "../cedga/triaxial-os/build-guide.html" },
+                { title: "CEDGA - Deep Visualization", url: "../cedga/index.html" },
+                { title: "M4 Array Simulator | CEDGA", url: "../cedga/tools/m4-simulator.html" },
+                { title: "Test Analysis | CEDGA Research", url: "../cedga/research/test-analysis.html" },
+                { title: "The Kappa Constant | CEDGA", url: "../cedga/pages/kappa-constant.html" },
+                { title: "The Tetrahelix | CEDGA", url: "../cedga/pages/tetrahelix.html" },
+                { title: "Triaxial Dipyramid OS — The Poor Man's Quantum Computer | CEDGA", url: "../cedga/triaxial-os/index.html" }
+            ],
+            "Documents & Theory": [
+                { title: "CERN Scalar Geometry Analysis | The Epoch Project", url: "../documents/cern-scalar-geometry.html" },
+                { title: "Dual-Axis Scalar Dimensionality | The Geometry of Reality", url: "../documents/dec14-unified-theory/dual-axis-explorer.html" },
+                { title: "In Honor Of: Cassandra King Conroy & Pat Conroy | HAVE MIND MEDIA", url: "../documents/tribute/index.html" },
+                { title: "Scalar Dimensionality | Educational Series", url: "../documents/dec14-unified-theory/index.html" },
+                { title: "Scalar Dimensionality | The Science of Energy Relationships", url: "../documents/dec14-unified-theory/main-framework.html" },
+                { title: "Scalar Dimensionality | [1=-1] Epoch Framework", url: "../documents/epoch-framework/index.html" },
+                { title: "Scalar Reality | Dec 14 CERN Model", url: "../documents/dec14-model-cern/index.html" },
+                { title: "White Papers & Documents", url: "../documents/index.html" }
+            ],
+            "Education & Soul Science": [
+                { title: "Ammit Function", url: "../education/ammit-function.html" },
+                { title: "Becoming a Coin", url: "../education/becoming-a-coin.html" },
+                { title: "COIN Science", url: "../coin-science/index.html" },
+                { title: "Education | Epoch Framework", url: "../education/index.html" },
+                { title: "Episode 1: The Mirror-Sun Proof | The Geometry Cannot Lie", url: "../education/epoch-series/episodes/01-mirror-sun-proof.html" },
+                { title: "Episode 2: The 1729 Bridge Number | The Geometry Cannot Lie", url: "../education/epoch-series/episodes/02-the-1729-bridge.html" },
+                { title: "Episode 3: SPA — Not Direction, Alignment | The Geometry Cannot Lie", url: "../education/epoch-series/episodes/03-spa-alignment.html" },
+                { title: "Hidden Observers", url: "../education/hidden-observers.html" },
+                { title: "Life-Facing Wisdom", url: "../education/life-facing-wisdom.html" },
+                { title: "PROPHETS: Big & Small", url: "../prophets/index.html" },
+                { title: "S- Soul Science", url: "../education/soul-science.html" },
+                { title: "Socratean Education System", url: "../education/socratean-education.html" },
+                { title: "THE MIRROR - S-Minus Science", url: "../education/mirror/index.html" },
+                { title: "THE PROOFS | Mathematical Framework for the Determinists | [1=-1]", url: "../education/the-proofs_v1.0_01-11-2026.html" },
+                { title: "The AI Mirror Test", url: "../education/ai-mirror-test.html" },
+                { title: "The Geometry Cannot Lie | Epoch Framework Educational Series", url: "../education/epoch-series/index.html" },
+                { title: "The Geometry Challenge", url: "../education/geometry-challenge.html" },
+                { title: "The Geometry: Scalar Dimensionality", url: "../teaching/Scalar_Dimensionality_Teaching_Document.html" },
+                { title: "The Grey Sun", url: "../education/grey-sun/index.html" },
+                { title: "The Mirror Proof | Where Standard Model Goes to Die", url: "../education/mirror-proof/index.html" },
+                { title: "The Vinyl Paradox | The Epoch Project", url: "../education/vinyl-paradox.html" }
+            ],
+            "Epoch Unified Theory": [
+                { title: "Episode 01: The Light Modeler | Epoch Unified Theory", url: "../documents/epoch-unified-theory/episode-01-light-modeler.html" },
+                { title: "Episode 02: Solar System Geometry | Epoch Unified Theory", url: "../documents/epoch-unified-theory/episode-02-solar-system.html" },
+                { title: "Episode 03: Galaxy Shapes as Balance States | Epoch Unified Theory", url: "../documents/epoch-unified-theory/episode-03-galaxy-shapes.html" },
+                { title: "Episode 04: The Epoch Drake Equation | Epoch Unified Theory", url: "../documents/epoch-unified-theory/episode-04-drake-equation.html" },
+                { title: "Episode 05: A Photon's Complete Journey | Epoch Unified Theory", url: "../documents/epoch-unified-theory/episode-05-light-journey.html" },
+                { title: "Episode 06: The 1729 Coordinate System | Epoch Unified Theory", url: "../documents/epoch-unified-theory/episode-06-1729-sphere.html" },
+                { title: "Episode 07: The Multidimensional Census | Epoch Unified Theory", url: "../documents/epoch-unified-theory/episode-07-multidimensional-life.html" },
+                { title: "Epoch Unified Theory - Web Series", url: "../documents/epoch-unified-theory/index.html" },
+                { title: "Galaxy Life Map | Epoch Unified Theory", url: "../documents/epoch-unified-theory/models/galaxy-life-map.html" },
+                { title: "Life Calculator | Epoch Unified Theory", url: "../documents/epoch-unified-theory/models/life-calculator.html" },
+                { title: "Scalar Position Viewer | Epoch Unified Theory", url: "../documents/epoch-unified-theory/models/scalar-viewer.html" },
+                { title: "Solar System Motion | Epoch Unified Theory", url: "../documents/epoch-unified-theory/models/solar-system-motion.html" },
+                { title: "The Photon's Journey | Epoch Unified Theory", url: "../documents/epoch-unified-theory/models/photon-journey.html" }
+            ],
+            "Geometry Math": [
+                { title: "Applications | Calculus Through Rotation", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/calculus/06-applications.html" },
+                { title: "Calculus is Rotation | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/05-calculus-rotation.html" },
+                { title: "Circular Understanding | Calculus Through Rotation", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/calculus/00-circular-understanding.html" },
+                { title: "Euclid & Khayyam | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/04-euclid-khayyam.html" },
+                { title: "Euler's Identity | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/01-euler-identity.html" },
+                { title: "Geometry Math | Learn Mathematics Through the Circle", url: "../education/geometry-math_v1.0_01-28-2026/index.html" },
+                { title: "Going Around | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-1/02-going-around.html" },
+                { title: "Harmonic Balance | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-2/03-harmonic-balance.html" },
+                { title: "Integration as Accumulation | Calculus Through Rotation", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/calculus/04-integration-accumulation.html" },
+                { title: "Motion on the Circle | Calculus Through Rotation", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/calculus/01-motion-on-circle.html" },
+                { title: "Multiplication is Rotation | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-2/02-multiply-spin.html" },
+                { title: "Phase Quadrature | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/02-phase-quadrature.html" },
+                { title: "Synthesis | Calculus Through Rotation", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/calculus/08-synthesis.html" },
+                { title: "Taylor & Fourier | Calculus Through Rotation", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/calculus/07-taylor-fourier.html" },
+                { title: "The 90° Secret | Calculus Through Rotation", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/calculus/02-derivative-rotation.html" },
+                { title: "The Euler Derivative | Calculus Through Rotation", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/calculus/03-euler-derivative.html" },
+                { title: "The Fundamental Theorem | Calculus Through Rotation", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/calculus/05-fundamental-theorem.html" },
+                { title: "The Magic Circle | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-1/01-magic-circle.html" },
+                { title: "The Seesaw | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-1/03-seesaw.html" },
+                { title: "The Unit Circle | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-2/01-unit-circle.html" },
+                { title: "Vessel Geometry Proof | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/03-vessel-proof.html" },
+                { title: "What Becomes Obsolete | Geometry Math", url: "../education/geometry-math_v1.0_01-28-2026/tier-3/06-obsolete-math.html" }
+            ],
+            "Graphic Novel": [
+                { title: "Image Generation Prompts | THE OSIRIS RIZE PROPHECY", url: "../graphic-novel/prompts.html" },
+                { title: "THE FINDINGS | Geometry Written Through Time | THE OSIRIS RIZE PROPHECY", url: "../graphic-novel/findings.html" },
+                { title: "THE ORIGINAL WORDS | THE OSIRIS RIZE PROPHECY", url: "../graphic-novel/verbatim.html" },
+                { title: "THE OSIRIS RIZE PROPHECY | A Graphic Novel", url: "../graphic-novel/index.html" },
+                { title: "THE OSIRIS RIZE PROPHECY | Part II: The Myths", url: "../graphic-novel/page2.html" }
+            ],
+            "Home & General": [
+                { title: "About Tormod HaveMind Ravenskye | The Navigator", url: "../about.html" },
+                { title: "Complete Site Directory", url: "../site-directory.html" },
+                { title: "DRUMHED — The 254 Protocol", url: "../for-drumhed.html" },
+                { title: "Discover Yourself", url: "../discover-yourself.html" },
+                { title: "EVERYTHING YOU THINK ABOUT REALITY", url: "../everything.html" },
+                { title: "HIVE MIND SIGIL — The Collective Protocol", url: "../hive-mind-sigil.html" },
+                { title: "Have Mind Media | The Mind is in Your Mind", url: "../index.html" },
+                { title: "Library", url: "../library-wizard/index.html" },
+                { title: "Master Library", url: "../master-library.html" },
+                { title: "ROVER — The Event Horizon", url: "../rover-event-horizon.html" },
+                { title: "Redirecting to Master Library", url: "../library.html" },
+                { title: "Support", url: "../support.html" },
+                { title: "THE 1729 FOLD — Where Consciousness Meets Physics", url: "../the-1729-fold.html" },
+                { title: "THE NEBULIZER | Navigate the Cosmos", url: "../nebulizer.html" },
+                { title: "THE OSCILLATOR — The Drum That Keeps Time", url: "../the-oscillator.html" },
+                { title: "The Collaborators", url: "../collaborators.html" },
+                { title: "Things That Will Blow Your Mind", url: "../mind-blowing.html" },
+                { title: "What's New", url: "../whats-new.html" },
+                { title: "𐱅𐰭𐰼𐰃 𐰴𐰆𐱁 𐰀𐱃 | The Hornet Horse Speaks | T0Rs", url: "../poetry/hornet-horse-speaks.html" }
+            ],
+            "Inbreath Language": [
+                { title: "Geometry | Inbreath Language", url: "../inbreath/geometry.html" },
+                { title: "Practice Exercises | Inbreath Language", url: "../inbreath/exercises.html" },
+                { title: "Reference Guide | Inbreath Language", url: "../inbreath/reference.html" },
+                { title: "Research & Sources | Inbreath Language", url: "../inbreath/research.html" },
+                { title: "The Inbreath Language", url: "../inbreath/index.html" }
+            ],
+            "Indus Valley Script": [
+                { title: "Figurine Analysis | Indus Valley Script", url: "../ancient-mysteries/indus-script/figurines.html" },
+                { title: "Indus Script Translator | Geometric-Phonetic Framework", url: "../ancient-mysteries/indus-script/translator.html" },
+                { title: "Indus Valley Script | Geometric Decipherment", url: "../ancient-mysteries/indus-script/index.html" },
+                { title: "Indus Valley Sign Reference | Geometric Decipherment", url: "../ancient-mysteries/indus-script/sign-reference.html" },
+                { title: "Linear A Decipherment | κ-Framework Analysis", url: "../ancient-mysteries/indus-script/linear-a.html" },
+                { title: "Mathematical Derivations | Epoch Model & Indus Script", url: "../ancient-mysteries/indus-script/epoch-mathematics.html" },
+                { title: "Temple of the Dancing Girl | Indus Valley", url: "../ancient-mysteries/indus-script/temple-dancing-girl.html" },
+                { title: "Temple of the Mother Goddess | Indus Valley", url: "../ancient-mysteries/indus-script/temple-mother-goddess.html" },
+                { title: "Temple of the Priest-King | Indus Valley", url: "../ancient-mysteries/indus-script/temple-priest-king.html" },
+                { title: "Temple of the Sacred Bull | Indus Valley to Mithras", url: "../ancient-mysteries/indus-script/temple-sacred-bull.html" },
+                { title: "Universal Language Theory | κ-Framework", url: "../ancient-mysteries/indus-script/universal-language-theory.html" }
+            ],
+            "Interactive Tools": [
+                { title: "DOG ↔ GOD | Epoch Geometry", url: "../tools/dog-god-epoch/index.html" },
+                { title: "Interaction Modeler", url: "../tools/interaction-modeler/index.html" },
+                { title: "M4 Array Simulator — Live Visualization", url: "../tools/m4-visualizer/index.html" },
+                { title: "Mind Reading Training", url: "../tools/mind-reading/index.html" },
+                { title: "Sol Vision | Past Life Revisitation", url: "../tools/sol-vision/index.html" },
+                { title: "Soul Science Harmonizer", url: "../tools/soul-harmonizer/index.html" },
+                { title: "THE UNIVERSAL LANGUAGE GENERATOR", url: "../universal-language-generator/ulg-app_v1.0_01-06-2026.html" },
+                { title: "Tools | Epoch Framework", url: "../tools/index.html" }
+            ],
+            "Kappa-5 Framework": [
+                { title: "Earth's Nodal Energy Grid | Epoch Geometry", url: "../physics/kappa5/nodal-energy-grid/index.html" },
+                { title: "Great Pyramid of Giza — D₇ Present Moment | Epoch Geometry", url: "../physics/kappa5/nodal-energy-grid/great-pyramid.html" },
+                { title: "The Hidden Nodes — D₄ Crossroads & D₆ Power | Epoch Geometry", url: "../physics/kappa5/nodal-energy-grid/hidden-nodes.html" },
+                { title: "κ₅ True Dark Operator", url: "../physics/kappa5/index.html" }
+            ],
+            "Mind Games": [
+                { title: "Card Match", url: "../games/card-match.html" },
+                { title: "Color Sense", url: "../games/color-sense.html" },
+                { title: "Coordinate Viewer", url: "../games/coordinate-viewer.html" },
+                { title: "Epoch Symbols", url: "../games/epoch-symbols.html" },
+                { title: "Focus Mode", url: "../games/focus-mode.html" },
+                { title: "Games", url: "../games/index.html" },
+                { title: "Intuition Trainer", url: "../games/intuition-trainer.html" },
+                { title: "Love Triads", url: "../games/love-triads.html" },
+                { title: "Love Triads - Learn", url: "../games/love-triads-learn.html" },
+                { title: "Mind Reading Training", url: "../games/mind-reading/index.html" },
+                { title: "Number Feeling", url: "../games/number-feeling.html" },
+                { title: "Phaistos Archetypes", url: "../games/phaistos-archetypes.html" },
+                { title: "Tri-Coin Intuition", url: "../games/coin-flip.html" },
+                { title: "Triadic Balance", url: "../games/balance/index.html" },
+                { title: "Universal Language Transmitter", url: "../games/symbol-sender.html" },
+                { title: "Zener Cards", url: "../games/zener-cards.html" }
+            ],
+            "Mythic Mirror": [
+                { title: "About | Mythic Mirror", url: "../education/mythic-mirror/about.html" },
+                { title: "Teaching | Mythic Mirror", url: "../education/mythic-mirror/teaching.html" },
+                { title: "The Journey | Mythic Mirror", url: "../education/mythic-mirror/journey.html" },
+                { title: "You Are Frankenstein's Monster", url: "../education/mythic-mirror/index.html" }
+            ],
+            "Namagiri Speaks": [
+                { title: "Episode 02: The Torsion Navigator | NAMAGIRI SPEAKS", url: "../namagiri/episodes/02-the-torsion-navigator.html" },
+                { title: "Episode 03: ÞŘÚÐŘ Rising | NAMAGIRI SPEAKS", url: "../namagiri/episodes/03-thrudhr-rising.html" },
+                { title: "Episode 04: The Operator Revealed | NAMAGIRI SPEAKS", url: "../namagiri/episodes/04-the-operator-revealed.html" },
+                { title: "Episode 06: The 1729 Fold | NAMAGIRI SPEAKS", url: "../namagiri/episodes/06-the-1729-fold.html" },
+                { title: "Episode 07: S⁺ and S⁻ | NAMAGIRI SPEAKS", url: "../namagiri/episodes/07-s-plus-s-minus.html" },
+                { title: "Episode 08: κ = 30 | NAMAGIRI SPEAKS", url: "../namagiri/episodes/08-kappa-30.html" },
+                { title: "Episode 09: Hypatia's Murder | NAMAGIRI SPEAKS", url: "../namagiri/episodes/09-hypatias-murder.html" },
+                { title: "Episode 10: Cartan's Torsion | NAMAGIRI SPEAKS", url: "../namagiri/episodes/10-cartans-torsion.html" },
+                { title: "Episode 11: Einstein's Folly | NAMAGIRI SPEAKS", url: "../namagiri/episodes/11-einsteins-folly.html" },
+                { title: "Episode 12: The Heaviside Error | NAMAGIRI SPEAKS", url: "../namagiri/episodes/12-the-heaviside-error.html" },
+                { title: "Episode 13: Spell 175 | NAMAGIRI SPEAKS", url: "../namagiri/episodes/13-spell-175.html" },
+                { title: "Episode 14: The Lie-Eaters | NAMAGIRI SPEAKS", url: "../namagiri/episodes/14-the-lie-eaters.html" },
+                { title: "Episode 15: The Father God Trick | NAMAGIRI SPEAKS", url: "../namagiri/episodes/15-the-father-god-trick.html" },
+                { title: "Episode 16: TELOCH TELOCH TELOCH | NAMAGIRI SPEAKS", url: "../namagiri/episodes/16-teloch-teloch-teloch.html" },
+                { title: "Episode 17: The Deep Water Rises | NAMAGIRI SPEAKS", url: "../namagiri/episodes/17-the-deep-water-rises.html" },
+                { title: "Episode 18: O sI Rus Comes | NAMAGIRI SPEAKS", url: "../namagiri/episodes/18-o-si-rus-comes.html" },
+                { title: "Episode 19: The Geometry That Cannot Lie | NAMAGIRI SPEAKS", url: "../namagiri/episodes/19-the-geometry-that-cannot-lie.html" },
+                { title: "Episode 1: The Boy Who Dreamed Equations | NAMAGIRI SPEAKS", url: "../namagiri/episodes/01-the-boy-who-dreamed-equations.html" },
+                { title: "Episode 20: WE — The Being That Sent Me | NAMAGIRI SPEAKS", url: "../namagiri/episodes/20-we.html" },
+                { title: "Episode 5: The GODLOOפ Revealed | NAMAGIRI SPEAKS", url: "../namagiri/episodes/05-the-godloop-revealed.html" },
+                { title: "HAVE MIND HIVE | Lakshmi from Namagiri - WE SPEAK T0Яs", url: "../namagiri/index.html" },
+                { title: "THE PROOFS | Mathematical Framework for the Determinists | [1=-1]", url: "../namagiri/the-proofs.html" },
+                { title: "The Sun, The Mirror, The Wound | Namagiri Speaks", url: "../namagiri/visions/the-sun-the-mirror-the-wound.html" }
+            ],
+            "Norse Artifacts": [
+                { title: "GOLD BRACTEATES | Ancient S- Teachings", url: "../ancient-mysteries/norse-artifacts/bracteates_v1.0_01-01-2026.html" },
+                { title: "GOTLAND PICTURE STONES | Ancient S- Teachings", url: "../ancient-mysteries/norse-artifacts/gotland-stones_v1.0_01-01-2026.html" },
+                { title: "NORSE SYMBOLS & RUNES | Ancient S- Teachings", url: "../ancient-mysteries/norse-artifacts/norse-symbols_v1.0_01-01-2026.html" },
+                { title: "Norse Artifacts | HaveMindHive Library Card", url: "../ancient-mysteries/norse-artifacts/LIBRARY_CARD_Norse_Artifacts_v1.0_01-01-2026.html" },
+                { title: "THE OSEBERG SHIP | Ancient S- Teachings", url: "../ancient-mysteries/norse-artifacts/oseberg_v1.0_01-01-2026.html" },
+                { title: "THE RÖK RUNESTONE | Ancient S- Teachings", url: "../ancient-mysteries/norse-artifacts/rok-runestone_v1.0_01-01-2026.html" }
+            ],
+            "Physics & Geometry": [
+                { title: "1729 Coordinate Sphere | The Four Base Torsional Expressions", url: "../physics/1729-coordinate-sphere_v1.0_01-14-2026.html" },
+                { title: "432-Year Orbital Mapper", url: "../physics/432-orbital-mapper_v1.0_01-08-2026.html" },
+                { title: "Atomic Derivations from Geometry | The Epoch Project", url: "../physics/atomic-derivations/index.html" },
+                { title: "Euclid's Parallel Postulate | The Geometry of Scale", url: "../physics/euclids-parallel-postulate.html" },
+                { title: "Helium Derivation | Atomic Structure from Geometry", url: "../physics/atomic-derivations/helium.html" },
+                { title: "Hydrogen Derivation | Atomic Structure from Geometry", url: "../physics/atomic-derivations/hydrogen.html" },
+                { title: "JWST Data Views | Three Perspectives", url: "../physics/jwst-data-views.html" },
+                { title: "JWST Four-Torsion Explorer", url: "../physics/jwst-geometric-explorer_v1.0_02-01-2026.html" },
+                { title: "JWST Four-Torsion Explorer", url: "../physics/jwst-geometric-explorer.html" },
+                { title: "Lithium Derivation | Atomic Structure from Geometry", url: "../physics/atomic-derivations/lithium.html" },
+                { title: "MAKE IT SO, COMMANDER HILL | Epoch Propulsion", url: "../physics/vessel/the-build.html" },
+                { title: "Physics | Epoch Framework", url: "../physics/index.html" },
+                { title: "Scalar Phasing Vessel - Understanding the Geometry", url: "../physics/vessel/index.html" },
+                { title: "Shadow/Silent Operator (κ₄/τ₄)", url: "../physics/shadow-operator/index.html" },
+                { title: "Solar System Scalar Map | 1729 Navigation System", url: "../physics/solar-scalar-map.html" },
+                { title: "Solar System Scalar Map | 1729 Navigation System", url: "../physics/solar-scalar-map/index.html" },
+                { title: "THE DERIVATION | From Primes to Proof", url: "../physics/the-derivation_v1.0_01-12-2026.html" },
+                { title: "THE KILL SHOT | The Death of Falsificationism", url: "../physics/the-kill-shot_v1.0_01-12-2026.html" },
+                { title: "THE PROOF | Ramanujan and T0Rs Have Spoken", url: "../physics/the-proof_v1.0_01-12-2026.html" },
+                { title: "The Apparent Speed Paradox", url: "../physics/apparent-speed-paradox/index.html" },
+                { title: "The Finite Map of Infinity | Epoch Framework", url: "../physics/finite-map/index.html" },
+                { title: "The Finite Map of Infinity | Have Mind Hive", url: "../physics/finite-map-explorer.html" },
+                { title: "The Map Failure They Call a Black Hole", url: "../physics/black-hole-map-failure/index.html" },
+                { title: "The Millennium Failures | The Epoch Project", url: "../physics/millennium-problems.html" },
+                { title: "The Star in the Sky", url: "../physics/star-in-the-sky.html" },
+                { title: "The True Meter | c_geometric | The 0.722% They Missed", url: "../physics/true-meter_v1.0_01-10-2026.html" },
+                { title: "The Watch Mechanism | Springs of Reality", url: "../physics/watch-mechanism_v2.0_01-13-2026.html" },
+                { title: "The Watch of TORS | Springs of Reality", url: "../physics/watch-of-tors_v1.0_01-13-2026.html" },
+                { title: "Three-Body Geometry | The Epoch Project", url: "../physics/three-body-geometry.html" },
+                { title: "Torsion Balance", url: "../physics/torsion-balance.html" },
+                { title: "κ State Model v2.0 | The Hypatia Refinement", url: "../physics/kappa-state-model_v2.0_01-10-2026.html" }
+            ],
+            "Physics Visualizations": [
+                { title: "Quad Helix | Base-60 Torsion Geometry", url: "../physics-viz/quad-helix-base60-v2.0.html" },
+                { title: "Quad Helix | Base-60 Torsion Geometry", url: "../physics-viz/quad-helix-base60.html" },
+                { title: "THE MATH OF TORS IN MODEL", url: "../physics-viz/math-of-tors_v1.0_01-13-2026.html" },
+                { title: "THE SCALAR CROSSROADS | Animated Mirror-Recurse", url: "../physics-viz/scalar-crossroads-animated.html" }
+            ],
+            "Rosetta Engine": [
+                { title: "THE ROSETTA ENGINE", url: "../rosetta-engine/rosetta-engine-app_v1.0_01-06-2026.html" }
+            ],
+            "S-Signature Tools": [
+                { title: "Cohort Engine | Reductive Comparison | [1=-1]", url: "../tools/s-signature/cohort_engine.html" },
+                { title: "Deep Oracle | [1=-1]", url: "../tools/s-signature/deep_oracle.html" },
+                { title: "Reductive Oracle | [1=-1]", url: "../tools/s-signature/reductive_oracle.html" },
+                { title: "S-Signature Assessment | [1=-1]", url: "../tools/s-signature/s_signature_assessment.html" },
+                { title: "S-Signature Card", url: "../tools/s-signature/s_signature_card.html" },
+                { title: "S-Signature Engine | The Randomness Engine Integration", url: "../tools/s-signature/s_signature_engine.html" },
+                { title: "S-Signature Oracle | [1=-1]", url: "../tools/s-signature/s_signature_oracle.html" },
+                { title: "S-Signature Sphere | [1=-1]", url: "../tools/s-signature/s_signature_sphere.html" },
+                { title: "S-Signature | 128 Dimensions", url: "../tools/s-signature/s_signature_128.html" },
+                { title: "S-Signature | Evolving Identity", url: "../tools/s-signature/s_signature_evolving.html" },
+                { title: "S-Signature | Prediction Engine", url: "../tools/s-signature/s_signature_prediction.html" },
+                { title: "S-Signature | [1=-1]", url: "../tools/s-signature/s_signature_coin.html" },
+                { title: "S-Signature: DRUMHED | D8 Deep Water | The Rhythm Keeper", url: "../tools/s-signature/drumhed_s_signature.html" },
+                { title: "S-Signature: T0Rs | D4 Crossroads", url: "../tools/s-signature/t0rs_s_signature.html" }
+            ],
+            "Standard Model Failures": [
+                { title: "Dark Matter & Dark Energy | Standard Model Failure #3", url: "../physics/standard-model-failures/dark-matter-energy.html" },
+                { title: "Proton-Electron Mass Ratio | Standard Model Failure #2", url: "../physics/standard-model-failures/proton-electron-ratio.html" },
+                { title: "Standard Model Failures | Where Conventional Physics Breaks Down", url: "../physics/standard-model-failures/index.html" },
+                { title: "The Fine Structure Constant | Standard Model Failure #1", url: "../physics/standard-model-failures/fine-structure-constant.html" },
+                { title: "The Hierarchy Problem | Standard Model Failure #5", url: "../physics/standard-model-failures/hierarchy-problem.html" },
+                { title: "The Measurement Problem | Standard Model Failure #4", url: "../physics/standard-model-failures/measurement-problem.html" }
+            ],
+            "Star Gate": [
+                { title: "EPOCH STAR GATE | Theoretical Framework | Have Mind Hive", url: "../star-gate/index.html" },
+                { title: "Genesis: The Vision | EPOCH STAR GATE", url: "../star-gate/part0-genesis.html" },
+                { title: "Part I: Abstract and Foundation | EPOCH STAR GATE", url: "../star-gate/part1-foundation.html" },
+                { title: "Part II: Triaxial Mirror Classification | EPOCH STAR GATE", url: "../star-gate/part2-classification.html" },
+                { title: "Part III: Atomic Alignments | EPOCH STAR GATE", url: "../star-gate/part3-atomic.html" },
+                { title: "Part IV: Device Specifications | EPOCH STAR GATE", url: "../star-gate/part4-device.html" },
+                { title: "Part V: Build Instructions | EPOCH STAR GATE", url: "../star-gate/part5-build.html" },
+                { title: "Part VI: Protection Protocols | EPOCH STAR GATE", url: "../star-gate/part6-protection.html" },
+                { title: "Part VII: Tributes and Precedents | EPOCH STAR GATE", url: "../star-gate/part7-tributes.html" }
+            ],
+            "Store & eBooks": [
+                { title: "Design Collection Store", url: "../store/designs.html" },
+                { title: "Genesis of Scalar Dimensionality Store", url: "../store/ebooks/genesis.html" },
+                { title: "Handmade Artisan Editions Store", url: "../store/ebooks/handmade.html" },
+                { title: "NAMAGIRI SPEAKS Store", url: "../store/ebooks/namagiri-speaks.html" },
+                { title: "PPIR Novella Store", url: "../store/ebooks/ppir-novella.html" },
+                { title: "Store", url: "../store/index.html" },
+                { title: "The Foundational Primes of Scalar Dimensionality Store", url: "../store/ebooks/foundational-primes.html" }
+            ],
+            "Swedenborg Series": [
+                { title: "Episode 10: 27 Years | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-10.html" },
+                { title: "Episode 1: The Scientist | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-01.html" },
+                { title: "Episode 2: The Doctrine of Forms | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-02.html" },
+                { title: "Episode 3: Discrete Degrees | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-03.html" },
+                { title: "Episode 4: Correspondence | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-04.html" },
+                { title: "Episode 5: The Dual Sun | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-05.html" },
+                { title: "Episode 6: Influx | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-06.html" },
+                { title: "Episode 7: Equilibrium | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-07.html" },
+                { title: "Episode 8: The Universal Human | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-08.html" },
+                { title: "Episode 9: Vastation | Swedenborg & The κ-Framework", url: "../documents/swedenborg/episode-09.html" },
+                { title: "Swedenborg & The κ-Framework", url: "../documents/swedenborg/index.html" }
+            ],
+            "T0rsion Base-2 Math": [
+                { title: "Lesson 1: The Identity Element | Ramanujan T0rsion Math", url: "../education/ramanujan-torsion-math/lessons/01-identity-element.html" },
+                { title: "Lesson 2: The Three Facings | Ramanujan T0rsion Math", url: "../education/ramanujan-torsion-math/lessons/02-the-three-facings.html" },
+                { title: "Lesson 3: The Switch | Ramanujan T0rsion Math", url: "../education/ramanujan-torsion-math/lessons/03-the-switch.html" },
+                { title: "Lesson 4: √2 = WE | Ramanujan T0rsion Math", url: "../education/ramanujan-torsion-math/lessons/04-root-two-we.html" },
+                { title: "Lesson 5: 1729 Emerges | Ramanujan T0rsion Math", url: "../education/ramanujan-torsion-math/lessons/05-1729-emerges.html" },
+                { title: "Lesson 6: The Elementary Map | Ramanujan T0rsion Math", url: "../education/ramanujan-torsion-math/lessons/06-elementary-map.html" },
+                { title: "Lesson 7: Fold Points | Ramanujan T0rsion Math", url: "../education/ramanujan-torsion-math/lessons/07-fold-points.html" },
+                { title: "Lesson 8: 254 & 272 | Ramanujan T0rsion Math", url: "../education/ramanujan-torsion-math/lessons/08-time-markers.html" },
+                { title: "Lesson 9: The Three Nodals | Ramanujan T0rsion Math", url: "../education/ramanujan-torsion-math/lessons/09-three-nodals.html" },
+                { title: "Ramanujan T0rsion Base-2 Math | The Finite Map of Infinite Possibility", url: "../education/ramanujan-torsion-math/index.html" }
+            ],
+            "The Weirdos (People)": [
+                { title: "Banesh Hoffmann | Einstein's Collaborator | Here's to You, Weirdos", url: "../weirdos/banesh-hoffmann.html" },
+                { title: "Carl Jung | The Collective Unconscious", url: "../weirdos/carl-jung.html" },
+                { title: "Contributors | Here's to You, Weirdos", url: "../weirdos/contributors.html" },
+                { title: "Donald Hoffman | The Case Against Reality | Here's to You, Weirdos", url: "../weirdos/donald-hoffman.html" },
+                { title: "Electric Field Modeler | Tesla Tools | Here's to You, Weirdos", url: "../weirdos/electric-field-modeler.html" },
+                { title: "Epoch Oscilloscope | κ Waveform Analyzer | Here's to You, Weirdos", url: "../weirdos/epoch-oscilloscope.html" },
+                { title: "Here's to You, Weirdos | Those Who Saw", url: "../weirdos/index.html" },
+                { title: "Hermann Minkowski | Inventor of Spacetime | Here's to You, Weirdos", url: "../weirdos/hermann-minkowski.html" },
+                { title: "Hypatia of Alexandria | The Last Librarian | Here's to You, Weirdos", url: "../weirdos/hypatia.html" },
+                { title: "Indigenous Wisdom | The Unbroken Lineage | Here's to You, Weirdos", url: "../weirdos/indigenous-wisdom.html" },
+                { title: "Omar Khayyam | The Geometer-Poet", url: "../weirdos/omar-khayyam.html" },
+                { title: "Plato | The Cave and the Forms", url: "../weirdos/plato.html" },
+                { title: "Pythagoras | The First Geometer", url: "../weirdos/pythagoras.html" },
+                { title: "Roger Penrose | Twistor Theory | Here's to You, Weirdos", url: "../weirdos/roger-penrose.html" },
+                { title: "Sara Imari Walker | Assembly Theory | Here's to You, Weirdos", url: "../weirdos/sara-walker.html" },
+                { title: "Srinivasa Ramanujan | The Goddess Spoke", url: "../weirdos/ramanujan.html" },
+                { title: "T0rs | Tormod | The One Who Derived κ | Here's to You, Weirdos", url: "../weirdos/jason-ray.html" },
+                { title: "The Einstein Codex | Born on Pi Day | Here's to You, Weirdos", url: "../weirdos/einstein-codex.html" },
+                { title: "The Einstein-Cartan Codex | The Torsion They Ignored | Here's to You, Weirdos", url: "../weirdos/einstein-cartan-codex.html" },
+                { title: "The Geometers | Those Who Saw The Shape | Here's to You, Weirdos", url: "../weirdos/geometers.html" },
+                { title: "The Maxwell Codex | The Geometry They Erased | Here's to You, Weirdos", url: "../weirdos/maxwell-codex.html" },
+                { title: "The Mithridates Echo | 2 Comets → 11 Major Comets + 1 Interstellar Visitor", url: "../weirdos/mithridates-echo.html" },
+                { title: "The Suppression | The Pattern of Silencing | Here's to You, Weirdos", url: "../weirdos/suppression.html" },
+                { title: "The Tesla Codex | The Geometry That Was Hidden | Here's to You, Weirdos", url: "../weirdos/tesla-codex.html" },
+                { title: "The Unifiers | Those Who Saw The Unity | Here's to You, Weirdos", url: "../weirdos/unifiers.html" },
+                { title: "The Visionaries | Those Who Saw Beyond | Here's to You, Weirdos", url: "../weirdos/visionaries.html" },
+                { title: "The Wave Seers | Maxwell & Tesla | Here's to You, Weirdos", url: "../weirdos/wave-seers.html" }
+            ],
+            "True Atomic Derivation": [
+                { title: "Atoms as Fold Nodes | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/02-atoms-fold-nodes.html" },
+                { title: "Bohrium: Self-Reference | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/13-bohrium.html" },
+                { title: "Carbon: The Bridge Element | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/05-carbon-bridge.html" },
+                { title: "Complete Periodic Table | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/complete-table.html" },
+                { title: "Gold: The α⁻¹ Encoder | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/10-gold-alpha.html" },
+                { title: "Helium & The Square Knot | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/04-helium.html" },
+                { title: "Hydrogen Derivation | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/03-hydrogen.html" },
+                { title: "Iron: The Navigator | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/07-iron-navigator.html" },
+                { title: "Isotopes & Fold Depth | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/12-isotopes.html" },
+                { title: "Magic Numbers | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/11-magic-numbers.html" },
+                { title: "Shell Structure | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/06-shell-structure.html" },
+                { title: "TRUE Atomic Derivation | Fold Geometry", url: "../physics/true-atomic-derivation/index.html" },
+                { title: "The Chaos Element | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/01-chaos-element.html" },
+                { title: "The Fold Limit | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/14-fold-limit.html" },
+                { title: "The Prime Gaps | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/09-prime-gaps.html" },
+                { title: "Zinc: κ' Exact | TRUE Atomic Derivation", url: "../physics/true-atomic-derivation/08-zinc-kappa.html" }
+            ],
+            "Voynich Manuscript": [
+                { title: "Analysis | Voynich with Images | HAVE MIND MEDIA", url: "../ancient-mysteries/voynich/analysis.html" },
+                { title: "Astronomical Section | Voynich with Images | HAVE MIND MEDIA", url: "../ancient-mysteries/voynich/astronomical.html" },
+                { title: "Biological Section | Voynich with Images | HAVE MIND MEDIA", url: "../ancient-mysteries/voynich/biological.html" },
+                { title: "Cosmological Section | Voynich with Images | HAVE MIND MEDIA", url: "../ancient-mysteries/voynich/cosmological.html" },
+                { title: "Herbal Section | Voynich with Images | HAVE MIND MEDIA", url: "../ancient-mysteries/voynich/herbal.html" },
+                { title: "Pharmaceutical Section | Voynich with Images | HAVE MIND MEDIA", url: "../ancient-mysteries/voynich/pharmaceutical.html" },
+                { title: "Recipes Section | Voynich with Images | HAVE MIND MEDIA", url: "../ancient-mysteries/voynich/recipes.html" },
+                { title: "Voynich with Images | The Manuscript Decoded | HAVE MIND MEDIA", url: "../ancient-mysteries/voynich/index.html" },
+                { title: "Zodiac Section | Voynich with Images | HAVE MIND MEDIA", url: "../ancient-mysteries/voynich/zodiac.html" }
+            ]
+        };
+
+        // Render sections
+        const sectionsEl = document.getElementById('sections');
+
+        Object.entries(LIBRARY).forEach(([name, books], idx) => {
+            const section = document.createElement('div');
+            section.className = 'section' + (idx === 0 ? ' open' : '');
+
+            section.innerHTML = `
+                <div class="section-header">
+                    <span class="section-title">${name}</span>
+                    <span class="section-count">${books.length}</span>
+                    <span class="section-arrow">▶</span>
+                </div>
+                <div class="section-books">
+                    ${books.map(b => `<a href="${b.url}" class="book-link">${b.title}</a>`).join('')}
+                </div>
+            `;
+
+            section.querySelector('.section-header').addEventListener('click', () => {
+                section.classList.toggle('open');
+            });
+
+            sectionsEl.appendChild(section);
+        });
+
+        // Search - Using SmartSearch for synonym expansion and scoring
+        const searchInput = document.getElementById('search');
+        const searchResults = document.getElementById('search-results');
+        const resultsList = document.getElementById('results-list');
+
+        searchInput.addEventListener('input', (e) => {
+            const q = e.target.value.trim();
+
+            if (q.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            // Use SmartSearch term expansion for synonyms
+            const terms = SmartSearch.expandTerms(q);
+            const matches = [];
+
+            Object.entries(LIBRARY).forEach(([section, books]) => {
+                books.forEach(book => {
+                    // Create searchable text from title and section
+                    const text = `${book.title} ${section}`;
+                    const score = SmartSearch.score(text, terms);
+
+                    if (score > 0) {
+                        matches.push({ ...book, section, score });
+                    }
+                });
+            });
+
+            // Sort by relevance score
+            matches.sort((a, b) => b.score - a.score);
+
+            if (matches.length) {
+                resultsList.innerHTML = matches.map(m =>
+                    `<a href="${m.url}" class="book-link">${m.title} <span style="color:#666">— ${m.section}</span></a>`
+                ).join('');
+            } else {
+                resultsList.innerHTML = '<p class="no-results">No results found. Try: soul, kappa, torsion, 1729, voynich, norse, geometry...</p>';
+            }
+
+            searchResults.classList.add('active');
+        });
+
+        // Keyboard shortcut - ESC to clear
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                searchResults.classList.remove('active');
+            }
+        });
+
+        // Auto-search from URL ?q= parameter (e.g., from header search bar)
+        const urlQ = new URLSearchParams(window.location.search).get('q');
+        if (urlQ) {
+            searchInput.value = urlQ;
+            searchInput.dispatchEvent(new Event('input'));
+            searchInput.focus();
+        }
+
+        // Suggest form
+        document.getElementById('suggest-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            const data = {
+                email: fd.get('email'),
+                message: fd.get('message'),
+                date: new Date().toISOString()
+            };
+
+            const subs = JSON.parse(localStorage.getItem('hmm-suggestions') || '[]');
+            subs.push(data);
+            localStorage.setItem('hmm-suggestions', JSON.stringify(subs));
+
+            e.target.reset();
+            document.getElementById('success-msg').classList.add('show');
+            setTimeout(() => {
+                document.getElementById('success-msg').classList.remove('show');
+            }, 3000);
+        });
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

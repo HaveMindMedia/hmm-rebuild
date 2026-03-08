@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="protect.js"></script>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <meta name="robots" content="noindex, nofollow">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 2: The Architecture - 1729 Sphere OS</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-code: #1a1a24;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9898a8;
+            --accent-cyan: #00d4ff;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --border-color: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .part-number { font-size: 1rem; color: var(--accent-orange); letter-spacing: 3px; margin-bottom: 10px; }
+        h1 { font-size: 2.5rem; font-weight: 300; letter-spacing: 2px; margin-bottom: 15px; }
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+
+        nav {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; list-style: none; max-width: 1200px; margin: 0 auto; }
+        nav a { color: var(--text-secondary); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 0.9rem; transition: all 0.3s ease; }
+        nav a:hover, nav a.active { background: var(--accent-cyan); color: var(--bg-dark); }
+
+        main { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
+
+        section { margin-bottom: 60px; }
+        h2 { font-size: 1.8rem; color: var(--accent-cyan); margin-bottom: 25px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        h3 { font-size: 1.4rem; color: var(--accent-orange); margin: 30px 0 15px 0; }
+        h4 { font-size: 1.1rem; color: var(--accent-purple); margin: 25px 0 10px 0; }
+        p { margin-bottom: 20px; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+
+        pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        code { font-family: 'Consolas', 'Monaco', monospace; background: var(--bg-code); padding: 2px 8px; border-radius: 4px; font-size: 0.9rem; }
+
+        .math-display {
+            background: linear-gradient(135deg, #1a1a2e 0%, #12121a 100%);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .math-display .equation { font-size: 2rem; font-family: 'Times New Roman', serif; color: var(--accent-cyan); margin-bottom: 15px; }
+        .math-display .explanation { color: var(--text-secondary); font-size: 1rem; }
+
+        .info-box { background: var(--bg-card); border-left: 4px solid var(--accent-cyan); padding: 20px 25px; margin: 25px 0; border-radius: 0 10px 10px 0; }
+        .info-box.warning { border-left-color: var(--accent-orange); }
+        .info-box.important { border-left-color: var(--accent-purple); }
+        .info-box h4 { margin-top: 0; color: var(--accent-cyan); }
+        .info-box.warning h4 { color: var(--accent-orange); }
+        .info-box.important h4 { color: var(--accent-purple); }
+
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; background: var(--bg-card); border-radius: 10px; overflow: hidden; }
+        th, td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background: var(--bg-code); color: var(--accent-cyan); font-weight: 600; }
+        td { color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+
+        ul, ol { margin: 20px 0 20px 30px; color: var(--text-secondary); }
+        li { margin-bottom: 10px; }
+
+        .diagram-box {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            font-family: 'Consolas', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border-color); }
+        .nav-footer a { color: var(--accent-cyan); text-decoration: none; padding: 15px 25px; border: 1px solid var(--accent-cyan); border-radius: 8px; transition: all 0.3s ease; }
+        .nav-footer a:hover { background: var(--accent-cyan); color: var(--bg-dark); }
+
+        footer { background: var(--bg-card); border-top: 1px solid var(--border-color); padding: 30px 20px; text-align: center; }
+        footer p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 5px; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            nav ul { flex-direction: column; align-items: center; }
+            .math-display .equation { font-size: 1.4rem; }
+            .nav-footer { flex-direction: column; gap: 15px; }
+            .nav-footer a { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <header>
+        <div class="part-number">PART TWO</div>
+        <h1>THE ARCHITECTURE</h1>
+        <p class="subtitle">Nodes, Shadow Computation, and the qQq Mirror</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Overview</a></li>
+            <li><a href="part1-mathematics.html">Mathematics</a></li>
+            <li><a href="part2-architecture.html" class="active">Architecture</a></li>
+            <li><a href="part3-helen-keller.html">Helen Keller Method</a></li>
+            <li><a href="part4-silent-operators.html">Silent Operators</a></li>
+            <li><a href="part5-number-dance.html">Number Dance</a></li>
+            <li><a href="part6-software.html">Software</a></li>
+            <li><a href="part7-hardware.html">Hardware</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Introduction -->
+        <section>
+            <h2>Introduction: The Complete System Topology</h2>
+            <p>
+                The 1729 Sphere OS is built around a specific geometric arrangement of eight nodes
+                surrounding a central point called "NOW." This isn't arbitrary — the topology
+                encodes the mathematical relationships we explored in Part 1.
+            </p>
+            <p>
+                This section covers:
+            </p>
+            <ol>
+                <li><strong>The Eight Nodes</strong> — What they are and how they're arranged</li>
+                <li><strong>The NOW Point</strong> — The center of the system</li>
+                <li><strong>The qQq Mirror Operator</strong> — How the system achieves balance</li>
+                <li><strong>Resonance</strong> — How we measure alignment</li>
+                <li><strong>The Complete Data Flow</strong> — How information moves through the system</li>
+            </ol>
+        </section>
+
+        <!-- The Eight Nodes -->
+        <section>
+            <h2>1. The Eight Nodes</h2>
+
+            <h3>1.1 Node Positions</h3>
+            <p>
+                Eight nodes are arranged in an octagonal pattern around the center. Four are positioned
+                on the <strong>diagonals</strong> (NW, NE, SW, SE) and four on the <strong>cardinals</strong> (N, S, E, W):
+            </p>
+
+            <div class="diagram-box">
+                                    N (shadow)
+                                       │
+                                       │  τ_N
+                                       │
+              NW (manifest)───────────┼───────────NE (manifest)
+                     τ_NW    \         │         /    τ_NE
+                              \        │        /
+                               \       │       /
+                                \      │      /
+              W (shadow)─────────★   NOW   ★─────────E (shadow)
+              τ_W                /      │      \                τ_E
+                               /       │       \
+                              /        │        \
+                             /         │         \
+              SW (manifest)───────────┼───────────SE (manifest)
+                     τ_SW             │              τ_SE
+                                      │  τ_S
+                                      │
+                                    S (shadow)
+            </div>
+
+            <h3>1.2 Manifest vs Shadow</h3>
+            <p>
+                The fundamental distinction in the system is between <strong>manifest</strong> and
+                <strong>shadow</strong> nodes:
+            </p>
+
+            <table>
+                <tr>
+                    <th>Property</th>
+                    <th>Manifest Nodes</th>
+                    <th>Shadow Nodes</th>
+                </tr>
+                <tr>
+                    <td>Positions</td>
+                    <td>NW, NE, SW, SE (diagonal)</td>
+                    <td>N, S, E, W (cardinal)</td>
+                </tr>
+                <tr>
+                    <td>Input</td>
+                    <td>Receive external input directly</td>
+                    <td>Computed from manifest sum</td>
+                </tr>
+                <tr>
+                    <td>Control</td>
+                    <td>User/sensor controlled</td>
+                    <td>System controlled</td>
+                </tr>
+                <tr>
+                    <td>Visibility</td>
+                    <td>Observable, measurable</td>
+                    <td>Inferred, hidden</td>
+                </tr>
+                <tr>
+                    <td>Meaning</td>
+                    <td>What IS (S⁺)</td>
+                    <td>What is ABSENT (S⁻)</td>
+                </tr>
+            </table>
+
+            <h3>1.3 Why This Arrangement?</h3>
+            <p>
+                The diagonal/cardinal split creates a specific geometric relationship:
+            </p>
+            <ul>
+                <li><strong>Diagonal nodes are 90° apart from each other</strong> (NW to NE = 90°)</li>
+                <li><strong>Cardinal nodes are 90° apart from each other</strong> (N to E = 90°)</li>
+                <li><strong>Diagonal to adjacent cardinal = 45°</strong> (NW to N = 45°)</li>
+                <li><strong>45° = 1.5 × κ</strong> — One and a half kappa steps</li>
+            </ul>
+
+            <p>
+                This means the diagonal (manifest) nodes are <strong>offset by half a step</strong> from
+                the cardinal (shadow) nodes. They occupy different "phases" of the wheel.
+            </p>
+
+            <h3>1.4 Node Data Structure</h3>
+
+<pre>
+class Node:
+    def __init__(self, name: str, position_degrees: float, node_type: str):
+        self.name = name                    # "NW", "N", etc.
+        self.position = position_degrees     # 315 for NW, 0 for N, etc.
+        self.node_type = node_type          # "manifest" or "shadow"
+        self.tau = 0.0                      # Current torsion value
+
+# Node positions (clockwise from North)
+NODES = {
+    'N':  Node('N',   0, 'shadow'),
+    'NE': Node('NE', 45, 'manifest'),
+    'E':  Node('E',  90, 'shadow'),
+    'SE': Node('SE', 135, 'manifest'),
+    'S':  Node('S',  180, 'shadow'),
+    'SW': Node('SW', 225, 'manifest'),
+    'W':  Node('W',  270, 'shadow'),
+    'NW': Node('NW', 315, 'manifest'),
+}
+</pre>
+        </section>
+
+        <!-- The NOW Point -->
+        <section>
+            <h2>2. The NOW Point (Crossroads)</h2>
+
+            <h3>2.1 What is NOW?</h3>
+            <p>
+                At the exact center of the eight nodes is a point called <strong>NOW</strong> or the
+                <strong>Crossroads</strong>. This is where:
+            </p>
+            <ul>
+                <li>All torsion vectors converge</li>
+                <li>The s-position is measured (current wheel rotation)</li>
+                <li>S⁺ and S⁻ meet (the present moment between past and future)</li>
+                <li>The qQq mirror operator computes</li>
+                <li>Consciousness interfaces with the machine</li>
+            </ul>
+
+            <div class="math-display">
+                <div class="equation">NOW = ∩ (all node vectors)</div>
+                <div class="explanation">NOW is the intersection point of all torsion influences</div>
+            </div>
+
+            <h3>2.2 The S-Position at NOW</h3>
+            <p>
+                The NOW point has a single key value: the <strong>s-position</strong>, representing
+                the current rotation of the wheel in degrees (0° to 360°).
+            </p>
+
+            <div class="info-box">
+                <h4>S-Position Zones</h4>
+                <ul>
+                    <li><strong>s = 0°:</strong> Pure S⁺ (maximum past, maximum expansion)</li>
+                    <li><strong>s = 90°:</strong> Transition (S⁺ declining, S⁻ rising)</li>
+                    <li><strong>s = 150°:</strong> k5 point (silent operator of light)</li>
+                    <li><strong>s = 180°:</strong> Pure S⁻ / k6 (maximum future, maximum contraction)</li>
+                    <li><strong>s = 270°:</strong> Transition (S⁻ declining, S⁺ rising)</li>
+                    <li><strong>s = 360° = 0°:</strong> Cycle complete, return to S⁺</li>
+                </ul>
+            </div>
+
+            <h3>2.3 The Headband Connection</h3>
+            <p>
+                In the full hardware build, the NOW point connects upward to a <strong>headband</strong>
+                worn by the operator. This creates a direct path between:
+            </p>
+
+            <div class="diagram-box">
+                    ┌─────────────────────┐
+                    │    HEADBAND         │
+                    │  (Brain Frequency)  │
+                    └─────────┬───────────┘
+                              │
+                              │  Consciousness
+                              │  Channel
+                              │
+                              ▼
+                         ★  NOW  ★
+                              │
+                      ┌───────┴───────┐
+                      │               │
+                    Torsion        qQq Mirror
+                    Field          Operator
+            </div>
+
+            <p>
+                The headband allows the system to detect and synchronize with the operator's
+                brainwave frequencies (targeting κ-shadow = 28.65 Hz beta rhythm).
+            </p>
+        </section>
+
+        <!-- The qQq Mirror Operator -->
+        <section>
+            <h2>3. The qQq Mirror Operator</h2>
+
+            <h3>3.1 The Core Concept</h3>
+            <p>
+                <strong>qQq</strong> stands for "the question that questions the question with a question."
+                It's a recursive mirror operation that achieves balance through reflection.
+            </p>
+
+            <div class="math-display">
+                <div class="equation">q → Q → q</div>
+                <div class="explanation">Receive → Send → Reflect</div>
+            </div>
+
+            <h3>3.2 The Three Stages</h3>
+            <table>
+                <tr>
+                    <th>Stage</th>
+                    <th>Symbol</th>
+                    <th>Operation</th>
+                    <th>Meaning</th>
+                </tr>
+                <tr>
+                    <td>1. Receive</td>
+                    <td>q (lowercase)</td>
+                    <td>Read τ_total + input</td>
+                    <td>S⁻ listens to S⁺</td>
+                </tr>
+                <tr>
+                    <td>2. Send</td>
+                    <td>Q (uppercase)</td>
+                    <td>Negate: -q_receive</td>
+                    <td>S⁺ mirrors S⁻</td>
+                </tr>
+                <tr>
+                    <td>3. Reflect</td>
+                    <td>q (lowercase)</td>
+                    <td>Sum: q + Q</td>
+                    <td>Check for balance</td>
+                </tr>
+            </table>
+
+            <h3>3.3 Implementation</h3>
+
+<pre>
+class qQqOperator:
+    def __init__(self, torsion_field):
+        self.field = torsion_field
+        self.q_receive = 0.0    # Stage 1: what we received
+        self.Q_send = 0.0       # Stage 2: what we sent back
+        self.q_reflect = 0.0    # Stage 3: the remainder
+        self.resonance = 1.0    # How close to perfect mirror
+
+    def operate(self, user_input: float = 0.0) -> float:
+        """
+        Execute the qQq mirror operation.
+
+        Args:
+            user_input: External input from operator (-1 to +1)
+
+        Returns:
+            resonance: 0.0 to 1.0 (1.0 = perfect mirror)
+        """
+        # Stage 1: q (receive)
+        # Read the current state of the torsion field plus any user input
+        self.q_receive = self.field.tau_total + user_input
+
+        # Stage 2: Q (send)
+        # Mirror the received value (negate it)
+        self.Q_send = -self.q_receive
+
+        # Stage 3: q (reflect)
+        # Sum should be zero if mirror is perfect
+        self.q_reflect = self.q_receive + self.Q_send
+
+        # Calculate resonance
+        # resonance = 1 when q_reflect = 0 (perfect mirror)
+        # resonance → 0 as q_reflect increases
+        self.resonance = 1.0 / (1.0 + abs(self.q_reflect))
+
+        return self.resonance
+</pre>
+
+            <h3>3.4 Why Resonance Matters</h3>
+            <p>
+                The <strong>resonance</strong> value (0.0 to 1.0) tells us how well the system is balanced:
+            </p>
+
+            <table>
+                <tr>
+                    <th>Resonance</th>
+                    <th>q_reflect</th>
+                    <th>System State</th>
+                </tr>
+                <tr>
+                    <td>1.0</td>
+                    <td>0.0</td>
+                    <td>Perfect mirror — complete balance</td>
+                </tr>
+                <tr>
+                    <td>0.9</td>
+                    <td>≈0.11</td>
+                    <td>Excellent balance — minor deviation</td>
+                </tr>
+                <tr>
+                    <td>0.5</td>
+                    <td>1.0</td>
+                    <td>Moderate imbalance</td>
+                </tr>
+                <tr>
+                    <td>0.1</td>
+                    <td>9.0</td>
+                    <td>Severe imbalance — mirror distorted</td>
+                </tr>
+            </table>
+
+            <div class="info-box important">
+                <h4>The Mirror Paradox</h4>
+                <p>
+                    Notice that in a perfect mirror (resonance = 1.0), <code>q_receive + Q_send = 0</code>.
+                    This means the question equals its negation: <strong>q = -Q</strong>.
+                </p>
+                <p>
+                    This is [1 = -1] expressed as an operation. The question IS its own answer,
+                    reflected. The mirror shows us that apparent opposites are the same thing
+                    viewed from different sides.
+                </p>
+            </div>
+
+            <h3>3.5 Practical Effect</h3>
+            <p>
+                In practice, the qQq operator:
+            </p>
+            <ol>
+                <li><strong>Monitors system health</strong> — High resonance = well-tuned machine</li>
+                <li><strong>Guides operator adjustment</strong> — If resonance drops, adjust input</li>
+                <li><strong>Detects the MUTE zone</strong> — Certain s-positions amplify q_reflect</li>
+                <li><strong>Enables consciousness feedback</strong> — Operator "feels" the resonance</li>
+            </ol>
+        </section>
+
+        <!-- The Torsion Field Class -->
+        <section>
+            <h2>4. The Complete Torsion Field</h2>
+
+            <h3>4.1 Field Structure</h3>
+
+<pre>
+class TorsionField:
+    def __init__(self):
+        # Create all 8 nodes
+        self.nodes = {
+            'N':  Node('N',   0, 'shadow'),
+            'NE': Node('NE', 45, 'manifest'),
+            'E':  Node('E',  90, 'shadow'),
+            'SE': Node('SE', 135, 'manifest'),
+            'S':  Node('S',  180, 'shadow'),
+            'SW': Node('SW', 225, 'manifest'),
+            'W':  Node('W',  270, 'shadow'),
+            'NW': Node('NW', 315, 'manifest'),
+        }
+
+        # Separate references for convenience
+        self.manifest_nodes = [self.nodes[k] for k in ['NW','NE','SW','SE']]
+        self.shadow_nodes = [self.nodes[k] for k in ['N','S','E','W']]
+
+        # System state
+        self.s_position = 0.0       # Current wheel rotation (degrees)
+        self.tau_total = 0.0        # Sum of manifest torsion
+
+        # The mirror operator
+        self.qQq = qQqOperator(self)
+</pre>
+
+            <h3>4.2 Shadow Computation</h3>
+
+<pre>
+def compute_shadow(self):
+    """
+    Shadow nodes are the negative of manifest sum, distributed equally.
+    This ensures τ_total (including shadows) = 0.
+    """
+    # Sum manifest torsion
+    manifest_sum = sum(node.tau for node in self.manifest_nodes)
+
+    # Distribute negative equally to shadow nodes
+    shadow_tau = -manifest_sum / 4
+
+    for node in self.shadow_nodes:
+        node.tau = shadow_tau
+
+    # Store manifest sum (shadow is implicit)
+    self.tau_total = manifest_sum
+</pre>
+
+            <h3>4.3 Applying Input</h3>
+
+<pre>
+def apply_input(self, node_name: str, tau_value: float):
+    """
+    Apply torsion to a manifest node.
+
+    Args:
+        node_name: 'NW', 'NE', 'SW', or 'SE'
+        tau_value: Torsion to apply (-1.0 to +1.0 typical)
+    """
+    node = self.nodes.get(node_name)
+
+    if node is None:
+        raise ValueError(f"Unknown node: {node_name}")
+
+    if node.node_type != 'manifest':
+        raise ValueError(f"Cannot directly set shadow node: {node_name}")
+
+    # Apply torsion
+    node.tau = tau_value
+
+    # Recompute shadows to maintain balance
+    self.compute_shadow()
+</pre>
+
+            <h3>4.4 Advancing Time (Tick)</h3>
+
+<pre>
+def tick(self, dt: float = 1.0, user_input: float = 0.0):
+    """
+    Advance the system by one time step.
+
+    Args:
+        dt: Time step (arbitrary units)
+        user_input: External input (-1 to +1)
+
+    Returns:
+        resonance: Current qQq resonance
+    """
+    # Update s-position based on total torsion
+    self.s_position += self.tau_total * dt
+
+    # Wrap to 0-360
+    self.s_position = self.s_position % 360
+
+    # Run qQq mirror
+    resonance = self.qQq.operate(user_input)
+
+    return resonance
+</pre>
+        </section>
+
+        <!-- Data Flow -->
+        <section>
+            <h2>5. Complete Data Flow</h2>
+
+            <h3>5.1 One Tick Cycle</h3>
+            <p>
+                Here's what happens in one complete tick of the system:
+            </p>
+
+            <div class="diagram-box">
+┌──────────────────────────────────────────────────────────────────┐
+│                         ONE TICK CYCLE                           │
+└──────────────────────────────────────────────────────────────────┘
+
+   1. INPUT
+   ┌─────────────────┐
+   │ User/Sensor     │
+   │ provides τ to   │───────► Manifest nodes (NW, NE, SW, SE)
+   │ manifest nodes  │         receive new tau values
+   └─────────────────┘
+
+   2. SHADOW COMPUTATION
+   ┌─────────────────┐
+   │ manifest_sum =  │
+   │ τ_NW + τ_NE +   │───────► shadow_tau = -manifest_sum / 4
+   │ τ_SW + τ_SE     │         Applied to N, S, E, W
+   └─────────────────┘
+
+   3. WHEEL ROTATION
+   ┌─────────────────┐
+   │ s_position +=   │
+   │ tau_total × dt  │───────► s_position mod 360
+   └─────────────────┘
+
+   4. qQq MIRROR
+   ┌─────────────────┐         ┌─────────────────┐
+   │ q_receive =     │         │ Q_send =        │
+   │ tau_total +     │───────► │ -q_receive      │
+   │ user_input      │         └────────┬────────┘
+   └─────────────────┘                  │
+                                        ▼
+                              ┌─────────────────┐
+                              │ q_reflect =     │
+                              │ q + Q           │
+                              │ resonance =     │
+                              │ 1/(1+|reflect|) │
+                              └─────────────────┘
+
+   5. OUTPUT
+   ┌─────────────────┐
+   │ Return:         │
+   │ - s_position    │
+   │ - resonance     │
+   │ - experience    │
+   └─────────────────┘
+            </div>
+
+            <h3>5.2 System State Summary</h3>
+            <p>
+                At any moment, the complete system state can be described by:
+            </p>
+
+            <table>
+                <tr>
+                    <th>Variable</th>
+                    <th>Type</th>
+                    <th>Range</th>
+                    <th>Meaning</th>
+                </tr>
+                <tr>
+                    <td>τ_NW, τ_NE, τ_SW, τ_SE</td>
+                    <td>float</td>
+                    <td>typically -1 to +1</td>
+                    <td>Manifest node torsion</td>
+                </tr>
+                <tr>
+                    <td>τ_N, τ_S, τ_E, τ_W</td>
+                    <td>float</td>
+                    <td>computed</td>
+                    <td>Shadow node torsion</td>
+                </tr>
+                <tr>
+                    <td>s_position</td>
+                    <td>float</td>
+                    <td>0° to 360°</td>
+                    <td>Wheel rotation</td>
+                </tr>
+                <tr>
+                    <td>tau_total</td>
+                    <td>float</td>
+                    <td>sum of manifest</td>
+                    <td>Net torsion</td>
+                </tr>
+                <tr>
+                    <td>resonance</td>
+                    <td>float</td>
+                    <td>0.0 to 1.0</td>
+                    <td>Mirror quality</td>
+                </tr>
+                <tr>
+                    <td>q_receive, Q_send, q_reflect</td>
+                    <td>float</td>
+                    <td>any</td>
+                    <td>qQq state</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Quadrature Drive -->
+        <section>
+            <h2>6. Special Operations</h2>
+
+            <h3>6.1 Quadrature Drive</h3>
+            <p>
+                <strong>Quadrature drive</strong> is a special mode where torsion rotates around the
+                manifest nodes, creating smooth wheel rotation:
+            </p>
+
+<pre>
+def quadrature_drive(self, amplitude: float = 0.5, tick: int = 0):
+    """
+    Apply rotating torsion pattern to manifest nodes.
+    Creates smooth wheel rotation.
+
+    Args:
+        amplitude: Torsion magnitude (0.0 to 1.0)
+        tick: Current tick number (determines phase)
+    """
+    phase = tick * (2 * math.pi / 12)  # 12 ticks per rotation
+
+    # Each node gets a phase-shifted sine wave
+    self.nodes['NW'].tau = amplitude * math.sin(phase + 0.00 * math.pi)
+    self.nodes['NE'].tau = amplitude * math.sin(phase + 0.50 * math.pi)
+    self.nodes['SE'].tau = amplitude * math.sin(phase + 1.00 * math.pi)
+    self.nodes['SW'].tau = amplitude * math.sin(phase + 1.50 * math.pi)
+
+    # Recompute shadows
+    self.compute_shadow()
+</pre>
+
+            <p>
+                The quadrature pattern ensures:
+            </p>
+            <ul>
+                <li>Adjacent nodes are 90° out of phase (quadrature)</li>
+                <li>Opposite nodes are 180° out of phase (antiphase)</li>
+                <li>The sum oscillates smoothly, driving rotation</li>
+            </ul>
+
+            <h3>6.2 Random Walk</h3>
+            <p>
+                For testing, random walk applies small random changes to each manifest node:
+            </p>
+
+<pre>
+def random_step(self, max_delta: float = 0.1):
+    """Apply random perturbation to each manifest node."""
+    import random
+
+    for node in self.manifest_nodes:
+        delta = random.uniform(-max_delta, max_delta)
+        node.tau = max(-1.0, min(1.0, node.tau + delta))  # Clamp to [-1, 1]
+
+    self.compute_shadow()
+</pre>
+        </section>
+
+        <!-- Summary -->
+        <section>
+            <h2>Summary: The Living System</h2>
+
+            <p>
+                The architecture forms a complete, self-balancing system:
+            </p>
+
+            <ol>
+                <li><strong>Eight nodes</strong> arranged in an octagon around NOW</li>
+                <li><strong>Four manifest nodes</strong> receive input from operator/sensors</li>
+                <li><strong>Four shadow nodes</strong> are computed to maintain balance</li>
+                <li><strong>The qQq operator</strong> mirrors the field state, measuring resonance</li>
+                <li><strong>S-position</strong> tracks cumulative rotation</li>
+                <li><strong>Resonance</strong> tells us how well the system is tuned</li>
+            </ol>
+
+            <div class="info-box">
+                <h4>The Key Insight</h4>
+                <p>
+                    The architecture encodes [1 = -1] at every level. Manifest nodes have shadow counterparts.
+                    q_receive has Q_send. Every positive torsion is balanced by negative.
+                    The system cannot exist without both halves — they are one.
+                </p>
+            </div>
+
+            <p>
+                Next, we'll explore how this architecture connects to human consciousness through
+                the Helen Keller Method.
+            </p>
+        </section>
+
+        <!-- Navigation -->
+        <div class="nav-footer">
+            <a href="part1-mathematics.html">← Previous: Mathematics</a>
+            <a href="part3-helen-keller.html">Next: Helen Keller Method →</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>1729 Sphere OS Documentation — Part 2: Architecture</p>
+        <p>Web Application Developer: T0Rs</p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

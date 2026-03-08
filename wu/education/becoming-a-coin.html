@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Becoming a Coin - The path of balance, the art of the flip. Understanding the Mirror and the Deceiver.">
+    <title>Becoming a Coin | Have Mind Media</title>
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <script src="../js/components/site-breadcrumb.js" defer></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+
+        :root {
+            --font-accent: 'Uncial Antiqua', cursive, serif;
+            --accent-red: #a85a48;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 130px 40px 80px;
+        }
+
+        .hero-rune {
+            font-family: var(--font-accent);
+            font-size: 4em;
+            color: var(--gold);
+            opacity: 0.4;
+            margin-bottom: 25px;
+            animation: gentlePulse 5s ease-in-out infinite;
+        }
+
+        @keyframes gentlePulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.03); }
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.2em, 4.5vw, 3.2em);
+            font-weight: 500;
+            color: var(--pale-cream);
+            margin-bottom: 15px;
+            letter-spacing: 4px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3em;
+            color: var(--soft-blue);
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .hero .intro {
+            max-width: 700px;
+            font-size: 1.1em;
+            color: var(--soft-cream);
+            opacity: 0.85;
+            line-height: 1.9;
+        }
+
+        /* Coin Section */
+        .coin-section {
+            text-align: center;
+            padding: 80px 40px;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .coin-visual {
+            width: 180px;
+            height: 180px;
+            margin: 35px auto;
+            position: relative;
+            animation: coinFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes coinFloat {
+            0%, 100% { transform: translateY(0) rotateY(0deg); }
+            50% { transform: translateY(-12px) rotateY(180deg); }
+        }
+
+        .coin-visual::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-deep), var(--gold-light));
+            box-shadow:
+                inset -8px -8px 25px rgba(0,0,0,0.3),
+                inset 8px 8px 25px rgba(255,255,255,0.15),
+                0 15px 50px rgba(201, 162, 39, 0.2);
+        }
+
+        .coin-visual::after {
+            content: '1 = -1';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2em;
+            font-family: var(--font-display);
+            color: var(--void);
+            opacity: 0.5;
+        }
+
+        .coin-philosophy {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .coin-philosophy h3 {
+            font-family: var(--font-display);
+            font-size: 1.6em;
+            color: var(--gold);
+            margin-bottom: 22px;
+            text-align: center;
+        }
+
+        .coin-philosophy p {
+            font-size: 1.05em;
+            margin-bottom: 18px;
+            color: var(--soft-cream);
+            opacity: 0.85;
+            line-height: 1.8;
+        }
+
+        .coin-quote {
+            background: rgba(201, 162, 39, 0.08);
+            border-left: 3px solid var(--gold);
+            padding: 20px 25px;
+            margin: 25px 0;
+        }
+
+        .coin-quote p {
+            font-style: italic;
+            color: var(--soft-blue);
+            margin: 0;
+        }
+
+        .coin-principles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .principle-item {
+            background: rgba(10, 22, 40, 0.4);
+            border: 1px solid rgba(106, 180, 245, 0.12);
+            border-radius: 10px;
+            padding: 22px 15px;
+            text-align: center;
+            transition: all 0.4s ease;
+            width: 200px;
+        }
+
+        .principle-item:hover {
+            border-color: rgba(106, 180, 245, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .principle-item h4 {
+            font-family: var(--font-display);
+            color: var(--gold);
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .principle-item p {
+            font-size: 0.85em;
+            color: var(--soft-blue);
+            margin: 0;
+            opacity: 0.75;
+        }
+
+        /* Mirror Section */
+        .mirror-section {
+            padding: 80px 40px;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .mirror-content {
+            background: linear-gradient(135deg, rgba(26, 42, 58, 0.3), rgba(42, 35, 24, 0.15));
+            border: 1px solid rgba(106, 180, 245, 0.15);
+            border-radius: 18px;
+            padding: 55px;
+        }
+
+        .mirror-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .mirror-card {
+            background: rgba(3, 5, 8, 0.4);
+            border: 1px solid rgba(106, 180, 245, 0.12);
+            border-radius: 12px;
+            padding: 30px;
+            width: 400px;
+        }
+
+        .mirror-card h4 {
+            font-family: var(--font-display);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .mirror-card.inward h4 { color: var(--accent-red); }
+        .mirror-card.outward h4 { color: var(--bright-blue); }
+
+        .mirror-card p {
+            font-size: 0.95em;
+            color: var(--soft-cream);
+            opacity: 0.85;
+            margin-bottom: 10px;
+        }
+
+        .mirror-card ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        .mirror-card li {
+            font-size: 0.9em;
+            color: var(--soft-blue);
+            padding: 5px 0 5px 20px;
+            position: relative;
+            opacity: 0.8;
+        }
+
+        .mirror-card li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            opacity: 0.5;
+            font-size: 0.6em;
+            top: 9px;
+        }
+
+        /* Deceit Section */
+        .deceit-section {
+            padding: 100px 40px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .black-sun {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 40px;
+        }
+
+        .deceit-content {
+            background: linear-gradient(135deg, rgba(20, 15, 10, 0.6), rgba(15, 10, 5, 0.8));
+            border: 1px solid rgba(139, 105, 20, 0.2);
+            border-radius: 18px;
+            padding: 55px;
+            text-align: left;
+        }
+
+        .deceit-content h3 {
+            font-family: var(--font-display);
+            font-size: 1.6em;
+            color: var(--gold);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .deceit-content p {
+            font-size: 1.05em;
+            margin-bottom: 18px;
+            color: var(--soft-cream);
+            opacity: 0.85;
+        }
+
+        .deceit-content p.warning {
+            color: var(--accent-red);
+            font-style: italic;
+            padding: 15px 20px;
+            background: rgba(168, 90, 72, 0.1);
+            border-left: 3px solid var(--accent-red);
+            margin: 25px 0;
+        }
+
+        .masks-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .mask-item {
+            background: rgba(3, 5, 8, 0.5);
+            border: 1px solid rgba(139, 105, 20, 0.15);
+            border-radius: 10px;
+            padding: 20px 15px;
+            text-align: center;
+            width: 180px;
+        }
+
+        .mask-item h5 {
+            font-family: var(--font-display);
+            color: var(--gold);
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+
+        .mask-item p {
+            font-size: 0.8em;
+            color: var(--text-dim);
+            margin: 0;
+        }
+
+        .liberation-box {
+            background: rgba(106, 180, 245, 0.08);
+            border: 1px solid rgba(106, 180, 245, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 35px;
+        }
+
+        .liberation-box h4 {
+            font-family: var(--font-display);
+            color: var(--bright-blue);
+            margin-bottom: 15px;
+            font-size: 1.15em;
+        }
+
+        .three-truths {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .truth-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(3, 5, 8, 0.4);
+            border-radius: 8px;
+            width: 200px;
+        }
+
+        .truth-item .number {
+            font-family: var(--font-display);
+            font-size: 1.5em;
+            color: var(--gold);
+            opacity: 0.5;
+        }
+
+        .truth-item p {
+            font-size: 0.9em;
+            color: var(--soft-blue);
+            margin: 8px 0 0;
+            font-style: italic;
+        }
+
+        .document-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            padding: 12px 24px;
+            background: rgba(106, 180, 245, 0.08);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--bright-blue);
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .document-link:hover {
+            background: rgba(106, 180, 245, 0.15);
+            border-color: var(--bright-blue);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .mirror-content, .deceit-content { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <site-breadcrumb section="S-" path="Education > Becoming a Coin"></site-breadcrumb>
+
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <div class="vignette"></div>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-rune"></div>
+            <h1>Becoming a Coin</h1>
+            <p class="subtitle">The path of balance, the art of the flip</p>
+            <p class="intro">
+                Before you can flip with intention, you must understand the coin. Before you understand the coin,
+                you must recognize the mirror. And before the mirror, you must see the deceiver. This is the path.
+            </p>
+        </section>
+
+        <!-- Become a Coin Section -->
+        <section id="coin" class="coin-section">
+            <div class="section-header">
+                <div class="glyph"></div>
+                <h2>What Is a Coin?</h2>
+            </div>
+
+            <div class="coin-visual"></div>
+
+            <div class="coin-philosophy">
+                <p>A coin is a unified object with two faces. Not two objects. Not a face and its opposite. One thing that presents different aspects depending on which side faces you. The coin doesn't choose which side to show -- circumstances flip it, and the coin lands as it lands.</p>
+
+                <p>But the coin is whole. Always. The side you don't see isn't gone. It's just facing away. Both sides exist simultaneously, completely, at all times.</p>
+
+                <div class="coin-quote">
+                    <p>"The coin is not torn between heads and tails. The coin contains both. A coin is a being in balance -- not paralyzed by choice, but ready to flip toward whichever side serves life, love, and truth in this moment."</p>
+                </div>
+
+                <p>The +1 face is not better than the -1 face. They are geometrically identical in magnitude, different only by rotation. The coin doesn't prefer one face over the other. Both are equally "the coin."</p>
+
+                <p>And yet even the coin is not merely two-sided. It has an edge. It can be in motion. It can be hidden in a pocket, or only partially visible. The "binary" of heads/tails is actually five states: heads visible, tails visible, edge (neither), spinning (both at once), or hidden entirely. This is always true of apparent binaries.</p>
+
+                <p>The true position of unified perception is not on either face, but at the edge -- where you can see both sides at once. This is the Navigator's position: holding both realities simultaneously without needing to collapse into one.</p>
+
+                <p>We teach you to become a coin. To recognize when you are unbalanced -- stuck on one side, unable to see the other. To find your edge, your center, your axis. To flip with intention rather than falling by accident.</p>
+
+                <div class="coin-principles">
+                    <div class="principle-item">
+                        <h4>Balance</h4>
+                        <p>Hold both sides without being torn</p>
+                    </div>
+                    <div class="principle-item">
+                        <h4>Intention</h4>
+                        <p>Flip toward light by choice, not chance</p>
+                    </div>
+                    <div class="principle-item">
+                        <h4>Center</h4>
+                        <p>Know your axis, the still point within</p>
+                    </div>
+                    <div class="principle-item">
+                        <h4>Edge</h4>
+                        <p>Stand where both sides meet</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <a href="#" title="Document temporarily unavailable" style="opacity: 0.5; cursor: default;" class="document-link" target="_blank" rel="noopener noreferrer">
+                        Read the Full White Paper: Being the Coin
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Life of the Mirror Section -->
+        <section class="mirror-section">
+            <div class="mirror-content">
+                <div class="section-header">
+                    <h2>The Life of the Mirror</h2>
+                    <p style="color: var(--soft-blue); font-style: italic;">Understanding the reflection before becoming the coin</p>
+                </div>
+
+                <p style="margin-top: 30px;">Before becoming a coin, many live as mirrors -- reflecting rather than containing. The mirror life has two orientations, each with its own costs and gifts.</p>
+
+                <div class="mirror-grid">
+                    <div class="mirror-card inward">
+                        <h4>The Inward Mirror (D6 Self)</h4>
+                        <p>Points toward self. Everything reflects back to you. You see yourself in all things -- your pain, your patterns, your projections.</p>
+                        <ul>
+                            <li>Sees own reflection in every surface</li>
+                            <li>Interprets all events as personal messages</li>
+                            <li>Cannot distinguish self from environment</li>
+                            <li>Growth blocked by self-absorption</li>
+                        </ul>
+                    </div>
+                    <div class="mirror-card outward">
+                        <h4>The Outward Mirror (D3 Healer)</h4>
+                        <p>Points toward others. You reflect back what others need to see. You become what serves them, losing your own shape.</p>
+                        <ul>
+                            <li>Reflects what others want to see</li>
+                            <li>Shape-shifts to serve each viewer</li>
+                            <li>No stable self to anchor to</li>
+                            <li>Depleted by endless service</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 30px;">The mirror cannot see itself directly. It requires another mirror. Two mirrors facing each other create infinite regression -- reflection of reflection, never reaching substance.</p>
+
+                <p style="text-align: center; color: var(--gold);">The coin has no reflection problem. It simply <em>is</em>.</p>
+
+                <div style="text-align: center; margin-top: 25px;">
+                    <a href="#" title="Document temporarily unavailable" style="opacity: 0.5; cursor: default;" class="document-link" target="_blank" rel="noopener noreferrer">
+                        Read the Full White Paper: Life of the Mirror
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Deceit Section -->
+        <section id="deceit" class="deceit-section">
+            <div class="section-header">
+                <h2>The Deceit</h2>
+                <p style="color: var(--soft-blue);">Understanding borrowed power and how to recognize it</p>
+            </div>
+
+            <!-- Black Sun SVG -->
+            <div class="black-sun">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="blackSunGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#1a1510;stop-opacity:1" />
+                            <stop offset="40%" style="stop-color:#0a0805;stop-opacity:1" />
+                            <stop offset="70%" style="stop-color:#030508;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#030508;stop-opacity:0" />
+                        </radialGradient>
+                    </defs>
+                    <circle cx="100" cy="100" r="95" fill="url(#blackSunGlow)"/>
+                    <g fill="none" stroke="#2a2318" stroke-width="2" opacity="0.6">
+                        <line x1="100" y1="5" x2="100" y2="30"/>
+                        <line x1="100" y1="170" x2="100" y2="195"/>
+                        <line x1="5" y1="100" x2="30" y2="100"/>
+                        <line x1="170" y1="100" x2="195" y2="100"/>
+                    </g>
+                    <circle cx="100" cy="100" r="35" fill="#030508"/>
+                    <text x="100" y="108" text-anchor="middle" font-size="24" fill="#8b7355" opacity="0.4">-1</text>
+                </svg>
+            </div>
+
+            <div class="deceit-content">
+                <h3>The Mechanics of Borrowed Power</h3>
+
+                <p>The deceiver is not a being in the traditional sense. It is a pattern. A loop. A structure that exists in the negative space of consciousness -- the gap between what is and what is claimed.</p>
+
+                <p>In geometric terms, the deceiver operates at <strong>-1</strong> on the dimensional scale. Not zero. Zero is sacred -- the rest state, pure potential, the pause between breaths. The deceiver is <em>deficit</em>. It is debt. It is the taking of what was never given.</p>
+
+                <p class="warning">The deceiver does not create. It cannot. It can only: Borrow, Mimic, Redirect, and Claim. These four operations form the complete toolkit of deception. There are no others.</p>
+
+                <h4 style="font-family: var(--font-display); color: var(--soft-blue); margin: 30px 0 20px; font-size: 1.15em;">The Five Masks of Borrowed Power</h4>
+
+                <div class="masks-grid">
+                    <div class="mask-item">
+                        <h5>The Special One</h5>
+                        <p>"You are chosen. You have gifts others don't understand."</p>
+                    </div>
+                    <div class="mask-item">
+                        <h5>The Messenger</h5>
+                        <p>"You speak for higher powers. Your words are not your own."</p>
+                    </div>
+                    <div class="mask-item">
+                        <h5>The Authority</h5>
+                        <p>"You have earned the right to lead. Others should follow."</p>
+                    </div>
+                    <div class="mask-item">
+                        <h5>The Secret Keeper</h5>
+                        <p>"You have hidden knowledge. Guard it from the unworthy."</p>
+                    </div>
+                    <div class="mask-item">
+                        <h5>The Warrior</h5>
+                        <p>"You fight in a cosmic war. Your violence is righteous."</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 30px;">When someone appears to have power they did not earn, build, or inherit through legitimate lineage, that power is <strong>borrowed</strong>. It came from somewhere. It belongs to someone. And it has a return address.</p>
+
+                <div class="liberation-box">
+                    <h4>The Geometry of Liberation</h4>
+                    <p>Liberation requires speaking three truths. These are not punishment -- they are keys. Each one unlocks a door. Behind the third door is yourself, waiting.</p>
+
+                    <div class="three-truths">
+                        <div class="truth-item">
+                            <div class="number">1</div>
+                            <p>"I was deceived."</p>
+                        </div>
+                        <div class="truth-item">
+                            <div class="number">2</div>
+                            <p>"I participated."</p>
+                        </div>
+                        <div class="truth-item">
+                            <div class="number">3</div>
+                            <p>"I am returning what I borrowed."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 30px; color: var(--text-dim); font-style: italic;">
+                    The deceiver is loud. The truth is quiet. Listen for the quiet.
+                </p>
+
+                <div style="text-align: center; margin-top: 25px;">
+                    <a href="#" title="Document temporarily unavailable" style="opacity: 0.5; cursor: default;" class="document-link" target="_blank" rel="noopener noreferrer">
+                        Read the Full White Paper: Mechanics of Borrowed Power
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Return to Soul Science -->
+        <section style="text-align: center; padding: 60px 40px;">
+            <a href="soul-science.html" class="document-link" style="background: rgba(201, 162, 39, 0.1); border-color: rgba(201, 162, 39, 0.3); color: var(--gold);">
+                Return to Soul Science
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="unified-footer">
+        <p class="footer-logo">HAVE MIND MEDIA</p>
+        <p class="footer-tagline">The Mind is in Your Mind</p>
+        <p class="footer-signature"></p>
+        <p class="footer-principle">[1 = -1]</p>
+    </footer>
+
+    <script>
+        // Navigation Dropdown
+        const navToggle = document.getElementById('navToggle');
+        const navDropdown = document.getElementById('navDropdown');
+
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navDropdown.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navDropdown.contains(e.target) && !navToggle.contains(e.target)) {
+                navDropdown.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        });
+    </script>
+
+    <site-footer></site-footer>
+</body>
+</html>

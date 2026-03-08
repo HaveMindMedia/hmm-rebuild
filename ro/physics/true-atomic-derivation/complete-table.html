@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Periodic Table | TRUE Atomic Derivation | Have Mind Media</title>
+    <meta name="description" content="All 118 elements derived from fold geometry. The complete TRUE periodic table with 1729 structures.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <style>
+        .page-header {
+            text-align: center;
+            padding: clamp(2rem, 5vw, 4rem) 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold) 0%, #fff 50%, var(--bright-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Periodic Table Grid */
+        .periodic-table { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; padding: 1rem; max-width: 1400px; margin: 0 auto; overflow-x: auto; }
+
+        .element {
+            aspect-ratio: 1;
+            min-width: 45px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: var(--font-mono);
+            position: relative;
+        }
+
+        .element:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.3);
+        }
+
+        .element .z {
+            font-size: 0.6rem;
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            opacity: 0.7;
+        }
+
+        .element .symbol {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .element .name {
+            font-size: 0.45rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        /* Element Categories */
+        .alkali { background: linear-gradient(135deg, rgba(244, 114, 182, 0.3) 0%, var(--panel) 100%); border-color: #f472b6; }
+        .alkaline { background: linear-gradient(135deg, rgba(251, 191, 36, 0.3) 0%, var(--panel) 100%); border-color: #fbbf24; }
+        .transition { background: linear-gradient(135deg, rgba(106, 180, 245, 0.3) 0%, var(--panel) 100%); border-color: #6ab4f5; }
+        .post-transition { background: linear-gradient(135deg, rgba(148, 163, 184, 0.3) 0%, var(--panel) 100%); border-color: #94a3b8; }
+        .metalloid { background: linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, var(--panel) 100%); border-color: #22c55e; }
+        .nonmetal { background: linear-gradient(135deg, rgba(74, 222, 128, 0.3) 0%, var(--panel) 100%); border-color: #4ade80; }
+        .halogen { background: linear-gradient(135deg, rgba(96, 165, 250, 0.3) 0%, var(--panel) 100%); border-color: #60a5fa; }
+        .noble { background: linear-gradient(135deg, rgba(167, 139, 250, 0.3) 0%, var(--panel) 100%); border-color: #a78bfa; }
+        .lanthanide { background: linear-gradient(135deg, rgba(249, 115, 22, 0.3) 0%, var(--panel) 100%); border-color: #f97316; }
+        .actinide { background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, var(--panel) 100%); border-color: #ef4444; }
+
+        /* Special elements */
+        .bridge-element { border-color: var(--gold) !important; border-width: 2px; }
+        .prime-gap { border-color: #ff6b6b !important; border-width: 2px; animation: pulse-red 2s infinite; }
+        .kappa-element { border-color: #00ff88 !important; border-width: 2px; }
+        .navigator-element { border-color: #00d4ff !important; border-width: 2px; }
+
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 107, 107, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(255, 107, 107, 0.8); }
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        /* Element Detail Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--panel);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-content .symbol-large {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--bright-blue);
+            margin: 1rem 0;
+        }
+
+        .modal-content .derivation {
+            font-family: var(--font-mono);
+            color: var(--soft-cream);
+            background: var(--cosmic-dark);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .modal-content button {
+            margin-top: 1rem;
+            padding: 0.75rem 2rem;
+            background: var(--gold);
+            border: none;
+            border-radius: 4px;
+            color: var(--void);
+            font-family: var(--font-mono);
+            cursor: pointer;
+        }
+
+        /* Full Table */
+        .full-table {
+            margin: 2rem auto;
+            max-width: 1200px;
+            overflow-x: auto;
+        }
+
+        .full-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .full-table th, .full-table td {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .full-table th {
+            background: var(--panel);
+            color: var(--gold);
+            font-family: var(--font-mono);
+        }
+
+        .full-table tr:hover {
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        .full-table .z-col { width: 50px; text-align: center; }
+        .full-table .symbol-col { width: 60px; font-weight: 700; color: var(--bright-blue); }
+        .full-table .derivation-col { font-family: var(--font-mono); font-size: 0.8rem; color: var(--soft-cream); }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <site-header></site-header>
+
+    <header class="page-header">
+        <h1>COMPLETE TRUE PERIODIC TABLE</h1>
+        <p class="lead">
+            All 118 elements derived from fold geometry.<br>
+            Click any element for its 1729 structure.
+        </p>
+    </header>
+
+    <main>
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item"><div class="legend-color" style="background: #f472b6;"></div> Alkali Metals</div>
+            <div class="legend-item"><div class="legend-color" style="background: #fbbf24;"></div> Alkaline Earth</div>
+            <div class="legend-item"><div class="legend-color" style="background: #6ab4f5;"></div> Transition Metals</div>
+            <div class="legend-item"><div class="legend-color" style="background: #94a3b8;"></div> Post-Transition</div>
+            <div class="legend-item"><div class="legend-color" style="background: #22c55e;"></div> Metalloids</div>
+            <div class="legend-item"><div class="legend-color" style="background: #4ade80;"></div> Nonmetals</div>
+            <div class="legend-item"><div class="legend-color" style="background: #60a5fa;"></div> Halogens</div>
+            <div class="legend-item"><div class="legend-color" style="background: #a78bfa;"></div> Noble Gases</div>
+            <div class="legend-item"><div class="legend-color" style="background: #f97316;"></div> Lanthanides</div>
+            <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> Actinides</div>
+        </div>
+
+        <div class="legend" style="border-top: 1px solid var(--border); padding-top: 1rem;">
+            <div class="legend-item"><div class="legend-color" style="border: 2px solid var(--gold); background: transparent;"></div> Bridge Element</div>
+            <div class="legend-item"><div class="legend-color" style="border: 2px solid #00ff88; background: transparent;"></div> κ' Element</div>
+            <div class="legend-item"><div class="legend-color" style="border: 2px solid #00d4ff; background: transparent;"></div> Navigator Element</div>
+            <div class="legend-item"><div class="legend-color" style="border: 2px solid #ff6b6b; background: transparent;"></div> Prime Gap (No Stable Isotopes)</div>
+        </div>
+
+        <!-- Interactive Periodic Table -->
+        <div class="periodic-table" id="periodic-table">
+            <!-- Generated by JavaScript -->
+        </div>
+
+        <!-- Full Table List -->
+        <section style="padding: 2rem;">
+            <h2 style="text-align: center; color: var(--gold); margin-bottom: 2rem;">COMPLETE 1729 DERIVATION LIST</h2>
+
+            <div class="full-table">
+                <table id="full-table">
+                    <thead>
+                        <tr>
+                            <th class="z-col">Z</th>
+                            <th class="symbol-col">Symbol</th>
+                            <th>Element</th>
+                            <th class="derivation-col">1729 Derivation</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Generated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Modal -->
+        <div class="modal-overlay" id="modal">
+            <div class="modal-content">
+                <span id="modal-z" style="font-family: var(--font-mono); color: var(--bright-blue);">Z = </span>
+                <div class="symbol-large" id="modal-symbol"></div>
+                <h2 id="modal-name"></h2>
+                <div class="derivation" id="modal-derivation"></div>
+                <button onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid var(--border);">
+        <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim);">
+            κ' = 30 | 1729 = bridge | ε = chaos | [1 = -1]
+        </p>
+        <p style="margin-top: 1rem;">
+            <a href="index.html" style="color: var(--bright-blue);">← Back to Series</a>
+        </p>
+    </footer>
+
+    <script src="../../js/components/site-header.js"></script>
+
+    <script>
+    // Complete element data
+    const elements = [
+        // Period 1
+        {z:1,s:'H',n:'Hydrogen',c:'nonmetal',d:'Single knot; proton=1729+107',special:''},
+        {z:2,s:'He',n:'Helium',c:'noble',d:'Square knot; 729/10⁵ binding',special:''},
+        // Period 2
+        {z:3,s:'Li',n:'Lithium',c:'alkali',d:'First beyond pair; 3=triad',special:''},
+        {z:4,s:'Be',n:'Beryllium',c:'alkaline',d:'4=2²; first square',special:''},
+        {z:5,s:'B',n:'Boron',c:'metalloid',d:'5=pentagon; first p-electron',special:''},
+        {z:6,s:'C',n:'Carbon',c:'nonmetal',d:'BRIDGE; 6=perfect; life basis',special:'bridge-element'},
+        {z:7,s:'N',n:'Nitrogen',c:'nonmetal',d:'7=cycle; half p-shell',special:''},
+        {z:8,s:'O',n:'Oxygen',c:'nonmetal',d:'8=first cube root of 512',special:''},
+        {z:9,s:'F',n:'Fluorine',c:'halogen',d:'9=3²=consciousness base',special:''},
+        {z:10,s:'Ne',n:'Neon',c:'noble',d:'10=decade; first noble set',special:''},
+        // Period 3
+        {z:11,s:'Na',n:'Sodium',c:'alkali',d:'11=master number',special:''},
+        {z:12,s:'Mg',n:'Magnesium',c:'alkaline',d:'12³=1728=bridge-1',special:'bridge-element'},
+        {z:13,s:'Al',n:'Aluminum',c:'post-transition',d:'13=navigator (1729=7×13×19)',special:'navigator-element'},
+        {z:14,s:'Si',n:'Silicon',c:'metalloid',d:'14=2×7; carbon analog',special:''},
+        {z:15,s:'P',n:'Phosphorus',c:'nonmetal',d:'15=κ/2; DNA backbone',special:''},
+        {z:16,s:'S',n:'Sulfur',c:'nonmetal',d:'16=2⁴',special:''},
+        {z:17,s:'Cl',n:'Chlorine',c:'halogen',d:'17→17.29 scalar step',special:''},
+        {z:18,s:'Ar',n:'Argon',c:'noble',d:'18=2×9; third noble',special:''},
+        // Period 4
+        {z:19,s:'K',n:'Potassium',c:'alkali',d:'19 prime (1729=7×13×19)',special:'navigator-element'},
+        {z:20,s:'Ca',n:'Calcium',c:'alkaline',d:'20=magic number',special:''},
+        {z:21,s:'Sc',n:'Scandium',c:'transition',d:'21=3×7; triad×cycle',special:''},
+        {z:22,s:'Ti',n:'Titanium',c:'transition',d:'22=2×11',special:''},
+        {z:23,s:'V',n:'Vanadium',c:'transition',d:'23 prime',special:''},
+        {z:24,s:'Cr',n:'Chromium',c:'transition',d:'24=4!=σ connection',special:''},
+        {z:25,s:'Mn',n:'Manganese',c:'transition',d:'25=5²',special:''},
+        {z:26,s:'Fe',n:'Iron',c:'transition',d:'26=2×13 NAVIGATOR; max stable',special:'navigator-element'},
+        {z:27,s:'Co',n:'Cobalt',c:'transition',d:'27=3³',special:''},
+        {z:28,s:'Ni',n:'Nickel',c:'transition',d:'28=magic≈κ\'',special:'kappa-element'},
+        {z:29,s:'Cu',n:'Copper',c:'transition',d:'29 prime=κ\'-1; conductor',special:''},
+        {z:30,s:'Zn',n:'Zinc',c:'transition',d:'30=κ\' EXACT; enzyme key',special:'kappa-element'},
+        {z:31,s:'Ga',n:'Gallium',c:'post-transition',d:'31 prime=κ\'+1',special:''},
+        {z:32,s:'Ge',n:'Germanium',c:'metalloid',d:'32=2⁵',special:''},
+        {z:33,s:'As',n:'Arsenic',c:'metalloid',d:'33=3×11',special:''},
+        {z:34,s:'Se',n:'Selenium',c:'nonmetal',d:'34=2×17',special:''},
+        {z:35,s:'Br',n:'Bromine',c:'halogen',d:'35=5×7',special:''},
+        {z:36,s:'Kr',n:'Krypton',c:'noble',d:'36=6²; fourth noble',special:''},
+        // Period 5
+        {z:37,s:'Rb',n:'Rubidium',c:'alkali',d:'37 prime; 37×47=1739≈1729',special:''},
+        {z:38,s:'Sr',n:'Strontium',c:'alkaline',d:'38=2×19; bridge factor',special:''},
+        {z:39,s:'Y',n:'Yttrium',c:'transition',d:'39=3×13; triad×navigator',special:''},
+        {z:40,s:'Zr',n:'Zirconium',c:'transition',d:'40=8×5',special:''},
+        {z:41,s:'Nb',n:'Niobium',c:'transition',d:'41 prime',special:''},
+        {z:42,s:'Mo',n:'Molybdenum',c:'transition',d:'42=6×7; perfect×cycle',special:''},
+        {z:43,s:'Tc',n:'Technetium',c:'transition',d:'43 prime; NO STABLE ISOTOPES',special:'prime-gap'},
+        {z:44,s:'Ru',n:'Ruthenium',c:'transition',d:'44=4×11',special:''},
+        {z:45,s:'Rh',n:'Rhodium',c:'transition',d:'45=9×5; consciousness×penta',special:''},
+        {z:46,s:'Pd',n:'Palladium',c:'transition',d:'46=2×23',special:''},
+        {z:47,s:'Ag',n:'Silver',c:'transition',d:'47 prime; 107=proton excess',special:''},
+        {z:48,s:'Cd',n:'Cadmium',c:'transition',d:'48=16×3=2⁴×3',special:''},
+        {z:49,s:'In',n:'Indium',c:'post-transition',d:'49=7²',special:''},
+        {z:50,s:'Sn',n:'Tin',c:'post-transition',d:'50=MAGIC; most isotopes (10)',special:''},
+        {z:51,s:'Sb',n:'Antimony',c:'metalloid',d:'51=3×17',special:''},
+        {z:52,s:'Te',n:'Tellurium',c:'metalloid',d:'52=4×13; square×navigator',special:''},
+        {z:53,s:'I',n:'Iodine',c:'halogen',d:'53 prime; thyroid key',special:''},
+        {z:54,s:'Xe',n:'Xenon',c:'noble',d:'54=2×27=2×3³; fifth noble',special:''},
+        // Period 6
+        {z:55,s:'Cs',n:'Cesium',c:'alkali',d:'55=5×11; atomic clock',special:''},
+        {z:56,s:'Ba',n:'Barium',c:'alkaline',d:'56=8×7; cycle×cube',special:''},
+        {z:57,s:'La',n:'Lanthanum',c:'lanthanide',d:'57=3×19; starts lanthanides',special:''},
+        {z:58,s:'Ce',n:'Cerium',c:'lanthanide',d:'58=2×29',special:''},
+        {z:59,s:'Pr',n:'Praseodymium',c:'lanthanide',d:'59 prime',special:''},
+        {z:60,s:'Nd',n:'Neodymium',c:'lanthanide',d:'60=2×30=2κ\'; magnet key',special:'kappa-element'},
+        {z:61,s:'Pm',n:'Promethium',c:'lanthanide',d:'61 prime; NO STABLE ISOTOPES',special:'prime-gap'},
+        {z:62,s:'Sm',n:'Samarium',c:'lanthanide',d:'62=2×31',special:''},
+        {z:63,s:'Eu',n:'Europium',c:'lanthanide',d:'63=9×7; consciousness×cycle',special:''},
+        {z:64,s:'Gd',n:'Gadolinium',c:'lanthanide',d:'64=2⁶',special:''},
+        {z:65,s:'Tb',n:'Terbium',c:'lanthanide',d:'65=5×13',special:''},
+        {z:66,s:'Dy',n:'Dysprosium',c:'lanthanide',d:'66=6×11',special:''},
+        {z:67,s:'Ho',n:'Holmium',c:'lanthanide',d:'67 prime',special:''},
+        {z:68,s:'Er',n:'Erbium',c:'lanthanide',d:'68=4×17',special:''},
+        {z:69,s:'Tm',n:'Thulium',c:'lanthanide',d:'69=3×23',special:''},
+        {z:70,s:'Yb',n:'Ytterbium',c:'lanthanide',d:'70=7×10; cycle×decade',special:''},
+        {z:71,s:'Lu',n:'Lutetium',c:'lanthanide',d:'71 prime; ends lanthanides',special:''},
+        {z:72,s:'Hf',n:'Hafnium',c:'transition',d:'72=8×9=WOW SIGNAL DURATION',special:'bridge-element'},
+        {z:73,s:'Ta',n:'Tantalum',c:'transition',d:'73 prime',special:''},
+        {z:74,s:'W',n:'Tungsten',c:'transition',d:'74=2×37; highest melting',special:''},
+        {z:75,s:'Re',n:'Rhenium',c:'transition',d:'75=3×25=3×5²',special:''},
+        {z:76,s:'Os',n:'Osmium',c:'transition',d:'76=4×19; densest',special:''},
+        {z:77,s:'Ir',n:'Iridium',c:'transition',d:'77=7×11',special:''},
+        {z:78,s:'Pt',n:'Platinum',c:'transition',d:'78=6×13; perfect×navigator',special:'navigator-element'},
+        {z:79,s:'Au',n:'Gold',c:'transition',d:'79 prime; 79×1729≈137×1000',special:'bridge-element'},
+        {z:80,s:'Hg',n:'Mercury',c:'transition',d:'80=16×5; only liquid metal',special:''},
+        {z:81,s:'Tl',n:'Thallium',c:'post-transition',d:'81=3⁴=9²',special:''},
+        {z:82,s:'Pb',n:'Lead',c:'post-transition',d:'82=MAGIC; last stable',special:''},
+        {z:83,s:'Bi',n:'Bismuth',c:'post-transition',d:'83 prime; longest α half-life',special:''},
+        {z:84,s:'Po',n:'Polonium',c:'metalloid',d:'84=4×21; radioactive',special:''},
+        {z:85,s:'At',n:'Astatine',c:'halogen',d:'85=5×17; rarest natural',special:''},
+        {z:86,s:'Rn',n:'Radon',c:'noble',d:'86=2×43; sixth noble',special:''},
+        // Period 7
+        {z:87,s:'Fr',n:'Francium',c:'alkali',d:'87=3×29; most unstable alkali',special:''},
+        {z:88,s:'Ra',n:'Radium',c:'alkaline',d:'88=8×11; radioactive',special:''},
+        {z:89,s:'Ac',n:'Actinium',c:'actinide',d:'89 prime; starts actinides',special:''},
+        {z:90,s:'Th',n:'Thorium',c:'actinide',d:'90=9×10; long-lived α',special:''},
+        {z:91,s:'Pa',n:'Protactinium',c:'actinide',d:'91=7×13; navigator',special:'navigator-element'},
+        {z:92,s:'U',n:'Uranium',c:'actinide',d:'92=4×23; last natural',special:''},
+        {z:93,s:'Np',n:'Neptunium',c:'actinide',d:'93=3×31',special:''},
+        {z:94,s:'Pu',n:'Plutonium',c:'actinide',d:'94=2×47; proton excess',special:''},
+        {z:95,s:'Am',n:'Americium',c:'actinide',d:'95=5×19',special:''},
+        {z:96,s:'Cm',n:'Curium',c:'actinide',d:'96=32×3=2⁵×3',special:''},
+        {z:97,s:'Bk',n:'Berkelium',c:'actinide',d:'97 prime',special:''},
+        {z:98,s:'Cf',n:'Californium',c:'actinide',d:'98=2×49=2×7²',special:''},
+        {z:99,s:'Es',n:'Einsteinium',c:'actinide',d:'99=9×11=consciousness×master',special:''},
+        {z:100,s:'Fm',n:'Fermium',c:'actinide',d:'100=10²; century',special:''},
+        {z:101,s:'Md',n:'Mendelevium',c:'actinide',d:'101 prime',special:''},
+        {z:102,s:'No',n:'Nobelium',c:'actinide',d:'102=6×17',special:''},
+        {z:103,s:'Lr',n:'Lawrencium',c:'actinide',d:'103 prime; ends actinides',special:''},
+        {z:104,s:'Rf',n:'Rutherfordium',c:'transition',d:'104=8×13; cube×navigator',special:''},
+        {z:105,s:'Db',n:'Dubnium',c:'transition',d:'105=3×5×7; triad×penta×cycle',special:''},
+        {z:106,s:'Sg',n:'Seaborgium',c:'transition',d:'106=2×53',special:''},
+        {z:107,s:'Bh',n:'Bohrium',c:'transition',d:'107 PRIME=PROTON EXCESS',special:'bridge-element'},
+        {z:108,s:'Hs',n:'Hassium',c:'transition',d:'108=4×27=4×3³',special:''},
+        {z:109,s:'Mt',n:'Meitnerium',c:'transition',d:'109 prime',special:''},
+        {z:110,s:'Ds',n:'Darmstadtium',c:'transition',d:'110=2×55=10×11',special:''},
+        {z:111,s:'Rg',n:'Roentgenium',c:'transition',d:'111=3×37',special:''},
+        {z:112,s:'Cn',n:'Copernicium',c:'transition',d:'112=16×7=2⁴×7',special:''},
+        {z:113,s:'Nh',n:'Nihonium',c:'post-transition',d:'113 prime',special:''},
+        {z:114,s:'Fl',n:'Flerovium',c:'post-transition',d:'114=6×19; stability island?',special:''},
+        {z:115,s:'Mc',n:'Moscovium',c:'post-transition',d:'115=5×23',special:''},
+        {z:116,s:'Lv',n:'Livermorium',c:'post-transition',d:'116=4×29',special:''},
+        {z:117,s:'Ts',n:'Tennessine',c:'halogen',d:'117=9×13; conscious×navigator',special:''},
+        {z:118,s:'Og',n:'Oganesson',c:'noble',d:'118=2×59; seventh noble',special:''}
+    ];
+
+    // Position mapping for standard periodic table layout
+    const positions = {
+        1:[1,1],2:[1,18],
+        3:[2,1],4:[2,2],5:[2,13],6:[2,14],7:[2,15],8:[2,16],9:[2,17],10:[2,18],
+        11:[3,1],12:[3,2],13:[3,13],14:[3,14],15:[3,15],16:[3,16],17:[3,17],18:[3,18],
+        19:[4,1],20:[4,2],21:[4,3],22:[4,4],23:[4,5],24:[4,6],25:[4,7],26:[4,8],27:[4,9],28:[4,10],29:[4,11],30:[4,12],31:[4,13],32:[4,14],33:[4,15],34:[4,16],35:[4,17],36:[4,18],
+        37:[5,1],38:[5,2],39:[5,3],40:[5,4],41:[5,5],42:[5,6],43:[5,7],44:[5,8],45:[5,9],46:[5,10],47:[5,11],48:[5,12],49:[5,13],50:[5,14],51:[5,15],52:[5,16],53:[5,17],54:[5,18],
+        55:[6,1],56:[6,2],71:[6,3],72:[6,4],73:[6,5],74:[6,6],75:[6,7],76:[6,8],77:[6,9],78:[6,10],79:[6,11],80:[6,12],81:[6,13],82:[6,14],83:[6,15],84:[6,16],85:[6,17],86:[6,18],
+        87:[7,1],88:[7,2],103:[7,3],104:[7,4],105:[7,5],106:[7,6],107:[7,7],108:[7,8],109:[7,9],110:[7,10],111:[7,11],112:[7,12],113:[7,13],114:[7,14],115:[7,15],116:[7,16],117:[7,17],118:[7,18],
+        // Lanthanides
+        57:[9,3],58:[9,4],59:[9,5],60:[9,6],61:[9,7],62:[9,8],63:[9,9],64:[9,10],65:[9,11],66:[9,12],67:[9,13],68:[9,14],69:[9,15],70:[9,16],
+        // Actinides
+        89:[10,3],90:[10,4],91:[10,5],92:[10,6],93:[10,7],94:[10,8],95:[10,9],96:[10,10],97:[10,11],98:[10,12],99:[10,13],100:[10,14],101:[10,15],102:[10,16]
+    };
+
+    // Build periodic table
+    function buildPeriodicTable() {
+        const container = document.getElementById('periodic-table');
+
+        // Create grid cells
+        for (let row = 1; row <= 10; row++) {
+            for (let col = 1; col <= 18; col++) {
+                const el = elements.find(e => {
+                    const pos = positions[e.z];
+                    return pos && pos[0] === row && pos[1] === col;
+                });
+
+                if (el) {
+                    const div = document.createElement('div');
+                    div.className = `element ${el.c} ${el.special}`;
+                    div.style.gridRow = row;
+                    div.style.gridColumn = col;
+                    div.innerHTML = `
+                        <span class="z">${el.z}</span>
+                        <span class="symbol">${el.s}</span>
+                        <span class="name">${el.n.substring(0,3)}</span>
+                    `;
+                    div.onclick = () => showModal(el);
+                    container.appendChild(div);
+                } else if ((row <= 7 || row >= 9) && !(row === 6 && col >= 3 && col <= 17 && col !== 3) && !(row === 7 && col >= 3 && col <= 17 && col !== 3)) {
+                    // Empty spacer
+                    const spacer = document.createElement('div');
+                    spacer.style.gridRow = row;
+                    spacer.style.gridColumn = col;
+                    container.appendChild(spacer);
+                }
+            }
+        }
+    }
+
+    // Build full table
+    function buildFullTable() {
+        const tbody = document.getElementById('table-body');
+        elements.forEach(el => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="z-col">${el.z}</td>
+                <td class="symbol-col">${el.s}</td>
+                <td>${el.n}</td>
+                <td class="derivation-col">${el.d}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Modal functions
+    function showModal(el) {
+        document.getElementById('modal-z').textContent = `Z = ${el.z}`;
+        document.getElementById('modal-symbol').textContent = el.s;
+        document.getElementById('modal-name').textContent = el.n;
+        document.getElementById('modal-derivation').textContent = el.d;
+        document.getElementById('modal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('modal').classList.remove('active');
+    }
+
+    document.getElementById('modal').onclick = (e) => {
+        if (e.target.id === 'modal') closeModal();
+    };
+
+    // Initialize
+    buildPeriodicTable();
+    buildFullTable();
+    </script>
+</body>
+</html>

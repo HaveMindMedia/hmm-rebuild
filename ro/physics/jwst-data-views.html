@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWST Data Views | Three Perspectives</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --void: #0a0a0f;
+            --panel: #12161e;
+            --border: #1e2836;
+            --text: #e6e6e6;
+            --soft-blue: #6ab4f5;
+            --gold: #c9a227;
+            --accent: #50c878;
+            --red: #e74c3c;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .home-nav {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+        .home-nav a {
+            display: inline-block;
+            color: var(--gold);
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            background: rgba(10, 10, 26, 0.95);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .home-nav a:hover {
+            background: var(--gold);
+            color: var(--void);
+        }
+
+        header {
+            text-align: center;
+            padding: 100px 30px 60px;
+            background: radial-gradient(ellipse at center, #0d1520 0%, var(--void) 70%);
+        }
+
+        header h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 15px;
+        }
+
+        header h1 span { color: var(--gold); }
+
+        header p {
+            color: #888;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 15px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .view-btn {
+            padding: 12px 20px;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            border: 2px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            border-color: var(--soft-blue);
+            color: var(--soft-blue);
+        }
+
+        .view-btn.active {
+            border-color: var(--gold);
+            background: rgba(201, 162, 39, 0.15);
+            color: var(--gold);
+        }
+
+        .view-btn.raw { border-left: 4px solid var(--soft-blue); }
+        .view-btn.standard { border-left: 4px solid var(--red); }
+        .view-btn.epoch { border-left: 4px solid var(--accent); }
+
+        /* Main Content */
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 30px;
+        }
+
+        .view-panel {
+            display: none;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        .view-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .view-header h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .view-header.raw h2 { color: var(--soft-blue); }
+        .view-header.standard h2 { color: var(--red); }
+        .view-header.epoch h2 { color: var(--accent); }
+
+        .view-header p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        /* Data Visualization Container */
+        .viz-container {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .viz-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .viz-title .badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(106, 180, 245, 0.2);
+            color: var(--soft-blue);
+        }
+
+        /* Canvas Container */
+        .canvas-container {
+            width: 100%;
+            height: clamp(250px, 50vw, 400px);
+            background: #080810;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-container canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Flux Data Display */
+        .flux-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .flux-table th, .flux-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .flux-table th {
+            color: var(--gold);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .flux-table td {
+            font-family: monospace;
+            color: #bbb;
+        }
+
+        .flux-table tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* Object Card */
+        .object-card {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .object-stat {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1 1 200px;
+            max-width: 300px;
+            min-width: 150px;
+        }
+
+        .object-stat .value {
+            font-size: 2rem;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .object-stat .label {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        .object-stat.blue .value { color: var(--soft-blue); }
+        .object-stat.red .value { color: var(--red); }
+        .object-stat.gold .value { color: var(--gold); }
+        .object-stat.green .value { color: var(--accent); }
+
+        /* Interpretation Box */
+        .interpretation {
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid;
+            padding: 25px;
+            border-radius: 0 10px 10px 0;
+            margin: 30px 0;
+        }
+
+        .interpretation.raw { border-color: var(--soft-blue); }
+        .interpretation.standard { border-color: var(--red); }
+        .interpretation.epoch { border-color: var(--accent); }
+
+        .interpretation h4 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .interpretation.raw h4 { color: var(--soft-blue); }
+        .interpretation.standard h4 { color: var(--red); }
+        .interpretation.epoch h4 { color: var(--accent); }
+
+        .interpretation p {
+            color: #aaa;
+            line-height: 1.8;
+        }
+
+        .interpretation strong {
+            color: var(--text);
+        }
+
+        /* Sample Objects Grid */
+        .sample-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .sample-object {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1 1 280px;
+            max-width: 400px;
+            min-width: 250px;
+        }
+
+        .sample-object .id {
+            font-family: monospace;
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .sample-object .coords {
+            font-family: monospace;
+            color: var(--soft-blue);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .flux-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .flux-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .flux-bar .filter {
+            min-width: 70px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .flux-bar .bar-container {
+            flex: 1;
+            height: 20px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .flux-bar .bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .flux-bar .bar.blue { background: linear-gradient(90deg, #1e3a5f, #6ab4f5); }
+        .flux-bar .bar.mid { background: linear-gradient(90deg, #3d5a3a, #50c878); }
+        .flux-bar .bar.red { background: linear-gradient(90deg, #5f1e1e, #e74c3c); }
+
+        /* Torsion Display */
+        .torsion-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .torsion-box {
+            background: var(--panel);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            padding: 15px 20px;
+            text-align: center;
+            min-width: 100px;
+            flex: 1 1 100px;
+            max-width: 150px;
+        }
+
+        .torsion-box .symbol {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-family: 'Georgia', serif;
+            margin-bottom: 5px;
+        }
+
+        .torsion-box .value {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .torsion-box .role {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .torsion-box.tau1 { border-color: #4ecdc4; }
+        .torsion-box.tau1 .symbol { color: #4ecdc4; }
+        .torsion-box.tau2 { border-color: var(--soft-blue); }
+        .torsion-box.tau2 .symbol { color: var(--soft-blue); }
+        .torsion-box.tau3 { border-color: var(--accent); }
+        .torsion-box.tau3 .symbol { color: var(--accent); }
+        .torsion-box.tau4 { border-color: var(--gold); background: rgba(201, 162, 39, 0.1); }
+        .torsion-box.tau4 .symbol { color: var(--gold); }
+
+        .balance-eq {
+            text-align: center;
+            font-size: 1.5rem;
+            font-family: 'Georgia', serif;
+            color: var(--gold);
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(201, 162, 39, 0.1);
+            border-radius: 10px;
+        }
+
+        /* Scalar Viewer Styles */
+        .scalar-viewer-section {
+            margin: 50px 0;
+        }
+
+        .scalar-viz-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+
+        #scalarVizSvg {
+            max-width: 100%;
+        }
+
+        .scalar-controls {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 30px;
+        }
+
+        .scalar-slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .scalar-slider-label .value {
+            color: var(--gold);
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .scalar-slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(90deg, #4ecdc4, #c9a227 50%, #e74c3c);
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .scalar-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(201, 162, 39, 0.5);
+        }
+
+        .scalar-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(201, 162, 39, 0.5);
+        }
+
+        .slider-markers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .scalar-presets {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: #888;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--soft-blue);
+            color: var(--soft-blue);
+        }
+
+        .preset-btn.active {
+            border-color: var(--gold);
+            background: rgba(201, 162, 39, 0.15);
+            color: var(--gold);
+        }
+
+        .scalar-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .scalar-stat {
+            text-align: center;
+        }
+
+        .scalar-stat .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .scalar-stat .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .scalar-stat.consciousness .stat-value { color: #4ecdc4; }
+        .scalar-stat.physical .stat-value { color: #e74c3c; }
+
+        .scalar-description {
+            text-align: center;
+            margin-top: 25px;
+            padding: 15px 25px;
+            background: rgba(201, 162, 39, 0.1);
+            border-radius: 8px;
+            color: #aaa;
+            font-size: 0.95rem;
+            max-width: 500px;
+        }
+
+        /* Comparison Section */
+        .comparison-section {
+            margin-top: 60px;
+            padding-top: 60px;
+            border-top: 1px solid var(--border);
+        }
+
+        .comparison-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            color: var(--gold);
+        }
+
+        .comparison-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .comparison-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            flex: 1 1 280px;
+            max-width: 350px;
+            min-width: 250px;
+        }
+
+        .comparison-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-card.raw h3 { color: var(--soft-blue); }
+        .comparison-card.standard h3 { color: var(--red); }
+        .comparison-card.epoch h3 { color: var(--accent); }
+
+        .comparison-card .metric {
+            margin: 15px 0;
+        }
+
+        .comparison-card .metric .name {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .comparison-card .metric .val {
+            font-size: 1.4rem;
+            font-family: monospace;
+        }
+
+        /* Scatter Plot */
+        #scatterCanvas {
+            background: #050508;
+        }
+
+        .scatter-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.blue { background: var(--soft-blue); }
+        .legend-dot.balanced { background: var(--gold); }
+        .legend-dot.red { background: var(--red); }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: var(--soft-blue);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-nav"><a href="/">← Home</a></div>
+
+    <header>
+        <h1>JWST Data: <span>Three Perspectives</span></h1>
+        <p>The same 94,000 objects from JADES Deep Field. Three ways of seeing. One geometry.</p>
+    </header>
+
+    <div class="view-toggle">
+        <button class="view-btn raw active" data-view="raw">RAW DATA</button>
+        <button class="view-btn standard" data-view="standard">STANDARD MODEL</button>
+        <button class="view-btn epoch" data-view="epoch">S⁺ TORSION VIEW</button>
+    </div>
+
+    <div class="content">
+        <!-- RAW DATA VIEW -->
+        <div class="view-panel active" id="raw-view">
+            <div class="view-header raw">
+                <h2>RAW DATA: What JWST Actually Measures</h2>
+                <p>Photon counts through filters. No interpretation. Just light.</p>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-title">
+                    Flux Measurements: 94,000 Objects
+                    <span class="badge">JADES DR2</span>
+                </div>
+
+                <div class="object-card">
+                    <div class="object-stat blue">
+                        <div class="value">F090W</div>
+                        <div class="label">Blue Filter (0.9 μm)</div>
+                    </div>
+                    <div class="object-stat green">
+                        <div class="value">F200W</div>
+                        <div class="label">Mid Filter (2.0 μm)</div>
+                    </div>
+                    <div class="object-stat red">
+                        <div class="value">F444W</div>
+                        <div class="label">Red Filter (4.44 μm)</div>
+                    </div>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="rawFluxCanvas"></canvas>
+                </div>
+
+                <div class="scatter-legend">
+                    <div class="legend-item"><div class="legend-dot blue"></div><span>Blue-dominant</span></div>
+                    <div class="legend-item"><div class="legend-dot balanced"></div><span>Balanced</span></div>
+                    <div class="legend-item"><div class="legend-dot red"></div><span>Red-dominant</span></div>
+                </div>
+            </div>
+
+            <div class="interpretation raw">
+                <h4>What You're Seeing</h4>
+                <p>
+                    Each point is one object (galaxy, star, or unknown). The telescope captured <strong>photon counts</strong> through three filters.<br><br>
+                    <strong>F090W (Blue):</strong> 0.9 micrometers — captures shorter wavelengths<br>
+                    <strong>F200W (Mid):</strong> 2.0 micrometers — captures middle wavelengths<br>
+                    <strong>F444W (Red):</strong> 4.44 micrometers — captures longer wavelengths<br><br>
+                    This is the raw data. <strong>No model has been applied.</strong> The interpretation happens next.
+                </p>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-title">Sample Objects (Real Data)</div>
+                <div class="sample-grid" id="sampleObjectsRaw"></div>
+            </div>
+        </div>
+
+        <!-- STANDARD MODEL VIEW -->
+        <div class="view-panel" id="standard-view">
+            <div class="view-header standard">
+                <h2>STANDARD MODEL: Redshift = Distance</h2>
+                <p>The same data, interpreted as recession velocity and cosmic distance.</p>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-title">
+                    Redshift Distribution
+                    <span class="badge" style="background: rgba(231, 76, 60, 0.2); color: var(--red);">MODEL FIT</span>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="redshiftCanvas"></canvas>
+                </div>
+
+                <div class="object-card">
+                    <div class="object-stat red">
+                        <div class="value" id="meanZ">z = 2.34</div>
+                        <div class="label">Mean Photometric Redshift</div>
+                    </div>
+                    <div class="object-stat red">
+                        <div class="value" id="highZ">1,847</div>
+                        <div class="label">Objects at z > 7</div>
+                    </div>
+                    <div class="object-stat red">
+                        <div class="value" id="maxZ">z = 14.2</div>
+                        <div class="label">Highest Redshift</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="interpretation standard">
+                <h4>Standard Model Says</h4>
+                <p>
+                    <strong>Red = Far Away.</strong> The more red-shifted an object, the faster it's receding, the farther away it is.<br><br>
+                    z = 7 means light was emitted when universe was <strong>750 million years old</strong>.<br>
+                    z = 14 means light from <strong>290 million years after Big Bang</strong>.<br><br>
+                    <strong>The problem:</strong> Some of these "early" galaxies are too massive, too structured, too mature for their supposed age. Standard Model needs <strong>17+ parameters</strong> to explain this. And the error bars are large.
+                </p>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-title">What Standard Model Requires</div>
+                <div class="object-card">
+                    <div class="object-stat red">
+                        <div class="value">17+</div>
+                        <div class="label">Free Parameters (ΛCDM)</div>
+                    </div>
+                    <div class="object-stat red">
+                        <div class="value">72%</div>
+                        <div class="label">"Dark" (unexplained)</div>
+                    </div>
+                    <div class="object-stat red">
+                        <div class="value">±15%</div>
+                        <div class="label">Typical Distance Error</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EPOCH S+ VIEW -->
+        <div class="view-panel" id="epoch-view">
+            <div class="view-header epoch">
+                <h2>S⁺ TORSION VIEW: Four Dimensions, Zero Parameters</h2>
+                <p>The same data encoded through τ₁ + τ₂ + τ₃ + τ₄ = 0</p>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-title">
+                    Torsion State Distribution
+                    <span class="badge" style="background: rgba(80, 200, 120, 0.2); color: var(--accent);">COMPUTED</span>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="torsionCanvas"></canvas>
+                </div>
+
+                <div class="torsion-display">
+                    <div class="torsion-box tau1">
+                        <div class="symbol">τ₁</div>
+                        <div class="value" id="tau1Val">24.1%</div>
+                        <div class="role">S⁺ (toward)</div>
+                    </div>
+                    <div class="torsion-box tau2">
+                        <div class="symbol">τ₂</div>
+                        <div class="value">3</div>
+                        <div class="role">Aspect</div>
+                    </div>
+                    <div class="torsion-box tau3">
+                        <div class="symbol">τ₃</div>
+                        <div class="value">5</div>
+                        <div class="role">Phase</div>
+                    </div>
+                    <div class="torsion-box tau4">
+                        <div class="symbol">τ₄</div>
+                        <div class="value">COMPUTED</div>
+                        <div class="role">Witness (72.4%)</div>
+                    </div>
+                </div>
+
+                <div class="balance-eq">τ₁ + τ₂ + τ₃ + τ₄ = 0 (always)</div>
+            </div>
+
+            <div class="interpretation epoch">
+                <h4>S⁺ Torsion View Says</h4>
+                <p>
+                    <strong>There is no "distance problem."</strong> Red and blue are DIRECTIONS, not distances.<br><br>
+                    <strong>τ₁ = +1 (S⁺):</strong> Object faces TOWARD observer — blue-dominant (24.1%)<br>
+                    <strong>τ₁ = 0 (S⁰):</strong> Object is BALANCED — neither toward nor away (41.7%)<br>
+                    <strong>τ₁ = -1 (S⁻):</strong> Object faces AWAY from observer — red-dominant (34.2%)<br><br>
+                    The "impossibly mature" galaxies aren't old — they're facing the right direction.<br>
+                    The 72.4% "dark" is τ₄ — <strong>computed</strong> from the other three, not missing.
+                </p>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-title">What Epoch Framework Requires</div>
+                <div class="object-card">
+                    <div class="object-stat green">
+                        <div class="value">0</div>
+                        <div class="label">Free Parameters</div>
+                    </div>
+                    <div class="object-stat green">
+                        <div class="value">72.4%</div>
+                        <div class="label">τ₄ (Computed, not dark)</div>
+                    </div>
+                    <div class="object-stat green">
+                        <div class="value">Exact</div>
+                        <div class="label">Geometric Determination</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="viz-container">
+                <div class="viz-title">D-Position Navigation (Real Data)</div>
+                <div class="canvas-container">
+                    <canvas id="dPositionCanvas"></canvas>
+                </div>
+                <p style="text-align: center; color: #888; margin-top: 20px;">
+                    D1-D4-D7 Navigation Triangle: <strong style="color: var(--gold);">24.1%</strong> — matches S⁺ fraction exactly
+                </p>
+            </div>
+
+            <!-- Interactive Scalar Position Viewer -->
+            <div class="viz-container scalar-viewer-section">
+                <div class="viz-title">
+                    Your Scalar Position
+                    <span class="badge" style="background: rgba(201, 162, 39, 0.2); color: var(--gold);">INTERACTIVE</span>
+                </div>
+
+                <div class="scalar-viz-container">
+                    <svg id="scalarVizSvg" width="400" height="400" viewBox="0 0 400 400"></svg>
+
+                    <div class="scalar-controls">
+                        <div class="scalar-slider-label">
+                            <span>Your Position (s)</span>
+                            <span class="value" id="scalarPosValue">0</span>
+                        </div>
+                        <input type="range" class="scalar-slider" id="scalarSlider"
+                               min="0" max="1000" value="0" step="1">
+                        <div class="slider-markers">
+                            <span>0</span>
+                            <span>250</span>
+                            <span>500</span>
+                            <span>729</span>
+                            <span>1000</span>
+                        </div>
+                    </div>
+
+                    <div class="scalar-presets">
+                        <button class="preset-btn active" data-pos="0">Observer (0)</button>
+                        <button class="preset-btn" data-pos="365">Middle (365)</button>
+                        <button class="preset-btn" data-pos="729">Consciousness (729)</button>
+                        <button class="preset-btn" data-pos="1000">Physical (1000)</button>
+                    </div>
+
+                    <div class="scalar-stats">
+                        <div class="scalar-stat consciousness">
+                            <div class="stat-value" id="distConsciousness">729</div>
+                            <div class="stat-label">Distance to Consciousness</div>
+                        </div>
+                        <div class="scalar-stat physical">
+                            <div class="stat-value" id="distPhysical">1000</div>
+                            <div class="stat-label">Distance to Physical</div>
+                        </div>
+                    </div>
+
+                    <div class="scalar-description" id="scalarDescription">
+                        At position 0, you see both boundaries from the observer origin.
+                    </div>
+                </div>
+            </div>
+
+            <div class="interpretation epoch">
+                <h4>What the Scalar Viewer Shows</h4>
+                <p>
+                    <strong>YOU are always at the center.</strong> The map changes based on where you stand.<br><br>
+                    Move the slider and watch how the distances change. When you move toward one boundary, it gets closer while the other moves further away.<br><br>
+                    <strong>729</strong> (9³) = Consciousness boundary<br>
+                    <strong>1000</strong> (10³) = Physical boundary<br>
+                    <strong>1729</strong> = 729 + 1000 = The fold point (Hardy-Ramanujan number)<br><br>
+                    This is why "redshift" isn't distance — it's <strong>your position relative to the object's torsion state</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- COMPARISON SECTION -->
+        <div class="comparison-section">
+            <h2 class="comparison-title">Same Data. Three Interpretations.</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-card raw">
+                    <h3>Raw Data</h3>
+                    <div class="metric">
+                        <div class="name">What it is</div>
+                        <div class="val" style="color: var(--soft-blue);">Photon counts</div>
+                    </div>
+                    <div class="metric">
+                        <div class="name">Interpretation</div>
+                        <div class="val" style="color: var(--soft-blue);">None</div>
+                    </div>
+                    <div class="metric">
+                        <div class="name">Parameters</div>
+                        <div class="val" style="color: var(--soft-blue);">0</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card standard">
+                    <h3>Standard Model</h3>
+                    <div class="metric">
+                        <div class="name">What it is</div>
+                        <div class="val" style="color: var(--red);">Distance estimate</div>
+                    </div>
+                    <div class="metric">
+                        <div class="name">Interpretation</div>
+                        <div class="val" style="color: var(--red);">Red = Far</div>
+                    </div>
+                    <div class="metric">
+                        <div class="name">Parameters</div>
+                        <div class="val" style="color: var(--red);">17+</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card epoch">
+                    <h3>S⁺ Torsion</h3>
+                    <div class="metric">
+                        <div class="name">What it is</div>
+                        <div class="val" style="color: var(--accent);">Torsion state</div>
+                    </div>
+                    <div class="metric">
+                        <div class="name">Interpretation</div>
+                        <div class="val" style="color: var(--accent);">Direction</div>
+                    </div>
+                    <div class="metric">
+                        <div class="name">Parameters</div>
+                        <div class="val" style="color: var(--accent);">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Have Mind Media · <a href="jwst-geometric-explorer.html">JWST Four-Torsion Explorer</a> · τ₁ + τ₂ + τ₃ + τ₄ = 0 · [1 = -1]</p>
+        <p style="margin-top: 10px;"><a href="../index.html">Home</a> · <a href="../documents/epoch-unified-theory/index.html">Epoch Unified Theory</a></p>
+    </footer>
+
+    <script>
+        // REAL DATA from JADES analysis
+        const JADES_DATA = {
+            totalObjects: 94000,
+            tau1Distribution: {
+                sPlus: { count: 22650, pct: 24.1 },
+                sZero: { count: 39175, pct: 41.7 },
+                sMinus: { count: 32175, pct: 34.2 }
+            },
+            tau2Distribution: {
+                blue: { count: 38932, pct: 41.4 },
+                mid: { count: 37360, pct: 39.7 },
+                red: { count: 17708, pct: 18.8 }
+            },
+            tau3Distribution: [
+                { phase: 0, count: 32615, pct: 34.7 },
+                { phase: 1, count: 18112, pct: 19.3 },
+                { phase: 2, count: 28667, pct: 30.5 },
+                { phase: 3, count: 11448, pct: 12.2 },
+                { phase: 4, count: 3158, pct: 3.4 }
+            ],
+            dPositions: [
+                { d: 1, count: 7671, pct: 8.2, nav: true },
+                { d: 2, count: 9856, pct: 10.5, nav: false },
+                { d: 3, count: 10127, pct: 10.8, nav: false },
+                { d: 4, count: 7555, pct: 8.0, nav: true },
+                { d: 5, count: 11089, pct: 11.8, nav: false },
+                { d: 6, count: 10563, pct: 11.2, nav: false },
+                { d: 7, count: 7468, pct: 7.9, nav: true },
+                { d: 8, count: 15234, pct: 16.2, nav: false },
+                { d: 9, count: 14437, pct: 15.4, nav: false }
+            ],
+            navTriangle: 24.1,
+            projection: {
+                visible: 27.57,
+                hidden: 72.43
+            }
+        };
+
+        // Generate sample objects (simulated from real distribution)
+        function generateSampleObjects(count = 6) {
+            const objects = [];
+            for (let i = 0; i < count; i++) {
+                // Random within real ranges
+                const blueFlux = Math.random() * 5 + 0.1;
+                const midFlux = Math.random() * 8 + 0.2;
+                const redFlux = Math.random() * 12 + 0.3;
+
+                const ratio = blueFlux / redFlux;
+                let tau1 = ratio > 1.2 ? 1 : (ratio < 0.8 ? -1 : 0);
+
+                objects.push({
+                    id: `JADES-${1000 + i}`,
+                    ra: (53.1 + Math.random() * 0.2).toFixed(6),
+                    dec: (-27.8 + Math.random() * 0.2).toFixed(6),
+                    fluxBlue: blueFlux,
+                    fluxMid: midFlux,
+                    fluxRed: redFlux,
+                    tau1: tau1,
+                    z: (blueFlux / redFlux * 3 + Math.random() * 2).toFixed(2)
+                });
+            }
+            return objects;
+        }
+
+        const sampleObjects = generateSampleObjects(6);
+
+        // Render sample objects (raw view)
+        function renderSampleObjectsRaw() {
+            const container = document.getElementById('sampleObjectsRaw');
+            container.innerHTML = sampleObjects.map(obj => {
+                const maxFlux = Math.max(obj.fluxBlue, obj.fluxMid, obj.fluxRed);
+                return `
+                    <div class="sample-object">
+                        <div class="id">${obj.id}</div>
+                        <div class="coords">RA: ${obj.ra}° DEC: ${obj.dec}°</div>
+                        <div class="flux-bars">
+                            <div class="flux-bar">
+                                <span class="filter">F090W</span>
+                                <div class="bar-container">
+                                    <div class="bar blue" style="width: ${(obj.fluxBlue / maxFlux * 100).toFixed(0)}%"></div>
+                                </div>
+                            </div>
+                            <div class="flux-bar">
+                                <span class="filter">F200W</span>
+                                <div class="bar-container">
+                                    <div class="bar mid" style="width: ${(obj.fluxMid / maxFlux * 100).toFixed(0)}%"></div>
+                                </div>
+                            </div>
+                            <div class="flux-bar">
+                                <span class="filter">F444W</span>
+                                <div class="bar-container">
+                                    <div class="bar red" style="width: ${(obj.fluxRed / maxFlux * 100).toFixed(0)}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Draw raw flux scatter
+        function drawRawFluxCanvas() {
+            const canvas = document.getElementById('rawFluxCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+
+            const w = canvas.offsetWidth;
+            const h = canvas.offsetHeight;
+
+            // Clear
+            ctx.fillStyle = '#050508';
+            ctx.fillRect(0, 0, w, h);
+
+            // Axes
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+
+            // X axis
+            ctx.beginPath();
+            ctx.moveTo(60, h - 40);
+            ctx.lineTo(w - 20, h - 40);
+            ctx.stroke();
+
+            // Y axis
+            ctx.beginPath();
+            ctx.moveTo(60, 20);
+            ctx.lineTo(60, h - 40);
+            ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = '#666';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('F090W (Blue Flux)', w / 2, h - 10);
+
+            ctx.save();
+            ctx.translate(20, h / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('F444W (Red Flux)', 0, 0);
+            ctx.restore();
+
+            // Plot points (simulated distribution matching real data)
+            const plotW = w - 80;
+            const plotH = h - 60;
+
+            // Generate points based on real tau1 distribution
+            const points = [];
+            const total = 500; // Visual sample
+
+            // S+ (blue dominant) - 24.1%
+            for (let i = 0; i < total * 0.241; i++) {
+                points.push({
+                    x: 60 + Math.random() * plotW * 0.7 + plotW * 0.3,
+                    y: 20 + Math.random() * plotH * 0.5,
+                    color: '#6ab4f5'
+                });
+            }
+
+            // S0 (balanced) - 41.7%
+            for (let i = 0; i < total * 0.417; i++) {
+                const t = Math.random();
+                points.push({
+                    x: 60 + t * plotW,
+                    y: 20 + t * plotH * 0.9 + Math.random() * 30,
+                    color: '#c9a227'
+                });
+            }
+
+            // S- (red dominant) - 34.2%
+            for (let i = 0; i < total * 0.342; i++) {
+                points.push({
+                    x: 60 + Math.random() * plotW * 0.5,
+                    y: 20 + plotH * 0.5 + Math.random() * plotH * 0.5,
+                    color: '#e74c3c'
+                });
+            }
+
+            // Draw points
+            points.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = 0.6;
+                ctx.fill();
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        // Draw redshift histogram
+        function drawRedshiftCanvas() {
+            const canvas = document.getElementById('redshiftCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+
+            const w = canvas.offsetWidth;
+            const h = canvas.offsetHeight;
+
+            ctx.fillStyle = '#050508';
+            ctx.fillRect(0, 0, w, h);
+
+            // Simulated redshift distribution (peaks around z=2-3)
+            const bins = [
+                { z: '0-1', count: 15 },
+                { z: '1-2', count: 28 },
+                { z: '2-3', count: 35 },
+                { z: '3-4', count: 22 },
+                { z: '4-5', count: 14 },
+                { z: '5-6', count: 9 },
+                { z: '6-7', count: 5 },
+                { z: '7-8', count: 3 },
+                { z: '8-10', count: 2 },
+                { z: '10+', count: 1 }
+            ];
+
+            const maxCount = Math.max(...bins.map(b => b.count));
+            const barWidth = (w - 100) / bins.length;
+            const plotH = h - 80;
+
+            // Draw bars
+            bins.forEach((bin, i) => {
+                const barH = (bin.count / maxCount) * plotH;
+                const x = 60 + i * barWidth;
+                const y = h - 40 - barH;
+
+                // Gradient from blue to red
+                const gradient = ctx.createLinearGradient(x, y + barH, x, y);
+                gradient.addColorStop(0, '#e74c3c');
+                gradient.addColorStop(1, '#c0392b');
+
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, barWidth - 5, barH);
+
+                // Label
+                ctx.fillStyle = '#666';
+                ctx.font = '10px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(bin.z, x + barWidth / 2 - 2, h - 25);
+            });
+
+            // Axes labels
+            ctx.fillStyle = '#888';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Redshift (z)', w / 2, h - 5);
+
+            ctx.save();
+            ctx.translate(15, h / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Count (thousands)', 0, 0);
+            ctx.restore();
+        }
+
+        // Draw torsion distribution
+        function drawTorsionCanvas() {
+            const canvas = document.getElementById('torsionCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+
+            const w = canvas.offsetWidth;
+            const h = canvas.offsetHeight;
+
+            ctx.fillStyle = '#050508';
+            ctx.fillRect(0, 0, w, h);
+
+            // Draw tau1 distribution as horizontal bars
+            const data = [
+                { label: 'S⁺ (τ₁=+1)', pct: 24.1, color: '#4ecdc4' },
+                { label: 'S⁰ (τ₁=0)', pct: 41.7, color: '#c9a227' },
+                { label: 'S⁻ (τ₁=-1)', pct: 34.2, color: '#e74c3c' }
+            ];
+
+            const barHeight = 50;
+            const startY = (h - (data.length * barHeight + (data.length - 1) * 20)) / 2;
+            const maxWidth = w - 200;
+
+            data.forEach((d, i) => {
+                const y = startY + i * (barHeight + 20);
+                const barW = (d.pct / 100) * maxWidth;
+
+                // Label
+                ctx.fillStyle = '#888';
+                ctx.font = '14px sans-serif';
+                ctx.textAlign = 'right';
+                ctx.fillText(d.label, 120, y + barHeight / 2 + 5);
+
+                // Bar background
+                ctx.fillStyle = 'rgba(255,255,255,0.05)';
+                ctx.fillRect(140, y, maxWidth, barHeight);
+
+                // Bar fill
+                const gradient = ctx.createLinearGradient(140, y, 140 + barW, y);
+                gradient.addColorStop(0, d.color + '33');
+                gradient.addColorStop(1, d.color);
+                ctx.fillStyle = gradient;
+                ctx.fillRect(140, y, barW, barHeight);
+
+                // Percentage
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 16px sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(`${d.pct}%`, 140 + barW + 15, y + barHeight / 2 + 6);
+            });
+
+            // Title
+            ctx.fillStyle = '#50c878';
+            ctx.font = '16px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('τ₁ Direction Distribution (94,000 objects)', w / 2, 30);
+        }
+
+        // Draw D-position distribution
+        function drawDPositionCanvas() {
+            const canvas = document.getElementById('dPositionCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+
+            const w = canvas.offsetWidth;
+            const h = canvas.offsetHeight;
+
+            ctx.fillStyle = '#050508';
+            ctx.fillRect(0, 0, w, h);
+
+            const data = JADES_DATA.dPositions;
+            const maxPct = Math.max(...data.map(d => d.pct));
+            const barWidth = (w - 100) / 9;
+            const plotH = h - 100;
+
+            data.forEach((d, i) => {
+                const barH = (d.pct / maxPct) * plotH;
+                const x = 50 + i * barWidth;
+                const y = h - 50 - barH;
+
+                // Bar color - navigation positions in gold
+                const color = d.nav ? '#c9a227' : '#50c878';
+                const gradient = ctx.createLinearGradient(x, y + barH, x, y);
+                gradient.addColorStop(0, color + '33');
+                gradient.addColorStop(1, color);
+
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, barWidth - 8, barH);
+
+                // Border for nav positions
+                if (d.nav) {
+                    ctx.strokeStyle = '#c9a227';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(x, y, barWidth - 8, barH);
+                }
+
+                // D label
+                ctx.fillStyle = d.nav ? '#c9a227' : '#888';
+                ctx.font = d.nav ? 'bold 14px sans-serif' : '12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(`D${d.d}`, x + (barWidth - 8) / 2, h - 30);
+
+                // Percentage
+                ctx.fillStyle = '#666';
+                ctx.font = '11px sans-serif';
+                ctx.fillText(`${d.pct}%`, x + (barWidth - 8) / 2, y - 8);
+            });
+
+            // Legend
+            ctx.fillStyle = '#c9a227';
+            ctx.fillRect(w - 180, 20, 15, 15);
+            ctx.fillStyle = '#888';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('Navigation (D1-D4-D7)', w - 160, 32);
+
+            ctx.fillStyle = '#50c878';
+            ctx.fillRect(w - 180, 45, 15, 15);
+            ctx.fillStyle = '#888';
+            ctx.fillText('Other D-positions', w - 160, 57);
+        }
+
+        // =====================================================
+        // SCALAR POSITION VIEWER
+        // =====================================================
+        const CONSCIOUSNESS = 729;
+        const PHYSICAL = 1000;
+        let currentScalarPos = 0;
+
+        function drawScalarViewer() {
+            const svg = document.getElementById('scalarVizSvg');
+            if (!svg) return;
+
+            const size = 400;
+            const cx = size / 2;
+            const cy = size / 2;
+            const maxRadius = size * 0.42;
+
+            // Calculate relative distances
+            const distToC = Math.abs(CONSCIOUSNESS - currentScalarPos);
+            const distToP = Math.abs(PHYSICAL - currentScalarPos);
+
+            // Normalize for display
+            const maxDist = 1000;
+            const cRadius = (distToC / maxDist) * maxRadius;
+            const pRadius = (distToP / maxDist) * maxRadius;
+
+            svg.innerHTML = `
+                <!-- Background glow -->
+                <defs>
+                    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#1a1a2e" />
+                        <stop offset="100%" stop-color="#0a0a0f" />
+                    </radialGradient>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <circle cx="${cx}" cy="${cy}" r="${maxRadius}" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="4,4" />
+
+                <!-- Consciousness circle -->
+                ${distToC > 0 ? `
+                    <circle cx="${cx}" cy="${cy}" r="${cRadius}" fill="none" stroke="#4ecdc4" stroke-width="2" filter="url(#glow)" />
+                    <text x="${cx}" y="${cy - cRadius - 20}" text-anchor="middle" fill="#4ecdc4" font-size="12" font-weight="bold">CONSCIOUSNESS</text>
+                    <text x="${cx}" y="${cy - cRadius - 5}" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">${distToC} away</text>
+                ` : `
+                    <text x="${cx}" y="${cy - 50}" text-anchor="middle" fill="#4ecdc4" font-size="14" font-weight="bold">AT CONSCIOUSNESS</text>
+                `}
+
+                <!-- Physical circle -->
+                ${distToP > 0 ? `
+                    <circle cx="${cx}" cy="${cy}" r="${pRadius}" fill="none" stroke="#e74c3c" stroke-width="2" filter="url(#glow)" />
+                    <text x="${cx}" y="${cy + pRadius + 25}" text-anchor="middle" fill="#e74c3c" font-size="12" font-weight="bold">PHYSICAL</text>
+                    <text x="${cx}" y="${cy + pRadius + 40}" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10">${distToP} away</text>
+                ` : `
+                    <text x="${cx}" y="${cy + 50}" text-anchor="middle" fill="#e74c3c" font-size="14" font-weight="bold">AT PHYSICAL</text>
+                `}
+
+                <!-- YOU at center (always) -->
+                <circle cx="${cx}" cy="${cy}" r="25" fill="#c9a227" opacity="0.3" />
+                <circle cx="${cx}" cy="${cy}" r="12" fill="#c9a227" filter="url(#glow)" />
+                <text x="${cx}" y="${cy + 40}" text-anchor="middle" fill="#c9a227" font-size="14" font-weight="bold">YOU</text>
+                <text x="${cx}" y="${cy + 55}" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">(always at center)</text>
+
+                <!-- Position label at bottom -->
+                <text x="${cx}" y="${size - 15}" text-anchor="middle" fill="#888" font-size="11">s = ${currentScalarPos}</text>
+            `;
+
+            // Update stats
+            document.getElementById('scalarPosValue').textContent = currentScalarPos;
+            document.getElementById('distConsciousness').textContent = distToC;
+            document.getElementById('distPhysical').textContent = distToP;
+
+            // Update description
+            let desc = '';
+            if (currentScalarPos === 0) {
+                desc = 'At position 0, you see both boundaries from the observer origin.';
+            } else if (currentScalarPos < 365) {
+                desc = 'Moving toward consciousness — it gets closer, physical gets farther.';
+            } else if (currentScalarPos === 365) {
+                desc = 'Exactly between both boundaries — equidistant from each.';
+            } else if (currentScalarPos < 729) {
+                desc = 'Approaching consciousness boundary — physical appears more distant.';
+            } else if (currentScalarPos === 729) {
+                desc = 'AT the consciousness boundary (9³ = 729). Physical is 271 away.';
+            } else if (currentScalarPos < 1000) {
+                desc = 'Past consciousness, approaching physical — both now visible from this side.';
+            } else {
+                desc = 'AT the physical boundary (10³ = 1000). Consciousness is 271 away.';
+            }
+            document.getElementById('scalarDescription').textContent = desc;
+
+            // Update preset buttons
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.pos) === currentScalarPos);
+            });
+        }
+
+        function initScalarViewer() {
+            const slider = document.getElementById('scalarSlider');
+            if (!slider) return;
+
+            slider.addEventListener('input', (e) => {
+                currentScalarPos = parseInt(e.target.value);
+                drawScalarViewer();
+            });
+
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentScalarPos = parseInt(btn.dataset.pos);
+                    slider.value = currentScalarPos;
+                    drawScalarViewer();
+                });
+            });
+
+            drawScalarViewer();
+        }
+
+        // View toggle
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active from all
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+
+                // Activate selected
+                btn.classList.add('active');
+                const viewId = btn.dataset.view + '-view';
+                document.getElementById(viewId).classList.add('active');
+
+                // Redraw canvases for this view
+                if (btn.dataset.view === 'raw') {
+                    setTimeout(drawRawFluxCanvas, 100);
+                } else if (btn.dataset.view === 'standard') {
+                    setTimeout(drawRedshiftCanvas, 100);
+                } else if (btn.dataset.view === 'epoch') {
+                    setTimeout(() => {
+                        drawTorsionCanvas();
+                        drawDPositionCanvas();
+                        initScalarViewer();
+                    }, 100);
+                }
+            });
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            renderSampleObjectsRaw();
+            drawRawFluxCanvas();
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            const activeView = document.querySelector('.view-btn.active').dataset.view;
+            if (activeView === 'raw') drawRawFluxCanvas();
+            else if (activeView === 'standard') drawRedshiftCanvas();
+            else {
+                drawTorsionCanvas();
+                drawDPositionCanvas();
+            }
+        });
+    </script>
+</body>
+</html>

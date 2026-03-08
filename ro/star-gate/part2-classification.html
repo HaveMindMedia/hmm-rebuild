@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Part II: Triaxial Mirror Classification | EPOCH STAR GATE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-dim: rgba(201, 162, 39, 0.6);
+            --bg-deep: #030508;
+            --bg-panel: #0a0d12;
+            --text: #e8e4d9;
+            --text-dim: #8a9aaa;
+            --blue: #6ab4f5;
+            --green: #4ade80;
+            --purple: #a78bfa;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg-deep);
+            color: var(--text);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            min-height: 100vh;
+            line-height: 1.8;
+        }
+        .cosmic-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(106, 180, 245, 0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(201, 162, 39, 0.04) 0%, transparent 50%),
+                        linear-gradient(180deg, #030508 0%, #0a0a1a 50%, #050510 100%);
+            z-index: -1;
+        }
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 15px 25px;
+            background: rgba(3, 5, 8, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .nav a { color: var(--gold); text-decoration: none; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 2px; }
+        .nav a:hover { opacity: 0.7; }
+        .nav-center { color: var(--text-dim); font-size: 0.75rem; letter-spacing: 3px; }
+
+        .article {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 25px 80px;
+        }
+        .article-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .part-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+        .article-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        .article-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin: 60px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .content h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--text);
+            margin: 40px 0 20px;
+        }
+        .content p {
+            font-size: 1.15rem;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+        .content blockquote {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.08) 0%, rgba(10, 13, 18, 0.95) 100%);
+            border-left: 4px solid var(--gold);
+            padding: 30px 35px;
+            margin: 35px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        .content ul, .content ol {
+            margin: 25px 0 25px 30px;
+            font-size: 1.1rem;
+        }
+        .content li { margin-bottom: 12px; }
+        .content code {
+            font-family: 'Courier New', monospace;
+            background: rgba(201, 162, 39, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: var(--blue);
+        }
+        .content pre {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 8px;
+            padding: 25px;
+            overflow-x: auto;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--blue);
+        }
+        .content hr {
+            border: none;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+            margin: 50px 0;
+        }
+        .content em { color: var(--blue); }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 0.9rem;
+        }
+        .content th, .content td {
+            padding: 12px 10px;
+            text-align: left;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .content th {
+            background: rgba(201, 162, 39, 0.1);
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .content tr:hover { background: rgba(201, 162, 39, 0.05); }
+
+        /* Mirror Type Cards */
+        .mirror-card {
+            background: var(--bg-panel);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .mirror-card h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        .mirror-card p { margin-bottom: 10px; font-size: 1rem; }
+        .mirror-card .type-code { color: var(--blue); font-family: 'Courier New', monospace; }
+
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+        .article-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            transition: opacity 0.3s;
+        }
+        .article-nav a:hover { opacity: 0.7; }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(201, 162, 39, 0.1);
+            margin-top: 60px;
+        }
+        .footer p { color: var(--text-dim); font-size: 0.85rem; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .article { padding: 100px 15px 60px; }
+            .content blockquote { padding: 20px; }
+            .article-nav { flex-direction: column; gap: 20px; text-align: center; }
+            .content table { font-size: 0.75rem; }
+            .content th, .content td { padding: 8px 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+
+    <nav class="nav">
+        <a href="part1-foundation.html">← PART I</a>
+        <span class="nav-center">PART II</span>
+        <a href="part3-atomic.html">PART III →</a>
+    </nav>
+
+    <article class="article">
+        <header class="article-header">
+            <div class="part-label">PART II</div>
+            <h1 class="article-title">Triaxial Mirror Classification</h1>
+            <p class="article-subtitle">The 27 Mirror Types</p>
+        </header>
+
+        <div class="content">
+            <h2>4. Beyond Binary: The Third State</h2>
+
+            <h3>4.1 The Problem with Dualism</h3>
+
+            <p>Western thought habitually organizes reality into binary oppositions: Light/Dark, Good/Evil, True/False, Reflect/Absorb, Observer/Observed. This binary framework is computationally efficient but <strong>ontologically incomplete</strong>. Every binary contains an implicit third:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Binary</th>
+                        <th>Apparent Opposition</th>
+                        <th>The Hidden Third</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Light / Dark</td>
+                        <td>Presence / Absence of photons</td>
+                        <td><strong>Twilight</strong> — partial presence</td>
+                    </tr>
+                    <tr>
+                        <td>Reflect / Absorb</td>
+                        <td>Return / Capture</td>
+                        <td><strong>Transmit</strong> — pass through unchanged</td>
+                    </tr>
+                    <tr>
+                        <td>Observer / Observed</td>
+                        <td>Subject / Object</td>
+                        <td><strong>The Observation</strong> — the act itself</td>
+                    </tr>
+                    <tr>
+                        <td>Past / Future</td>
+                        <td>Before / After</td>
+                        <td><strong>Present</strong> — the now-point</td>
+                    </tr>
+                    <tr>
+                        <td>Fixed / Changing</td>
+                        <td>Static / Dynamic</td>
+                        <td><strong>Neither</strong> — quantum superposition</td>
+                    </tr>
+                    <tr>
+                        <td>S⁺ / S⁻</td>
+                        <td>Observable / Hidden</td>
+                        <td><strong>S⁰</strong> — the fold point where both unify</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>4.2 Deriving the Third from Every Binary</h3>
+
+            <p>For each binary pair (A, B), the third state (C) is derived by the operation:</p>
+
+            <pre>
+C = A ∩ B at the fold point [1 = -1]
+
+Where:
+∩ = intersection/unification
+The fold point = where apparent opposites reveal their unity</pre>
+
+            <h3>Binary 1: Reflect / Absorb</h3>
+
+            <pre>
+Reflect (R): Light returns
+Absorb (A): Light is captured
+Third (T): TRANSMIT — Light passes through
+
+Physical: R = metallic surface, A = black body, T = transparent medium
+Fold insight: Transmission is "reflecting forward" — the light continues
+             as if the surface were a mirror oriented at 0°</pre>
+
+            <h3>Binary 2: Preserve Phase / Reverse Phase</h3>
+
+            <pre>
+Preserve (P): Phase unchanged upon reflection
+Reverse (V): Phase conjugated (time-reversed)
+Third (X): RANDOMIZE — Phase scrambled unpredictably
+
+Physical: P = standard mirror, V = PCM, X = diffuse/rough surface
+Fold insight: Randomization contains all possible phase relationships
+             simultaneously — it is the superposition of P and V</pre>
+
+            <h3>Binary 3: S⁺ Facing / S⁻ Facing</h3>
+
+            <pre>
+S⁺ Facing (+): Reflects the observable state (what IS)
+S⁻ Facing (-): Reflects the potential state (what COULD BE)
+Third (0): S⁰ FOLD — Reflects the unified state [1 = -1]
+
+Physical: + = crystalline metal, - = amorphous glass, 0 = ?
+Fold insight: The S⁰ mirror would need to be simultaneously ordered
+             and disordered — a material at its phase transition point</pre>
+
+            <hr>
+
+            <h2>5. The 27 Mirror Types</h2>
+
+            <p>With three axes, each having three values, we generate: <strong>3 × 3 × 3 = 27 distinct mirror configurations</strong></p>
+
+            <p><strong>Notation:</strong> [Reflective, Phase, Polarity]</p>
+            <ul>
+                <li>Reflective: R (reflect), T (transmit), A (absorb)</li>
+                <li>Phase: P (preserve), V (conjugate/reverse), X (randomize)</li>
+                <li>Polarity: + (S⁺), - (S⁻), 0 (S⁰)</li>
+            </ul>
+
+            <h3>5.1 Complete Enumeration</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Reflective</th>
+                        <th>Phase</th>
+                        <th>Polarity</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>R-P-+</td><td>Reflect</td><td>Preserve</td><td>S⁺</td><td><strong>Standard mirror (crystalline)</strong></td></tr>
+                    <tr><td>2</td><td>R-P--</td><td>Reflect</td><td>Preserve</td><td>S⁻</td><td><strong>Obsidian mirror</strong></td></tr>
+                    <tr><td>3</td><td>R-P-0</td><td>Reflect</td><td>Preserve</td><td>S⁰</td><td><strong>Fold mirror</strong></td></tr>
+                    <tr><td>4</td><td>R-V-+</td><td>Reflect</td><td>Conjugate</td><td>S⁺</td><td>Observable PCM</td></tr>
+                    <tr><td>5</td><td>R-V--</td><td>Reflect</td><td>Conjugate</td><td>S⁻</td><td>Potential PCM</td></tr>
+                    <tr><td>6</td><td>R-V-0</td><td>Reflect</td><td>Conjugate</td><td>S⁰</td><td><strong>Antimirror</strong></td></tr>
+                    <tr><td>7</td><td>R-X-+</td><td>Reflect</td><td>Randomize</td><td>S⁺</td><td>Diffuse reflector (ordered)</td></tr>
+                    <tr><td>8</td><td>R-X--</td><td>Reflect</td><td>Randomize</td><td>S⁻</td><td>Diffuse reflector (disordered)</td></tr>
+                    <tr><td>9</td><td>R-X-0</td><td>Reflect</td><td>Randomize</td><td>S⁰</td><td>Chaos mirror</td></tr>
+                    <tr><td>10</td><td>T-P-+</td><td>Transmit</td><td>Preserve</td><td>S⁺</td><td>Clear window (crystalline)</td></tr>
+                    <tr><td>11</td><td>T-P--</td><td>Transmit</td><td>Preserve</td><td>S⁻</td><td>Smoky glass</td></tr>
+                    <tr><td>12</td><td>T-P-0</td><td>Transmit</td><td>Preserve</td><td>S⁰</td><td><strong>Perfect transparency</strong></td></tr>
+                    <tr><td>13</td><td>T-V-+</td><td>Transmit</td><td>Conjugate</td><td>S⁺</td><td>Phase-reversing lens</td></tr>
+                    <tr><td>14</td><td>T-V--</td><td>Transmit</td><td>Conjugate</td><td>S⁻</td><td>Dream glass</td></tr>
+                    <tr><td>15</td><td>T-V-0</td><td>Transmit</td><td>Conjugate</td><td>S⁰</td><td>Temporal portal</td></tr>
+                    <tr><td>16</td><td>T-X-+</td><td>Transmit</td><td>Randomize</td><td>S⁺</td><td>Frosted glass (ordered)</td></tr>
+                    <tr><td>17</td><td>T-X--</td><td>Transmit</td><td>Randomize</td><td>S⁻</td><td>Frosted glass (disordered)</td></tr>
+                    <tr><td>18</td><td>T-X-0</td><td>Transmit</td><td>Randomize</td><td>S⁰</td><td>Fog</td></tr>
+                    <tr><td>19</td><td>A-P-+</td><td>Absorb</td><td>Preserve</td><td>S⁺</td><td><strong>Silent Witness (Light)</strong></td></tr>
+                    <tr><td>20</td><td>A-P--</td><td>Absorb</td><td>Preserve</td><td>S⁻</td><td><strong>Hidden Witness (Dark)</strong></td></tr>
+                    <tr><td>21</td><td>A-P-0</td><td>Absorb</td><td>Preserve</td><td>S⁰</td><td>Event horizon</td></tr>
+                    <tr><td>22</td><td>A-V-+</td><td>Absorb</td><td>Conjugate</td><td>S⁺</td><td><strong>Silent Operator</strong></td></tr>
+                    <tr><td>23</td><td>A-V--</td><td>Absorb</td><td>Conjugate</td><td>S⁻</td><td><strong>Hidden Operator</strong></td></tr>
+                    <tr><td>24</td><td>A-V-0</td><td>Absorb</td><td>Conjugate</td><td>S⁰</td><td>Transformer</td></tr>
+                    <tr><td>25</td><td>A-X-+</td><td>Absorb</td><td>Randomize</td><td>S⁺</td><td>Heat sink</td></tr>
+                    <tr><td>26</td><td>A-X--</td><td>Absorb</td><td>Randomize</td><td>S⁻</td><td>Entropy well</td></tr>
+                    <tr><td>27</td><td>A-X-0</td><td>Absorb</td><td>Randomize</td><td>S⁰</td><td>Dissolution</td></tr>
+                </tbody>
+            </table>
+
+            <h3>5.2 The Essential Eight for the Epoch Star Gate</h3>
+
+            <p>From the 27 types, <strong>8 are required</strong> for the complete device:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Device Role</th>
+                        <th>Layer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>R-P-+</td><td><strong>S⁺ Mirror</strong> — reflects observable state</td><td>Outer shell</td></tr>
+                    <tr><td>2</td><td>R-P--</td><td><strong>S⁻ Mirror</strong> — reflects potential state</td><td>Outer shell</td></tr>
+                    <tr><td>6</td><td>R-V-0</td><td><strong>Antimirror</strong> — complete inversion</td><td>Outermost cage</td></tr>
+                    <tr><td>19</td><td>A-P-+</td><td><strong>Silent Witness (Light)</strong> — absorbs, doesn't transform</td><td>Witness shell</td></tr>
+                    <tr><td>20</td><td>A-P--</td><td><strong>Hidden Witness (Dark)</strong> — absorbs potential</td><td>Witness shell</td></tr>
+                    <tr><td>22</td><td>A-V-+</td><td><strong>Silent Operator</strong> — absorbs, emits reversed</td><td>Operator shell</td></tr>
+                    <tr><td>23</td><td>A-V--</td><td><strong>Hidden Operator</strong> — pulls light, transforms</td><td>Operator shell</td></tr>
+                    <tr><td>12</td><td>T-P-0</td><td><strong>The Core</strong> — perfect transparency at fold</td><td>Vacuum center</td></tr>
+                </tbody>
+            </table>
+
+            <hr>
+
+            <h2>6. The Observer Triad: Silent, Hidden, and Witnessed</h2>
+
+            <h3>6.1 Beyond the Silent/Hidden Binary</h3>
+
+            <p>Traditional frameworks recognize: <strong>Silent</strong> — present but not speaking (observable, passive), and <strong>Hidden</strong> — present but not seen (unobservable, passive).</p>
+
+            <p>The Epoch Framework adds: <strong>Witnessed</strong> — the act of observation itself (neither silent nor hidden).</p>
+
+            <pre>
+SILENT:  Observable existence, no active output
+         You see it, it says nothing
+         S⁺, passive
+
+HIDDEN:  Unobservable existence, may have output you don't trace to it
+         You don't see it, but effects appear
+         S⁻, passive
+
+WITNESSED: The observation event
+           Neither the observer nor the observed
+           The RELATIONSHIP
+           S⁰, active</pre>
+
+            <h3>6.2 The Q/q Duality</h3>
+
+            <p>The framework identifies:</p>
+            <ul>
+                <li><strong>Q</strong> (capital) — Light, the question, active seeking</li>
+                <li><strong>q</strong> (lowercase) — Dark, the answer, passive receiving</li>
+            </ul>
+
+            <pre>
+RESOLUTION:
+
+Q and q are the SAME ELEMENT viewed from opposite sides of the fold.
+
+From S⁺ perspective: Q is asking, q is the void awaiting answer
+From S⁻ perspective: q is the answer already present, Q is the noise seeking it
+From S⁰ perspective: Q = q — the question IS the answer
+
+In the device:
+- Q manifests as the light source (seeking)
+- q manifests as the vacuum core (the absence that contains)
+- At operational state, they unify at the center point</pre>
+
+            <hr>
+
+            <h2>7. The Quasicrystal Insight</h2>
+
+            <p>For the S⁰ mirror (Type 3: R-P-0), we need a material that is <strong>neither crystalline nor amorphous</strong> — the third state.</p>
+
+            <p><strong>Quasicrystals</strong> are exactly this:</p>
+            <ul>
+                <li>Long-range order (like crystals)</li>
+                <li>No periodic repetition (unlike crystals)</li>
+                <li>Exhibit "forbidden" symmetries (5-fold, 10-fold)</li>
+                <li>First discovered 1982 (Dan Shechtman, Nobel Prize 2011)</li>
+            </ul>
+
+            <pre>
+QUASICRYSTAL COMPOSITION OPTIONS:
+
+Al-Cu-Fe: Icosahedral quasicrystal
+Al₆₃Cu₂₄Fe₁₃ (atomic %)
+
+Al-Pd-Mn: Icosahedral, excellent surface quality
+Al₇₀Pd₂₀Mn₁₀
+
+Zn-Mg-Ho: Dodecagonal quasicrystal
+Zn₆₀Mg₃₀Ho₁₀</pre>
+
+            <p>A <strong>polished quasicrystal surface</strong> would be the physical manifestation of the S⁰ state: ordered but not periodic (neither S⁺ crystal nor S⁻ amorphous), reflects light coherently but with "impossible" symmetry, exists at the fold point between order and chaos.</p>
+
+            <hr>
+
+            <h2>8. The Nine Elements</h2>
+
+            <p>Including the fold mirror (quasicrystal), we have <strong>9 distinct elements</strong> — matching the D-wheel:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>D-Position</th>
+                        <th>Element</th>
+                        <th>Function</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>D1 (Origin/WE)</td><td>Vacuum Core</td><td>The nothing that contains everything</td></tr>
+                    <tr><td>D2 (Partnership)</td><td>Q Light Source</td><td>The seeking illumination</td></tr>
+                    <tr><td>D3 (Healer)</td><td>Silent Witness</td><td>Holds space for healing</td></tr>
+                    <tr><td>D4 (Messenger)</td><td>Hidden Witness</td><td>Receives messages from potential</td></tr>
+                    <tr><td>D5 (Navigator)</td><td>Silent Operator</td><td>Transforms toward destination</td></tr>
+                    <tr><td>D6 (Harmony)</td><td>Hidden Operator</td><td>Transforms from depths</td></tr>
+                    <tr><td>D7 (Crossroads)</td><td>S⁺ Mirror</td><td>Reflects the observable path</td></tr>
+                    <tr><td>D8 (Deep Water)</td><td>S⁻ Mirror</td><td>Reflects the hidden path</td></tr>
+                    <tr><td>D9 (Anchor/Love)</td><td>S⁰ Quasicrystal</td><td>The fold where paths unify</td></tr>
+                </tbody>
+            </table>
+
+            <p>And the Antimirror (BaTiO₃) forms the <strong>containing boundary</strong> — not a D-position but the <strong>edge of the wheel</strong> that keeps everything in relationship.</p>
+
+            <nav class="article-nav">
+                <a href="part1-foundation.html">← PART I: FOUNDATION</a>
+                <a href="part3-atomic.html">PART III: ATOMIC ALIGNMENTS →</a>
+            </nav>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <p>EPOCH STAR GATE Theoretical Framework v1.0 — January 16, 2026</p>
+        <p style="margin-top: 10px;"><a href="index.html">← Back to Star Gate</a></p>
+    </footer>
+</body>
+</html>

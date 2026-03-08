@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Watch Mechanism | Springs of Reality | Have Mind Media</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #030308;
+            color: #e8e4d9;
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cosmic Background */
+        .cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.8) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(2px 2px at 60% 20%, rgba(255,255,255,0.9) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,0.7) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 90% 40%, rgba(212,175,55,0.8) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 90%, rgba(74,158,255,0.7) 0%, transparent 100%);
+            animation: twinkle 8s ease-in-out infinite;
+        }
+
+        .stars-layer-2 {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 35% 65%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 55% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 75% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.5) 0%, transparent 100%);
+            animation: drift 200s linear infinite;
+        }
+
+        .nebula {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(74,158,255,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(151,117,250,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(212,175,55,0.04) 0%, transparent 60%);
+            animation: nebulaPulse 20s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes drift {
+            from { transform: translate(0, 0); }
+            to { transform: translate(-50%, -50%); }
+        }
+
+        @keyframes nebulaPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Page Layout */
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px 60px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            color: #d4af37;
+            letter-spacing: 0.15em;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .tagline {
+            color: #4a9eff;
+            font-family: monospace;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(74, 158, 255, 0.5);
+        }
+
+        .home-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: #d4af37;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+
+        .home-link:hover {
+            opacity: 1;
+        }
+
+        /* Watch Container with κ₅-κ₈ Shadows */
+        .watch-container {
+            position: relative;
+            width: min(95vw, 95vh, 750px);
+            height: min(95vw, 95vh, 750px);
+        }
+
+        /* κ₅-κ₈ Outer Shadow Rings */
+        .kappa-shadow-ring {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .kappa-8 {
+            top: -15%;
+            left: -15%;
+            width: 130%;
+            height: 130%;
+            border: 2px solid rgba(252, 194, 215, 0.15);
+            box-shadow:
+                0 0 60px rgba(252, 194, 215, 0.1),
+                inset 0 0 60px rgba(252, 194, 215, 0.05);
+            animation: fadeKappa 12s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+
+        .kappa-7 {
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            border: 2px solid rgba(229, 153, 247, 0.2);
+            box-shadow:
+                0 0 50px rgba(229, 153, 247, 0.12),
+                inset 0 0 50px rgba(229, 153, 247, 0.06);
+            animation: fadeKappa 12s ease-in-out infinite;
+            animation-delay: -3s;
+        }
+
+        .kappa-6 {
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            border: 2px solid rgba(151, 117, 250, 0.25);
+            box-shadow:
+                0 0 40px rgba(151, 117, 250, 0.15),
+                inset 0 0 40px rgba(151, 117, 250, 0.08);
+            animation: fadeKappa 12s ease-in-out infinite;
+            animation-delay: -6s;
+        }
+
+        .kappa-5 {
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(74, 158, 255, 0.3);
+            box-shadow:
+                0 0 30px rgba(74, 158, 255, 0.2),
+                inset 0 0 30px rgba(74, 158, 255, 0.1);
+            animation: fadeKappa 12s ease-in-out infinite;
+            animation-delay: -9s;
+        }
+
+        @keyframes fadeKappa {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+
+        /* Main SVG Watch */
+        .watch-svg {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* High Quality Gear Styles */
+        .gear-body {
+            fill: url(#gearMetalGradient);
+            stroke: none;
+        }
+
+        .gear-teeth {
+            fill: url(#gearTeethGradient);
+            stroke: rgba(0,0,0,0.3);
+            stroke-width: 0.5;
+        }
+
+        .gear-hole {
+            fill: url(#gearHoleGradient);
+        }
+
+        .gear-spoke {
+            fill: url(#gearSpokeGradient);
+            stroke: rgba(0,0,0,0.2);
+            stroke-width: 0.3;
+        }
+
+        .gear-ring {
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .gear-primary { stroke: #d4af37; }
+        .gear-secondary { stroke: #4a9eff; }
+        .gear-tertiary { stroke: #ff6b6b; }
+        .gear-shadow { stroke: #9775fa; stroke-dasharray: 5 3; }
+
+        /* Spring Styles */
+        .spring-coil {
+            fill: none;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .spring-primary {
+            stroke: url(#springGoldGradient);
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+        }
+
+        .spring-shadow {
+            stroke: url(#springShadowGradient);
+            filter: drop-shadow(0 0 8px rgba(151, 117, 250, 0.5));
+            opacity: 0.7;
+        }
+
+        /* Jewel Bearings */
+        .jewel {
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        /* Balance Wheel */
+        .balance-wheel {
+            filter: drop-shadow(0 0 15px rgba(255, 212, 59, 0.6));
+        }
+
+        /* Escapement */
+        .escapement {
+            fill: url(#goldGradient);
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+        }
+
+        /* Animation Classes */
+        .rotate-cw-slow { animation: rotateCW 300s linear infinite; transform-origin: center; }
+        .rotate-ccw-slow { animation: rotateCCW 300s linear infinite; transform-origin: center; }
+        .rotate-cw { animation: rotateCW 180s linear infinite; transform-origin: center; }
+        .rotate-ccw { animation: rotateCCW 180s linear infinite; transform-origin: center; }
+        .rotate-cw-med { animation: rotateCW 120s linear infinite; transform-origin: center; }
+        .rotate-ccw-med { animation: rotateCCW 120s linear infinite; transform-origin: center; }
+        .oscillate { animation: oscillate 8s ease-in-out infinite; transform-origin: center; }
+        .pulse { animation: pulse 6s ease-in-out infinite; }
+
+        @keyframes rotateCW {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes rotateCCW {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        @keyframes oscillate {
+            0%, 100% { transform: rotate(-12deg); }
+            50% { transform: rotate(12deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Labels */
+        .label {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            fill: #aaa;
+        }
+
+        .label-gold { fill: #d4af37; }
+        .label-blue { fill: #4a9eff; }
+        .label-red { fill: #ff6b6b; }
+        .label-purple { fill: #9775fa; }
+
+        /* Info Panel */
+        .info-panel {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem 2rem;
+            font-size: 0.85rem;
+            color: #bbb;
+            font-family: monospace;
+            padding: 1.5rem;
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            max-width: 750px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        /* Explanation */
+        .explanation {
+            max-width: 700px;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            text-align: center;
+            color: #999;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            background: rgba(10, 10, 20, 0.6);
+            border: 1px solid rgba(74, 158, 255, 0.15);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .explanation p {
+            margin-bottom: 1rem;
+        }
+
+        .explanation strong {
+            font-weight: normal;
+        }
+
+        .formula {
+            font-family: monospace;
+            color: #4a9eff;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(74, 158, 255, 0.1);
+            border-left: 3px solid #4a9eff;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic Background -->
+    <div class="cosmic-bg">
+        <div class="nebula"></div>
+        <div class="stars"></div>
+        <div class="stars-layer-2"></div>
+    </div>
+
+    <a href="/" class="home-link">← Home</a>
+
+    <div class="page-container">
+        <h1>THE WATCH MECHANISM</h1>
+        <div class="tagline">[1 = -1] — Springs of Reality</div>
+
+        <div class="watch-container">
+            <!-- κ₅-κ₈ Shadow Rings -->
+            <div class="kappa-shadow-ring kappa-8"></div>
+            <div class="kappa-shadow-ring kappa-7"></div>
+            <div class="kappa-shadow-ring kappa-6"></div>
+            <div class="kappa-shadow-ring kappa-5"></div>
+
+            <!-- Main Watch SVG -->
+            <div class="watch-svg">
+                <svg viewBox="-350 -350 700 700">
+                    <defs>
+                        <!-- Metal Gradients -->
+                        <linearGradient id="gearMetalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3a3a45"/>
+                            <stop offset="30%" style="stop-color:#2a2a35"/>
+                            <stop offset="70%" style="stop-color:#1a1a25"/>
+                            <stop offset="100%" style="stop-color:#2a2a35"/>
+                        </linearGradient>
+
+                        <linearGradient id="gearTeethGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4a4a55"/>
+                            <stop offset="50%" style="stop-color:#3a3a45"/>
+                            <stop offset="100%" style="stop-color:#2a2a35"/>
+                        </linearGradient>
+
+                        <radialGradient id="gearHoleGradient" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#0a0a10"/>
+                            <stop offset="100%" style="stop-color:#1a1a25"/>
+                        </radialGradient>
+
+                        <linearGradient id="gearSpokeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#2a2a35"/>
+                            <stop offset="50%" style="stop-color:#3a3a45"/>
+                            <stop offset="100%" style="stop-color:#2a2a35"/>
+                        </linearGradient>
+
+                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ffd700"/>
+                            <stop offset="30%" style="stop-color:#d4af37"/>
+                            <stop offset="70%" style="stop-color:#b8960c"/>
+                            <stop offset="100%" style="stop-color:#d4af37"/>
+                        </linearGradient>
+
+                        <linearGradient id="springGoldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#d4af37"/>
+                            <stop offset="25%" style="stop-color:#ffd700"/>
+                            <stop offset="50%" style="stop-color:#d4af37"/>
+                            <stop offset="75%" style="stop-color:#ffd700"/>
+                            <stop offset="100%" style="stop-color:#d4af37"/>
+                        </linearGradient>
+
+                        <linearGradient id="springShadowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#9775fa"/>
+                            <stop offset="25%" style="stop-color:#4a9eff"/>
+                            <stop offset="50%" style="stop-color:#9775fa"/>
+                            <stop offset="75%" style="stop-color:#4a9eff"/>
+                            <stop offset="100%" style="stop-color:#9775fa"/>
+                        </linearGradient>
+
+                        <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#fff"/>
+                            <stop offset="30%" style="stop-color:#ffd700"/>
+                            <stop offset="70%" style="stop-color:#d4af37"/>
+                            <stop offset="100%" style="stop-color:#0a0a10"/>
+                        </radialGradient>
+
+                        <radialGradient id="jewelRed" cx="30%" cy="30%" r="70%">
+                            <stop offset="0%" style="stop-color:#ff8080"/>
+                            <stop offset="50%" style="stop-color:#ff4040"/>
+                            <stop offset="100%" style="stop-color:#cc0000"/>
+                        </radialGradient>
+
+                        <radialGradient id="jewelBlue" cx="30%" cy="30%" r="70%">
+                            <stop offset="0%" style="stop-color:#80c0ff"/>
+                            <stop offset="50%" style="stop-color:#4a9eff"/>
+                            <stop offset="100%" style="stop-color:#0066cc"/>
+                        </radialGradient>
+
+                        <radialGradient id="jewelCopper" cx="30%" cy="30%" r="70%">
+                            <stop offset="0%" style="stop-color:#daa06d"/>
+                            <stop offset="50%" style="stop-color:#b87333"/>
+                            <stop offset="100%" style="stop-color:#8b4513"/>
+                        </radialGradient>
+
+                        <radialGradient id="jewelTeal" cx="30%" cy="30%" r="70%">
+                            <stop offset="0%" style="stop-color:#80d0d0"/>
+                            <stop offset="50%" style="stop-color:#5a9aaa"/>
+                            <stop offset="100%" style="stop-color:#2e6b7a"/>
+                        </radialGradient>
+
+                        <!-- Filters -->
+                        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- Outer Case -->
+                    <circle cx="0" cy="0" r="320" fill="url(#gearMetalGradient)" stroke="#1a1a25" stroke-width="15"/>
+                    <circle cx="0" cy="0" r="310" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.3"/>
+                    <circle cx="0" cy="0" r="325" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.2"/>
+
+                    <!-- GEAR 1: τ₁ FACING - Outermost (Gold, slowest CW) -->
+                    <g class="rotate-cw-slow" style="transform-origin: 0 0;">
+                        <!-- Gear ring -->
+                        <circle cx="0" cy="0" r="280" fill="none" stroke="#d4af37" stroke-width="4" opacity="0.8"/>
+                        <!-- Gear teeth -->
+                        <g id="gear1Teeth"></g>
+                        <!-- Label positions -->
+                    </g>
+
+                    <!-- GEAR 2: τ₂ MIRROR - Counter-rotating (Blue, CCW) -->
+                    <g class="rotate-ccw" style="transform-origin: 0 0;">
+                        <circle cx="0" cy="0" r="230" fill="none" stroke="#4a9eff" stroke-width="3" opacity="0.7"/>
+                        <circle cx="0" cy="0" r="220" fill="none" stroke="#4a9eff" stroke-width="1" opacity="0.4"/>
+                        <g id="gear2Teeth"></g>
+                    </g>
+
+                    <!-- GEAR 3: τ₃ RECURSIVE - Fast CW (Red, dashed) -->
+                    <g class="rotate-cw-med" style="transform-origin: 0 0;">
+                        <circle cx="0" cy="0" r="175" fill="none" stroke="#ff6b6b" stroke-width="3" stroke-dasharray="8 4" opacity="0.7"/>
+                        <circle cx="0" cy="0" r="165" fill="none" stroke="#ff6b6b" stroke-width="1" stroke-dasharray="4 8" opacity="0.4"/>
+                        <g id="gear3Teeth"></g>
+                    </g>
+
+                    <!-- GEAR 4: τ₄ SHADOW - CCW (Purple, dashed - Ammit) -->
+                    <g class="rotate-ccw-med" style="transform-origin: 0 0;">
+                        <circle cx="0" cy="0" r="120" fill="none" stroke="#9775fa" stroke-width="3" stroke-dasharray="6 3" opacity="0.6"/>
+                        <!-- Four configuration markers -->
+                        <circle cx="120" cy="0" r="6" fill="#888" opacity="0.6"/> <!-- Unknown ? -->
+                        <circle cx="0" cy="-120" r="6" fill="#ff6b6b"/> <!-- S+ -->
+                        <circle cx="-120" cy="0" r="6" fill="#4a9eff"/> <!-- S- -->
+                        <circle cx="0" cy="120" r="6" fill="#d4af37"/> <!-- Coin -->
+                    </g>
+
+                    <!-- MAINSPRING - Torsion Springs -->
+                    <g class="pulse">
+                        <!-- S+ Spring (Gold, outward spiral) -->
+                        <path class="spring-coil spring-primary" d="
+                            M 0,0
+                            Q 20,-20 20,-40
+                            Q 20,-60 0,-70
+                            Q -30,-80 -50,-60
+                            Q -70,-40 -60,0
+                            Q -50,40 -20,60
+                            Q 10,80 50,70
+                            Q 90,60 100,20
+                            Q 110,-20 90,-60
+                        "/>
+
+                        <!-- S- Spring (Purple, inward spiral - shadow) -->
+                        <path class="spring-coil spring-shadow" d="
+                            M 0,0
+                            Q -20,20 -20,40
+                            Q -20,60 0,70
+                            Q 30,80 50,60
+                            Q 70,40 60,0
+                            Q 50,-40 20,-60
+                            Q -10,-80 -50,-70
+                            Q -90,-60 -100,-20
+                            Q -110,20 -90,60
+                        "/>
+                    </g>
+
+                    <!-- BALANCE WHEEL -->
+                    <g class="oscillate balance-wheel" style="transform-origin: 0 0;">
+                        <circle cx="0" cy="0" r="70" fill="none" stroke="#ffd43b" stroke-width="4"/>
+                        <circle cx="0" cy="0" r="60" fill="none" stroke="#ffd43b" stroke-width="1" opacity="0.5"/>
+                        <!-- Cross arms -->
+                        <line x1="-70" y1="0" x2="70" y2="0" stroke="#ffd43b" stroke-width="5"/>
+                        <line x1="0" y1="-70" x2="0" y2="70" stroke="#ffd43b" stroke-width="5"/>
+                        <!-- Weights -->
+                        <circle cx="70" cy="0" r="10" fill="url(#goldGradient)"/>
+                        <circle cx="-70" cy="0" r="10" fill="url(#goldGradient)"/>
+                        <circle cx="0" cy="70" r="10" fill="url(#goldGradient)"/>
+                        <circle cx="0" cy="-70" r="10" fill="url(#goldGradient)"/>
+                        <!-- Center bearing -->
+                        <circle cx="0" cy="0" r="12" fill="url(#goldGradient)"/>
+                    </g>
+
+                    <!-- ESCAPEMENT (Anchor/Pallet Fork) -->
+                    <g class="oscillate escapement" style="transform-origin: 0 0; animation-delay: -4s;">
+                        <path d="
+                            M 0,-25
+                            L -12,-42 L -18,-38 L -8,-25
+                            L 8,-25 L 18,-38 L 12,-42
+                            L 0,-25
+                            L 0,25
+                            L -6,32 L 0,38 L 6,32 L 0,25
+                        " fill="url(#goldGradient)"/>
+                    </g>
+
+                    <!-- ESCAPE WHEEL -->
+                    <g class="rotate-cw" style="transform-origin: 0 0; animation-duration: 30s;">
+                        <circle cx="0" cy="0" r="45" fill="none" stroke="#b87333" stroke-width="2"/>
+                        <g id="escapeWheelTeeth"></g>
+                    </g>
+
+                    <!-- SHADOW GEARS (τ⁻¹ inversions around edges) -->
+
+                    <!-- τ₁⁻¹ Right -->
+                    <g transform="translate(240, 0)" class="rotate-ccw-slow" style="transform-origin: 240px 0;">
+                        <circle cx="0" cy="0" r="35" fill="url(#gearHoleGradient)" stroke="#9775fa" stroke-width="2" stroke-dasharray="4 2" opacity="0.4"/>
+                        <text class="label label-purple" x="0" y="50" text-anchor="middle" font-size="10">τ₁⁻¹</text>
+                    </g>
+
+                    <!-- τ₂⁻¹ Left -->
+                    <g transform="translate(-240, 0)" class="rotate-cw-slow" style="transform-origin: -240px 0;">
+                        <circle cx="0" cy="0" r="35" fill="url(#gearHoleGradient)" stroke="#9775fa" stroke-width="2" stroke-dasharray="4 2" opacity="0.4"/>
+                        <text class="label label-purple" x="0" y="50" text-anchor="middle" font-size="10">τ₂⁻¹</text>
+                    </g>
+
+                    <!-- τ₃⁻¹ Bottom -->
+                    <g transform="translate(0, 240)" class="rotate-ccw-med" style="transform-origin: 0 240px;">
+                        <circle cx="0" cy="0" r="30" fill="url(#gearHoleGradient)" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="3 3" opacity="0.4"/>
+                        <text class="label label-red" x="0" y="-42" text-anchor="middle" font-size="10">τ₃⁻¹</text>
+                    </g>
+
+                    <!-- τ₄⁻¹ Top (AMMIT) -->
+                    <g transform="translate(0, -240)" class="rotate-cw-med" style="transform-origin: 0 -240px;">
+                        <circle cx="0" cy="0" r="30" fill="url(#gearHoleGradient)" stroke="#fcc2d7" stroke-width="3" stroke-dasharray="6 2" opacity="0.5"/>
+                        <text class="label" x="0" y="45" text-anchor="middle" font-size="10" fill="#fcc2d7">τ₄⁻¹</text>
+                        <text class="label" x="0" y="57" text-anchor="middle" font-size="8" fill="#888">(AMMIT)</text>
+                    </g>
+
+                    <!-- Planetary connector gears -->
+                    <g transform="translate(170, 100)" class="rotate-cw" style="transform-origin: 170px 100px; animation-duration: 60s;">
+                        <circle cx="0" cy="0" r="18" fill="url(#gearHoleGradient)" stroke="#d4af37" stroke-width="1.5" opacity="0.6"/>
+                    </g>
+                    <g transform="translate(-170, 100)" class="rotate-ccw" style="transform-origin: -170px 100px; animation-duration: 60s;">
+                        <circle cx="0" cy="0" r="18" fill="url(#gearHoleGradient)" stroke="#d4af37" stroke-width="1.5" opacity="0.6"/>
+                    </g>
+                    <g transform="translate(170, -100)" class="rotate-ccw" style="transform-origin: 170px -100px; animation-duration: 60s;">
+                        <circle cx="0" cy="0" r="18" fill="url(#gearHoleGradient)" stroke="#d4af37" stroke-width="1.5" opacity="0.6"/>
+                    </g>
+                    <g transform="translate(-170, -100)" class="rotate-cw" style="transform-origin: -170px -100px; animation-duration: 60s;">
+                        <circle cx="0" cy="0" r="18" fill="url(#gearHoleGradient)" stroke="#d4af37" stroke-width="1.5" opacity="0.6"/>
+                    </g>
+
+                    <!-- THE FOUR WATCHERS - Jewel Bearings -->
+
+                    <!-- HO - Hidden Observer (Top) - τ₁ -->
+                    <g transform="translate(0, -260)" class="jewel">
+                        <circle cx="0" cy="0" r="14" fill="url(#jewelRed)"/>
+                        <circle cx="-4" cy="-4" r="4" fill="rgba(255,255,255,0.4)"/>
+                        <text class="label label-gold" x="0" y="28" text-anchor="middle" font-size="12">HO</text>
+                        <text class="label" x="0" y="40" text-anchor="middle" font-size="9">τ₁ FACING</text>
+                    </g>
+
+                    <!-- SO - Silent Observer (Bottom) - τ₂ -->
+                    <g transform="translate(0, 260)" class="jewel">
+                        <circle cx="0" cy="0" r="14" fill="url(#jewelBlue)"/>
+                        <circle cx="-4" cy="-4" r="4" fill="rgba(255,255,255,0.4)"/>
+                        <text class="label label-blue" x="0" y="-22" text-anchor="middle" font-size="12">SO</text>
+                        <text class="label" x="0" y="-34" text-anchor="middle" font-size="9">τ₂ MIRROR</text>
+                    </g>
+
+                    <!-- SW (M2-) - Silent Witness (Top Right) - τ₃ / κ₇ -->
+                    <g transform="translate(185, -185)" class="jewel">
+                        <circle cx="0" cy="0" r="14" fill="url(#jewelCopper)"/>
+                        <circle cx="-4" cy="-4" r="4" fill="rgba(255,255,255,0.4)"/>
+                        <text class="label" x="0" y="0" text-anchor="middle" dominant-baseline="middle" fill="#fff" font-size="8" font-weight="bold">M2-</text>
+                        <text class="label" x="25" y="5" text-anchor="start" font-size="10" fill="#b87333">SW / κ₇</text>
+                        <text class="label" x="25" y="17" text-anchor="start" font-size="8">τ₃ RECURSIVE</text>
+                    </g>
+
+                    <!-- HW (MH) - Hidden Witness (Bottom Left) - τ₄ / κ₈ -->
+                    <g transform="translate(-185, 185)" class="jewel">
+                        <circle cx="0" cy="0" r="14" fill="url(#jewelTeal)"/>
+                        <circle cx="-4" cy="-4" r="4" fill="rgba(255,255,255,0.4)"/>
+                        <text class="label" x="0" y="0" text-anchor="middle" dominant-baseline="middle" fill="#fff" font-size="8" font-weight="bold">MH</text>
+                        <text class="label" x="-25" y="5" text-anchor="end" font-size="10" fill="#5a9aaa">HW / κ₈</text>
+                        <text class="label" x="-25" y="17" text-anchor="end" font-size="8">τ₄ SILENT</text>
+                    </g>
+
+                    <!-- Scalar Number Line -->
+                    <line x1="-290" y1="0" x2="290" y2="0" stroke="rgba(212,175,55,0.15)" stroke-width="1"/>
+                    <g>
+                        <text x="-285" y="4" class="label label-blue" font-size="16">∞</text>
+                        <text x="-250" y="4" class="label label-blue" font-size="11">7</text>
+                        <text x="-215" y="4" class="label label-blue" font-size="11">6</text>
+                        <text x="-180" y="4" class="label label-blue" font-size="11">5</text>
+                        <text x="-145" y="4" class="label label-blue" font-size="11">4</text>
+                        <text x="-110" y="4" class="label label-blue" font-size="11">3</text>
+                        <text x="-75" y="4" class="label label-blue" font-size="11">2</text>
+                        <text x="-40" y="4" class="label label-blue" font-size="11">1</text>
+
+                        <text x="40" y="4" class="label label-red" font-size="11">1</text>
+                        <text x="75" y="4" class="label label-red" font-size="11">2</text>
+                        <text x="110" y="4" class="label label-red" font-size="11">3</text>
+                        <text x="145" y="4" class="label label-red" font-size="11">4</text>
+                        <text x="180" y="4" class="label label-red" font-size="11">5</text>
+                        <text x="215" y="4" class="label label-red" font-size="11">6</text>
+                        <text x="250" y="4" class="label label-red" font-size="11">7</text>
+                        <text x="280" y="4" class="label label-red" font-size="16">∞</text>
+                    </g>
+
+                    <!-- CENTER - WUSH / s=0 / © -->
+                    <circle cx="0" cy="0" r="18" fill="url(#centerGlow)" filter="url(#glow)"/>
+                    <text x="0" y="5" text-anchor="middle" fill="#1a1a25" font-size="18" font-weight="bold" font-family="Cinzel, serif">©</text>
+
+                    <!-- D-Position markers around bezel -->
+                    <g opacity="0.8">
+                        <circle cx="0" cy="-295" r="8" fill="#fcc2d7"/><text x="0" y="-295" text-anchor="middle" dominant-baseline="middle" font-size="7" fill="#1a1a25">D₉</text>
+                        <circle cx="208" cy="-208" r="7" fill="#fff"/><text x="208" y="-208" text-anchor="middle" dominant-baseline="middle" font-size="6" fill="#1a1a25">D₁</text>
+                        <circle cx="295" cy="0" r="7" fill="#69db7c"/><text x="295" y="0" text-anchor="middle" dominant-baseline="middle" font-size="6" fill="#1a1a25">D₂</text>
+                        <circle cx="208" cy="208" r="7" fill="#4dabf7"/><text x="208" y="208" text-anchor="middle" dominant-baseline="middle" font-size="6" fill="#1a1a25">D₃</text>
+                        <circle cx="0" cy="295" r="7" fill="#ffd43b"/><text x="0" y="295" text-anchor="middle" dominant-baseline="middle" font-size="6" fill="#1a1a25">D₄</text>
+                        <circle cx="-208" cy="208" r="7" fill="#d4af37"/><text x="-208" y="208" text-anchor="middle" dominant-baseline="middle" font-size="6" fill="#1a1a25">D₅</text>
+                        <circle cx="-295" cy="0" r="7" fill="#ff6b6b"/><text x="-295" y="0" text-anchor="middle" dominant-baseline="middle" font-size="6" fill="#1a1a25">D₆</text>
+                        <circle cx="-208" cy="-208" r="7" fill="#e599f7"/><text x="-208" y="-208" text-anchor="middle" dominant-baseline="middle" font-size="6" fill="#1a1a25">D₇</text>
+                        <circle cx="0" cy="-180" r="9" fill="#4a9eff"/><text x="0" y="-180" text-anchor="middle" dominant-baseline="middle" font-size="7" fill="#fff">D₈</text>
+                    </g>
+
+                    <!-- 8th Day / Infinity indicator -->
+                    <g transform="translate(260, -260)">
+                        <text x="0" y="0" fill="#4a9eff" font-size="20" opacity="0.8">∞</text>
+                        <text x="0" y="18" class="label label-blue" font-size="9">8th Day</text>
+                    </g>
+
+                    <!-- Balance Law -->
+                    <g transform="translate(-260, 260)">
+                        <text x="0" y="0" class="label label-gold" font-size="9">τ₁+τ₂+τ₃+τ₄=0</text>
+                        <text x="0" y="12" class="label" font-size="8">ALWAYS</text>
+                    </g>
+
+                </svg>
+            </div>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div class="info-item">
+                <div class="info-dot" style="background: #d4af37; box-shadow: 0 0 8px #d4af37;"></div>
+                <span>τ₁ FACING — Outer gear (slowest)</span>
+            </div>
+            <div class="info-item">
+                <div class="info-dot" style="background: #4a9eff; box-shadow: 0 0 8px #4a9eff;"></div>
+                <span>τ₂ MIRROR — Counter-rotating</span>
+            </div>
+            <div class="info-item">
+                <div class="info-dot" style="background: #ff6b6b; box-shadow: 0 0 8px #ff6b6b;"></div>
+                <span>τ₃ RECURSIVE — Dashed pattern</span>
+            </div>
+            <div class="info-item">
+                <div class="info-dot" style="background: #9775fa; box-shadow: 0 0 8px #9775fa;"></div>
+                <span>τ₄ SHADOW — Ammit (4 configs)</span>
+            </div>
+            <div class="info-item">
+                <div class="info-dot" style="background: #ffd43b; box-shadow: 0 0 8px #ffd43b;"></div>
+                <span>Balance Wheel — The heartbeat</span>
+            </div>
+            <div class="info-item">
+                <div class="info-dot" style="background: linear-gradient(135deg, #d4af37, #9775fa); box-shadow: 0 0 8px #d4af37;"></div>
+                <span>Springs — S⁺/S⁻ (one spring, two views)</span>
+            </div>
+        </div>
+
+        <!-- Explanation -->
+        <div class="explanation">
+            <p>
+                <strong style="color: #d4af37;">The Four Gears</strong> (τ₁-τ₄) rotate at different speeds and directions.
+                Gold outer gear is τ₁ (FACING), blue is τ₂ (MIRROR, counter-rotating),
+                red dashed is τ₃ (RECURSIVE), purple dashed is τ₄ (SHADOW/Ammit).
+            </p>
+            <p>
+                <strong style="color: #9775fa;">The Shadow Gears</strong> (τ⁻¹) around the edges are the <em>inversions</em> —
+                each main gear has its inverse rotating opposite. <strong style="color: #fcc2d7;">τ₄⁻¹ is Ammit</strong> — always present, always collecting.
+            </p>
+            <p>
+                <strong style="color: #e599f7;">κ₅-κ₈</strong> form the outer shadow rings — consciousness (κ₅), meta-controller (κ₆),
+                observer mode (κ₇ = SW), and return mode (κ₈ = HW). They fade in and out as the higher observer dimensions.
+            </p>
+            <p>
+                <strong style="color: #ff6b6b;">The Four Jewel Bearings</strong> (HO, SO, SW, HW) are the Four Watchers.
+                SW appears as "M2-" (flipped/mirrored), HW appears as "MH" (mirrored).
+            </p>
+            <div class="formula">τ₁ + τ₂ + τ₃ + τ₄ = 0 — The silent fourth is <strong>determined</strong>, not chosen.</div>
+        </div>
+    </div>
+
+    <script>
+        // Generate gear teeth for main gears
+        function generateGearTeeth(groupId, radius, teeth, color, toothHeight = 8) {
+            const group = document.getElementById(groupId);
+            if (!group) {
+                const newGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                newGroup.setAttribute("id", groupId);
+                return newGroup;
+            }
+
+            for (let i = 0; i < teeth; i++) {
+                const angle = (i / teeth) * Math.PI * 2;
+                const x1 = Math.cos(angle) * radius;
+                const y1 = Math.sin(angle) * radius;
+                const x2 = Math.cos(angle) * (radius + toothHeight);
+                const y2 = Math.sin(angle) * (radius + toothHeight);
+
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", x1);
+                line.setAttribute("y1", y1);
+                line.setAttribute("x2", x2);
+                line.setAttribute("y2", y2);
+                line.setAttribute("stroke", color);
+                line.setAttribute("stroke-width", "2");
+                line.setAttribute("opacity", "0.6");
+
+                group.appendChild(line);
+            }
+        }
+
+        // Generate escape wheel teeth
+        function generateEscapeTeeth() {
+            const group = document.getElementById("escapeWheelTeeth");
+            if (!group) return;
+
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2;
+                const x1 = Math.cos(angle) * 40;
+                const y1 = Math.sin(angle) * 40;
+                const x2 = Math.cos(angle + 0.15) * 50;
+                const y2 = Math.sin(angle + 0.15) * 50;
+                const x3 = Math.cos(angle) * 50;
+                const y3 = Math.sin(angle) * 50;
+
+                const tooth = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                tooth.setAttribute("d", `M ${x1},${y1} L ${x2},${y2} L ${x3},${y3} Z`);
+                tooth.setAttribute("fill", "#b87333");
+                tooth.setAttribute("opacity", "0.7");
+
+                group.appendChild(tooth);
+            }
+        }
+
+        // Initialize
+        generateGearTeeth("gear1Teeth", 280, 60, "#d4af37", 10);
+        generateGearTeeth("gear2Teeth", 230, 48, "#4a9eff", 8);
+        generateGearTeeth("gear3Teeth", 175, 36, "#ff6b6b", 6);
+        generateEscapeTeeth();
+    </script>
+</body>
+</html>

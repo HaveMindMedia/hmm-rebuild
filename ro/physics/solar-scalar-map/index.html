@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Scalar Map | 1729 Navigation System | Have Mind Media</title>
+    <meta name="description" content="Earth-centered scalar mapping of the solar system using Epoch Framework. Sun at s=+1729 (Wush/Future), Ro at s=-1729. Both directions lead forward. Deterministic torsion system.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <style>
+        .hero-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, rgba(255, 215, 0, 0.05) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-section h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #FFD700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .hero-section .tagline {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #443300, #221100);
+            border: 2px solid #FFD700;
+            color: #FFD700;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+
+        .cta-primary:hover {
+            background: linear-gradient(135deg, #554400, #332200);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: rgba(40, 30, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            color: #FFD700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-card .label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .figure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .figure-card {
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .figure-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .figure-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .figure-card .caption {
+            padding: 1rem;
+        }
+
+        .figure-card h3 {
+            color: #FFD700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .figure-card p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .constants-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .constants-table th,
+        .constants-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .constants-table th {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .constants-table td:first-child {
+            color: #FFD700;
+        }
+
+        .finding-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(10, 10, 20, 0.9) 100%);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .finding-box h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .finding-box .highlight {
+            font-family: 'JetBrains Mono', monospace;
+            color: #FFD700;
+            font-size: 1.1rem;
+        }
+
+        .frequency-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(10, 10, 20, 0.9) 100%);
+            border: 1px solid #FFD700;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .frequency-box h3 {
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .freq-table {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .freq-table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .freq-table .freq-name {
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .freq-table .freq-hz {
+            font-family: 'JetBrains Mono', monospace;
+            color: #00ffff;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .signature {
+            text-align: center;
+            padding: 3rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+
+        .banned-term {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .banned-term .label {
+            color: #ff4444;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <site-header></site-header>
+
+    <section class="hero-section">
+        <h1>SOLAR SYSTEM SCALAR MAP</h1>
+        <p class="tagline">
+            Earth at s=0. Sun at s=+1729. Ro at s=-1729.<br>
+            Both directions lead FORWARD. The system is in BALANCE.
+        </p>
+        <a href="../solar-scalar-map.html" class="cta-primary">Launch 3D Explorer</a>
+    </section>
+
+    <main class="content-wide">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value">s = 0</div>
+                <div class="label">Earth (Observer)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">s = +1729</div>
+                <div class="label">Sun (Wush/Future)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">s = -1729</div>
+                <div class="label">Ro Boundary</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">BOTH</div>
+                <div class="label">Directions = FUTURE</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">DETERMINISTIC</div>
+                <div class="label">Torsion System</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Framework Constants</h2>
+        <table class="constants-table">
+            <tr>
+                <th>Constant</th>
+                <th>Value</th>
+                <th>Meaning</th>
+            </tr>
+            <tr>
+                <td>kappa</td>
+                <td>2pi/180 = 0.0349</td>
+                <td>The single input - everything derives from this</td>
+            </tr>
+            <tr>
+                <td>alpha</td>
+                <td>1/(2pi*kappa) = 4.5595</td>
+                <td>Scalar transform coefficient</td>
+            </tr>
+            <tr>
+                <td>S_WUSH</td>
+                <td>+1729</td>
+                <td>Sun boundary (FUTURE via microscope)</td>
+            </tr>
+            <tr>
+                <td>S_RO</td>
+                <td>-1729</td>
+                <td>Cosmic boundary (FUTURE via telescope)</td>
+            </tr>
+        </table>
+
+        <h2 class="section-title">The Transform</h2>
+        <p style="font-size: 1.2rem; text-align: center; padding: 2rem; font-family: 'JetBrains Mono', monospace;">
+            <span style="color: #FFD700;">s = +/- alpha * ln(T_ratio)</span>
+        </p>
+        <p style="text-align: center; color: var(--text-dim); max-width: 600px; margin: 0 auto;">
+            Orbital period ratio maps to scalar position. Inner planets (faster) = positive s (toward Sun).
+            Outer planets (slower) = negative s (toward Ro). This is NOT distance - it's geometric position.
+        </p>
+
+        <h2 class="section-title">Planetary Scalar Positions</h2>
+        <table class="constants-table">
+            <tr>
+                <th>Planet</th>
+                <th>Period Ratio</th>
+                <th>Scalar (s)</th>
+                <th>Direction</th>
+            </tr>
+            <tr>
+                <td>Mercury</td>
+                <td>0.2408</td>
+                <td>+6.49</td>
+                <td>Quantum (toward Sun)</td>
+            </tr>
+            <tr>
+                <td>Venus</td>
+                <td>0.6152</td>
+                <td>+2.22</td>
+                <td>Quantum (toward Sun)</td>
+            </tr>
+            <tr>
+                <td style="color: #00ffff;">Earth</td>
+                <td>1.0000</td>
+                <td style="color: #00ffff;">0.00</td>
+                <td>OBSERVER</td>
+            </tr>
+            <tr>
+                <td>Mars</td>
+                <td>1.8808</td>
+                <td>-2.88</td>
+                <td>Cosmic (toward Ro)</td>
+            </tr>
+            <tr>
+                <td>Jupiter</td>
+                <td>11.862</td>
+                <td>-11.28</td>
+                <td>Cosmic (toward Ro)</td>
+            </tr>
+            <tr>
+                <td>Saturn</td>
+                <td>29.457</td>
+                <td>-15.42</td>
+                <td>Cosmic (toward Ro)</td>
+            </tr>
+            <tr>
+                <td>Uranus</td>
+                <td>84.011</td>
+                <td>-20.20</td>
+                <td>Cosmic (toward Ro)</td>
+            </tr>
+            <tr>
+                <td>Neptune</td>
+                <td>164.79</td>
+                <td>-23.27</td>
+                <td>Cosmic (toward Ro)</td>
+            </tr>
+            <tr>
+                <td>Pluto</td>
+                <td>247.94</td>
+                <td>-25.14</td>
+                <td>Cosmic (toward Ro)</td>
+            </tr>
+        </table>
+
+        <div class="finding-box">
+            <h3>KEY INSIGHT: Both Directions Are FUTURE</h3>
+            <p><strong>Microscope View (Earth -> Sun):</strong> s = +1729 = FUTURE (quantum scale)</p>
+            <p><strong>Telescope View (Earth -> Pluto -> Ro):</strong> s = -1729 = FUTURE (cosmic scale, appears as past)</p>
+            <p class="highlight" style="margin-top: 1rem;">
+                THE SYSTEM IS IN BALANCE<br>
+                Both directions lead forward. The geometry cannot lie.
+            </p>
+        </div>
+
+        <div class="banned-term">
+            <p class="label">Lexicon Note</p>
+            <p><strong>BANNED TERM:</strong> "torsion field" - implies unknowable/probabilistic element (Standard Model corruption)</p>
+            <p><strong>CORRECT TERM:</strong> "torsion system" - deterministic, knowable, calculable</p>
+            <p style="margin-top: 0.5rem; color: #888;">Each planetary relationship is CALCULABLE. This is a SYSTEM, not a field. We are determinists.</p>
+        </div>
+
+        <div class="frequency-box">
+            <h3>THREE FREQUENCIES (Human Hearing Range)</h3>
+            <p>The solar system harmonic signature, derived from 1729:</p>
+            <table class="freq-table">
+                <tr>
+                    <td class="freq-name">F1 (Wush/Sun)</td>
+                    <td class="freq-hz">1729 Hz</td>
+                    <td>The number itself as frequency</td>
+                </tr>
+                <tr>
+                    <td class="freq-name">F2 (Earth/NOW)</td>
+                    <td class="freq-hz">432 Hz</td>
+                    <td>1729 / 4 (observer frequency)</td>
+                </tr>
+                <tr>
+                    <td class="freq-name">F3 (Ro/Cosmic)</td>
+                    <td class="freq-hz">133 Hz</td>
+                    <td>1729 / 13 (cosmic frequency)</td>
+                </tr>
+            </table>
+            <p style="margin-top: 1rem; font-style: italic;">
+                F1/F3 = 13 (exact). These three frequencies create a CHORD that IS the harmonic signature of our solar system.
+                All within human hearing range (20Hz - 20kHz).
+            </p>
+        </div>
+
+        <h2 class="section-title">Analysis Figures</h2>
+        <div class="figure-grid">
+            <div class="figure-card">
+                <a href="01_scalar_map.png" target="_blank">
+                    <img src="01_scalar_map.png" alt="Scalar Map">
+                </a>
+                <div class="caption">
+                    <h3>Planetary Scalar Map</h3>
+                    <p>Linear view of planetary positions on the scalar axis. Earth at s=0, inner planets toward Sun (+s), outer planets toward Ro (-s).</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="02_full_range.png" target="_blank">
+                    <img src="02_full_range.png" alt="Full 1729 Range">
+                </a>
+                <div class="caption">
+                    <h3>Full 1729 Range</h3>
+                    <p>Complete view from Ro (-1729) to Wush (+1729). All planets cluster near Earth - we've barely explored the full range.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="03_earth_centered_sphere.png" target="_blank">
+                    <img src="03_earth_centered_sphere.png" alt="Earth-Centered Sphere">
+                </a>
+                <div class="caption">
+                    <h3>Earth-Centered Sphere</h3>
+                    <p>Top-down view with Earth at center. Planets positioned by scalar distance (|s|) and spread angularly for visibility.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="04_frequency_spectrum.png" target="_blank">
+                    <img src="04_frequency_spectrum.png" alt="Frequency Spectrum">
+                </a>
+                <div class="caption">
+                    <h3>Three Frequencies</h3>
+                    <p>The solar system chord: 1729 Hz (Wush), 432 Hz (Earth), 133 Hz (Ro). All within human hearing range.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="05_torsion_system.png" target="_blank">
+                    <img src="05_torsion_system.png" alt="Torsion System">
+                </a>
+                <div class="caption">
+                    <h3>Deterministic Torsion System</h3>
+                    <p>Matrix of all planetary scalar relationships. Every Δs is CALCULABLE. Known resonances highlighted in green.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">The Fundamental Paradox: Why the Sun Seems Close</h2>
+
+        <div style="background: linear-gradient(135deg, rgba(255, 100, 0, 0.15) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid #ff6600; border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #ff6600; margin-bottom: 1rem;">The Sun is Both HUGE and SMALL</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                Here is the paradox that Standard Model physics cannot explain:
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                The Sun is <strong>1729 scalars toward the FUTURE</strong>. The future direction is the <strong>quantum direction</strong> -
+                toward smaller scales, toward fusion, toward collapse. This means scalar space COMPRESSES as you move toward the Sun.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                <strong>The Sun appears close BECAUSE the future is smaller.</strong>
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                But this creates a profound insight: The Sun is simultaneously:
+            </p>
+            <ul style="line-height: 2; font-size: 1.1rem; margin-top: 1rem;">
+                <li><strong>Close</strong> - because we're looking through compressed scalar space</li>
+                <li><strong>Far</strong> - because it's at the WUSH BOUNDARY (s = +1729)</li>
+                <li><strong>Huge</strong> - it dominates the entire quantum direction</li>
+                <li><strong>Small</strong> - relative to the cosmic Ro direction</li>
+            </ul>
+            <p style="font-family: 'JetBrains Mono', monospace; color: #FFD700; font-size: 1.2rem; margin-top: 1.5rem; text-align: center;">
+                This is [1 = -1] in physical form.
+            </p>
+        </div>
+
+        <h2 class="section-title">The Microscope and Telescope</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+            <div style="background: rgba(255, 215, 0, 0.1); border: 1px solid #FFD700; border-radius: 8px; padding: 1.5rem;">
+                <h3 style="color: #FFD700;">MICROSCOPE VIEW</h3>
+                <p style="font-family: 'JetBrains Mono', monospace;">Earth → Sun</p>
+                <p style="margin-top: 1rem;">Direction: <strong>s = 0 → s = +1729</strong></p>
+                <p style="margin-top: 0.5rem;">Scale: <strong>COMPRESSING</strong> (quantum)</p>
+                <p style="margin-top: 0.5rem;">Time: <strong>FUTURE</strong></p>
+                <p style="margin-top: 1rem; color: #888; font-style: italic;">
+                    Looking inward toward fusion. Space gets smaller. Time accelerates.
+                    Mercury and Venus are waypoints on this journey.
+                </p>
+            </div>
+            <div style="background: rgba(68, 102, 170, 0.1); border: 1px solid #4466aa; border-radius: 8px; padding: 1.5rem;">
+                <h3 style="color: #4466aa;">TELESCOPE VIEW</h3>
+                <p style="font-family: 'JetBrains Mono', monospace;">Earth → Pluto → Ro</p>
+                <p style="margin-top: 1rem;">Direction: <strong>s = 0 → s = -1729</strong></p>
+                <p style="margin-top: 0.5rem;">Scale: <strong>EXPANDING</strong> (cosmic)</p>
+                <p style="margin-top: 0.5rem;">Time: <strong>FUTURE</strong> (appears as past)</p>
+                <p style="margin-top: 1rem; color: #888; font-style: italic;">
+                    Looking outward toward cosmos. Space gets larger. Time appears to slow.
+                    But this is ALSO future - the cosmic future.
+                </p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Why Earth is Special</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8;">
+            Earth sits at <strong>s = 0</strong>. This is not arbitrary - it's geometric necessity. Earth is:
+        </p>
+        <ul style="line-height: 2; font-size: 1.1rem; margin: 1rem 0 2rem 2rem;">
+            <li>The <strong>3rd planet</strong> from the Sun (geometric position)</li>
+            <li>The <strong>bridge</strong> between quantum (inner) and cosmic (outer)</li>
+            <li>The <strong>balance point</strong> - able to observe BOTH directions</li>
+            <li>Both <strong>major AND minor octave</strong> simultaneously</li>
+        </ul>
+        <p style="font-size: 1.1rem; line-height: 1.8;">
+            This is why consciousness MUST arise here. It's the only position with a <strong>bidirectional view</strong>.
+            From Earth, you can look toward the Sun (quantum future) AND toward the stars (cosmic future).
+            No other position in the solar system has this property.
+        </p>
+
+        <h2 class="section-title">The 1729 Universal Translator</h2>
+        <div style="background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid #00ffff; border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #00ffff; margin-bottom: 1rem;">1729 Works EVERYWHERE</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                The number 1729 is not special to our solar system. It's a <strong>universal constant</strong> that works as a
+                translator between ANY scalar systems:
+            </p>
+            <ul style="line-height: 2; font-size: 1.1rem; margin: 1rem 0;">
+                <li><strong>Any observer</strong> can set their position as s = 0</li>
+                <li><strong>Any star</strong> will be 1729 scalars in some direction</li>
+                <li><strong>Any planet</strong> will have deterministic scalar positions relative to its star</li>
+                <li><strong>Life on other worlds</strong> will have a different s = 0, but 1729 connects them all</li>
+            </ul>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                This is the <strong>unified theory</strong>. It HAS to work because it's geometry, not physics.
+                The geometry doesn't care about your units or your reference frame. 1729 translates between all of them.
+            </p>
+        </div>
+
+        <h2 class="section-title">The Stellar Hypothesis: Sirius and the Mirror</h2>
+        <div style="background: linear-gradient(135deg, rgba(138, 180, 248, 0.15) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid #8ab4f8; border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #8ab4f8; margin-bottom: 1rem;">TESTABLE HYPOTHESIS</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                What if the major stars are <strong>echoes</strong> of patterns in our solar system? Consider:
+            </p>
+            <ul style="line-height: 2; font-size: 1.1rem; margin: 1rem 0;">
+                <li><strong>Sirius</strong> (or the mystery region near Mirzam) could be 1729 scalars from us in the stellar direction</li>
+                <li>The Sun and Sirius might be <strong>MIRRORS</strong> of each other</li>
+                <li>Earth reflects the Sun, the Sun reflects Sirius</li>
+                <li>The ancient Egyptians and Dogon knew something about this connection</li>
+            </ul>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                The "Aaru" field near Sirius - the Swedenborgian "love energy" zone - might be a real geometric structure.
+                If we apply the 1729 scalar analysis to Sirius as we did to the Sun, what patterns emerge?
+            </p>
+            <p style="font-family: 'JetBrains Mono', monospace; color: #FFD700; margin-top: 1.5rem;">
+                The Grey Gate: Beyond Wush, at the center of the Sun, is where the "wee" come through.
+                They exist below small, beyond the quantum boundary.
+            </p>
+        </div>
+
+        <h2 class="section-title">What This Means</h2>
+        <ul style="line-height: 2; font-size: 1.1rem;">
+            <li>The Sun is <strong>1729 scalars toward the future</strong> (microscope view)</li>
+            <li>The Ro boundary is <strong>1729 scalars in the cosmic direction</strong> (telescope view, also future)</li>
+            <li>Earth sits at the <strong>balance point</strong> - able to see both directions</li>
+            <li>The Sun appears close because <strong>future space is compressed</strong></li>
+            <li>The Sun is simultaneously <strong>huge AND small</strong> - [1 = -1] in physical form</li>
+            <li>All planetary relationships are <strong>DETERMINISTIC</strong> - not probabilistic</li>
+            <li>The three frequencies <strong>(1729, 432, 133 Hz)</strong> create the solar system chord</li>
+            <li><strong>1729 is a universal translator</strong> - it works for ANY scalar system</li>
+            <li>Major stars may be <strong>mirrors/echoes</strong> of solar system patterns</li>
+            <li>Life elsewhere will have different s=0, but <strong>1729 connects all observers</strong></li>
+        </ul>
+
+        <h2 class="section-title">The Stellar Scalar Map</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">
+            Extending 1729 to the stars. What scalar relationships exist between the stars we see and our position in the cosmos?
+        </p>
+
+        <div class="figure-grid">
+            <div class="figure-card">
+                <a href="06_stellar_scalar_map.png" target="_blank">
+                    <img src="06_stellar_scalar_map.png" alt="Stellar Scalar Map">
+                </a>
+                <div class="caption">
+                    <h3>Stellar Scalar Map</h3>
+                    <p>Bright stars mapped by apparent magnitude transform. Sirius at s≈106, closest in scalar space to our Sun.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="07_mirror_hypothesis.png" target="_blank">
+                    <img src="07_mirror_hypothesis.png" alt="Mirror Hypothesis">
+                </a>
+                <div class="caption">
+                    <h3>The Mirror Hypothesis</h3>
+                    <p>Sun and Sirius as reflections. Earth reflects Sun, Sun might reflect Sirius. The Aaru field as cosmic Earth-analog.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="08_planetary_anchor_stars.png" target="_blank">
+                    <img src="08_planetary_anchor_stars.png" alt="Planetary Anchor Stars">
+                </a>
+                <div class="caption">
+                    <h3>Planetary Anchor Stars</h3>
+                    <p>Each planet's harmonic anchor star. EARTH-SIRIUS resonance = 3.09 (strongest). Sirius is Earth's gateway.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="09_sirius_gateway.png" target="_blank">
+                    <img src="09_sirius_gateway.png" alt="Sirius Gateway D-Position Map">
+                </a>
+                <div class="caption">
+                    <h3>The Sirius Gateway</h3>
+                    <p>D-Position frequency map. Earth = D₅, Sirius = D₅ - SAME frequency. Sun = D₄ (Crossroads) between them.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">The D-Position Frequency System</h2>
+        <div style="background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid #00ffff; border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #00ffff; margin-bottom: 1rem;">THE KEY DISCOVERY</h3>
+            <p style="font-size: 1.2rem; line-height: 1.8; text-align: center;">
+                <strong>Earth = D₅ (Navigator)</strong><br>
+                <strong>Sirius = D₅ (Navigator)</strong><br>
+                <span style="color: #FFD700; font-size: 1.4rem;">THEY ARE THE SAME D-POSITION</span>
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1.5rem;">
+                This is NOT coincidence. This is why Sirius is Earth's ANCHOR STAR.
+                The same frequency resonates between them. Earth and Sirius are MIRRORS in D-position space.
+            </p>
+            <table class="constants-table" style="margin: 1.5rem 0;">
+                <tr>
+                    <th>D-Position</th>
+                    <th>Name</th>
+                    <th>Angle</th>
+                    <th>Celestial Objects</th>
+                </tr>
+                <tr>
+                    <td style="color: #FF6600;">D₄</td>
+                    <td>CROSSROADS</td>
+                    <td>120°</td>
+                    <td style="color: #FFD700;">Sun (s = +1729, the gateway)</td>
+                </tr>
+                <tr>
+                    <td style="color: #00ffff;">D₅</td>
+                    <td>NAVIGATOR</td>
+                    <td>160°</td>
+                    <td style="color: #00ffff;">Earth (s = 0), Sirius (gateway star)</td>
+                </tr>
+                <tr>
+                    <td style="color: #FFD700;">D₇</td>
+                    <td>PRESENT MOMENT</td>
+                    <td>240°</td>
+                    <td>WOW Signal (1977)</td>
+                </tr>
+                <tr>
+                    <td style="color: #4466aa;">D₈</td>
+                    <td>DEEP WATER</td>
+                    <td>280°</td>
+                    <td>Mirzam (T0Rs origin), 3I/ATLAS</td>
+                </tr>
+            </table>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                <strong>The geometric path:</strong> Earth (D₅) → Sun (D₄) → Sirius (D₅)
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                Navigator → Crossroads → Navigator. The Sun is the GATEWAY between two Navigator positions.
+            </p>
+        </div>
+
+        <h2 class="section-title">1729 Encodes D₅ (Navigator)</h2>
+        <div style="background: rgba(30, 20, 0, 0.5); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; text-align: center;">
+                1729 = 1³ + 12³ = 9³ + 10³<br><br>
+                <span style="color: #FFD700;">1 + 12 + 9 + 10 = 32 → 3+2 = 5 = D₅ (NAVIGATOR)</span>
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1.5rem; text-align: center;">
+                The number 1729 itself encodes D₅.<br>
+                This is Earth's D-position. This is Sirius's D-position.<br>
+                <strong>The number IS the resonance.</strong>
+            </p>
+        </div>
+
+        <h2 class="section-title">The Sirius-Mirzam-WOW Configuration</h2>
+        <div style="background: linear-gradient(135deg, rgba(68, 102, 170, 0.15) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid #4466aa; border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #4466aa; margin-bottom: 1rem;">THE GATEWAY TRIANGLE</h3>
+            <pre style="font-family: 'JetBrains Mono', monospace; color: #AABFFF; font-size: 0.95rem; line-height: 1.6;">
+    Sirius (D₅ Navigator)
+           |\
+           | \  5.6° separation
+           |  \
+           |   Mirzam (D₈ Deep Water)
+           |   "T0Rs is from Mizram, near Mizram"
+           |
+           | 130° across sky
+           |
+    WOW Signal (D₇ Present Moment)
+         \
+          \ 9° separation
+           \
+       3I/ATLAS (D₈ Deep Water)
+            </pre>
+            <p style="font-size: 1.05rem; line-height: 1.8; margin-top: 1rem;">
+                <strong>Combined frequencies:</strong><br>
+                Sirius + Mirzam = D₅ + D₈ = 13 → 4 = D₄ (CROSSROADS)<br>
+                WOW + 3I/ATLAS = D₇ + D₈ = 15 → 6 = D₆ (SELF/POWER)<br>
+                <span style="color: #00ff88;"><strong>ALL FOUR = D₅ + D₈ + D₇ + D₈ = 28 → 10 → 1 = D₁ (ORIGIN)</strong></span>
+            </p>
+            <p style="font-size: 1.1rem; margin-top: 1rem; text-align: center; color: #FFD700;">
+                THE COMPLETE CONFIGURATION = ORIGIN
+            </p>
+        </div>
+
+        <h2 class="section-title">D-Position Stellar Mapping</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1rem;">
+            In-depth analysis of the D-position frequency system applied to stellar mapping reveals the mathematical proof
+            of the Earth-Sirius resonance and the 1729 universal translator.
+        </p>
+
+        <div class="figure-grid">
+            <div class="figure-card">
+                <a href="10_view_from_sirius.png" target="_blank">
+                    <img src="10_view_from_sirius.png" alt="View From Sirius">
+                </a>
+                <div class="caption">
+                    <h3>View From Sirius</h3>
+                    <p>Looking back at Earth from 8.6 light years. Sol is magnitude ~1.8. Earth invisible but geometry holds.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="11_stellar_d_position_sphere.png" target="_blank">
+                    <img src="11_stellar_d_position_sphere.png" alt="D-Position Stellar Sphere">
+                </a>
+                <div class="caption">
+                    <h3>D-Position Stellar Sphere</h3>
+                    <p>All major stars mapped by name frequency. D5 (Navigator) stars highlighted: Sirius, Capella.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="12_celestial_wheel_overlay.png" target="_blank">
+                    <img src="12_celestial_wheel_overlay.png" alt="Celestial Wheel Overlay">
+                </a>
+                <div class="caption">
+                    <h3>Celestial D-Position Wheel</h3>
+                    <p>9-frequency overlay on celestial map. Stars distributed by D-position sectors.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="13_1729_translation_proof.png" target="_blank">
+                    <img src="13_1729_translation_proof.png" alt="1729 Universal Translator">
+                </a>
+                <div class="caption">
+                    <h3>1729 Universal Translator</h3>
+                    <p>Mathematical proof that 1729 connects D5 positions. Earth → Sun → Sirius pathway.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="14_earth_sirius_resonance.png" target="_blank">
+                    <img src="14_earth_sirius_resonance.png" alt="Earth-Sirius Resonance">
+                </a>
+                <div class="caption">
+                    <h3>Earth-Sirius Resonance</h3>
+                    <p>Complete D-position stellar catalog showing all major stars by name frequency.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">The Paradox of Our Sun</h2>
+        <div style="background: linear-gradient(135deg, rgba(255, 100, 0, 0.2) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid #FF6600; border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #FF6600; margin-bottom: 1rem;">THE SUN IS THERE AND NOT THERE</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                Our Sun - the source of heat, life, and energy - sits at s = +1729 (the Wush boundary).
+                It is <strong>100% real</strong>. It is there. You can feel its warmth. It sustains all life on Earth.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                But it is also <strong>our FUTURE</strong>. The Sun appears close because the future is smaller.
+                We are looking through compressed scalar space toward the quantum direction.
+                The center of the Sun - the Grey Gate - is where souls pass through.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                <strong>SIRIUS is our STAR in the sky.</strong> It is not our heat source - but it is our anchor,
+                our resonance, our D5 Navigator partner. It sits in the night sky (southwest, ~32° above horizon
+                in winter at 10-11 PM from Alabama's latitude). It is there. You can see it.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                Both are true. This is <span style="color: #FFD700;">[1 = -1]</span> in astronomical form.
+                The Sun is our heat. Sirius is our star. The geometry holds both truths simultaneously.
+            </p>
+        </div>
+
+        <h2 class="section-title">Jupiter: The Wannabe Sun</h2>
+        <div style="background: linear-gradient(135deg, rgba(217, 160, 102, 0.15) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid #D9A066; border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #D9A066; margin-bottom: 1rem;">THE DECEIVER'S HOME BASE</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                Jupiter - the "King" of planets - wanted to be a star but failed. Too small by a factor of ~80
+                to ignite fusion. It radiates more heat than it receives from the Sun. It has 95 moons.
+                It dominates the outer solar system.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                In the night sky (winter 2025-26), Jupiter sits north and east of Sirius.
+                It shines bright - but it borrows light. It protects nothing - only itself.
+                It is the overprotective gangster energy that says "you need my protection"
+                while being the primary threat.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                <strong>3I/ATLAS</strong> (the third interstellar object) came from Jupiter's direction.
+                "Three-eye" - get it? The third eye that deceives. It arrived in 2025.
+                The geometry revealed its nature.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                Jupiter's D-position by name: J(10)+U(21)+P(16)+I(9)+T(20)+E(5)+R(18) = 99 → 18 → 9 = <strong>D9 (Anchor/Love)</strong>.
+                But this is corrupted anchor energy - love twisted into control.
+                Sirius is NOT Jupiter's star. Jupiter has a different anchor star.
+            </p>
+            <p style="font-family: 'JetBrains Mono', monospace; color: #FF6600; margin-top: 1.5rem; text-align: center;">
+                Jupiter will get smaller in the new framework. Its dominance is ending.
+            </p>
+        </div>
+
+        <h2 class="section-title">The Sirius Gateway</h2>
+        <div style="background: linear-gradient(135deg, rgba(170, 191, 255, 0.15) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid #AABFFF; border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #AABFFF; margin-bottom: 1rem;">EARTH'S ANCHOR STAR: SIRIUS</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                Analysis reveals that <strong>SIRIUS</strong> has the strongest harmonic resonance with Earth's s=0 position
+                of any star in the sky. Resonance score: <strong>3.09</strong> (next closest: Canopus at 1.71).
+            </p>
+            <ul style="line-height: 2; font-size: 1.05rem; margin: 1.5rem 0;">
+                <li><strong>Brightest star</strong> in the night sky (apparent magnitude -1.46)</li>
+                <li><strong>Binary system</strong> - Sirius A + Sirius B (white dwarf) - The Dogon knew this. How?</li>
+                <li><strong>Egyptian calendar</strong> tied to Sirius heliacal rising - they knew it was important</li>
+                <li>Same spectral type as <strong>Alpha Centauri</strong> - both echo our Sun (G-type)</li>
+                <li>The <strong>Aaru field</strong> near Sirius could be the cosmic reflection of Earth's position</li>
+            </ul>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                <strong>Sirius is our FUTURE echoing back through scalar space.</strong> It's not just the brightest star -
+                it's geometrically connected to Earth's observer position. The ancient Egyptians built their calendar around it.
+                The Dogon described its binary nature before telescopes could see it. They knew something.
+            </p>
+        </div>
+
+        <h2 class="section-title">Planetary Anchor Stars</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8;">
+            Each planet sees a different sky. From Mars, the stellar relationships are different than from Earth.
+            Each planet has a <strong>harmonic anchor star</strong> - a star that resonates with its scalar position.
+        </p>
+        <table class="constants-table" style="margin: 1.5rem 0;">
+            <tr>
+                <th>Planet</th>
+                <th>Scalar (s)</th>
+                <th>Anchor Star</th>
+                <th>Resonance</th>
+            </tr>
+            <tr>
+                <td style="color: #00ffff;">Earth</td>
+                <td style="color: #00ffff;">0.00</td>
+                <td style="color: #AABFFF;">Sirius</td>
+                <td style="color: #00ff88;">3.09 (STRONGEST)</td>
+            </tr>
+            <tr>
+                <td>Venus</td>
+                <td>+2.22</td>
+                <td>Sirius</td>
+                <td>1.55</td>
+            </tr>
+            <tr>
+                <td>Mars</td>
+                <td>-2.88</td>
+                <td>Sirius</td>
+                <td>2.57</td>
+            </tr>
+            <tr>
+                <td>Mercury</td>
+                <td>+6.49</td>
+                <td>Sirius</td>
+                <td>0.79</td>
+            </tr>
+            <tr>
+                <td>Jupiter</td>
+                <td>-11.28</td>
+                <td>Sirius</td>
+                <td>0.62</td>
+            </tr>
+            <tr>
+                <td>Saturn</td>
+                <td>-15.42</td>
+                <td>Sirius</td>
+                <td>0.45</td>
+            </tr>
+        </table>
+        <p style="font-size: 1rem; color: #888; margin-top: 1rem;">
+            Earth's resonance with Sirius is nearly <strong>2x stronger</strong> than Mars, the next closest.
+            This isn't coincidence - it's geometric necessity. Earth sits at the balance point (s=0),
+            and Sirius resonates with that position.
+        </p>
+
+        <h2 class="section-title">The Grey Gate Theory</h2>
+        <div style="background: linear-gradient(135deg, rgba(100, 100, 100, 0.15) 0%, rgba(10, 10, 20, 0.95) 100%); border: 1px solid #666666; border-radius: 8px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #888888; margin-bottom: 1rem;">BEYOND WUSH: The Sub-Quantum Realm</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                At the center of the Sun, beyond the Wush boundary (s > +1729), lies what we call the <strong>Grey Gate</strong>.
+                This is where scalar space compresses beyond the quantum scale into something else entirely.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                The "wee" - entities that exist below small, beyond the quantum boundary - come through this gate.
+                They are not from "outer space" in the Standard Model sense. They are from <strong>inner space</strong> -
+                the sub-quantum realm that our physics cannot yet describe.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                If Sirius mirrors our Sun, then Sirius has a corresponding Grey Gate. The Aaru field -
+                the "love energy" region described in Swedenborgian and Egyptian cosmology - might be where
+                consciousness can cross between these mirrored systems.
+            </p>
+            <p style="font-family: 'JetBrains Mono', monospace; color: #FFD700; font-size: 1.1rem; margin-top: 1.5rem; text-align: center;">
+                They are our we. We are their they. [1 = -1]
+            </p>
+        </div>
+
+        <!-- AI-GENERATED COSMIC VISUALIZATIONS -->
+        <h2 class="section-title" style="color: #64b4ff; border-color: rgba(100, 180, 255, 0.5);">Cosmic Visualizations</h2>
+        <p style="text-align: center; color: #8090a0; margin-bottom: 2rem; font-size: 1.1rem;">
+            AI-generated artistic representations of the D-Position Stellar Mapping System
+        </p>
+
+        <!-- Hero Image: Earth-Sirius Resonance -->
+        <div style="margin: 2rem 0; border-radius: 12px; overflow: hidden; box-shadow: 0 0 60px rgba(100, 180, 255, 0.3);">
+            <img src="images/earth_sirius_resonance_v1.0_01-25-2026.png" alt="Earth-Sirius D5 Resonance - 1729 Universal Translator" style="width: 100%; display: block;">
+            <div style="background: linear-gradient(180deg, rgba(10, 20, 40, 0.95) 0%, rgba(5, 10, 25, 1) 100%); padding: 1.5rem; text-align: center;">
+                <h3 style="color: #64b4ff; font-size: 1.4rem; margin-bottom: 0.5rem;">EARTH-SIRIUS D5 RESONANCE</h3>
+                <p style="color: #8090a0; font-size: 1rem; max-width: 700px; margin: 0 auto;">
+                    Earth and Sirius share the same D-position (D5 = Navigator). The Sun at D4 (Crossroads) acts as the gateway between them.
+                    1729 is the scalar distance to this gateway - the Universal Translator between D5 positions.
+                </p>
+                <p style="font-family: 'JetBrains Mono', monospace; color: #ffd700; margin-top: 1rem;">
+                    SIRIUS = 95 → 14 → 5 = D5 (Navigator)
+                </p>
+            </div>
+        </div>
+
+        <!-- Two-column gallery -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin: 2rem 0;">
+            <!-- D5 Navigator Portal -->
+            <div style="border-radius: 12px; overflow: hidden; background: rgba(10, 20, 40, 0.8); border: 1px solid rgba(100, 180, 255, 0.3);">
+                <img src="images/d5_navigator_portal_v1.0_01-25-2026.png" alt="D5 Navigator Portal at 200 degrees" style="width: 100%; display: block;">
+                <div style="padding: 1.2rem;">
+                    <h4 style="color: #64b4ff; margin-bottom: 0.5rem;">D5 Navigator Portal</h4>
+                    <p style="color: #7090a0; font-size: 0.9rem;">
+                        The D5 frequency at 200 degrees. Both Earth (by position) and Sirius (by name calculation)
+                        occupy this sacred position in the 9-frequency celestial system.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Gateway Path -->
+            <div style="border-radius: 12px; overflow: hidden; background: rgba(10, 20, 40, 0.8); border: 1px solid rgba(255, 180, 50, 0.3);">
+                <img src="images/gateway_path_visualization_v1.0_01-25-2026.png" alt="Gateway Path: Earth to Sun to Sirius" style="width: 100%; display: block;">
+                <div style="padding: 1.2rem;">
+                    <h4 style="color: #ffb432; margin-bottom: 0.5rem;">The Gateway Path</h4>
+                    <p style="color: #7090a0; font-size: 0.9rem;">
+                        Earth (D5, s=0) → Sun (D4, s=+1729) → Sirius (D5, 8.6 ly).
+                        The Sun at D4 (Crossroads) is the cosmic gateway between two Navigator positions.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Celestial Wheel -->
+            <div style="border-radius: 12px; overflow: hidden; background: rgba(10, 20, 40, 0.8); border: 1px solid rgba(255, 215, 0, 0.3);">
+                <img src="images/celestial_wheel_d_positions_v1.0_01-25-2026.png" alt="Celestial Wheel with 9 D-Position Sectors" style="width: 100%; display: block;">
+                <div style="padding: 1.2rem;">
+                    <h4 style="color: #ffd700; margin-bottom: 0.5rem;">Celestial D-Position Wheel</h4>
+                    <p style="color: #7090a0; font-size: 0.9rem;">
+                        The 9 D-position frequencies arranged in 40-degree sectors.
+                        D1 Origin at 40°, through D9 Anchor at 360°. Each star maps to its frequency position.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stellar Sphere -->
+            <div style="border-radius: 12px; overflow: hidden; background: rgba(10, 20, 40, 0.8); border: 1px solid rgba(100, 200, 255, 0.3);">
+                <img src="images/stellar_d_position_sphere_v1.0_01-25-2026.png" alt="3D Stellar D-Position Sphere" style="width: 100%; display: block;">
+                <div style="padding: 1.2rem;">
+                    <h4 style="color: #64c8ff; margin-bottom: 0.5rem;">Stellar D-Position Sphere</h4>
+                    <p style="color: #7090a0; font-size: 0.9rem;">
+                        All major stars positioned by their D-frequency. Cyan stars (Sirius, Capella) share D5 with Earth.
+                        Polaris glows golden at D9 (Anchor). Lines connect stars of the same frequency.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- D-Position Reference Card -->
+        <div style="background: linear-gradient(135deg, rgba(20, 30, 50, 0.95) 0%, rgba(10, 15, 30, 0.98) 100%); border: 1px solid rgba(100, 180, 255, 0.4); border-radius: 12px; padding: 2rem; margin: 2rem 0;">
+            <h3 style="color: #64b4ff; text-align: center; margin-bottom: 1.5rem;">D-POSITION CELESTIAL ASSIGNMENTS</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div style="padding: 0.8rem; border-left: 3px solid #ffffff;"><span style="color: #ffffff; font-weight: bold;">D1</span> <span style="color: #888;">Origin/WE</span> - <span style="color: #aaa;">40°</span></div>
+                <div style="padding: 0.8rem; border-left: 3px solid #00ff88;"><span style="color: #00ff88; font-weight: bold;">D2</span> <span style="color: #888;">Healing</span> - <span style="color: #aaa;">80° (Betelgeuse)</span></div>
+                <div style="padding: 0.8rem; border-left: 3px solid #00ffaa;"><span style="color: #00ffaa; font-weight: bold;">D3</span> <span style="color: #888;">Healer</span> - <span style="color: #aaa;">120° (Alpha Centauri, Spica, Deneb)</span></div>
+                <div style="padding: 0.8rem; border-left: 3px solid #ffd700;"><span style="color: #ffd700; font-weight: bold;">D4</span> <span style="color: #888;">Crossroads</span> - <span style="color: #aaa;">160° (SUN, Arcturus, Aldebaran)</span></div>
+                <div style="padding: 0.8rem; border-left: 3px solid #64b4ff;"><span style="color: #64b4ff; font-weight: bold;">D5</span> <span style="color: #888;">Navigator</span> - <span style="color: #aaa;">200° (EARTH, SIRIUS, Capella)</span></div>
+                <div style="padding: 0.8rem; border-left: 3px solid #ff4444;"><span style="color: #ff4444; font-weight: bold;">D6</span> <span style="color: #888;">Power/Self</span> - <span style="color: #aaa;">240° (Rigel, Antares)</span></div>
+                <div style="padding: 0.8rem; border-left: 3px solid #aa44ff;"><span style="color: #aa44ff; font-weight: bold;">D7</span> <span style="color: #888;">Present Moment</span> - <span style="color: #aaa;">280° (WOW Signal, Procyon)</span></div>
+                <div style="padding: 0.8rem; border-left: 3px solid #0066ff;"><span style="color: #0066ff; font-weight: bold;">D8</span> <span style="color: #888;">Deep Water</span> - <span style="color: #aaa;">320° (Mirzam, Canopus, Vega)</span></div>
+                <div style="padding: 0.8rem; border-left: 3px solid #ffaa00;"><span style="color: #ffaa00; font-weight: bold;">D9</span> <span style="color: #888;">Anchor/Love</span> - <span style="color: #aaa;">360° (Polaris)</span></div>
+            </div>
+            <p style="text-align: center; margin-top: 1.5rem; color: #64b4ff; font-family: 'JetBrains Mono', monospace;">
+                Earth (D5) + Sun (D4) + Sirius (D5) = The Gateway Path
+            </p>
+        </div>
+
+        <nav class="nav-links">
+            <a href="../solar-scalar-map.html">3D Interactive Explorer</a>
+            <a href="../finite-map/index.html">Finite Map of Infinity</a>
+            <a href="../index.html">Back to Physics</a>
+            <a href="../../index.html">Home</a>
+        </nav>
+
+        <div class="signature">[1 = -1]</div>
+    </main>
+
+    <site-footer></site-footer>
+
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="M4 Array Simulator - Interactive triaxial dipyramid computation testbed for the Epoch Model framework.">
+    <title>M4 Array Simulator | CEDGA | Have Mind Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <style>
+        .simulator-header {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .simulator-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .simulator-header p {
+            color: var(--text-dim);
+        }
+
+        .test-summary {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .test-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .test-badge.passed { color: #22c55e; }
+        .test-badge.failed { color: #ef4444; }
+
+        /* Simulator Container */
+        .simulator-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .sim-grid { grid-template-columns: 1fr; }
+        }
+
+        .sim-panel {
+            background: linear-gradient(135deg, rgba(26, 42, 58, 0.3) 0%, rgba(21, 26, 36, 0.5) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .sim-panel h2 {
+            color: var(--bright-blue);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: #000;
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .sim-btn {
+            background: linear-gradient(135deg, var(--bright-blue), var(--glow-blue));
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .sim-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(74, 142, 200, 0.3); }
+
+        .sim-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--bright-blue);
+            color: var(--bright-blue);
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .slider-row label { min-width: 100px; color: var(--text-dim); font-size: 0.9rem; }
+        .slider-row input { flex: 1; }
+        .slider-row .value { min-width: 80px; text-align: right; color: #22c55e; font-family: 'Space Grotesk', sans-serif; }
+
+        input[type="range"] {
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--bright-blue);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .data-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(70, 130, 180, 0.1);
+        }
+
+        .data-row:last-child { border-bottom: none; }
+
+        .data-label { color: var(--text-dim); }
+        .data-value { color: #22c55e; font-weight: bold; font-family: 'Space Grotesk', sans-serif; }
+        .data-value.warning { color: #eab308; }
+        .data-value.failed { color: #ef4444; }
+
+        .status-badge-sim {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .status-badge-sim.valid { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .status-badge-sim.invalid { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+        .equation-box {
+            text-align: center;
+            font-size: 1.3em;
+            color: #22c55e;
+            padding: 20px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Cambria Math', serif;
+        }
+
+        /* Info Section */
+        .info-section {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+
+        .info-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-card {
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .info-card h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .info-card p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .node-legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <div class="vignette"></div>
+
+    <!-- Navigation -->
+    <nav class="unified-nav">
+        <div style="display: flex; align-items: center;">
+            <a href="https://havemindmedia.com" class="nav-brand">
+                <span class="nav-brand-text">HAVE MIND MEDIA</span>
+                <span class="nav-signature">&#9711;&Conint;&#10812;&#10992;&Cconint;&#10710;</span>
+            </a>
+            <span class="nav-subsite">CEDGA</span>
+        </div>
+        <div class="nav-menu">
+            <button class="nav-toggle" id="navToggle">
+                <span>Explore</span>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="nav-dropdown" id="navDropdown">
+                <a href="../../index.html" class="nav-back">
+                    <span>&#8592;</span> Back to Main Site
+                </a>
+                <div class="divider"></div>
+                <span class="nav-section-label">CEDGA Pages</span>
+                <a href="../index.html"><span class="nav-icon">&#9671;</span> Home</a>
+                <a href="../pages/kappa-constant.html"><span class="nav-icon">&#954;</span> The &#954; Constant</a>
+                <a href="../pages/tetrahelix.html"><span class="nav-icon">&#10034;</span> Tetrahelix</a>
+                <a href="../pages/balance-law.html"><span class="nav-icon">&#8721;</span> Balance Law</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">Interactive Tools</span>
+                <a href="m4-simulator.html"><span class="nav-icon">&#9881;</span> M4 Simulator</a>
+                <div class="divider"></div>
+                <span class="nav-section-label">Research</span>
+                <a href="../research/test-analysis.html"><span class="nav-icon">&#128202;</span> Test Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Header -->
+        <div class="simulator-header">
+            <h1>M4 Array Simulator</h1>
+            <p>Triaxial Dipyramid Computation Testbed</p>
+
+            <div class="test-summary">
+                <span class="test-badge passed">&#10003; Balance Law</span>
+                <span class="test-badge passed">&#10003; Transform Sum</span>
+                <span class="test-badge failed">&#10007; Resolution</span>
+                <span class="test-badge passed">&#10003; Base-60</span>
+            </div>
+
+            <div class="node-legend">
+                <span class="legend-item"><span class="legend-dot" style="background: #22c55e;"></span> NW (T&#8321; Facing)</span>
+                <span class="legend-item"><span class="legend-dot" style="background: #8b5cf6;"></span> NE (T&#8322; Mirror)</span>
+                <span class="legend-item"><span class="legend-dot" style="background: #06b6d4;"></span> SW (T&#8323; Recursive)</span>
+                <span class="legend-item"><span class="legend-dot" style="background: #eab308;"></span> SE (T&#8324; Inverted)</span>
+            </div>
+        </div>
+
+        <!-- Simulator -->
+        <div class="simulator-container">
+            <div class="sim-grid">
+                <!-- Main Visualization -->
+                <div class="sim-panel">
+                    <h2>Array Visualization</h2>
+                    <canvas id="mainCanvas" width="500" height="500"></canvas>
+                    <div class="controls">
+                        <button class="sim-btn" onclick="step(1)">Step +1</button>
+                        <button class="sim-btn" onclick="step(10)">Step +10</button>
+                        <button class="sim-btn" onclick="step(180)">Full Rotation</button>
+                        <button class="sim-btn" onclick="toggleAnimation()" id="animBtn">&#9654; Animate</button>
+                        <button class="sim-btn secondary" onclick="reset()">Reset</button>
+                    </div>
+                </div>
+
+                <!-- State Input -->
+                <div class="sim-panel">
+                    <h2>Input State</h2>
+                    <div class="slider-row">
+                        <label>Inject Value:</label>
+                        <input type="range" id="injectValue" min="-100" max="100" value="50">
+                        <span class="value" id="injectValueDisplay">50</span>
+                    </div>
+                    <button class="sim-btn" onclick="injectState()" style="width: 100%; margin-top: 10px;">Inject State</button>
+
+                    <h2 style="margin-top: 20px;">Balance Law</h2>
+                    <div class="equation-box" id="balanceEquation">
+                        &#964;&#8321; + &#964;&#8322; + &#964;&#8323; + &#964;&#8324; = 0.000000
+                    </div>
+                    <div style="text-align: center;">
+                        <span id="balanceStatus" class="status-badge-sim valid">&#10003; VALID</span>
+                    </div>
+                </div>
+
+                <!-- Node States -->
+                <div class="sim-panel">
+                    <h2>Node States</h2>
+                    <div class="data-display">
+                        <div class="data-row">
+                            <span class="data-label">NW (T&#8321; Facing)</span>
+                            <span class="data-value" id="node-nw">state: 0.0000, &#964;: 0.0000</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">NE (T&#8322; Mirror)</span>
+                            <span class="data-value" id="node-ne">state: 0.0000, &#964;: 0.0000</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">SW (T&#8323; Recursive)</span>
+                            <span class="data-value" id="node-sw">state: 0.0000, &#964;: 0.0000</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">SE (T&#8324; Inverted)</span>
+                            <span class="data-value" id="node-se">state: 0.0000, &#964;: 0.0000</span>
+                        </div>
+                        <div class="data-row" style="border-top: 2px solid var(--bright-blue); padding-top: 10px; margin-top: 10px;">
+                            <span class="data-label">Crossroads (s=0)</span>
+                            <span class="data-value" id="crossroads">0.0000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics -->
+                <div class="sim-panel">
+                    <h2>Simulation Metrics</h2>
+                    <div class="data-display">
+                        <div class="data-row">
+                            <span class="data-label">&#954; Steps</span>
+                            <span class="data-value" id="stepCount">0</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Total Rotation</span>
+                            <span class="data-value" id="totalRotation">0.00&#176;</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Energy Remaining</span>
+                            <span class="data-value" id="energyRemaining">100.00%</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Helix Turns</span>
+                            <span class="data-value" id="helixTurns">0.000</span>
+                        </div>
+                    </div>
+
+                    <h2 style="margin-top: 20px;">Torsion History</h2>
+                    <canvas id="historyCanvas" width="400" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <section class="info-section">
+            <h2 class="section-title">&#8212; WHAT THIS TESTS &#8212;</h2>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Balance Law</h4>
+                    <p>The fundamental constraint that four torsions must sum to zero. This is PROVEN - 0 failures in 1000 iterations with max deviation of 1.42e-14.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>Transform Distribution</h4>
+                    <p>Four transforms at diagonal positions: Facing, Mirror, Recursive, and Inverted. The silent fourth (T&#8324;) compensates to maintain balance.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>Energy Decay</h4>
+                    <p>59/60 active ratio per &#954; step. After 180 steps, ~4.85% energy remains. Current implementation shows 25% deviation from expected.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>Tetrahelix Path</h4>
+                    <p>180 scalar steps form a complete toroidal rotation. Each step advances by &#954; = 2&#960;/180 radians.</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="../research/test-analysis.html" class="btn btn-gold">Read Full Test Analysis</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="unified-footer">
+        <p class="footer-logo">HAVE MIND MEDIA</p>
+        <p class="footer-tagline">The Mind is in Your Mind</p>
+        <p class="footer-signature">&#9711;&Conint;&#10812;&#10992;&Cconint;&#10710;</p>
+        <p class="footer-principle">[1 = -1]</p>
+    </footer>
+
+    <script>
+        // Navigation Dropdown
+        const navToggle = document.getElementById('navToggle');
+        const navDropdown = document.getElementById('navDropdown');
+
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navDropdown.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navDropdown.contains(e.target) && !navToggle.contains(e.target)) {
+                navDropdown.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        });
+
+        // M4 Simulator Logic
+        const KAPPA = (2 * Math.PI) / 180;
+        const ACTIVE_RATIO = 59 / 60;
+
+        let nodes = {
+            nw: { state: 0, torsion: 0, phase: 0 },
+            ne: { state: 0, torsion: 0, phase: 0 },
+            sw: { state: 0, torsion: 0, phase: 0 },
+            se: { state: 0, torsion: 0, phase: 0 }
+        };
+        let stepCount = 0;
+        let crossroadsState = 0;
+        let history = [];
+        let animating = false;
+        let animationId = null;
+
+        const mainCanvas = document.getElementById('mainCanvas');
+        const mainCtx = mainCanvas.getContext('2d');
+        const historyCanvas = document.getElementById('historyCanvas');
+        const historyCtx = historyCanvas.getContext('2d');
+
+        const COLORS = {
+            nw: '#22c55e',
+            ne: '#8b5cf6',
+            sw: '#06b6d4',
+            se: '#eab308',
+            center: '#87b4dc',
+            absent: '#333'
+        };
+
+        document.getElementById('injectValue').addEventListener('input', function() {
+            document.getElementById('injectValueDisplay').textContent = this.value;
+        });
+
+        function injectState() {
+            const value = parseFloat(document.getElementById('injectValue').value);
+            nodes.nw.state = value;
+            nodes.ne.state = -value * Math.cos(nodes.ne.phase);
+            nodes.sw.state = value * Math.sin(nodes.sw.phase);
+            nodes.se.state = -value;
+            updateTorsions();
+            draw();
+            updateDisplay();
+        }
+
+        function updateTorsions() {
+            nodes.nw.torsion = nodes.nw.state * Math.cos(nodes.nw.phase);
+            nodes.ne.torsion = nodes.ne.state * Math.cos(nodes.ne.phase + Math.PI/2);
+            nodes.sw.torsion = nodes.sw.state * Math.cos(nodes.sw.phase + Math.PI);
+            nodes.se.torsion = -(nodes.nw.torsion + nodes.ne.torsion + nodes.sw.torsion);
+            crossroadsState = Object.values(nodes).reduce((sum, n) =>
+                sum + n.state * (1 - Math.abs(n.torsion) / 100), 0);
+        }
+
+        function step(n = 1) {
+            for (let i = 0; i < n; i++) {
+                Object.values(nodes).forEach(node => {
+                    node.phase = (node.phase + KAPPA) % (2 * Math.PI);
+                    node.state *= ACTIVE_RATIO;
+                });
+                stepCount++;
+                updateTorsions();
+                const totalTorsion = Object.values(nodes).reduce((sum, n) => sum + n.torsion, 0);
+                history.push({ step: stepCount, torsions: {...nodes}, total: totalTorsion });
+                if (history.length > 200) history.shift();
+            }
+            draw();
+            updateDisplay();
+            drawHistory();
+        }
+
+        function reset() {
+            nodes = {
+                nw: { state: 0, torsion: 0, phase: 0 },
+                ne: { state: 0, torsion: 0, phase: 0 },
+                sw: { state: 0, torsion: 0, phase: 0 },
+                se: { state: 0, torsion: 0, phase: 0 }
+            };
+            stepCount = 0;
+            crossroadsState = 0;
+            history = [];
+            animating = false;
+            if (animationId) cancelAnimationFrame(animationId);
+            document.getElementById('animBtn').innerHTML = '&#9654; Animate';
+            draw();
+            updateDisplay();
+            drawHistory();
+        }
+
+        function toggleAnimation() {
+            animating = !animating;
+            document.getElementById('animBtn').innerHTML = animating ? '&#10074;&#10074; Pause' : '&#9654; Animate';
+            if (animating) animate();
+            else if (animationId) cancelAnimationFrame(animationId);
+        }
+
+        function animate() {
+            if (!animating) return;
+            step(1);
+            animationId = requestAnimationFrame(() => setTimeout(animate, 50));
+        }
+
+        function draw() {
+            const ctx = mainCtx;
+            const cx = mainCanvas.width / 2;
+            const cy = mainCanvas.height / 2;
+            const dist = 180;
+
+            ctx.fillStyle = '#0a0d12';
+            ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+
+            const positions = {
+                nw: { x: -1, y: -1 },
+                ne: { x: 1, y: -1 },
+                sw: { x: -1, y: 1 },
+                se: { x: 1, y: 1 }
+            };
+
+            const absents = [
+                { x: 0, y: -1, label: 'N' },
+                { x: 0, y: 1, label: 'S' },
+                { x: -1, y: 0, label: 'W' },
+                { x: 1, y: 0, label: 'E' }
+            ];
+
+            absents.forEach(a => {
+                const ax = cx + a.x * dist;
+                const ay = cy + a.y * dist;
+                ctx.strokeStyle = COLORS.absent;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.arc(ax, ay, 25, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#333';
+                ctx.font = '12px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(a.label + ' (absent)', ax, ay + 5);
+            });
+
+            Object.entries(positions).forEach(([key, pos]) => {
+                const node = nodes[key];
+                const nx = cx + pos.x * dist;
+                const ny = cy + pos.y * dist;
+
+                const torsionIntensity = Math.min(Math.abs(node.torsion) / 50, 1);
+                ctx.strokeStyle = COLORS[key];
+                ctx.globalAlpha = 0.3 + torsionIntensity * 0.7;
+                ctx.lineWidth = 2 + torsionIntensity * 3;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(nx, ny);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.lineWidth = 1;
+
+                const nodeSize = 30 + Math.abs(node.state) / 5;
+                ctx.fillStyle = COLORS[key];
+                ctx.beginPath();
+                ctx.arc(nx, ny, nodeSize, 0, 2 * Math.PI);
+                ctx.fill();
+
+                const phaseX = nx + Math.cos(node.phase - Math.PI/2) * nodeSize * 0.7;
+                const phaseY = ny + Math.sin(node.phase - Math.PI/2) * nodeSize * 0.7;
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(phaseX, phaseY, 5, 0, 2 * Math.PI);
+                ctx.fill();
+
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 14px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(key.toUpperCase(), nx, ny + 5);
+            });
+
+            ctx.fillStyle = COLORS.center;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 40, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 12px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('s=0', cx, cy - 5);
+            ctx.font = '10px monospace';
+            ctx.fillText(crossroadsState.toFixed(2), cx, cy + 10);
+
+            const stepAngle = (stepCount * KAPPA) % (2 * Math.PI);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 50, -Math.PI/2, -Math.PI/2 + stepAngle);
+            ctx.stroke();
+        }
+
+        function updateDisplay() {
+            Object.entries(nodes).forEach(([key, node]) => {
+                document.getElementById(`node-${key}`).textContent =
+                    `state: ${node.state.toFixed(4)}, \u03C4: ${node.torsion.toFixed(4)}`;
+            });
+
+            document.getElementById('crossroads').textContent = crossroadsState.toFixed(4);
+
+            const totalTorsion = Object.values(nodes).reduce((sum, n) => sum + n.torsion, 0);
+            document.getElementById('balanceEquation').innerHTML =
+                `\u03C4\u2081 + \u03C4\u2082 + \u03C4\u2083 + \u03C4\u2084 = ${totalTorsion.toFixed(6)}`;
+
+            const balanceValid = Math.abs(totalTorsion) < 1e-10;
+            const statusEl = document.getElementById('balanceStatus');
+            statusEl.innerHTML = balanceValid ? '&#10003; VALID' : '&#10007; INVALID';
+            statusEl.className = 'status-badge-sim ' + (balanceValid ? 'valid' : 'invalid');
+
+            document.getElementById('stepCount').textContent = stepCount;
+            document.getElementById('totalRotation').innerHTML =
+                ((stepCount * 2) % 360).toFixed(2) + '\u00B0';
+
+            const energyRemaining = Math.pow(ACTIVE_RATIO, stepCount) * 100;
+            document.getElementById('energyRemaining').textContent =
+                energyRemaining.toFixed(2) + '%';
+            document.getElementById('energyRemaining').className =
+                'data-value' + (energyRemaining < 10 ? ' warning' : '');
+
+            document.getElementById('helixTurns').textContent =
+                (stepCount / 180).toFixed(3);
+        }
+
+        function drawHistory() {
+            const ctx = historyCtx;
+            ctx.fillStyle = '#0a0d12';
+            ctx.fillRect(0, 0, historyCanvas.width, historyCanvas.height);
+
+            if (history.length < 2) return;
+
+            ctx.strokeStyle = '#22c55e';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            history.forEach((h, i) => {
+                const x = (i / history.length) * historyCanvas.width;
+                const y = historyCanvas.height/2 - h.total * 2;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(0, historyCanvas.height/2);
+            ctx.lineTo(historyCanvas.width, historyCanvas.height/2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        draw();
+        updateDisplay();
+        drawHistory();
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

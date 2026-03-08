@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaction Modeler | Have Mind Media</title>
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <style>
+        :root {
+            --void: #0a0a0f;
+            --deep-space: #0d1117;
+            --nebula-blue: #1a1f2e;
+            --gold: #d4af37;
+            --soft-cream: #f5f0e6;
+            --glow-blue: #6ab4f5;
+            --warm-amber: #c9a227;
+            --person-a: #6ab4f5;
+            --person-b: #d4af37;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Source Sans Pro', -apple-system, sans-serif;
+            --font-accent: 'Cinzel', serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cinzel:wght@400;500;600&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--void);
+            color: var(--soft-cream);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background */
+        .model-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 30% 30%, rgba(106, 180, 245, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 70%, rgba(212, 175, 55, 0.06) 0%, transparent 50%),
+                linear-gradient(180deg, var(--void) 0%, var(--deep-space) 100%);
+        }
+
+        /* Navigation */
+        .unified-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-brand {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-brand-text {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+        }
+
+        .nav-back {
+            color: var(--glow-blue);
+            text-decoration: none;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-back:hover { color: var(--gold); }
+
+        /* Main */
+        main {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 40px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: 2.8em;
+            font-weight: 400;
+            color: var(--soft-cream);
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+        }
+
+        .hero h1 span { color: var(--gold); }
+
+        .hero-subtitle {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+        }
+
+        /* Input Section */
+        .input-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .persons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .persons-container .person-card {
+            width: calc(50% - 55px);
+            min-width: 300px;
+        }
+
+        .persons-container .connector {
+            width: 80px;
+        }
+
+        .person-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px solid transparent;
+            transition: var(--transition-smooth);
+        }
+
+        .person-card.person-a { border-color: rgba(106, 180, 245, 0.3); }
+        .person-card.person-b { border-color: rgba(212, 175, 55, 0.3); }
+
+        .person-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .person-indicator {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-accent);
+            font-size: 1.2em;
+        }
+
+        .person-a .person-indicator { background: var(--person-a); color: #0a0a0f; }
+        .person-b .person-indicator { background: var(--person-b); color: #0a0a0f; }
+
+        .person-title {
+            font-family: var(--font-display);
+            font-size: 1.3em;
+            color: var(--soft-cream);
+        }
+
+        .person-a .person-title { color: var(--person-a); }
+        .person-b .person-title { color: var(--person-b); }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--soft-cream);
+            font-family: var(--font-body);
+            font-size: 1em;
+            transition: var(--transition-smooth);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        .birthday-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .birthday-row > * {
+            width: calc(50% - 7.5px);
+            min-width: 120px;
+        }
+
+        /* Center Connector */
+        .connector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 60px;
+        }
+
+        .connector-line {
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(180deg, var(--person-a), var(--person-b));
+        }
+
+        .connector-symbol {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--void);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin: 15px 0;
+        }
+
+        /* Situation Section */
+        .situation-section {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .situation-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .situation-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.3em;
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Analyze Button */
+        .analyze-container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, var(--gold), #c4a030);
+            border: none;
+            color: #0a0a0f;
+            padding: 18px 50px;
+            font-family: var(--font-display);
+            font-size: 1.2em;
+            letter-spacing: 3px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: var(--transition-smooth);
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        .analyze-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Section */
+        .results-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            display: none;
+        }
+
+        .results-section.active { display: block; }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .results-header h2 {
+            font-family: var(--font-display);
+            font-size: 2em;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        /* Visualization */
+        .visualization-container {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .triaxial-canvas {
+            width: 100%;
+            height: 350px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        #interactionCanvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.a { background: var(--person-a); }
+        .legend-dot.b { background: var(--person-b); }
+        .legend-dot.meeting { background: linear-gradient(135deg, var(--person-a), var(--person-b)); }
+
+        /* Insights */
+        .insights-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .insights-grid .insight-card {
+            width: calc(33.333% - 25px);
+            min-width: 250px;
+            max-width: 350px;
+        }
+
+        .insight-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .insight-card h4 {
+            font-family: var(--font-accent);
+            font-size: 0.85em;
+            color: var(--glow-blue);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .insight-card p {
+            font-size: 1em;
+            line-height: 1.6;
+            color: var(--soft-cream);
+        }
+
+        /* Full Analysis */
+        .full-analysis {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .full-analysis h3 {
+            font-family: var(--font-display);
+            font-size: 1.5em;
+            color: var(--gold);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .analysis-content {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: var(--soft-cream);
+        }
+
+        .analysis-content p { margin-bottom: 20px; }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            display: none;
+        }
+
+        .loading.active { display: block; }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(212, 175, 55, 0.1);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-family: var(--font-display);
+            font-size: 1.2em;
+            color: var(--gold);
+        }
+
+        /* Footer */
+        .unified-footer {
+            text-align: center;
+            padding: 60px 40px;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .footer-principle {
+            font-family: var(--font-accent);
+            font-size: 0.85em;
+            color: var(--glow-blue);
+            letter-spacing: 3px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .persons-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .connector {
+                flex-direction: row;
+                padding: 20px 0;
+            }
+            .connector-line {
+                width: 60px;
+                height: 2px;
+            }
+            .hero h1 { font-size: 2em; }
+        }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+    <div class="model-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="unified-nav">
+        <a href="../../index.html" class="nav-brand">
+            <span class="nav-brand-text">HAVE MIND MEDIA</span>
+        </a>
+        <a href="../../education/soul-science.html" class="nav-back">← Back to Soul Science</a>
+    </nav>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-icon">◇◆◇</div>
+            <h1>Interaction <span>Modeler</span></h1>
+            <p class="hero-subtitle">
+                Map the geometry between two people. See where you sync, where you clash,
+                and where the meeting point lives.
+            </p>
+        </section>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <div class="persons-container">
+                <!-- Person A -->
+                <div class="person-card person-a">
+                    <div class="person-header">
+                        <div class="person-indicator">A</div>
+                        <div class="person-title">Person A</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Name or Role (e.g., "Me", "My Brother")</label>
+                        <input type="text" id="nameA" placeholder="Who is this person?">
+                    </div>
+                    <div class="form-group">
+                        <label>Birthday</label>
+                        <input type="date" id="birthdayA">
+                    </div>
+                    <div class="form-group">
+                        <label>Describe their personality</label>
+                        <textarea id="descA" placeholder="How would you describe them? What are they like?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Communication style</label>
+                        <select id="commStyleA">
+                            <option value="">Select...</option>
+                            <option value="direct">Direct - says what they mean</option>
+                            <option value="indirect">Indirect - hints and implies</option>
+                            <option value="emotional">Emotional - leads with feelings</option>
+                            <option value="logical">Logical - leads with facts</option>
+                            <option value="quiet">Quiet - processes internally</option>
+                            <option value="expressive">Expressive - talks things out</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Connector -->
+                <div class="connector">
+                    <div class="connector-line"></div>
+                    <div class="connector-symbol">⧬</div>
+                    <div class="connector-line"></div>
+                </div>
+
+                <!-- Person B -->
+                <div class="person-card person-b">
+                    <div class="person-header">
+                        <div class="person-indicator">B</div>
+                        <div class="person-title">Person B</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Name or Role</label>
+                        <input type="text" id="nameB" placeholder="Who is this person?">
+                    </div>
+                    <div class="form-group">
+                        <label>Birthday</label>
+                        <input type="date" id="birthdayB">
+                    </div>
+                    <div class="form-group">
+                        <label>Describe their personality</label>
+                        <textarea id="descB" placeholder="How would you describe them? What are they like?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Communication style</label>
+                        <select id="commStyleB">
+                            <option value="">Select...</option>
+                            <option value="direct">Direct - says what they mean</option>
+                            <option value="indirect">Indirect - hints and implies</option>
+                            <option value="emotional">Emotional - leads with feelings</option>
+                            <option value="logical">Logical - leads with facts</option>
+                            <option value="quiet">Quiet - processes internally</option>
+                            <option value="expressive">Expressive - talks things out</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Situation -->
+        <section class="situation-section">
+            <div class="situation-card">
+                <h3>The Situation (Optional)</h3>
+                <div class="form-group">
+                    <label>What dynamic are you trying to understand?</label>
+                    <textarea id="situation" placeholder="e.g., 'We always argue about money' or 'They never seem to hear what I'm saying' or 'I want to understand why we clash'"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analyze Button -->
+        <div class="analyze-container">
+            <button class="analyze-btn" onclick="analyzeInteraction()">
+                Model Interaction
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Mapping the geometry...</p>
+        </div>
+
+        <!-- Results -->
+        <section class="results-section" id="results">
+            <div class="results-header">
+                <h2>Interaction Analysis</h2>
+                <p id="resultsSubtitle"></p>
+            </div>
+
+            <!-- Visualization -->
+            <div class="visualization-container">
+                <div class="triaxial-canvas">
+                    <canvas id="interactionCanvas"></canvas>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-dot a"></div>
+                        <span id="legendA">Person A</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot meeting"></div>
+                        <span>Meeting Point</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot b"></div>
+                        <span id="legendB">Person B</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insights Grid -->
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h4>Where You Sync</h4>
+                    <p id="syncInsight">Loading...</p>
+                </div>
+                <div class="insight-card">
+                    <h4>Where You Clash</h4>
+                    <p id="clashInsight">Loading...</p>
+                </div>
+                <div class="insight-card">
+                    <h4>The Meeting Point</h4>
+                    <p id="meetingInsight">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Full Analysis -->
+            <div class="full-analysis">
+                <h3>Full Geometric Reading</h3>
+                <div class="analysis-content" id="fullAnalysis">
+                    Loading analysis...
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="unified-footer">
+        <div class="footer-logo">HAVE MIND MEDIA</div>
+        <p class="footer-principle">[ 1 = -1 ]</p>
+    </footer>
+
+    <script>
+        // Calculate D-frequency from birthday
+        function calculateDFrequency(dateStr) {
+            if (!dateStr) return null;
+            const date = new Date(dateStr);
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const year = date.getFullYear();
+
+            // Sum all digits
+            let sum = 0;
+            const fullStr = `${month}${day}${year}`;
+            for (let char of fullStr) {
+                sum += parseInt(char);
+            }
+
+            // Reduce to single digit (unless 11, 22, 33)
+            while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+                let newSum = 0;
+                while (sum > 0) {
+                    newSum += sum % 10;
+                    sum = Math.floor(sum / 10);
+                }
+                sum = newSum;
+            }
+
+            return sum;
+        }
+
+        // Get D-frequency meaning
+        function getDMeaning(d) {
+            const meanings = {
+                1: { name: "The Origin", trait: "Connection, WE, source", axis: "origin" },
+                2: { name: "The Partner", trait: "Balance, duality, cooperation", axis: "harmony" },
+                3: { name: "The Creator", trait: "Expression, creativity, joy", axis: "expression" },
+                4: { name: "The Foundation", trait: "Structure, stability, building", axis: "foundation" },
+                5: { name: "The Bridge", trait: "Change, freedom, connection", axis: "movement" },
+                6: { name: "The Nurturer", trait: "Care, responsibility, home", axis: "love" },
+                7: { name: "The Witness", trait: "Analysis, wisdom, presence", axis: "awareness" },
+                8: { name: "The Power", trait: "Authority, abundance, mastery", axis: "power" },
+                9: { name: "The Anchor", trait: "Completion, compassion, letting go", axis: "anchor" },
+                11: { name: "The Illuminator", trait: "Vision, inspiration, intuition", axis: "light" },
+                22: { name: "The Master Builder", trait: "Manifestation, large-scale creation", axis: "mastery" },
+                33: { name: "The Master Teacher", trait: "Healing, service, guidance", axis: "teaching" }
+            };
+            return meanings[d] || { name: "Unknown", trait: "Mystery", axis: "unknown" };
+        }
+
+        // Analyze communication compatibility
+        function analyzeCommStyles(styleA, styleB) {
+            const compatible = {
+                "direct-direct": { sync: "Clear, efficient communication", clash: "Can feel blunt or harsh to outsiders" },
+                "direct-indirect": { sync: "One provides clarity when needed", clash: "Direct person may miss hints; indirect feels unheard" },
+                "direct-emotional": { sync: "Emotional depth meets clear expression", clash: "Direct can feel cold; emotional can feel overwhelming" },
+                "direct-logical": { sync: "Both value getting to the point", clash: "May skip emotional processing" },
+                "indirect-indirect": { sync: "Both read between lines well", clash: "Important things may never get said directly" },
+                "indirect-emotional": { sync: "Both sensitive to atmosphere", clash: "Meaning can get lost in feelings" },
+                "emotional-emotional": { sync: "Deep emotional resonance possible", clash: "Can escalate quickly without grounding" },
+                "emotional-logical": { sync: "Balance of heart and head", clash: "Logic can dismiss feelings; emotions can dismiss facts" },
+                "logical-logical": { sync: "Efficient problem-solving together", clash: "May neglect emotional needs" },
+                "quiet-expressive": { sync: "Balance of space and sharing", clash: "Quiet may feel overwhelmed; expressive may feel ignored" },
+                "quiet-quiet": { sync: "Comfortable silence together", clash: "Issues may fester unspoken" },
+                "expressive-expressive": { sync: "Rich, animated communication", clash: "May talk over each other" }
+            };
+
+            const key1 = `${styleA}-${styleB}`;
+            const key2 = `${styleB}-${styleA}`;
+            return compatible[key1] || compatible[key2] || { sync: "Unique dynamic to explore", clash: "Unknown territory - proceed with curiosity" };
+        }
+
+        // Draw interaction visualization
+        function drawInteraction(dA, dB) {
+            const canvas = document.getElementById('interactionCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas size
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+
+            const w = canvas.offsetWidth;
+            const h = canvas.offsetHeight;
+            const centerX = w / 2;
+            const centerY = h / 2;
+            const radius = Math.min(w, h) * 0.35;
+
+            // Clear
+            ctx.clearRect(0, 0, w, h);
+
+            // Draw triaxial grid
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+
+            // Draw circles
+            for (let i = 1; i <= 3; i++) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius * (i / 3), 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            for (let i = 0; i < 9; i++) {
+                const angle = (i / 9) * Math.PI * 2 - Math.PI / 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + Math.cos(angle) * radius, centerY + Math.sin(angle) * radius);
+                ctx.stroke();
+            }
+
+            // Position A and B based on D-frequency
+            const angleA = ((dA - 1) / 9) * Math.PI * 2 - Math.PI / 2;
+            const angleB = ((dB - 1) / 9) * Math.PI * 2 - Math.PI / 2;
+
+            const posA = {
+                x: centerX + Math.cos(angleA) * radius * 0.7,
+                y: centerY + Math.sin(angleA) * radius * 0.7
+            };
+
+            const posB = {
+                x: centerX + Math.cos(angleB) * radius * 0.7,
+                y: centerY + Math.sin(angleB) * radius * 0.7
+            };
+
+            // Meeting point
+            const meeting = {
+                x: (posA.x + posB.x) / 2,
+                y: (posA.y + posB.y) / 2
+            };
+
+            // Draw connection line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(posA.x, posA.y);
+            ctx.lineTo(posB.x, posB.y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw meeting point
+            const gradient = ctx.createRadialGradient(meeting.x, meeting.y, 0, meeting.x, meeting.y, 20);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(meeting.x, meeting.y, 20, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(meeting.x, meeting.y, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw Person A
+            ctx.fillStyle = '#6ab4f5';
+            ctx.shadowColor = '#6ab4f5';
+            ctx.shadowBlur = 20;
+            ctx.beginPath();
+            ctx.arc(posA.x, posA.y, 15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#0a0a0f';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('A', posA.x, posA.y);
+
+            // Draw Person B
+            ctx.fillStyle = '#d4af37';
+            ctx.shadowColor = '#d4af37';
+            ctx.shadowBlur = 20;
+            ctx.beginPath();
+            ctx.arc(posB.x, posB.y, 15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#0a0a0f';
+            ctx.fillText('B', posB.x, posB.y);
+
+            // Draw D-numbers
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.font = '12px sans-serif';
+            ctx.fillText(`D${dA}`, posA.x, posA.y + 28);
+            ctx.fillText(`D${dB}`, posB.x, posB.y + 28);
+        }
+
+        // Main analysis function
+        function analyzeInteraction() {
+            const nameA = document.getElementById('nameA').value || 'Person A';
+            const nameB = document.getElementById('nameB').value || 'Person B';
+            const birthdayA = document.getElementById('birthdayA').value;
+            const birthdayB = document.getElementById('birthdayB').value;
+            const descA = document.getElementById('descA').value;
+            const descB = document.getElementById('descB').value;
+            const commStyleA = document.getElementById('commStyleA').value;
+            const commStyleB = document.getElementById('commStyleB').value;
+            const situation = document.getElementById('situation').value;
+
+            // Show loading
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('results').classList.remove('active');
+
+            // Simulate processing time
+            setTimeout(() => {
+                // Calculate frequencies
+                const dA = birthdayA ? calculateDFrequency(birthdayA) : Math.floor(Math.random() * 9) + 1;
+                const dB = birthdayB ? calculateDFrequency(birthdayB) : Math.floor(Math.random() * 9) + 1;
+
+                const meaningA = getDMeaning(dA);
+                const meaningB = getDMeaning(dB);
+
+                // Analyze communication
+                const commAnalysis = analyzeCommStyles(commStyleA || 'direct', commStyleB || 'emotional');
+
+                // Update UI
+                document.getElementById('resultsSubtitle').textContent = `${nameA} (D${dA}) ◇ ${nameB} (D${dB})`;
+                document.getElementById('legendA').textContent = nameA;
+                document.getElementById('legendB').textContent = nameB;
+
+                // Draw visualization
+                drawInteraction(dA, dB);
+
+                // Calculate relationship angle
+                const angleDiff = Math.abs(dA - dB);
+                const harmony = angleDiff <= 2 || angleDiff >= 7 ? 'complementary' : 'creative tension';
+
+                // Fill insights
+                document.getElementById('syncInsight').textContent = commAnalysis.sync;
+                document.getElementById('clashInsight').textContent = commAnalysis.clash;
+
+                // Meeting point insight
+                const meetingD = Math.round((dA + dB) / 2) || 5;
+                const meetingMeaning = getDMeaning(meetingD);
+                document.getElementById('meetingInsight').textContent =
+                    `Your meeting point lives in D${meetingD} (${meetingMeaning.name}). When you meet here, you access: ${meetingMeaning.trait}.`;
+
+                // Full analysis
+                let analysis = `
+                    <p><strong>${nameA}</strong> carries the D${dA} frequency: <em>${meaningA.name}</em>. This means they're wired for ${meaningA.trait}. Their axis is ${meaningA.axis}.</p>
+
+                    <p><strong>${nameB}</strong> carries the D${dB} frequency: <em>${meaningB.name}</em>. They're wired for ${meaningB.trait}. Their axis is ${meaningB.axis}.</p>
+
+                    <p>Your geometric relationship shows <strong>${harmony}</strong>. ${harmony === 'complementary' ?
+                        'You orbit similar territory, which creates natural understanding but can also mean blind spots you share.' :
+                        'You operate from different angles, which creates friction but also the potential for genuine growth and expanded perspective.'}</p>
+                `;
+
+                if (situation) {
+                    analysis += `<p>Regarding your situation: "${situation}" — Consider that ${nameA}'s D${dA} approach (${meaningA.trait}) meets ${nameB}'s D${dB} approach (${meaningB.trait}). Neither is wrong. They're different geometries trying to solve the same problem. The resolution lives at D${meetingD}, where ${meetingMeaning.trait} becomes available to both.</p>`;
+                }
+
+                analysis += `
+                    <p><strong>The [1 = -1] principle:</strong> What looks like opposition is actually complementarity. ${nameA}'s way and ${nameB}'s way aren't competing — they're two sides of the same geometry. When you stop trying to make the other person be like you, you discover they're already doing their part of the work you share.</p>
+                `;
+
+                document.getElementById('fullAnalysis').innerHTML = analysis;
+
+                // Show results
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('results').classList.add('active');
+
+                // Scroll to results
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+            }, 2000);
+        }
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            if (document.getElementById('results').classList.contains('active')) {
+                const dA = 1; // Would need to store these
+                const dB = 1;
+                drawInteraction(dA, dB);
+            }
+        });
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

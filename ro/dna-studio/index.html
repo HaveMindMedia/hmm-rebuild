@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNA Studio | Geometric Derivation | Have Mind Media</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #c9a227;
+            --cyan: #7ab8d4;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --panel: #1a1a2f;
+            --text: #e8e8e8;
+            --muted: #888;
+            --helix-blue: #4488ff;
+            --helix-red: #ff4444;
+            --helix-green: #00ff88;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid #222;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: var(--gold);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+        }
+
+        header .subtitle {
+            font-size: 1.3rem;
+            color: var(--cyan);
+            font-style: italic;
+        }
+
+        header .tagline {
+            font-size: 1rem;
+            color: var(--muted);
+            margin-top: 1rem;
+        }
+
+        /* TAB NAVIGATION */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            background: var(--darker);
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--panel);
+            border: 1px solid #333;
+            color: var(--text);
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .tab-btn.active {
+            background: var(--gold);
+            color: var(--darker);
+            border-color: var(--gold);
+        }
+
+        /* TAB CONTENT */
+        .tab-content {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* SECTION STYLING */
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--cyan);
+            margin: 2rem 0 1rem;
+            font-weight: 400;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        .highlight {
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .gold {
+            color: var(--gold);
+        }
+
+        /* EQUATION BOX */
+        .equation-box {
+            background: var(--panel);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: var(--cyan);
+            overflow-x: auto;
+        }
+
+        .equation-box.centered {
+            text-align: center;
+            border-left: none;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+        }
+
+        .equation-box .large {
+            font-size: 1.8rem;
+            color: var(--gold);
+            display: block;
+            margin: 1rem 0;
+        }
+
+        /* TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--panel);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background: var(--darker);
+            color: var(--gold);
+            font-weight: 400;
+        }
+
+        td {
+            color: #ccc;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(201, 162, 39, 0.05);
+        }
+
+        /* IMAGE CONTAINERS */
+        .image-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        /* DIAGRAM PLACEHOLDER */
+        .diagram-placeholder {
+            background: var(--panel);
+            border: 2px dashed #444;
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .diagram-placeholder .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* GRID LAYOUTS */
+        .two-column {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .three-column {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .two-column, .three-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--panel);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #333;
+        }
+
+        .card h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .card .value {
+            font-size: 2rem;
+            color: var(--cyan);
+            font-family: 'Courier New', monospace;
+            margin: 0.5rem 0;
+        }
+
+        /* QUOTE */
+        .quote {
+            font-size: 1.8rem;
+            color: var(--gold);
+            text-align: center;
+            padding: 3rem;
+            font-style: italic;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            margin: 3rem 0;
+        }
+
+        /* DIVIDER */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 3rem 0;
+        }
+
+        /* DNA HELIX ANIMATION */
+        .dna-animation {
+            height: 300px;
+            background: var(--darker);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .helix-strand {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* INTERACTIVE CALCULATOR */
+        .calculator {
+            background: var(--panel);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .calculator label {
+            display: block;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .calculator input, .calculator select {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--dark);
+            border: 1px solid #444;
+            color: var(--text);
+            font-size: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .calculator input:focus, .calculator select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .calculator button {
+            padding: 1rem 2rem;
+            background: var(--gold);
+            color: var(--darker);
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .calculator button:hover {
+            background: #d4af37;
+        }
+
+        .result-box {
+            background: var(--dark);
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            border-left: 2px solid var(--gold);
+            padding-left: 2rem;
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        .timeline-item h4 {
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--darker);
+            border-top: 1px solid #222;
+        }
+
+        footer .logo {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        footer .identity {
+            font-size: 1.5rem;
+            color: var(--cyan);
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        footer a {
+            color: var(--cyan);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--gold);
+        }
+
+        /* COMPARISON DIAGRAM */
+        .comparison-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--panel);
+            border-radius: 8px;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-item h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-arrow {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        /* VIDEO CONTAINER */
+        .video-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .video-container video {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+
+    <header>
+        <h1>DNA STUDIO</h1>
+        <p class="subtitle">Geometric Derivation from First Principles</p>
+        <p class="tagline">The double helix is not discovered. It is derived. The geometry demands it.</p>
+    </header>
+
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="foundations">Foundations</button>
+        <button class="tab-btn" data-tab="tetrahelix">Tetrahelix</button>
+        <button class="tab-btn" data-tab="double-helix">Double Helix</button>
+        <button class="tab-btn" data-tab="helicase">DNA Helicase</button>
+        <button class="tab-btn" data-tab="motors">Molecular Motors</button>
+        <button class="tab-btn" data-tab="calculator">Calculator</button>
+    </nav>
+
+    <!-- TAB 1: FOUNDATIONS -->
+    <div id="foundations" class="tab-content active">
+        <section>
+            <h2>The One Constant</h2>
+            <p>Everything in the Epoch Model derives from a single closure constant. One number that generates all others.</p>
+
+            <div class="equation-box centered">
+                <span class="large">κ = 2π/180 = 0.034906585...</span>
+                This is the rotation of one degree expressed in radians.
+            </div>
+
+            <p>From κ, we derive everything: atomic structure, molecular geometry, helix parameters, and the very structure of DNA.</p>
+        </section>
+
+        <section>
+            <h3>The Derived Constants</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Constant</th>
+                        <th>Derivation</th>
+                        <th>Value</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="gold">κ</span></td>
+                        <td>2π/180</td>
+                        <td>0.0349 rad</td>
+                        <td>Closure constant</td>
+                    </tr>
+                    <tr>
+                        <td><span class="gold">κ_shadow</span></td>
+                        <td>1/κ</td>
+                        <td>28.6479</td>
+                        <td>Hidden witness</td>
+                    </tr>
+                    <tr>
+                        <td><span class="gold">σ</span></td>
+                        <td>5/16</td>
+                        <td>0.3125</td>
+                        <td>Helix overlap</td>
+                    </tr>
+                    <tr>
+                        <td><span class="gold">cos(BC)</span></td>
+                        <td>2/3</td>
+                        <td>0.6667</td>
+                        <td>Tetrahelix angle</td>
+                    </tr>
+                    <tr>
+                        <td><span class="gold">coupling</span></td>
+                        <td>σ × cos(BC)</td>
+                        <td>5/24 ≈ 0.208</td>
+                        <td>Universal coupling</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>The Critical DNA Connection</h3>
+            <p>DNA rotates <span class="highlight">36 degrees per base pair</span>. This is exactly <span class="gold">18κ</span>.</p>
+
+            <div class="equation-box">
+                36° = 18 × 2° = 18κ<br><br>
+                360° ÷ 36° = 10 base pairs per turn<br><br>
+                <strong>The decimal system meets the closure constant at the double helix.</strong>
+            </div>
+
+            <p>This is not coincidence. This is geometry demanding a specific structure.</p>
+        </section>
+
+        <div class="quote">
+            "The geometry cannot lie."
+        </div>
+
+        <section>
+            <h3>Why Geometry?</h3>
+            <p>Most biology textbooks present DNA as a discovery - something found in nature and described empirically. But the Epoch approach asks: <span class="highlight">why MUST DNA be shaped this way?</span></p>
+
+            <p>The answer: because the mathematics of space itself demands it. The tetrahelix - a structure of pure geometry - projects into molecular reality as the double helix. Life didn't invent this shape. Life found the shape that reality permits.</p>
+
+            <div class="two-column">
+                <div class="card">
+                    <h4>Standard Approach</h4>
+                    <p>DNA has 10 bp per turn because... that's what we measured.</p>
+                </div>
+                <div class="card">
+                    <h4>Epoch Approach</h4>
+                    <p>DNA has 10 bp per turn because 360°/36° = 10, and 36° = 18κ.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- TAB 2: TETRAHELIX -->
+    <div id="tetrahelix" class="tab-content">
+        <section>
+            <h2>The Boerdijk-Coxeter Tetrahelix</h2>
+            <p>Before we can understand DNA, we must understand the <span class="highlight">tetrahelix</span> - a chain of face-sharing regular tetrahedra that forms a helical structure of pure geometry.</p>
+
+            <div class="image-container">
+                <img src="../media_output/images/epoch_img_documentary_tetrahelix_structure_chain_of_0d9532_01-02-2026.png" alt="Tetrahelix Structure">
+                <p class="image-caption">The tetrahelix - a helical chain of face-sharing tetrahedra</p>
+            </div>
+        </section>
+
+        <section>
+            <h3>Construction</h3>
+            <p>Take a regular tetrahedron. Attach another tetrahedron by sharing one face. Continue. The result is not straight - it <span class="gold">twists</span>.</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>Step 1: Single Tetrahedron</h4>
+                    <p>Four equilateral triangular faces, four vertices, six edges.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Step 2: Face Sharing</h4>
+                    <p>Attach second tetrahedron by sharing one triangular face.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Step 3: Continue</h4>
+                    <p>Each new tetrahedron rotates ~131.8° relative to the previous.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Step 4: The Helix Emerges</h4>
+                    <p>After ~10 tetrahedra, the structure nearly returns to its starting orientation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3>Key Parameters</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                        <th>Significance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>cos(BC) angle</td>
+                        <td>2/3 ≈ 0.6667</td>
+                        <td>Inter-tetrahedral relationship</td>
+                    </tr>
+                    <tr>
+                        <td>Twist per unit</td>
+                        <td>~131.8° (arccos(2/3))</td>
+                        <td>Rotation between tetrahedra</td>
+                    </tr>
+                    <tr>
+                        <td>Simplified projection</td>
+                        <td>~36° per unit</td>
+                        <td>Matches DNA rotation exactly</td>
+                    </tr>
+                    <tr>
+                        <td>Period</td>
+                        <td>~10 units</td>
+                        <td>Returns near starting position</td>
+                    </tr>
+                    <tr>
+                        <td>Chirality</td>
+                        <td>Left or Right</td>
+                        <td>Two mirror forms exist</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>The cos(BC) = 2/3 Relationship</h3>
+            <p>The Boerdijk-Coxeter angle is defined by the relationship between adjacent tetrahedra. This angle, expressed as cos(BC) = 2/3, is one of our fundamental constants.</p>
+
+            <div class="equation-box">
+                cos(BC) = 2/3<br><br>
+                BC = arccos(2/3) = 48.19°<br><br>
+                Supplementary twist = 180° - 48.19° = 131.81°
+            </div>
+
+            <p>Combined with the helix overlap σ = 5/16, we get the <span class="highlight">universal coupling constant</span>:</p>
+
+            <div class="equation-box centered">
+                <span class="large">coupling = σ × cos(BC) = 5/24 ≈ 0.208</span>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h3>Four Strands, Not Two</h3>
+            <p>The tetrahelix actually has <span class="gold">four</span> distinct strands - the four edges of each tetrahedron trace four intertwined helices. When projected onto molecular space, we typically see only two - the famous double helix.</p>
+
+            <p>The other two are <span class="highlight">silent</span> - present in the geometry but not expressed in the physical structure. This mirrors the Epoch Model's concept of apparent and hidden components.</p>
+        </section>
+    </div>
+
+    <!-- TAB 3: DOUBLE HELIX -->
+    <div id="double-helix" class="tab-content">
+        <section>
+            <h2>From Tetrahelix to Double Helix</h2>
+            <p>The DNA double helix is the <span class="highlight">molecular expression</span> of tetrahelix geometry. The parameters match because they must - the geometry demands it.</p>
+        </section>
+
+        <section>
+            <h3>The 36° Rotation</h3>
+
+            <div class="two-column">
+                <div class="card">
+                    <h4>Tetrahelix</h4>
+                    <p class="value">~36°</p>
+                    <p>Simplified rotation per unit</p>
+                </div>
+                <div class="card">
+                    <h4>DNA</h4>
+                    <p class="value">36°</p>
+                    <p>Rotation per base pair</p>
+                </div>
+            </div>
+
+            <div class="equation-box">
+                36° = 18 × κ = 18 × (2π/180)<br><br>
+                This is NOT approximation. This is EXACT.
+            </div>
+        </section>
+
+        <section>
+            <h3>DNA Structure Parameters</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                        <th>Geometric Origin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Rotation per bp</td>
+                        <td>36°</td>
+                        <td>18κ exactly</td>
+                    </tr>
+                    <tr>
+                        <td>Base pairs per turn</td>
+                        <td>10</td>
+                        <td>360°/36° = 10</td>
+                    </tr>
+                    <tr>
+                        <td>Rise per bp</td>
+                        <td>3.4 Å</td>
+                        <td>Pitch/10</td>
+                    </tr>
+                    <tr>
+                        <td>Pitch (rise per turn)</td>
+                        <td>34 Å</td>
+                        <td>3.4 × 10</td>
+                    </tr>
+                    <tr>
+                        <td>Diameter</td>
+                        <td>20 Å</td>
+                        <td>Nucleotide geometry</td>
+                    </tr>
+                    <tr>
+                        <td>Major groove</td>
+                        <td>22 Å wide</td>
+                        <td>Apparent side</td>
+                    </tr>
+                    <tr>
+                        <td>Minor groove</td>
+                        <td>12 Å wide</td>
+                        <td>Shadow side</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>The Major and Minor Grooves</h3>
+            <p>The double helix has two grooves of different widths: the <span class="gold">major groove</span> (22 Å) and the <span class="highlight">minor groove</span> (12 Å).</p>
+
+            <p>In Epoch terms:</p>
+            <ul style="margin-left: 2rem; color: #ccc;">
+                <li style="margin-bottom: 0.5rem;"><strong>Major groove</strong> = apparent, accessible side</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Minor groove</strong> = shadow, hidden side</li>
+                <li style="margin-bottom: 0.5rem;">Ratio ≈ 22/12 ≈ 1.83 ≈ √3 (the triaxial projection factor)</li>
+            </ul>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h3>Why Two Strands?</h3>
+            <p>The tetrahelix has four strands. DNA expresses two. Why?</p>
+
+            <p>The answer lies in the <span class="highlight">complementary base pairing</span> - Adenine with Thymine, Guanine with Cytosine. This pairing represents the <span class="gold">apparent/shadow duality</span>.</p>
+
+            <div class="equation-box">
+                A ↔ T (2 hydrogen bonds)<br>
+                G ↔ C (3 hydrogen bonds)<br><br>
+                Each base has its complement.<br>
+                Each strand has its partner.<br>
+                <strong>[1 = -1]</strong>
+            </div>
+        </section>
+
+        <section>
+            <h3>Chirality: Right-Handed Helix</h3>
+            <p>DNA (in its common B-form) is <span class="highlight">right-handed</span>. The tetrahelix can be left or right-handed. Why did life choose right?</p>
+
+            <p>The answer involves the chirality of the sugar-phosphate backbone. L-amino acids and D-sugars dominate biology, creating a consistent handedness throughout molecular machinery.</p>
+
+            <p>This is <span class="gold">chirality selection</span> - one of the silent fourth becomes expressed, the other remains silent. The choice was made once, early in life's history, and propagated ever since.</p>
+        </section>
+    </div>
+
+    <!-- TAB 4: DNA HELICASE -->
+    <div id="helicase" class="tab-content">
+        <section>
+            <h2>DNA Helicase: The Molecular Motor</h2>
+            <p>DNA helicase is an enzyme that <span class="highlight">unwinds the double helix</span> during replication and transcription. It is a molecular motor that rotates at approximately <span class="gold">10,000 RPM</span>.</p>
+
+            <div class="image-container">
+                <img src="../media_output/images/epoch_img_documentary_dna_helicase_hexameric_ring_en_48426f_01-02-2026.png" alt="DNA Helicase">
+                <p class="image-caption">DNA helicase - a hexameric ring motor that unwinds the double helix</p>
+            </div>
+        </section>
+
+        <section>
+            <h3>The Hexameric Ring</h3>
+            <p>Most DNA helicases form a ring of <span class="gold">six subunits</span> - a hexamer. This is not random. The hexamer is geometrically optimal.</p>
+
+            <div class="image-container">
+                <img src="../media_output/images/epoch_img_documentary_hexameric_ring_motor_protein_3cff74_01-02-2026.png" alt="Hexameric Ring Motor">
+                <p class="image-caption">Top view of a hexameric ring motor - six subunits with 60° symmetry</p>
+            </div>
+
+            <div class="three-column">
+                <div class="card">
+                    <h4>Subunits</h4>
+                    <p class="value">6</p>
+                    <p>Hexameric structure</p>
+                </div>
+                <div class="card">
+                    <h4>Angle</h4>
+                    <p class="value">60°</p>
+                    <p>360°/6 per subunit</p>
+                </div>
+                <div class="card">
+                    <h4>Symmetry</h4>
+                    <p class="value">C6</p>
+                    <p>Six-fold rotational</p>
+                </div>
+            </div>
+
+            <div class="equation-box">
+                60° = 30κ<br><br>
+                6 × 60° = 360° (complete rotation)<br><br>
+                60° is the internal angle of an equilateral triangle.<br>
+                Six triangles tile a plane → hexagonal symmetry.
+            </div>
+        </section>
+
+        <section>
+            <h3>The Apparent Speed Paradox</h3>
+            <p>Here is where our geometric derivation connects to the macroscopic world. DNA helicase demonstrates the <span class="highlight">exact same paradox</span> we see in vinyl records, gears, and propellers.</p>
+
+            <div class="comparison-row">
+                <div class="comparison-item">
+                    <div class="icon">&#x1F4BF;</div>
+                    <h4>Vinyl Record</h4>
+                    <p>Outer edge faster than center</p>
+                </div>
+                <span class="comparison-arrow">↔</span>
+                <div class="comparison-item">
+                    <div class="icon">&#x2699;</div>
+                    <h4>Gears</h4>
+                    <p>Same at contact point</p>
+                </div>
+                <span class="comparison-arrow">↔</span>
+                <div class="comparison-item">
+                    <div class="icon">&#x1F9EC;</div>
+                    <h4>DNA Helicase</h4>
+                    <p>Radial velocity gradient</p>
+                </div>
+            </div>
+
+            <p>At 10,000 RPM (167 Hz), the angular velocity is constant: <span class="gold">ω = 1047 rad/s</span></p>
+            <p>But linear velocity varies with radius: <span class="highlight">v = ω × r</span></p>
+        </section>
+
+        <section>
+            <h3>Speed at Different Radii</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Location</th>
+                        <th>Radius</th>
+                        <th>Linear Velocity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Central pore</td>
+                        <td>6.5 Å</td>
+                        <td>6,806 Å/s</td>
+                    </tr>
+                    <tr>
+                        <td>Mid-ring</td>
+                        <td>25 Å</td>
+                        <td>26,175 Å/s</td>
+                    </tr>
+                    <tr>
+                        <td>Outer edge</td>
+                        <td>50 Å</td>
+                        <td>52,350 Å/s</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>The DNA passing through the central pore moves at a different speed than the outer edge of the helicase ring. <span class="gold">Same rotation, different speeds.</span> The geometry cannot lie.</p>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h3>Unwinding Rates</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Helicase Type</th>
+                        <th>Rate (bp/s)</th>
+                        <th>Conditions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>E. coli DnaB</td>
+                        <td>35 - 500</td>
+                        <td>In vitro / In vivo</td>
+                    </tr>
+                    <tr>
+                        <td>T7 gp4</td>
+                        <td>~130</td>
+                        <td>Optimal</td>
+                    </tr>
+                    <tr>
+                        <td>Human MCM</td>
+                        <td>15 - 30</td>
+                        <td>Cell cycle dependent</td>
+                    </tr>
+                    <tr>
+                        <td>Viral helicases</td>
+                        <td>100 - 300</td>
+                        <td>Variable</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>The κ-Limited Rate</h3>
+            <p>Can we predict unwinding rates from geometry?</p>
+
+            <div class="equation-box centered">
+                <span class="large">Rate_max = (1/κ) × step_size</span>
+                = 28.65 × 6 bp ≈ <strong>172 bp/s</strong>
+            </div>
+
+            <p>This theoretical limit from κ matches observed rates remarkably well. The T7 helicase at 130 bp/s is ~76% of this limit - close to our coupling constant (5/24 ≈ 21% loss expected).</p>
+        </section>
+    </div>
+
+    <!-- TAB 5: MOLECULAR MOTORS -->
+    <div id="motors" class="tab-content">
+        <section>
+            <h2>Universal Molecular Motors</h2>
+            <p>DNA helicase is not unique. Across biology, <span class="highlight">hexameric ring motors</span> appear again and again. The geometry that makes helicase work makes ALL rotary motors work.</p>
+
+            <div class="image-container">
+                <img src="../media_output/images/epoch_img_documentary_dna_double_helix_unwinding_he_25492e_01-02-2026.png" alt="DNA Unwinding">
+                <p class="image-caption">DNA helicase unwinding the double helix - the molecular motor in action</p>
+            </div>
+        </section>
+
+        <section>
+            <h3>The Hexamer Family</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Motor</th>
+                        <th>Function</th>
+                        <th>Ring Size</th>
+                        <th>Rotation Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>DNA Helicase</td>
+                        <td>Unwind DNA</td>
+                        <td>Hexamer (6)</td>
+                        <td>~167 Hz</td>
+                    </tr>
+                    <tr>
+                        <td>F₁-ATPase</td>
+                        <td>ATP synthesis</td>
+                        <td>Hexamer (α₃β₃)</td>
+                        <td>~130 Hz</td>
+                    </tr>
+                    <tr>
+                        <td>Bacterial Flagellum</td>
+                        <td>Cell propulsion</td>
+                        <td>Ring motor</td>
+                        <td>~300 Hz</td>
+                    </tr>
+                    <tr>
+                        <td>Viral Portal</td>
+                        <td>DNA packaging</td>
+                        <td>Dodecamer (12)</td>
+                        <td>Variable</td>
+                    </tr>
+                    <tr>
+                        <td>AAA+ ATPases</td>
+                        <td>Protein unfolding</td>
+                        <td>Hexamer (6)</td>
+                        <td>Variable</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>Why Hexamers Dominate</h3>
+            <div class="two-column">
+                <div class="card">
+                    <h4>Geometric Stability</h4>
+                    <p>60° sectors = equilateral triangular symmetry. Maximum stability with minimum components.</p>
+                </div>
+                <div class="card">
+                    <h4>Force Distribution</h4>
+                    <p>Six points of contact distribute mechanical load evenly around the ring.</p>
+                </div>
+                <div class="card">
+                    <h4>Helix Processing</h4>
+                    <p>6 steps ≈ 60% of a DNA turn. Efficient for tracking helical substrates.</p>
+                </div>
+                <div class="card">
+                    <h4>Protein Domains</h4>
+                    <p>Standard protein domain sizes fit 6x around a functional pore.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3>F₁-ATPase: The Smallest Motor</h3>
+            <p>F₁-ATPase is the rotary motor portion of ATP synthase - the enzyme that produces most of the ATP in cells. It is <span class="highlight">the smallest known rotary motor</span>.</p>
+
+            <div class="three-column">
+                <div class="card">
+                    <h4>Diameter</h4>
+                    <p class="value">~10 nm</p>
+                    <p>Nanoscale</p>
+                </div>
+                <div class="card">
+                    <h4>Speed</h4>
+                    <p class="value">~130 Hz</p>
+                    <p>7,800 RPM</p>
+                </div>
+                <div class="card">
+                    <h4>Efficiency</h4>
+                    <p class="value">~100%</p>
+                    <p>Near perfect</p>
+                </div>
+            </div>
+
+            <p>The motor rotates in 120° steps (3 per revolution) as it synthesizes ATP. Each step corresponds to one ATP molecule. The geometry is inescapable.</p>
+        </section>
+
+        <section>
+            <h3>The Bacterial Flagellum</h3>
+            <p>Bacteria swim using rotating flagella powered by molecular motors embedded in their cell membrane. These motors can spin at <span class="gold">up to 300 Hz</span> (18,000 RPM).</p>
+
+            <p>The flagellar motor is more complex than helicase - it has multiple ring components - but the fundamental principle is the same: <span class="highlight">rotary motion powered by sequential conformational changes around a ring</span>.</p>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h3>The Universal Coupling</h3>
+            <p>Across all these motors, we see similar efficiency limits:</p>
+
+            <div class="equation-box centered">
+                <span class="large">coupling = σ × cos(BC) = 5/24 ≈ 0.208</span>
+            </div>
+
+            <p>This ~20% "loss" appears in:</p>
+            <ul style="margin-left: 2rem; color: #ccc;">
+                <li style="margin-bottom: 0.5rem;">Helicase efficiency (observed rates ~80% of theoretical max)</li>
+                <li style="margin-bottom: 0.5rem;">ATP hydrolysis coupling ratios</li>
+                <li style="margin-bottom: 0.5rem;">Motor stall forces</li>
+            </ul>
+
+            <p>The geometry sets the limit. The motors approach it but cannot exceed it.</p>
+        </section>
+
+        <div class="quote">
+            "Life discovered the geometry. The geometry was always there."
+        </div>
+    </div>
+
+    <!-- TAB 6: CALCULATOR -->
+    <div id="calculator" class="tab-content">
+        <section>
+            <h2>DNA Geometry Calculator</h2>
+            <p>Explore the geometric relationships yourself. All calculations derive from the fundamental constant κ = 2π/180.</p>
+        </section>
+
+        <section>
+            <h3>Helicase Velocity Calculator</h3>
+            <div class="calculator">
+                <label for="rpm">Rotation Speed (RPM)</label>
+                <input type="number" id="rpm" value="10000" min="0" max="50000">
+
+                <label for="radius">Radius (Angstroms)</label>
+                <input type="number" id="radius" value="6.5" min="1" max="100" step="0.5">
+
+                <button onclick="calculateVelocity()">Calculate Linear Velocity</button>
+
+                <div class="result-box" id="velocity-result">
+                    Enter values and click Calculate
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3>DNA Turn Calculator</h3>
+            <div class="calculator">
+                <label for="basepairs">Number of Base Pairs</label>
+                <input type="number" id="basepairs" value="100" min="1" max="10000">
+
+                <button onclick="calculateTurns()">Calculate Turns</button>
+
+                <div class="result-box" id="turns-result">
+                    Enter a value and click Calculate
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3>κ Derivation Calculator</h3>
+            <div class="calculator">
+                <label for="angle">Angle in Degrees</label>
+                <input type="number" id="angle" value="36" min="0" max="360">
+
+                <button onclick="calculateKappa()">Express as κ Multiple</button>
+
+                <div class="result-box" id="kappa-result">
+                    Enter an angle and click Calculate
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3>Unwinding Rate Predictor</h3>
+            <div class="calculator">
+                <label for="efficiency">Motor Efficiency (%)</label>
+                <input type="number" id="efficiency" value="75" min="0" max="100">
+
+                <label for="step-size">Step Size (bp)</label>
+                <input type="number" id="step-size" value="6" min="1" max="20">
+
+                <button onclick="calculateUnwinding()">Predict Unwinding Rate</button>
+
+                <div class="result-box" id="unwinding-result">
+                    Enter values and click Calculate
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h3>Reference Values</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Constant</th>
+                        <th>Value</th>
+                        <th>Expression</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>κ</td>
+                        <td>0.0349066...</td>
+                        <td>2π/180</td>
+                    </tr>
+                    <tr>
+                        <td>κ_shadow (1/κ)</td>
+                        <td>28.6478897...</td>
+                        <td>180/2π</td>
+                    </tr>
+                    <tr>
+                        <td>σ</td>
+                        <td>0.3125</td>
+                        <td>5/16</td>
+                    </tr>
+                    <tr>
+                        <td>cos(BC)</td>
+                        <td>0.6667...</td>
+                        <td>2/3</td>
+                    </tr>
+                    <tr>
+                        <td>coupling</td>
+                        <td>0.2083...</td>
+                        <td>5/24</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <footer>
+        <div class="logo">HAVE MIND MEDIA</div>
+        <div class="identity">[1 = -1]</div>
+        <p><a href="https://havemindmedia.com">havemindmedia.com</a></p>
+        <p style="margin-top: 2rem; color: #666; font-size: 0.9rem;">The Epoch Project - DNA Studio v1.0</p>
+        <p style="margin-top: 1rem; color: #444; font-size: 0.8rem;">January 2, 2026</p>
+    </footer>
+
+    <script>
+        // Tab Navigation
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Constants
+        const KAPPA = (2 * Math.PI) / 180;
+        const KAPPA_SHADOW = 1 / KAPPA;
+        const SIGMA = 5 / 16;
+        const COS_BC = 2 / 3;
+        const COUPLING = SIGMA * COS_BC;
+
+        // Calculator Functions
+        function calculateVelocity() {
+            const rpm = parseFloat(document.getElementById('rpm').value);
+            const radius = parseFloat(document.getElementById('radius').value);
+
+            const omega = (rpm / 60) * 2 * Math.PI; // rad/s
+            const hz = rpm / 60;
+            const velocity = omega * radius; // Å/s
+
+            const result = document.getElementById('velocity-result');
+            result.innerHTML = `
+                <strong>Angular velocity:</strong> ${omega.toFixed(2)} rad/s (${hz.toFixed(1)} Hz)<br>
+                <strong>Linear velocity at r=${radius}Å:</strong> ${velocity.toFixed(0)} Å/s<br>
+                <strong>= ${(velocity / 10000).toFixed(3)} μm/s</strong><br><br>
+                <em>Compare: Center (6.5Å) = ${(omega * 6.5).toFixed(0)} Å/s</em><br>
+                <em>Edge (50Å) = ${(omega * 50).toFixed(0)} Å/s</em>
+            `;
+        }
+
+        function calculateTurns() {
+            const bp = parseInt(document.getElementById('basepairs').value);
+
+            const turns = bp / 10;
+            const totalRotation = bp * 36;
+            const rise = bp * 3.4;
+            const kappaMultiple = bp * 18;
+
+            const result = document.getElementById('turns-result');
+            result.innerHTML = `
+                <strong>${bp} base pairs =</strong><br><br>
+                Turns: ${turns.toFixed(1)}<br>
+                Total rotation: ${totalRotation}° = ${kappaMultiple}κ<br>
+                Length: ${rise.toFixed(1)} Å = ${(rise / 10).toFixed(2)} nm<br><br>
+                <em>At 36° per bp (18κ)</em>
+            `;
+        }
+
+        function calculateKappa() {
+            const angle = parseFloat(document.getElementById('angle').value);
+
+            const kappaMultiple = angle / 2; // Since κ = 2°
+            const radians = angle * KAPPA;
+
+            const result = document.getElementById('kappa-result');
+            result.innerHTML = `
+                <strong>${angle}° =</strong><br><br>
+                ${kappaMultiple}κ<br>
+                ${radians.toFixed(6)} radians<br><br>
+                <em>Where κ = 2° = 2π/180 = ${KAPPA.toFixed(6)} rad</em>
+            `;
+        }
+
+        function calculateUnwinding() {
+            const efficiency = parseFloat(document.getElementById('efficiency').value) / 100;
+            const stepSize = parseInt(document.getElementById('step-size').value);
+
+            const theoreticalMax = KAPPA_SHADOW * stepSize;
+            const predictedRate = theoreticalMax * efficiency;
+            const couplingLoss = theoreticalMax * COUPLING;
+
+            const result = document.getElementById('unwinding-result');
+            result.innerHTML = `
+                <strong>Theoretical maximum:</strong> ${theoreticalMax.toFixed(1)} bp/s<br>
+                (1/κ × ${stepSize} bp = ${KAPPA_SHADOW.toFixed(2)} × ${stepSize})<br><br>
+                <strong>At ${(efficiency * 100).toFixed(0)}% efficiency:</strong> ${predictedRate.toFixed(1)} bp/s<br><br>
+                <em>Coupling constant loss (~21%): ${couplingLoss.toFixed(1)} bp/s</em><br>
+                <em>Expected real-world: ${(theoreticalMax - couplingLoss).toFixed(1)} bp/s</em>
+            `;
+        }
+    </script>
+
+    <site-footer></site-footer>
+</body>
+</html>

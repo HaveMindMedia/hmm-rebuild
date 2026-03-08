@@ -1,0 +1,573 @@
+/* =============================================
+   UNIFIED THEME CSS - HAVE MIND MEDIA
+   Matches havemindmedia.com main site styling
+   ============================================= */
+
+/* CSS Variables - Core Theme */
+:root {
+    /* Colors */
+    --void: #0a0d12;
+    --deep-space: #0f1318;
+    --panel: #151a24;
+    --soft-cream: #f0e8d8;
+    --gold: #c9a227;
+    --bright-blue: #87b4dc;
+    --soft-blue: #7a9bb8;
+    --glow-blue: #4a8ec8;
+    --hazel-light: #d4a574;
+    --text-dim: #6a7a8a;
+    --border: rgba(70, 130, 180, 0.15);
+    --border-light: rgba(100, 160, 220, 0.3);
+
+    /* Typography */
+    --font-display: 'Cinzel', 'Playfair Display', Georgia, serif;
+    --font-body: 'Cormorant Garamond', Georgia, serif;
+
+    /* Transitions */
+    --transition-smooth: all 0.3s ease;
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--soft-cream);
+    background: var(--void);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Background Effects */
+.cosmic-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 30% 20%, rgba(70, 130, 180, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(139, 90, 43, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.9) 0%, var(--void) 100%);
+    z-index: -3;
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 50px 160px, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.2), transparent);
+    background-size: 200px 200px;
+    animation: twinkle 5s ease-in-out infinite alternate;
+    z-index: -2;
+    pointer-events: none;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.5; }
+    100% { opacity: 0.8; }
+}
+
+.vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* =============================================
+   UNIFIED NAVIGATION
+   ============================================= */
+.unified-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: linear-gradient(180deg, rgba(10, 13, 18, 0.98) 0%, rgba(10, 13, 18, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    z-index: 1000;
+}
+
+.nav-brand {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    gap: 0.1rem;
+}
+
+.nav-brand-text {
+    font-family: 'Space Grotesk', var(--font-display), sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 3px;
+}
+
+.nav-signature {
+    font-size: 0.6rem;
+    color: var(--bright-blue);
+    letter-spacing: 2px;
+    opacity: 0.6;
+}
+
+/* Subsite Badge */
+.nav-subsite {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    color: var(--bright-blue);
+    letter-spacing: 2px;
+    padding: 0.2rem 0.6rem;
+    background: rgba(70, 130, 180, 0.1);
+    border: 1px solid rgba(70, 130, 180, 0.2);
+    border-radius: 4px;
+    margin-left: 1rem;
+}
+
+.nav-menu {
+    position: relative;
+}
+
+.nav-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: rgba(70, 130, 180, 0.1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--soft-cream);
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+}
+
+.nav-toggle:hover {
+    border-color: var(--border-light);
+    background: rgba(70, 130, 180, 0.15);
+}
+
+.nav-toggle .arrow {
+    font-size: 0.6rem;
+    transition: transform 0.3s ease;
+}
+
+.nav-toggle.active .arrow {
+    transform: rotate(180deg);
+}
+
+.nav-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 280px;
+    background: rgba(21, 26, 36, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: var(--transition-smooth);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.nav-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 1rem;
+    color: var(--soft-cream);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: var(--transition-smooth);
+    font-size: 0.95rem;
+}
+
+.nav-dropdown a:hover {
+    background: rgba(70, 130, 180, 0.15);
+    color: var(--bright-blue);
+}
+
+.nav-dropdown .nav-icon {
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+}
+
+.nav-dropdown .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0.5rem 0;
+}
+
+.nav-dropdown .nav-section-label {
+    display: block;
+    padding: 0.5rem 1rem 0.3rem;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Back to Main Link */
+.nav-back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    transition: var(--transition-smooth);
+}
+
+.nav-back:hover {
+    opacity: 1;
+}
+
+/* =============================================
+   UNIFIED FOOTER
+   ============================================= */
+.unified-footer {
+    text-align: center;
+    padding: 4rem 2rem 2rem;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, transparent 0%, rgba(10, 13, 18, 0.5) 100%);
+    margin-top: 4rem;
+}
+
+.footer-logo {
+    font-family: 'Space Grotesk', var(--font-display), sans-serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    letter-spacing: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.footer-tagline {
+    font-size: 0.9rem;
+    color: var(--soft-blue);
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.footer-signature {
+    font-size: 1.1rem;
+    color: var(--bright-blue);
+    letter-spacing: 3px;
+    opacity: 0.5;
+    margin-bottom: 0.5rem;
+}
+
+.footer-principle {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--soft-blue);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: var(--transition-smooth);
+}
+
+.footer-links a:hover {
+    color: var(--bright-blue);
+}
+
+/* =============================================
+   TYPOGRAPHY
+   ============================================= */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 2px;
+    line-height: 1.3;
+}
+
+h1 { font-size: 2.5rem; color: var(--gold); }
+h2 { font-size: 1.8rem; color: var(--gold); }
+h3 { font-size: 1.4rem; color: var(--bright-blue); }
+
+a {
+    color: var(--bright-blue);
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+a:hover {
+    color: var(--gold);
+}
+
+/* =============================================
+   CONTENT SECTIONS
+   ============================================= */
+.main-content {
+    position: relative;
+    z-index: 1;
+    padding-top: 90px;
+    min-height: calc(100vh - 200px);
+}
+
+.section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--soft-blue);
+    letter-spacing: 4px;
+    margin-bottom: 2rem;
+    opacity: 0.7;
+}
+
+/* Panels and Cards */
+.panel {
+    background: linear-gradient(135deg, rgba(26, 42, 58, 0.3) 0%, rgba(21, 26, 36, 0.5) 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.panel:hover {
+    border-color: var(--border-light);
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.status-proven {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-partial {
+    background: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.status-speculative {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-testing {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* Equations */
+.equation {
+    font-family: 'Cambria Math', 'Times New Roman', serif;
+    font-size: 1.3rem;
+    color: var(--bright-blue);
+    text-align: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+/* Code blocks */
+code, pre {
+    font-family: 'Fira Code', 'Monaco', monospace;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+code {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.9rem;
+    color: var(--bright-blue);
+}
+
+pre {
+    padding: 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background: rgba(70, 130, 180, 0.2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--bright-blue);
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: rgba(70, 130, 180, 0.3);
+    border-color: var(--bright-blue);
+    color: var(--soft-cream);
+}
+
+.btn-gold {
+    background: rgba(201, 162, 39, 0.15);
+    border-color: rgba(201, 162, 39, 0.4);
+    color: var(--gold);
+}
+
+.btn-gold:hover {
+    background: rgba(201, 162, 39, 0.25);
+    border-color: var(--gold);
+}
+
+/* Grid Layouts */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Tool Cards */
+.tool-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background: linear-gradient(145deg, rgba(21, 26, 36, 0.6) 0%, rgba(15, 19, 24, 0.8) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.tool-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-light);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.tool-card-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.tool-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--soft-cream);
+}
+
+.tool-card p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.tool-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.tool-tag {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    color: var(--text-dim);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .unified-nav {
+        padding: 0 1rem;
+    }
+
+    .nav-brand-text {
+        font-size: 0.9rem;
+    }
+
+    .nav-subsite {
+        display: none;
+    }
+
+    .main-content {
+        padding-top: 80px;
+    }
+
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; }
+
+    .section {
+        padding: 2rem 1rem;
+    }
+}

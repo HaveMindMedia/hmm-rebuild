@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonic Balance | Geometry Math</title>
+    <meta name="description" content="How engines, electricity, and music all use the same geometric principle: phases that cancel to create smooth motion.">
+    <link rel="stylesheet" href="../css/geometry-math.css">
+    <style>
+        .engine-demo {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+        }
+
+        .engine-demo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .piston {
+            transition: transform 0.05s linear;
+        }
+
+        .vibration-meter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .meter-bar {
+            width: 200px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), var(--gold), var(--red));
+            transition: width 0.1s;
+        }
+
+        .meter-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            min-width: 100px;
+        }
+
+        .phase-diagram {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .phase-item {
+            text-align: center;
+        }
+
+        .phase-item .circle {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            margin: 0 auto 0.5rem;
+            position: relative;
+        }
+
+        .phase-item .dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--cyan);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .phase-item .label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .phase-item .angle {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .application-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .app-card {
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .app-card h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .app-card .phases {
+            font-family: monospace;
+            color: var(--cyan);
+            margin: 0.5rem 0;
+        }
+
+        .sum-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .sum-term {
+            font-family: monospace;
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .sum-operator {
+            font-size: 1.5rem;
+            color: var(--text-dim);
+        }
+
+        .sum-result {
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .sum-result.zero {
+            color: var(--green);
+            background: rgba(0, 255, 136, 0.2);
+        }
+
+        .engine-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .cylinder-toggle {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cylinder-toggle:hover, .cylinder-toggle.active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-2">Tier 2 - Connection</div>
+        <h1>Harmonic Balance</h1>
+        <p class="subtitle">Why engines run smooth, electricity flows, and music sounds good — it's all the same geometry.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <h2>The Problem: Vibration</h2>
+
+            <p>
+                Imagine an engine with pistons going up and down. Each piston pushes in one direction, creating a force. If all pistons pushed at the same time, the engine would shake violently.
+            </p>
+
+            <p>
+                The solution? <strong>Spread the pushes around the circle.</strong>
+            </p>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Watch the four pistons. They're at 0°, 90°, 180°, 270° — evenly spaced.
+                </p>
+
+                <div class="engine-demo">
+                    <svg id="engine-svg" viewBox="0 0 300 300">
+                        <!-- Center circle (crankshaft) -->
+                        <circle cx="150" cy="150" r="80" fill="none" stroke="#d4af37" stroke-width="2"/>
+                        <circle cx="150" cy="150" r="8" fill="#d4af37"/>
+
+                        <!-- Piston markers will be added by JS -->
+                    </svg>
+                </div>
+
+                <div class="vibration-meter">
+                    <span class="meter-label">Vibration:</span>
+                    <div class="meter-bar">
+                        <div class="meter-fill" id="vibration-fill" style="width: 0%"></div>
+                    </div>
+                    <span id="vibration-status" style="color: var(--green);">Balanced!</span>
+                </div>
+
+                <div class="engine-controls">
+                    <button class="cylinder-toggle active" data-count="4">4 Cylinders</button>
+                    <button class="cylinder-toggle" data-count="3">3 Cylinders</button>
+                    <button class="cylinder-toggle" data-count="2">2 Cylinders</button>
+                    <button class="cylinder-toggle" data-count="1">1 Cylinder</button>
+                </div>
+            </div>
+
+            <h2>Phase Quadrature: The Magic Arrangement</h2>
+
+            <p>
+                When you place four things at 0°, 90°, 180°, and 270° around a circle, something special happens:
+            </p>
+
+            <div class="phase-diagram">
+                <div class="phase-item">
+                    <div class="circle">
+                        <div class="dot" style="left: 100%; top: 50%;"></div>
+                    </div>
+                    <div class="angle">0°</div>
+                    <div class="label">sin(0°) = 0</div>
+                </div>
+                <div class="phase-item">
+                    <div class="circle">
+                        <div class="dot" style="left: 50%; top: 0%;"></div>
+                    </div>
+                    <div class="angle">90°</div>
+                    <div class="label">sin(90°) = 1</div>
+                </div>
+                <div class="phase-item">
+                    <div class="circle">
+                        <div class="dot" style="left: 0%; top: 50%;"></div>
+                    </div>
+                    <div class="angle">180°</div>
+                    <div class="label">sin(180°) = 0</div>
+                </div>
+                <div class="phase-item">
+                    <div class="circle">
+                        <div class="dot" style="left: 50%; top: 100%;"></div>
+                    </div>
+                    <div class="angle">270°</div>
+                    <div class="label">sin(270°) = -1</div>
+                </div>
+            </div>
+
+            <p>
+                Add them up:
+            </p>
+
+            <div class="sum-animation">
+                <span class="sum-term">0</span>
+                <span class="sum-operator">+</span>
+                <span class="sum-term">1</span>
+                <span class="sum-operator">+</span>
+                <span class="sum-term">0</span>
+                <span class="sum-operator">+</span>
+                <span class="sum-term">-1</span>
+                <span class="sum-operator">=</span>
+                <span class="sum-result zero">0</span>
+            </div>
+
+            <div class="key-insight">
+                <p>Four phases at 90° apart <strong>always sum to zero</strong>.<br>The forces cancel. The vibrations cancel. Perfect balance.</p>
+            </div>
+
+            <h2>Where We See This</h2>
+
+            <div class="application-grid">
+                <div class="app-card">
+                    <h4>4-Cylinder Engines</h4>
+                    <p>Pistons fire at 0°, 90°, 180°, 270° of crankshaft rotation. Vibrations cancel.</p>
+                    <div class="phases">0° + 90° + 180° + 270° → Balance</div>
+                </div>
+                <div class="app-card">
+                    <h4>3-Phase Electricity</h4>
+                    <p>Power lines carry three voltages at 120° apart. The currents balance in the return path.</p>
+                    <div class="phases">0° + 120° + 240° → Balance</div>
+                </div>
+                <div class="app-card">
+                    <h4>Quadrature Signals</h4>
+                    <p>Radio and WiFi use I (0°) and Q (90°) signals. Together they can encode any direction.</p>
+                    <div class="phases">I (0°) + Q (90°) → Full coverage</div>
+                </div>
+                <div class="app-card">
+                    <h4>Music Chords</h4>
+                    <p>Harmonious chords have frequencies in simple ratios — they "fit" into each other's cycles.</p>
+                    <div class="phases">1:2:3 frequency ratios → Consonance</div>
+                </div>
+            </div>
+
+            <h2>The Balance Law</h2>
+
+            <p>
+                In the vessel geometry proof you saw earlier, this was Theorem 5:
+            </p>
+
+            <div class="equation-box">
+                <div class="equation">
+                    τ₁ + τ₂ + τ₃ + τ₄ = 0
+                </div>
+                <div class="equation-label">Torsion sum equals zero — the balance law</div>
+            </div>
+
+            <p>
+                When you have four coils at 0°, 90°, 180°, 270°, their effects sum to zero at the center. Not at every instant — but over one complete cycle, the average is exactly zero.
+            </p>
+
+            <p>
+                This is why the vessel geometry works. This is why engines don't shake apart. This is why three-phase power doesn't need a return wire for each phase.
+            </p>
+
+            <div class="key-insight">
+                <p>Balance isn't something you force.<br>It's something that <strong>emerges from the right geometry</strong>.</p>
+            </div>
+
+            <h2>The Pattern</h2>
+
+            <p>
+                Any number of evenly-spaced points around a circle will balance:
+            </p>
+
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>2 points</strong> at 180° apart: sin(0°) + sin(180°) = 0 + 0 = 0 &#x2713;
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>3 points</strong> at 120° apart: sin(0°) + sin(120°) + sin(240°) = 0 &#x2713;
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>4 points</strong> at 90° apart: sin(0°) + sin(90°) + sin(180°) + sin(270°) = 0 &#x2713;
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                    <strong>n points</strong> at 360°/n apart: Always sums to 0 &#x2713;
+                </li>
+            </ul>
+
+            <p>
+                This is a <strong>mathematical certainty</strong>. The geometry guarantees it.
+            </p>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    &#x2713; Evenly-spaced phases cancel out (sum to zero)
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    &#x2713; This is why 4-cylinder engines run smoothly
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    &#x2713; 3-phase power uses the same principle
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    &#x2713; Balance emerges from geometry, not from force
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="02-multiply-spin.html" class="nav-button">
+                    <span class="label">Previous</span>
+                    &#x2190; Multiplication is Rotation
+                </a>
+                <a href="../tier-3/01-euler-identity.html" class="nav-button">
+                    <span class="label">Next: Tier 3</span>
+                    Euler's Identity &#x2192;
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../js/circle-engine.js"></script>
+    <script>
+        // Engine animation
+        const svg = document.getElementById('engine-svg');
+        let cylinderCount = 4;
+        let animationAngle = 0;
+        let animId = null;
+
+        const colors = ['#ff6b6b', '#4ecdc4', '#f39c12', '#9b59b6'];
+
+        function drawEngine() {
+            // Clear existing pistons
+            svg.querySelectorAll('.piston-group').forEach(el => el.remove());
+
+            const cx = 150, cy = 150, r = 80;
+            const phases = CircleEngine.generatePhases(cylinderCount, 0);
+
+            phases.forEach((phase, i) => {
+                const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                group.setAttribute('class', 'piston-group');
+                group.setAttribute('data-phase', phase);
+
+                const x = cx + r * Math.cos(phase);
+                const y = cy - r * Math.sin(phase);
+
+                // Line from center to piston
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', cx);
+                line.setAttribute('y1', cy);
+                line.setAttribute('x2', x);
+                line.setAttribute('y2', y);
+                line.setAttribute('stroke', colors[i % colors.length]);
+                line.setAttribute('stroke-width', '3');
+                group.appendChild(line);
+
+                // Piston circle
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+                circle.setAttribute('r', '12');
+                circle.setAttribute('fill', colors[i % colors.length]);
+                group.appendChild(circle);
+
+                svg.appendChild(group);
+            });
+        }
+
+        function updateEngine() {
+            animationAngle += 0.03;
+
+            const cx = 150, cy = 150, r = 80;
+            let totalForce = 0;
+
+            document.querySelectorAll('.piston-group').forEach((group, i) => {
+                const basePhase = parseFloat(group.getAttribute('data-phase'));
+                const currentAngle = animationAngle + basePhase;
+
+                const x = cx + r * Math.cos(currentAngle);
+                const y = cy - r * Math.sin(currentAngle);
+
+                const line = group.querySelector('line');
+                line.setAttribute('x2', x);
+                line.setAttribute('y2', y);
+
+                const circle = group.querySelector('circle');
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+
+                // Calculate vertical force (what causes vibration)
+                totalForce += Math.sin(currentAngle);
+            });
+
+            // Update vibration meter
+            const vibration = Math.abs(totalForce) / cylinderCount;
+            const vibrationPercent = Math.min(100, vibration * 100);
+            document.getElementById('vibration-fill').style.width = vibrationPercent + '%';
+
+            const status = document.getElementById('vibration-status');
+            if (vibration < 0.1) {
+                status.textContent = 'Balanced!';
+                status.style.color = 'var(--green)';
+            } else if (vibration < 0.5) {
+                status.textContent = 'Some vibration';
+                status.style.color = 'var(--gold)';
+            } else {
+                status.textContent = 'High vibration!';
+                status.style.color = 'var(--red)';
+            }
+
+            animId = requestAnimationFrame(updateEngine);
+        }
+
+        // Cylinder count buttons
+        document.querySelectorAll('.cylinder-toggle').forEach(btn => {
+            btn.onclick = function() {
+                document.querySelectorAll('.cylinder-toggle').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                cylinderCount = parseInt(this.dataset.count);
+                drawEngine();
+            };
+        });
+
+        // Initial draw and start animation
+        drawEngine();
+        updateEngine();
+    </script>
+</body>
+</html>

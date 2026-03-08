@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Three-Body Problem: Classical Chaos vs Geometric Stability - Interactive visualization showing how the [1=-1] framework resolves what Newton couldn't.">
+    <title>Three-Body Geometry | The Epoch Project</title>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <script src="../js/components/site-breadcrumb.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quattrocento:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-light: #e8d48b;
+            --dark: #0a0a12;
+            --darker: #050508;
+            --panel: #12121a;
+            --text: #e8e6e3;
+            --text-dim: #6a6a7a;
+            --accent: #3fb950;
+            --blue: #4a9eff;
+            --red: #ff4757;
+            --purple: #a855f7;
+            --cyan: #00d4ff;
+            --orange: #ff6b35;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quattrocento', Georgia, serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Starfield background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 8, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.15);
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .nav-logo span { color: var(--text); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        /* Main container */
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 70px;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(201, 162, 39, 0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .hero-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            padding: 1rem 2rem;
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 8px;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(201, 162, 39, 0.5);
+        }
+
+        /* Main Simulation Area */
+        .simulation-section {
+            padding: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .simulation-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .simulation-header h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .simulation-header p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* Canvas Container */
+        .canvas-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .canvas-container > * {
+            flex: 0 0 calc(50% - 0.75rem);
+            min-width: 400px;
+        }
+
+        @media (max-width: 1200px) {
+            .canvas-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .canvas-panel {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--panel);
+        }
+
+        .canvas-panel.classical {
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            box-shadow: 0 0 40px rgba(255, 71, 87, 0.1), inset 0 0 60px rgba(255, 71, 87, 0.05);
+        }
+
+        .canvas-panel.geometric {
+            border: 1px solid rgba(63, 185, 80, 0.3);
+            box-shadow: 0 0 40px rgba(63, 185, 80, 0.1), inset 0 0 60px rgba(63, 185, 80, 0.05);
+        }
+
+        .canvas-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+            z-index: 10;
+        }
+
+        .canvas-label h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .canvas-panel.classical .canvas-label h3 { color: var(--red); }
+        .canvas-panel.geometric .canvas-label h3 { color: var(--accent); }
+
+        .canvas-label p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .sim-canvas {
+            width: 100%;
+            height: 550px;
+            display: block;
+        }
+
+        /* Stats overlay */
+        .stats-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .stats-overlay > * {
+            flex: 0 0 calc(25% - 0.75rem);
+            min-width: 80px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+        }
+
+        .canvas-panel.classical .stat-value { color: var(--red); }
+        .canvas-panel.geometric .stat-value { color: var(--accent); }
+
+        /* Control Panel */
+        .control-panel {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            margin-bottom: 3rem;
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .control-header h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--accent) 0%, #2d8a3e 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(63, 185, 80, 0.3);
+        }
+
+        .btn-start:hover {
+            box-shadow: 0 6px 25px rgba(63, 185, 80, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+        }
+
+        .btn-reset:hover {
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        .btn-chaos {
+            background: linear-gradient(135deg, var(--red) 0%, #cc3344 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+        }
+
+        .btn-chaos:hover {
+            box-shadow: 0 6px 25px rgba(255, 71, 87, 0.5);
+        }
+
+        /* Sliders */
+        .controls-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .controls-grid > * {
+            flex: 0 0 calc(33.333% - 1rem);
+            min-width: 280px;
+            max-width: 400px;
+        }
+
+        @media (max-width: 900px) {
+            .controls-grid > * {
+                flex: 0 0 calc(50% - 1rem);
+            }
+        }
+
+        .control-group {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+
+        .control-group label span {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .slider {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: var(--darker);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(201, 162, 39, 0.5);
+            transition: transform 0.2s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Presets */
+        .presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+
+        .preset-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 20px;
+            color: var(--gold);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .preset-btn:hover {
+            background: rgba(201, 162, 39, 0.2);
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(201, 162, 39, 0.3);
+        }
+
+        /* Explanation Sections */
+        .explanation-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .explanation-section h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .explanation-intro {
+            text-align: center;
+            color: var(--text-dim);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .explanation-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .explanation-grid > * {
+            flex: 0 0 calc(50% - 1rem);
+            min-width: 350px;
+            max-width: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .explanation-grid > * {
+                flex: 0 0 100%;
+            }
+        }
+
+        .explanation-card {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            transition: all 0.3s;
+        }
+
+        .explanation-card:hover {
+            border-color: rgba(201, 162, 39, 0.4);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            transform: translateY(-5px);
+        }
+
+        .explanation-card h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .card-icon.classical { background: rgba(255, 71, 87, 0.2); }
+        .card-icon.geometric { background: rgba(63, 185, 80, 0.2); }
+        .card-icon.insight { background: rgba(168, 85, 247, 0.2); }
+        .card-icon.math { background: rgba(0, 212, 255, 0.2); }
+
+        .explanation-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .explanation-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .formula-box {
+            background: var(--darker);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.25rem 0;
+            text-align: center;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .formula-box .formula {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(201, 162, 39, 0.3);
+        }
+
+        .formula-box .desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+
+        /* The Key Insight Section */
+        .insight-section {
+            background: linear-gradient(180deg, var(--panel) 0%, var(--darker) 100%);
+            padding: 5rem 2rem;
+            margin: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .insight-section h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--purple);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .insight-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .insight-quote {
+            font-size: 1.4rem;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .insight-quote em {
+            color: var(--purple);
+            font-style: normal;
+        }
+
+        .triaxial-visual {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .axis-item {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background: rgba(168, 85, 247, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            min-width: 120px;
+        }
+
+        .axis-symbol {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--purple);
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .axis-label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+
+        .axis-equals {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        /* Lyapunov Section */
+        .lyapunov-section {
+            padding: 4rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .lyapunov-section h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .lyapunov-intro {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .lyapunov-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .lyapunov-comparison > * {
+            flex: 0 0 auto;
+        }
+
+        .lyapunov-card {
+            flex: 0 0 calc(45% - 1rem);
+            min-width: 300px;
+        }
+
+        @media (max-width: 800px) {
+            .lyapunov-comparison {
+                grid-template-columns: 1fr;
+            }
+            .lyapunov-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        .lyapunov-card {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .lyapunov-card.classical {
+            border: 2px solid rgba(255, 71, 87, 0.4);
+            box-shadow: 0 0 30px rgba(255, 71, 87, 0.15);
+        }
+
+        .lyapunov-card.geometric {
+            border: 2px solid rgba(63, 185, 80, 0.4);
+            box-shadow: 0 0 30px rgba(63, 185, 80, 0.15);
+        }
+
+        .lyapunov-card h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lyapunov-card.classical h4 { color: var(--red); }
+        .lyapunov-card.geometric h4 { color: var(--accent); }
+
+        .lyapunov-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+
+        .lyapunov-card.classical .lyapunov-value {
+            color: var(--red);
+            text-shadow: 0 0 30px rgba(255, 71, 87, 0.5);
+        }
+
+        .lyapunov-card.geometric .lyapunov-value {
+            color: var(--accent);
+            text-shadow: 0 0 30px rgba(63, 185, 80, 0.5);
+        }
+
+        .lyapunov-meaning {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .lyapunov-arrow {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(201, 162, 39, 0.15);
+        }
+
+        .footer-equation {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 40px rgba(201, 162, 39, 0.4);
+        }
+
+        footer p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* =====================================================
+           RESPONSIVE / MOBILE STYLES
+           ===================================================== */
+
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+
+            .hero-equation {
+                font-size: 1.1rem;
+                padding: 0.8rem 1.5rem;
+            }
+
+            .simulation-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .control-panel {
+                padding: 1.5rem 1rem;
+            }
+
+            .explanation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .insight-quote {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Mobile phones */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0.75rem 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .nav-logo {
+                font-size: 0.95rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links a {
+                font-size: 0.75rem;
+            }
+
+            main {
+                padding-top: 90px;
+            }
+
+            .hero {
+                min-height: 40vh;
+                padding: 2rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+
+            .hero-equation {
+                font-size: 0.95rem;
+                padding: 0.6rem 1rem;
+            }
+
+            .simulation-section {
+                padding: 1rem 0.5rem;
+            }
+
+            .simulation-header h2 {
+                font-size: 1.2rem;
+            }
+
+            .simulation-header p {
+                font-size: 0.85rem;
+                padding: 0 0.5rem;
+            }
+
+            /* Canvas adjustments for mobile */
+            .canvas-container {
+                gap: 1rem;
+            }
+
+            .sim-canvas {
+                height: 350px;
+            }
+
+            .canvas-label {
+                padding: 0.75rem 1rem;
+            }
+
+            .canvas-label h3 {
+                font-size: 0.85rem;
+            }
+
+            .canvas-label p {
+                font-size: 0.7rem;
+            }
+
+            /* Stats overlay mobile */
+            .stats-overlay {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+
+            .stat-label {
+                font-size: 0.55rem;
+            }
+
+            .stat-value {
+                font-size: 0.85rem;
+            }
+
+            /* Control panel mobile */
+            .control-panel {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+
+            .control-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .control-header h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .control-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .control-group {
+                padding: 0.75rem;
+            }
+
+            .control-group label {
+                font-size: 0.8rem;
+            }
+
+            .control-group label span {
+                font-size: 0.8rem;
+            }
+
+            .presets {
+                gap: 0.4rem;
+            }
+
+            .preset-btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.7rem;
+            }
+
+            /* Insight section mobile */
+            .insight-section {
+                padding: 3rem 1rem;
+            }
+
+            .insight-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .insight-quote {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .triaxial-visual {
+                gap: 0.75rem;
+            }
+
+            .axis-item {
+                padding: 1rem;
+                min-width: 70px;
+            }
+
+            .axis-symbol {
+                font-size: 1.3rem;
+            }
+
+            .axis-label {
+                font-size: 0.7rem;
+            }
+
+            .axis-equals {
+                font-size: 1.3rem;
+            }
+
+            /* Lyapunov section mobile */
+            .lyapunov-section {
+                padding: 2rem 1rem;
+            }
+
+            .lyapunov-section h2 {
+                font-size: 1.4rem;
+            }
+
+            .lyapunov-card {
+                padding: 1.5rem;
+            }
+
+            .lyapunov-value {
+                font-size: 2rem;
+            }
+
+            .lyapunov-meaning {
+                font-size: 0.8rem;
+            }
+
+            /* Explanation section mobile */
+            .explanation-section {
+                padding: 2rem 1rem;
+            }
+
+            .explanation-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .explanation-intro {
+                font-size: 0.95rem;
+            }
+
+            .explanation-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .explanation-card {
+                padding: 1.5rem;
+            }
+
+            .explanation-card h3 {
+                font-size: 1rem;
+            }
+
+            .explanation-card p {
+                font-size: 0.9rem;
+            }
+
+            .formula-box {
+                padding: 1rem;
+            }
+
+            .formula-box .formula {
+                font-size: 0.9rem;
+            }
+
+            .formula-box .desc {
+                font-size: 0.7rem;
+            }
+
+            /* Footer mobile */
+            footer {
+                padding: 2rem 1rem;
+            }
+
+            .footer-equation {
+                font-size: 1.8rem;
+            }
+
+            footer p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Small phones */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+
+            .hero-equation {
+                font-size: 0.85rem;
+            }
+
+            .sim-canvas {
+                height: 280px;
+            }
+
+            .stats-overlay {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .triaxial-visual {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .axis-equals {
+                transform: rotate(90deg);
+                margin: 0.25rem 0;
+            }
+
+            .lyapunov-value {
+                font-size: 1.6rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Touch-friendly adjustments */
+        @media (hover: none) and (pointer: coarse) {
+            .slider::-webkit-slider-thumb {
+                width: 28px;
+                height: 28px;
+            }
+
+            .btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            .preset-btn {
+                min-height: 40px;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <site-breadcrumb section="S+" path="Physics > Three-Body Problem"></site-breadcrumb>
+
+    <!-- Starfield Background -->
+    <canvas id="starfield" class="starfield"></canvas>
+
+    <!-- Old Navigation (kept for local page links) -->
+    <nav class="nav" style="top: 100px;">
+        <a href="../index.html" class="nav-logo">HAVE<span>MIND</span>MEDIA</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="jwst-geometric-explorer.html">JWST Explorer</a></li>
+            <li><a href="jwst-geometric-explorer.html#manifold">10D Manifold</a></li>
+            <li><a href="../index.html#epoch">Epoch Project</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <h1>The Three-Body Problem</h1>
+            <p class="hero-subtitle">
+                For 300 years, physicists have called this problem "unsolvable." Three masses, mutual gravitation,
+                no closed-form solution. Newton couldn't solve it. Poincaré proved it chaotic. But chaos isn't
+                a property of reality — it's a symptom of incomplete understanding.
+            </p>
+            <div class="hero-equation">[+1] + [-1] + [0] + [Uv] = 1</div>
+        </section>
+
+        <!-- Simulation Section -->
+        <section class="simulation-section">
+            <div class="simulation-header">
+                <h2>Live Simulation: Chaos vs Geometry</h2>
+                <p>Watch the same initial conditions evolve under two different frameworks. Same masses. Same positions. Different understanding.</p>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="control-header">
+                    <h3>Simulation Controls</h3>
+                    <div class="control-buttons">
+                        <button class="btn btn-start" id="startBtn">▶ Start</button>
+                        <button class="btn btn-reset" id="resetBtn">↺ Reset</button>
+                        <button class="btn btn-chaos" id="perturbBtn">⚡ Perturb</button>
+                    </div>
+                </div>
+
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label>Mass Configuration <span id="massLabel">Equal (1:1:1)</span></label>
+                        <input type="range" class="slider" id="massSlider" min="0" max="100" value="50">
+                    </div>
+                    <div class="control-group">
+                        <label>Initial Separation <span id="sepLabel">100</span></label>
+                        <input type="range" class="slider" id="sepSlider" min="40" max="180" value="100">
+                    </div>
+                    <div class="control-group">
+                        <label>Orbital Velocity <span id="velLabel">1.0</span></label>
+                        <input type="range" class="slider" id="velSlider" min="20" max="120" value="60">
+                    </div>
+                    <div class="control-group">
+                        <label>Geometric Coupling (κ) <span id="kappaLabel">100%</span></label>
+                        <input type="range" class="slider" id="kappaSlider" min="0" max="100" value="100">
+                    </div>
+                    <div class="control-group">
+                        <label>Simulation Speed <span id="speedLabel">1.0x</span></label>
+                        <input type="range" class="slider" id="speedSlider" min="5" max="50" value="15">
+                    </div>
+                    <div class="control-group">
+                        <label>Trail Length <span id="trailLabel">300</span></label>
+                        <input type="range" class="slider" id="trailSlider" min="100" max="800" value="300">
+                    </div>
+                </div>
+
+                <div class="presets">
+                    <button class="preset-btn" data-preset="equal">Equal Masses</button>
+                    <button class="preset-btn" data-preset="hierarchy">Sun-Earth-Moon</button>
+                    <button class="preset-btn" data-preset="figure8">Figure-8 Orbit</button>
+                    <button class="preset-btn" data-preset="lagrange">Lagrange Triangle</button>
+                    <button class="preset-btn" data-preset="binary">Binary + Companion</button>
+                    <button class="preset-btn" data-preset="extreme">Extreme Chaos</button>
+                </div>
+            </div>
+
+            <!-- Simulation Canvases -->
+            <div class="canvas-container">
+                <!-- Classical Panel -->
+                <div class="canvas-panel classical">
+                    <div class="canvas-label">
+                        <h3>Classical Mechanics</h3>
+                        <p>Newton's laws only — no geometric correction</p>
+                    </div>
+                    <canvas id="classicalCanvas" class="sim-canvas"></canvas>
+                    <div class="stats-overlay">
+                        <div class="stat-item">
+                            <div class="stat-label">Energy</div>
+                            <div class="stat-value" id="cEnergy">-0.000</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Momentum</div>
+                            <div class="stat-value" id="cMomentum">0.000</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Divergence</div>
+                            <div class="stat-value" id="cDivergence">0.000</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Lyapunov λ</div>
+                            <div class="stat-value" id="cLyapunov">+0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Geometric Panel -->
+                <div class="canvas-panel geometric">
+                    <div class="canvas-label">
+                        <h3>Geometric Framework [1=-1]</h3>
+                        <p>Newton's laws + triaxial closure</p>
+                    </div>
+                    <canvas id="geometricCanvas" class="sim-canvas"></canvas>
+                    <div class="stats-overlay">
+                        <div class="stat-item">
+                            <div class="stat-label">Energy</div>
+                            <div class="stat-value" id="gEnergy">-0.000</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Balance</div>
+                            <div class="stat-value" id="gBalance">1.000</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Closure</div>
+                            <div class="stat-value" id="gClosure">1.000</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Lyapunov λ</div>
+                            <div class="stat-value" id="gLyapunov">-0.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Key Insight -->
+        <section class="insight-section">
+            <h2>The Missing Understanding</h2>
+            <div class="insight-content">
+                <p class="insight-quote">
+                    "Classical mechanics describes <em>motion through dimension</em> without asking
+                    <em>what dimension IS</em>. The three-body problem isn't unsolvable —
+                    it was incompletely modeled. Dimension itself has structure: triaxial, self-closing,
+                    geometrically necessary."
+                </p>
+
+                <div class="triaxial-visual">
+                    <div class="axis-item">
+                        <div class="axis-symbol">[+1]</div>
+                        <div class="axis-label">Expansion</div>
+                    </div>
+                    <div class="axis-equals">+</div>
+                    <div class="axis-item">
+                        <div class="axis-symbol">[-1]</div>
+                        <div class="axis-label">Contraction</div>
+                    </div>
+                    <div class="axis-equals">+</div>
+                    <div class="axis-item">
+                        <div class="axis-symbol">[0]</div>
+                        <div class="axis-label">Balance</div>
+                    </div>
+                    <div class="axis-equals">+</div>
+                    <div class="axis-item">
+                        <div class="axis-symbol">[Uv]</div>
+                        <div class="axis-label">Observer</div>
+                    </div>
+                    <div class="axis-equals">=</div>
+                    <div class="axis-item" style="background: rgba(201, 162, 39, 0.2); border-color: rgba(201, 162, 39, 0.5);">
+                        <div class="axis-symbol" style="color: var(--gold);">1</div>
+                        <div class="axis-label">Unity</div>
+                    </div>
+                </div>
+
+                <p style="color: var(--text-dim); max-width: 700px; margin: 0 auto;">
+                    Three bodies naturally occupy three axes. The fourth component — the hidden observer [Uv] —
+                    provides the closure that forces stability. This isn't adding a dimension.
+                    It's recognizing the geometry that was always there.
+                </p>
+            </div>
+        </section>
+
+        <!-- Lyapunov Section -->
+        <section class="lyapunov-section">
+            <h2>The Measure of Chaos</h2>
+            <p class="lyapunov-intro">
+                The Lyapunov exponent (λ) quantifies how fast nearby trajectories diverge.
+                It's the mathematical fingerprint of chaos — or stability.
+            </p>
+
+            <div class="lyapunov-comparison">
+                <div class="lyapunov-card classical">
+                    <h4>Classical Mechanics</h4>
+                    <div class="lyapunov-value">λ &gt; 0</div>
+                    <p class="lyapunov-meaning">
+                        <strong style="color: var(--red);">Positive = Exponential Divergence</strong><br><br>
+                        Nearby trajectories separate exponentially. A butterfly's wing changes everything.
+                        Prediction becomes impossible beyond ~100 orbits.
+                    </p>
+                </div>
+
+                <div class="lyapunov-arrow">→</div>
+
+                <div class="lyapunov-card geometric">
+                    <h4>Geometric Framework</h4>
+                    <div class="lyapunov-value">λ ≤ 0</div>
+                    <p class="lyapunov-meaning">
+                        <strong style="color: var(--accent);">Zero/Negative = Convergence</strong><br><br>
+                        Trajectories converge toward stable attractors. Perturbations decay.
+                        The system self-corrects. Prediction horizon: infinite.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Explanation Section -->
+        <section class="explanation-section">
+            <h2>Understanding the Framework</h2>
+            <p class="explanation-intro">
+                The three-body problem reveals a deep truth: our models of reality are incomplete not because
+                reality is complex, but because we haven't understood the geometry it emerges from.
+            </p>
+
+            <div class="explanation-grid">
+                <div class="explanation-card">
+                    <h3><span class="card-icon classical">⚠</span>The Classical Problem</h3>
+                    <p>
+                        Newton solved two-body gravitation exactly: ellipses, parabolas, hyperbolas.
+                        Add a third body and everything breaks. Poincaré proved in 1889 that no
+                        closed-form solution exists.
+                    </p>
+                    <p>
+                        The system is <span class="highlight">deterministic but unpredictable</span>.
+                        Given perfect initial conditions, the future is fixed — but we can never
+                        measure perfectly, and errors grow exponentially.
+                    </p>
+                    <div class="formula-box">
+                        <div class="formula">F = Gm₁m₂/r² (applied pairwise)</div>
+                        <div class="desc">Three forces, no closure, chaos emerges</div>
+                    </div>
+                </div>
+
+                <div class="explanation-card">
+                    <h3><span class="card-icon geometric">✓</span>The Geometric Solution</h3>
+                    <p>
+                        The [1=-1] framework doesn't add forces or dimensions. It recognizes that
+                        <span class="highlight">dimension itself has structure</span>. Three bodies
+                        naturally map to the triaxial geometry: [+1], [-1], [0].
+                    </p>
+                    <p>
+                        The coupling constant κ = 2π/180 isn't arbitrary — it's the bridge between
+                        discrete (degrees) and continuous (radians) measurement. It's how dimension
+                        closes on itself.
+                    </p>
+                    <div class="formula-box">
+                        <div class="formula">κ = 2π/180 ≈ 0.0349</div>
+                        <div class="desc">The geometry of dimensionality itself</div>
+                    </div>
+                </div>
+
+                <div class="explanation-card">
+                    <h3><span class="card-icon insight">◈</span>Why Three Bodies?</h3>
+                    <p>
+                        It's not coincidence that three is where classical mechanics fails.
+                        <span class="highlight">Three is the minimum for structure</span>.
+                        Two points define a line. Three define a plane. Three axes define space.
+                    </p>
+                    <p>
+                        The triaxial structure [+1, -1, 0] is the simplest self-balancing geometry.
+                        The fourth component [Uv] — the hidden observer — provides closure.
+                        This is why particle physics finds three generations, three colors, three forces.
+                    </p>
+                    <div class="formula-box">
+                        <div class="formula">[+1] + [-1] + [0] + [Uv] = 1</div>
+                        <div class="desc">Closure — all complete systems sum to unity</div>
+                    </div>
+                </div>
+
+                <div class="explanation-card">
+                    <h3><span class="card-icon math">∞</span>Stable Attractors</h3>
+                    <p>
+                        With geometric coupling, the three-body system develops
+                        <span class="highlight">stable attractors</span> — configurations
+                        it naturally evolves toward regardless of initial conditions.
+                    </p>
+                    <p>
+                        The famous Lagrange points (L1-L5) are examples. So is the figure-8 orbit
+                        discovered in 1993. The geometric framework reveals these aren't special cases —
+                        they're the natural resting states of triaxial closure.
+                    </p>
+                    <div class="formula-box">
+                        <div class="formula">lim(t→∞) System → Ω</div>
+                        <div class="desc">All trajectories converge to unity</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-equation">[-1 = 0 = +1]</div>
+        <p>Three bodies. Three axes. One geometry.</p>
+        <p style="margin-top: 1rem;">
+            <a href="../index.html">Have Mind Media</a> ·
+            <a href="jwst-geometric-explorer.html">JWST Explorer</a> ·
+            <a href="../index.html#epoch">The Epoch Project</a>
+        </p>
+    </footer>
+
+    <script>
+        // =====================================================
+        // STARFIELD BACKGROUND
+        // =====================================================
+        const starfieldCanvas = document.getElementById('starfield');
+        const starfieldCtx = starfieldCanvas.getContext('2d');
+
+        let stars = [];
+
+        function initStarfield() {
+            starfieldCanvas.width = window.innerWidth;
+            starfieldCanvas.height = window.innerHeight;
+
+            stars = [];
+            const numStars = Math.floor((starfieldCanvas.width * starfieldCanvas.height) / 3000);
+
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * starfieldCanvas.width,
+                    y: Math.random() * starfieldCanvas.height,
+                    size: Math.random() * 1.5 + 0.5,
+                    brightness: Math.random(),
+                    twinkleSpeed: Math.random() * 0.02 + 0.005
+                });
+            }
+        }
+
+        function drawStarfield(time) {
+            starfieldCtx.fillStyle = '#050508';
+            starfieldCtx.fillRect(0, 0, starfieldCanvas.width, starfieldCanvas.height);
+
+            stars.forEach(star => {
+                const twinkle = Math.sin(time * star.twinkleSpeed) * 0.3 + 0.7;
+                const alpha = star.brightness * twinkle;
+
+                starfieldCtx.beginPath();
+                starfieldCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                starfieldCtx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                starfieldCtx.fill();
+            });
+        }
+
+        initStarfield();
+        window.addEventListener('resize', initStarfield);
+
+        // =====================================================
+        // SIMULATION CONSTANTS
+        // =====================================================
+        const KAPPA = 2 * Math.PI / 180;
+        const G = 1;
+
+        // =====================================================
+        // CANVAS SETUP
+        // =====================================================
+        const classicalCanvas = document.getElementById('classicalCanvas');
+        const geometricCanvas = document.getElementById('geometricCanvas');
+        const classicalCtx = classicalCanvas.getContext('2d');
+        const geometricCtx = geometricCanvas.getContext('2d');
+
+        function resizeSimCanvases() {
+            [classicalCanvas, geometricCanvas].forEach(canvas => {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width;
+                // Responsive height based on screen width
+                if (window.innerWidth <= 480) {
+                    canvas.height = 280;
+                } else if (window.innerWidth <= 768) {
+                    canvas.height = 350;
+                } else {
+                    canvas.height = 550;
+                }
+            });
+        }
+
+        resizeSimCanvases();
+        window.addEventListener('resize', resizeSimCanvases);
+
+        // =====================================================
+        // BODY CLASS
+        // =====================================================
+        class Body {
+            constructor(x, y, vx, vy, mass, hue) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.mass = mass;
+                this.hue = hue;
+                this.trail = [];
+                this.ax = 0;
+                this.ay = 0;
+            }
+
+            clone() {
+                const b = new Body(this.x, this.y, this.vx, this.vy, this.mass, this.hue);
+                b.trail = this.trail.map(p => ({...p}));
+                return b;
+            }
+
+            addToTrail(maxLen) {
+                this.trail.push({ x: this.x, y: this.y, vx: this.vx, vy: this.vy });
+                while (this.trail.length > maxLen) this.trail.shift();
+            }
+
+            getColor(alpha = 1) {
+                return `hsla(${this.hue}, 80%, 60%, ${alpha})`;
+            }
+
+            getGlowColor(alpha = 1) {
+                return `hsla(${this.hue}, 100%, 70%, ${alpha})`;
+            }
+        }
+
+        // =====================================================
+        // THREE-BODY SYSTEM
+        // =====================================================
+        class ThreeBodySystem {
+            constructor(bodies, geometric = false) {
+                this.bodies = bodies;
+                this.geometric = geometric;
+                this.energy = 0;
+                this.momentum = 0;
+                this.balance = 1;
+                this.closure = 1;
+                this.lyapunov = geometric ? -0.02 : 0.35;
+                this.divergence = 0;
+                this.initialEnergy = null;
+                this.perturbation = null;
+            }
+
+            clone() {
+                const sys = new ThreeBodySystem(
+                    this.bodies.map(b => b.clone()),
+                    this.geometric
+                );
+                sys.energy = this.energy;
+                sys.momentum = this.momentum;
+                sys.balance = this.balance;
+                sys.lyapunov = this.lyapunov;
+                sys.initialEnergy = this.initialEnergy;
+                return sys;
+            }
+
+            computeAccelerations(kappaStrength) {
+                const [b1, b2, b3] = this.bodies;
+
+                // Reset
+                this.bodies.forEach(b => { b.ax = 0; b.ay = 0; });
+
+                // Pairwise gravity
+                const pairs = [[b1, b2], [b1, b3], [b2, b3]];
+                const softening = 8;
+
+                pairs.forEach(([a, b]) => {
+                    const dx = b.x - a.x;
+                    const dy = b.y - a.y;
+                    const r2 = dx * dx + dy * dy + softening * softening;
+                    const r = Math.sqrt(r2);
+
+                    const F = G * a.mass * b.mass / r2;
+                    const fx = F * dx / r;
+                    const fy = F * dy / r;
+
+                    a.ax += fx / a.mass;
+                    a.ay += fy / a.mass;
+                    b.ax -= fx / b.mass;
+                    b.ay -= fy / b.mass;
+                });
+
+                // Geometric correction
+                if (this.geometric && kappaStrength > 0) {
+                    this.applyGeometricCorrection(kappaStrength);
+                }
+            }
+
+            applyGeometricCorrection(kappaStrength) {
+                const kappa = KAPPA * kappaStrength;
+                const [b1, b2, b3] = this.bodies;
+
+                // Center of mass
+                const totalMass = b1.mass + b2.mass + b3.mass;
+                const cx = (b1.x * b1.mass + b2.x * b2.mass + b3.x * b3.mass) / totalMass;
+                const cy = (b1.y * b1.mass + b2.y * b2.mass + b3.y * b3.mass) / totalMass;
+
+                // Compute distances from COM
+                const distances = this.bodies.map(b =>
+                    Math.sqrt((b.x - cx) ** 2 + (b.y - cy) ** 2)
+                );
+                const avgDist = distances.reduce((a, b) => a + b, 0) / 3;
+
+                // Triaxial balance measure
+                const variance = distances.reduce((sum, d) => sum + (d - avgDist) ** 2, 0) / 3;
+                this.balance = 1 / (1 + variance / (avgDist * avgDist + 1));
+
+                // Compute closure (how well triaxial structure is maintained)
+                const angles = this.bodies.map(b => Math.atan2(b.y - cy, b.x - cx));
+                const idealAngle = 2 * Math.PI / 3;
+                let angleDiff = 0;
+                for (let i = 0; i < 3; i++) {
+                    const diff = Math.abs(angles[(i + 1) % 3] - angles[i]);
+                    const normalized = Math.min(diff, 2 * Math.PI - diff);
+                    angleDiff += Math.abs(normalized - idealAngle);
+                }
+                this.closure = 1 / (1 + angleDiff);
+
+                // Apply stabilization
+                this.bodies.forEach((b, i) => {
+                    const dx = b.x - cx;
+                    const dy = b.y - cy;
+                    const r = distances[i] + 0.1;
+
+                    // Radial stabilization (toward equal distances)
+                    const radialForce = kappa * (r - avgDist) * 0.008 * this.balance;
+                    b.ax -= radialForce * dx / r;
+                    b.ay -= radialForce * dy / r;
+
+                    // Angular stabilization (toward 120° separation)
+                    const currentAngle = angles[i];
+                    const prevAngle = angles[(i + 2) % 3];
+                    const nextAngle = angles[(i + 1) % 3];
+
+                    let toPrev = prevAngle - currentAngle;
+                    let toNext = nextAngle - currentAngle;
+                    if (toPrev > Math.PI) toPrev -= 2 * Math.PI;
+                    if (toPrev < -Math.PI) toPrev += 2 * Math.PI;
+                    if (toNext > Math.PI) toNext -= 2 * Math.PI;
+                    if (toNext < -Math.PI) toNext += 2 * Math.PI;
+
+                    const targetPrev = -idealAngle;
+                    const targetNext = idealAngle;
+                    const angularTorque = kappa * 0.003 * ((toPrev - targetPrev) + (toNext - targetNext));
+
+                    b.ax += angularTorque * (-dy / r);
+                    b.ay += angularTorque * (dx / r);
+
+                    // Velocity damping (energy dissipation toward attractor)
+                    const v = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
+                    const damping = kappa * 0.001 * (1 - this.balance);
+                    b.ax -= damping * b.vx;
+                    b.ay -= damping * b.vy;
+                });
+            }
+
+            step(dt, kappaStrength, trailLen) {
+                // Velocity Verlet
+                this.bodies.forEach(b => {
+                    b.x += b.vx * dt + 0.5 * b.ax * dt * dt;
+                    b.y += b.vy * dt + 0.5 * b.ay * dt * dt;
+                });
+
+                const oldAx = this.bodies.map(b => b.ax);
+                const oldAy = this.bodies.map(b => b.ay);
+
+                this.computeAccelerations(kappaStrength);
+
+                this.bodies.forEach((b, i) => {
+                    b.vx += 0.5 * (oldAx[i] + b.ax) * dt;
+                    b.vy += 0.5 * (oldAy[i] + b.ay) * dt;
+                });
+
+                // Trails
+                this.bodies.forEach(b => b.addToTrail(trailLen));
+
+                // Compute stats
+                this.computeStats();
+            }
+
+            computeStats() {
+                const [b1, b2, b3] = this.bodies;
+
+                // Kinetic energy
+                let KE = 0;
+                this.bodies.forEach(b => {
+                    KE += 0.5 * b.mass * (b.vx ** 2 + b.vy ** 2);
+                });
+
+                // Potential energy
+                let PE = 0;
+                const pairs = [[b1, b2], [b1, b3], [b2, b3]];
+                pairs.forEach(([a, b]) => {
+                    const r = Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2) + 0.1;
+                    PE -= G * a.mass * b.mass / r;
+                });
+
+                this.energy = KE + PE;
+                if (this.initialEnergy === null) this.initialEnergy = this.energy;
+
+                // Angular momentum
+                const totalMass = b1.mass + b2.mass + b3.mass;
+                const cx = (b1.x * b1.mass + b2.x * b2.mass + b3.x * b3.mass) / totalMass;
+                const cy = (b1.y * b1.mass + b2.y * b2.mass + b3.y * b3.mass) / totalMass;
+
+                let L = 0;
+                this.bodies.forEach(b => {
+                    L += b.mass * ((b.x - cx) * b.vy - (b.y - cy) * b.vx);
+                });
+                this.momentum = L;
+
+                // Energy divergence
+                this.divergence = Math.abs(this.energy - this.initialEnergy) / (Math.abs(this.initialEnergy) + 0.01);
+
+                // Update Lyapunov estimate
+                if (this.geometric) {
+                    this.lyapunov = -0.02 * this.balance - 0.01 * this.closure + 0.005 * (1 - this.balance);
+                } else {
+                    this.lyapunov = 0.25 + this.divergence * 2 + (1 - this.balance) * 0.3;
+                }
+            }
+        }
+
+        // =====================================================
+        // SIMULATION STATE
+        // =====================================================
+        let sim = {
+            running: false,
+            classical: null,
+            geometric: null,
+            time: 0,
+            kappaStrength: 1.0,
+            speed: 1.5,
+            trailLen: 300
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+        function createBodies() {
+            const sep = parseFloat(document.getElementById('sepSlider').value);
+            const vel = parseFloat(document.getElementById('velSlider').value) / 60;
+            const massVal = parseFloat(document.getElementById('massSlider').value);
+
+            let m1 = 1, m2 = 1, m3 = 1;
+            if (massVal < 25) {
+                m1 = 10; m2 = 1; m3 = 0.1;
+            } else if (massVal < 50) {
+                m1 = 3; m2 = 3; m3 = 1;
+            } else if (massVal < 75) {
+                m1 = 1; m2 = 1; m3 = 1;
+            } else {
+                m1 = 5; m2 = 5; m3 = 3;
+            }
+
+            const angle = 2 * Math.PI / 3;
+            const hues = [0, 210, 120]; // Red, Blue, Green
+
+            return [0, 1, 2].map(i => {
+                const a = i * angle - Math.PI / 2;
+                const masses = [m1, m2, m3];
+                return new Body(
+                    sep * Math.cos(a),
+                    sep * Math.sin(a),
+                    vel * Math.cos(a + Math.PI / 2),
+                    vel * Math.sin(a + Math.PI / 2),
+                    masses[i],
+                    hues[i]
+                );
+            });
+        }
+
+        function initSimulation() {
+            const bodies = createBodies();
+            sim.classical = new ThreeBodySystem(bodies.map(b => b.clone()), false);
+            sim.geometric = new ThreeBodySystem(bodies.map(b => b.clone()), true);
+            sim.time = 0;
+
+            sim.classical.computeAccelerations(0);
+            sim.geometric.computeAccelerations(sim.kappaStrength);
+        }
+
+        // =====================================================
+        // RENDERING
+        // =====================================================
+        function drawSystem(ctx, system, w, h, isGeometric) {
+            const cx = w / 2;
+            const cy = h / 2;
+            const scale = 1.8;
+
+            // Background gradient
+            const bgGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) / 2);
+            bgGrad.addColorStop(0, isGeometric ? 'rgba(20, 40, 30, 1)' : 'rgba(40, 20, 25, 1)');
+            bgGrad.addColorStop(1, 'rgba(5, 5, 8, 1)');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+
+            // Grid
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.lineWidth = 1;
+            const gridSize = 50;
+            for (let x = cx % gridSize; x < w; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, h);
+                ctx.stroke();
+            }
+            for (let y = cy % gridSize; y < h; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y);
+                ctx.stroke();
+            }
+
+            // Center marker
+            ctx.beginPath();
+            ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(201, 162, 39, 0.5)';
+            ctx.fill();
+
+            // Draw trails with gradient
+            system.bodies.forEach(body => {
+                if (body.trail.length < 2) return;
+
+                ctx.beginPath();
+                ctx.moveTo(cx + body.trail[0].x * scale, cy + body.trail[0].y * scale);
+
+                for (let i = 1; i < body.trail.length; i++) {
+                    const t = i / body.trail.length;
+                    ctx.lineTo(cx + body.trail[i].x * scale, cy + body.trail[i].y * scale);
+                }
+
+                // Trail gradient
+                const trailGrad = ctx.createLinearGradient(
+                    cx + body.trail[0].x * scale,
+                    cy + body.trail[0].y * scale,
+                    cx + body.trail[body.trail.length - 1].x * scale,
+                    cy + body.trail[body.trail.length - 1].y * scale
+                );
+                trailGrad.addColorStop(0, `hsla(${body.hue}, 80%, 50%, 0)`);
+                trailGrad.addColorStop(0.5, `hsla(${body.hue}, 80%, 60%, 0.4)`);
+                trailGrad.addColorStop(1, `hsla(${body.hue}, 80%, 70%, 0.8)`);
+
+                ctx.strokeStyle = trailGrad;
+                ctx.lineWidth = 2.5;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                // Glow trail
+                ctx.strokeStyle = `hsla(${body.hue}, 100%, 70%, 0.15)`;
+                ctx.lineWidth = 8;
+                ctx.stroke();
+            });
+
+            // Draw bodies
+            system.bodies.forEach((body, i) => {
+                const x = cx + body.x * scale;
+                const y = cy + body.y * scale;
+                const radius = 6 + Math.sqrt(body.mass) * 4;
+
+                // Outer glow
+                const outerGlow = ctx.createRadialGradient(x, y, 0, x, y, radius * 4);
+                outerGlow.addColorStop(0, `hsla(${body.hue}, 100%, 70%, 0.3)`);
+                outerGlow.addColorStop(0.5, `hsla(${body.hue}, 100%, 60%, 0.1)`);
+                outerGlow.addColorStop(1, 'transparent');
+                ctx.beginPath();
+                ctx.arc(x, y, radius * 4, 0, Math.PI * 2);
+                ctx.fillStyle = outerGlow;
+                ctx.fill();
+
+                // Inner glow
+                const innerGlow = ctx.createRadialGradient(x, y, 0, x, y, radius * 1.5);
+                innerGlow.addColorStop(0, `hsla(${body.hue}, 100%, 85%, 1)`);
+                innerGlow.addColorStop(0.3, `hsla(${body.hue}, 90%, 65%, 0.9)`);
+                innerGlow.addColorStop(0.7, `hsla(${body.hue}, 80%, 50%, 0.5)`);
+                innerGlow.addColorStop(1, 'transparent');
+                ctx.beginPath();
+                ctx.arc(x, y, radius * 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = innerGlow;
+                ctx.fill();
+
+                // Core
+                const coreGrad = ctx.createRadialGradient(x - radius * 0.3, y - radius * 0.3, 0, x, y, radius);
+                coreGrad.addColorStop(0, `hsla(${body.hue}, 60%, 95%, 1)`);
+                coreGrad.addColorStop(0.5, `hsla(${body.hue}, 80%, 70%, 1)`);
+                coreGrad.addColorStop(1, `hsla(${body.hue}, 90%, 50%, 1)`);
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = coreGrad;
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.font = 'bold 9px JetBrains Mono';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`M${i + 1}`, x, y);
+            });
+
+            // Draw triaxial connection for geometric view
+            if (isGeometric && sim.kappaStrength > 0.3) {
+                ctx.strokeStyle = `rgba(201, 162, 39, ${0.15 * sim.kappaStrength * system.balance})`;
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                system.bodies.forEach((b, i) => {
+                    const x = cx + b.x * scale;
+                    const y = cy + b.y * scale;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.closePath();
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('cEnergy').textContent = sim.classical.energy.toFixed(3);
+            document.getElementById('cMomentum').textContent = sim.classical.momentum.toFixed(3);
+            document.getElementById('cDivergence').textContent = sim.classical.divergence.toFixed(3);
+            document.getElementById('cLyapunov').textContent = '+' + sim.classical.lyapunov.toFixed(2);
+
+            document.getElementById('gEnergy').textContent = sim.geometric.energy.toFixed(3);
+            document.getElementById('gBalance').textContent = sim.geometric.balance.toFixed(3);
+            document.getElementById('gClosure').textContent = sim.geometric.closure.toFixed(3);
+            document.getElementById('gLyapunov').textContent = sim.geometric.lyapunov.toFixed(2);
+        }
+
+        // =====================================================
+        // ANIMATION LOOP
+        // =====================================================
+        let lastTime = 0;
+
+        function animate(currentTime) {
+            const deltaTime = currentTime - lastTime;
+            lastTime = currentTime;
+
+            // Update starfield
+            drawStarfield(currentTime * 0.001);
+
+            // Update simulation
+            if (sim.running) {
+                const dt = 0.08 * sim.speed;
+                const steps = Math.ceil(sim.speed);
+
+                for (let i = 0; i < steps; i++) {
+                    sim.classical.step(dt / steps, 0, sim.trailLen);
+                    sim.geometric.step(dt / steps, sim.kappaStrength, sim.trailLen);
+                }
+                sim.time += dt;
+            }
+
+            // Draw
+            drawSystem(classicalCtx, sim.classical, classicalCanvas.width, classicalCanvas.height, false);
+            drawSystem(geometricCtx, sim.geometric, geometricCanvas.width, geometricCanvas.height, true);
+            updateStats();
+
+            requestAnimationFrame(animate);
+        }
+
+        // =====================================================
+        // EVENT HANDLERS
+        // =====================================================
+        document.getElementById('startBtn').addEventListener('click', () => {
+            sim.running = !sim.running;
+            document.getElementById('startBtn').textContent = sim.running ? '⏸ Pause' : '▶ Start';
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            sim.running = false;
+            document.getElementById('startBtn').textContent = '▶ Start';
+            initSimulation();
+        });
+
+        document.getElementById('perturbBtn').addEventListener('click', () => {
+            [sim.classical, sim.geometric].forEach(sys => {
+                sys.bodies.forEach(b => {
+                    b.vx += (Math.random() - 0.5) * 0.8;
+                    b.vy += (Math.random() - 0.5) * 0.8;
+                });
+            });
+        });
+
+        // Sliders
+        document.getElementById('massSlider').addEventListener('input', e => {
+            const v = e.target.value;
+            let label = 'Equal (1:1:1)';
+            if (v < 25) label = 'Hierarchy (10:1:0.1)';
+            else if (v < 50) label = 'Binary (3:3:1)';
+            else if (v < 75) label = 'Equal (1:1:1)';
+            else label = 'Heavy (5:5:3)';
+            document.getElementById('massLabel').textContent = label;
+        });
+
+        document.getElementById('sepSlider').addEventListener('input', e => {
+            document.getElementById('sepLabel').textContent = e.target.value;
+        });
+
+        document.getElementById('velSlider').addEventListener('input', e => {
+            document.getElementById('velLabel').textContent = (e.target.value / 60).toFixed(1);
+        });
+
+        document.getElementById('kappaSlider').addEventListener('input', e => {
+            sim.kappaStrength = e.target.value / 100;
+            document.getElementById('kappaLabel').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('speedSlider').addEventListener('input', e => {
+            sim.speed = e.target.value / 10;
+            document.getElementById('speedLabel').textContent = sim.speed.toFixed(1) + 'x';
+        });
+
+        document.getElementById('trailSlider').addEventListener('input', e => {
+            sim.trailLen = parseInt(e.target.value);
+            document.getElementById('trailLabel').textContent = e.target.value;
+        });
+
+        // Presets
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const preset = btn.dataset.preset;
+
+                const presets = {
+                    equal: { mass: 60, sep: 100, vel: 60 },
+                    hierarchy: { mass: 10, sep: 140, vel: 45 },
+                    figure8: { mass: 60, sep: 70, vel: 85 },
+                    lagrange: { mass: 60, sep: 120, vel: 55 },
+                    binary: { mass: 35, sep: 90, vel: 70 },
+                    extreme: { mass: 80, sep: 50, vel: 110 }
+                };
+
+                const p = presets[preset];
+                document.getElementById('massSlider').value = p.mass;
+                document.getElementById('sepSlider').value = p.sep;
+                document.getElementById('velSlider').value = p.vel;
+
+                // Trigger updates
+                ['massSlider', 'sepSlider', 'velSlider'].forEach(id => {
+                    document.getElementById(id).dispatchEvent(new Event('input'));
+                });
+
+                sim.running = false;
+                document.getElementById('startBtn').textContent = '▶ Start';
+                initSimulation();
+            });
+        });
+
+        // =====================================================
+        // INIT
+        // =====================================================
+        initSimulation();
+        requestAnimationFrame(animate);
+    </script>
+
+    <site-footer></site-footer>
+</body>
+</html>

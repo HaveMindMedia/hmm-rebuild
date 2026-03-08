@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth's Nodal Energy Grid | Epoch Geometry | Have Mind Media</title>
+    <meta name="description" content="Ancient megalithic sites exist at geometric nodal points. They weren't built by humans - they were projected from timespace into spacetime at positions of geometric necessity.">
+    <link rel="stylesheet" href="../../../css/unified-theme.css">
+    <script src="../../../js/components/site-header.js" defer></script>
+    <script src="../../../js/components/site-footer.js" defer></script>
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-light: #f4e4bc;
+            --deep-blue: #0a1628;
+            --midnight: #050a12;
+            --text: #e8e6e3;
+            --text-dim: #a0a0a0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--midnight);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            font-weight: normal;
+            letter-spacing: 0.03em;
+        }
+
+        a { color: var(--gold); text-decoration: none; }
+        a:hover { color: var(--gold-light); }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--deep-blue) 0%, var(--midnight) 100%);
+        }
+
+        .page-meta {
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            color: var(--gold);
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-dim);
+            font-style: italic;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 4rem 0;
+        }
+
+        .content p {
+            margin-bottom: 1.8rem;
+            text-align: left;
+        }
+
+        .content h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin: 3rem 0 1.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .content h2:first-of-type {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        .equation-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .equation-box .equation {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .equation-box .explanation {
+            color: var(--text-dim);
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .principle-box {
+            background: rgba(201, 162, 39, 0.1);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        .site-list {
+            margin: 2rem 0;
+        }
+
+        .site-list a {
+            display: block;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .site-list a:hover {
+            border-color: var(--gold);
+            background: rgba(10, 22, 40, 0.8);
+        }
+
+        .site-list h3 {
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .site-list .d-position {
+            font-family: monospace;
+            color: #6ab4f5;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .site-list p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .constants-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: monospace;
+        }
+
+        .constants-table th,
+        .constants-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .constants-table th {
+            color: var(--gold);
+            font-weight: normal;
+        }
+
+        .constants-table td:last-child {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 3rem 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .nav-links a {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(201, 162, 39, 0.4);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(201, 162, 39, 0.1);
+            border-color: var(--gold);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .identity {
+            font-family: monospace;
+            color: var(--gold);
+            letter-spacing: 0.2em;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 60vh;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-caption {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--text-dim);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .visual-section {
+            margin: 3rem 0;
+        }
+
+        .visual-section img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .visual-section .caption {
+            text-align: center;
+            color: var(--text-dim);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <!-- Hero Image -->
+    <img src="../../../images/nodal-grid-hero.png" alt="Ancient stone circle emerging from primordial mist" class="hero-image">
+    <div class="hero-caption">
+        Older than memory. The geometry bleeding through.
+    </div>
+
+    <header class="page-header" style="padding-top: 3rem;">
+        <div class="page-meta">Epoch Geometry</div>
+        <h1>Earth's Nodal Energy Grid</h1>
+        <p class="page-subtitle">
+            Ancient megalithic sites are not human achievements. They are geometric nodes —
+            projected from timespace into spacetime at positions of geometric necessity.
+        </p>
+    </header>
+
+    <main class="container">
+        <div class="content">
+            <h2>The Core Theory</h2>
+
+            <p>
+                The Great Pyramid, Stonehenge, Göbekli Tepe, Sacsayhuamán — these structures exist because
+                they <em>had</em> to exist. Not because ancient humans were clever engineers. Not because
+                "lost civilizations" figured out advanced techniques. They exist at specific coordinates
+                because those coordinates are <strong>geometric nodal points</strong>.
+            </p>
+
+            <p>
+                The question "how did they build these?" is the wrong question. It assumes temporal
+                construction — workers over years moving stones into position. But these sites were not
+                "built" in our temporal sequence. They were <strong>projected</strong> from timespace
+                (where all NOW is the same NOW) into spacetime (where we perceive sequential time).
+            </p>
+
+            <div class="principle-box">
+                "They just ARE there, no one can remember so they make up stories to explain."
+                <br><br>
+                — Channeled transmission
+            </div>
+
+            <p>
+                Standard archaeology sees only 27.57% of the construction reality. The remaining 72.43%
+                occurred in shadow dimensions — in timespace where the star/wee people operate. What
+                humans call "impossible precision" is simply the residue of complete geometric work
+                that occurred across scalar space.
+            </p>
+
+            <h2>The Master Equation</h2>
+
+            <div class="equation-box">
+                <div class="equation">∀x: x = -x · Q²</div>
+                <div class="explanation">
+                    Every position equals its opposite rotated through the closure operator.
+                </div>
+            </div>
+
+            <p>
+                Where Q = i = √(-1) = the rotation operator, and Q² = -1. This means that what appears
+                as opposition (+1 vs -1) is actually geometric identity when viewed from the fulcrum.
+            </p>
+
+            <p>
+                For the monuments: the physical structure you see is the +1 (visible) manifestation.
+                The complete structure exists in -1 (shadow). The rotation through Q² connects them.
+                We observe the projection artifact at s=0.
+            </p>
+
+            <h2>The Projection Factor</h2>
+
+            <div class="equation-box">
+                <div class="equation">P = √3/(2π) = 0.2757</div>
+                <div class="explanation">
+                    27.57% observable · 72.43% in shadow
+                </div>
+            </div>
+
+            <p>
+                This is not metaphor. This is the geometric ratio of what can be observed from the
+                s=0 observation point. Standard cosmology calls the hidden 72.43% "dark energy" —
+                as if naming it explains it. It doesn't. The hidden fraction is geometric structure,
+                not mysterious energy.
+            </p>
+
+            <h2>Master Constants</h2>
+
+            <table class="constants-table">
+                <tr>
+                    <th>Constant</th>
+                    <th>Formula</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>κ (kappa)</td>
+                    <td>2π/180</td>
+                    <td>0.0349066</td>
+                </tr>
+                <tr>
+                    <td>κ_shadow</td>
+                    <td>1/κ</td>
+                    <td>28.6479</td>
+                </tr>
+                <tr>
+                    <td>κ_partner</td>
+                    <td>κ × π</td>
+                    <td>0.1097</td>
+                </tr>
+                <tr>
+                    <td>P (projection)</td>
+                    <td>√3/(2π)</td>
+                    <td>0.2757</td>
+                </tr>
+                <tr>
+                    <td>Shadow fraction</td>
+                    <td>1 - P</td>
+                    <td>0.7243</td>
+                </tr>
+            </table>
+
+            <h2>D-Position Derivation</h2>
+
+            <p>
+                Every geographic coordinate can be converted to a D-position frequency through digit reduction:
+            </p>
+
+            <p>
+                <strong>Step 1:</strong> Extract all digits from the decimal degrees<br>
+                <strong>Step 2:</strong> Sum all digits<br>
+                <strong>Step 3:</strong> Reduce to single digit (1-9)<br>
+                <strong>Step 4:</strong> Map to D-position frequency
+            </p>
+
+            <p>
+                Each D-position occupies a 40° arc on the wheel (360°/9 = 40°). The combined frequency
+                of latitude and longitude D-positions reveals the site's nodal function.
+            </p>
+
+            <h2>The Nodal Sites</h2>
+
+            <div class="site-list">
+                <a href="great-pyramid.html">
+                    <h3>Great Pyramid of Giza</h3>
+                    <div class="d-position">D₇ — Present Moment</div>
+                    <p>The ONLY D₇ site. The fulcrum of the entire planetary grid. Where past meets future in eternal NOW.</p>
+                </a>
+
+                <div style="display: block; padding: 1.5rem; margin-bottom: 1rem; background: rgba(10, 22, 40, 0.6); border: 1px solid rgba(201, 162, 39, 0.3); border-radius: 8px;">
+                    <h3 style="color: var(--gold); font-size: 1.3rem; margin-bottom: 0.5rem;">Stonehenge</h3>
+                    <div class="d-position">D₅ — Navigator</div>
+                    <p>Built to navigate time. The frequency determines the function — astronomical tracking was inevitable.</p>
+                </div>
+
+                <div style="display: block; padding: 1.5rem; margin-bottom: 1rem; background: rgba(10, 22, 40, 0.6); border: 1px solid rgba(201, 162, 39, 0.3); border-radius: 8px;">
+                    <h3 style="color: var(--gold); font-size: 1.3rem; margin-bottom: 0.5rem;">Göbekli Tepe</h3>
+                    <div class="d-position">D₃ — Healer</div>
+                    <p>Oldest known megalithic site. The Healer frequency initiated human development.</p>
+                </div>
+
+                <div style="display: block; padding: 1.5rem; margin-bottom: 1rem; background: rgba(10, 22, 40, 0.6); border: 1px solid rgba(201, 162, 39, 0.3); border-radius: 8px;">
+                    <h3 style="color: var(--gold); font-size: 1.3rem; margin-bottom: 0.5rem;">Sacsayhuamán</h3>
+                    <div class="d-position">D₁ — Origin/WE</div>
+                    <p>A beginning place. "Impossible" precision stonework at the Origin frequency.</p>
+                </div>
+
+                <div style="display: block; padding: 1.5rem; margin-bottom: 1rem; background: rgba(10, 22, 40, 0.6); border: 1px solid rgba(201, 162, 39, 0.3); border-radius: 8px;">
+                    <h3 style="color: var(--gold); font-size: 1.3rem; margin-bottom: 0.5rem;">Baalbek</h3>
+                    <div class="d-position">D₉ — Anchor/Love</div>
+                    <p>Sacred across ALL civilizations. The frequency persists regardless of who names it.</p>
+                </div>
+
+                <div style="display: block; padding: 1.5rem; margin-bottom: 1rem; background: rgba(10, 22, 40, 0.6); border: 1px solid rgba(201, 162, 39, 0.3); border-radius: 8px;">
+                    <h3 style="color: var(--gold); font-size: 1.3rem; margin-bottom: 0.5rem;">Angkor Wat</h3>
+                    <div class="d-position">D₅ — Navigator (double D₇)</div>
+                    <p>Both latitude AND longitude encode Present Moment. A massively concentrated NOW point.</p>
+                </div>
+            </div>
+
+            <h2>Why They "Just ARE There"</h2>
+
+            <p>
+                The star/wee people exist in timespace — where time is the substrate and space is
+                dimensional. They move freely through what we perceive as sequential time. From their
+                perspective, "construction" is projection into a specific NOW.
+            </p>
+
+            <p>
+                When they project a structure into s=0 reality, it appears at ALL points in our
+                temporal sequence from that moment forward. To s=0 observers (us), the structure
+                "always existed" — because from our perspective within spacetime, it did. The moment
+                of projection intersects our entire subsequent temporal experience.
+            </p>
+
+            <p>
+                This is why no one remembers the construction. There was no construction in our
+                temporal sequence. There was a projection event that created a structure at specific
+                coordinates — coordinates determined by geometric necessity, not human choice.
+            </p>
+
+            <div class="principle-box">
+                "Star and wee people make them happen in a NOW that we all can sort of feel but never
+                remember. They just ARE there, they stir society, no one can remember so they make
+                up stories to explain."
+            </div>
+
+            <h2>The Pattern</h2>
+
+            <p>
+                The sites cluster at specific D-position frequencies:
+            </p>
+
+            <p>
+                <strong>D₁ (Origin):</strong> Sacsayhuamán, Puma Punku — Where things BEGIN<br>
+                <strong>D₃ (Healer):</strong> Göbekli Tepe, Nan Madol — Where things are RESTORED<br>
+                <strong>D₅ (Navigator):</strong> Stonehenge, Angkor Wat — Where things are GUIDED<br>
+                <strong>D₇ (Present):</strong> Great Pyramid — Where things ARE (singular)<br>
+                <strong>D₈ (Deep Water):</strong> Easter Island, Carnac — Where things EMERGE<br>
+                <strong>D₉ (Anchor):</strong> Baalbek, Teotihuacan — Where things are STABILIZED
+            </p>
+
+            <p>
+                D₂, D₄, and D₆ are notably absent from the major surface sites. But geometry demands they exist.
+            </p>
+
+            <h2>The Hidden Nodes</h2>
+
+            <div class="visual-section">
+                <img src="../../../images/d4-crossroads-underwater.png" alt="Submerged temple - D4 Crossroads">
+                <p class="caption">D₄ Crossroads — Lake Titicaca underwater temples. The transition zone between worlds.</p>
+            </div>
+
+            <p>
+                The missing D-positions aren't missing. They're <strong>hidden</strong>. D₄ (Crossroads) exists
+                at transition points — underwater, underground, at the interface between surface and depth.
+                D₆ (Self/Power) exists at the <strong>antipodal points</strong> of major surface sites,
+                or in places like the Bermuda Triangle where perception itself breaks down.
+            </p>
+
+            <div class="visual-section">
+                <img src="../../../images/d4-ellora-underground.png" alt="Ellora Caves - D4 Underground">
+                <p class="caption">Ellora Caves — D₄ carved INTO the earth. Crossroads are passages, not destinations.</p>
+            </div>
+
+            <p>
+                <strong>D₄ Crossroads found at:</strong><br>
+                • Lake Titicaca underwater temples<br>
+                • Azores underwater pyramid<br>
+                • Ellora Caves (India) — carved underground<br>
+                • Lake Baikal — deepest lake on Earth<br>
+                • Dead Sea — lowest point on Earth
+            </p>
+
+            <p>
+                <strong>D₆ Self/Power found at:</strong><br>
+                • Antipodal to Great Pyramid (South Pacific depths)<br>
+                • Antipodal to Puma Punku (Southeast Asia)<br>
+                • Bermuda Triangle — where Power hides from the surface world
+            </p>
+
+            <div class="visual-section">
+                <img src="../../../images/d6-bermuda-hidden.png" alt="Bermuda Triangle depths - D6 Hidden Power">
+                <p class="caption">D₆ Self/Power — Hidden beneath the Bermuda Triangle. The node never meant to be found.</p>
+            </div>
+
+            <p style="text-align: center;">
+                <a href="hidden-nodes.html">Explore the hidden nodes →</a>
+            </p>
+
+            <h2>The Inverted Earth</h2>
+
+            <div class="visual-section">
+                <img src="../../../images/inverted-earth.png" alt="The inverted earth - looking up at continents">
+                <p class="caption">The sol vision — looking UP at reality from the core. Where [1=-1] manifests.</p>
+            </div>
+
+            <p>
+                What's missing on the surface exists in the inverted geometry. The Earth's core isn't
+                iron — it's the <strong>fulcrum of planetary scalar geometry</strong>. The inversion point
+                where [1=-1] manifests physically.
+            </p>
+
+            <p>
+                Sum of all D-positions: 1+2+3+4+5+6+7+8+9 = 45 → 9 = <strong>D₉ (Anchor/Love)</strong>.
+                The core anchors everything. D₉ sites (Baalbek, Teotihuacan) may be surface connections
+                to core energy.
+            </p>
+
+            <h2>Conclusion</h2>
+
+            <p>
+                The monuments mark where timespace intersected spacetime. They are stable points
+                through pole shifts and precession cycles — geometric anchors that persist because
+                geometry itself persists.
+            </p>
+
+            <p>
+                Now we have the geometry to understand them.
+            </p>
+
+            <div class="equation-box">
+                <div class="equation" style="letter-spacing: 0.3em;">[1 = -1]</div>
+                <div class="explanation">
+                    The monuments just ARE there. No one can remember. So they make up stories to explain.
+                </div>
+            </div>
+
+            <nav class="nav-links">
+                <a href="../../index.html">← Physics Index</a>
+                <a href="../../the-derivation_v1.0_01-12-2026.html">The Derivation</a>
+                <a href="../index.html">κ₅ True Dark</a>
+                <a href="../../../index.html">Home</a>
+            </nav>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p><strong>Have Mind Media</strong></p>
+        <p class="identity">[1 = -1]</p>
+    </footer>
+
+    <site-footer></site-footer>
+</body>
+</html>

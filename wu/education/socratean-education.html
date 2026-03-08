@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Socratean Assistant Education System - AI-Powered Socratic Learning with Authenticity Verification">
+    <title>Socratean Education System | Have Mind Media</title>
+    <style>
+        :root {
+            --void: #0a0a12;
+            --deep: #0d1117;
+            --panel: #151a24;
+            --border: rgba(70, 130, 180, 0.3);
+            --text: #d4c5a9;
+            --text-dim: #8a9aaa;
+            --blue: #7ab8d4;
+            --gold: #c9b896;
+            --accent: #e8a878;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(180, 100, 60, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(70, 130, 180, 0.08) 0%, transparent 50%),
+                linear-gradient(180deg, var(--void) 0%, var(--deep) 100%);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 18, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .home-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(201, 184, 150, 0.3);
+            border-radius: 6px;
+            transition: all 0.4s ease;
+        }
+
+        .home-btn:hover {
+            background: rgba(201, 184, 150, 0.1);
+            border-color: var(--gold);
+        }
+
+        .home-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-title {
+            font-size: 1.1rem;
+            color: var(--text);
+            letter-spacing: 2px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 2rem 4rem;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 3rem 0 4rem;
+        }
+
+        .hero-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+            letter-spacing: 3px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.2rem;
+            color: var(--blue);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .hero .tagline {
+            color: var(--text-dim);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .principle-box {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: rgba(180, 100, 60, 0.1);
+            border: 1px solid rgba(180, 100, 60, 0.3);
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: var(--blue);
+            margin-bottom: 1.5rem;
+            font-weight: normal;
+            letter-spacing: 2px;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-weight: normal;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text);
+            opacity: 0.9;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--blue);
+            transform: translateY(-4px);
+        }
+
+        .feature-card .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin: 0;
+        }
+
+        /* Process Steps */
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1.5rem;
+            align-items: start;
+            padding: 1.5rem;
+            background: var(--panel);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: rgba(180, 100, 60, 0.2);
+            border: 1px solid rgba(180, 100, 60, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .step-content h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+        }
+
+        .step-content p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Philosophy Box */
+        .philosophy-box {
+            background: linear-gradient(135deg, rgba(180, 100, 60, 0.1) 0%, rgba(70, 130, 180, 0.08) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .philosophy-box .equation {
+            font-family: monospace;
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .philosophy-box .note {
+            font-style: italic;
+            color: var(--text-dim);
+        }
+
+        .pillars {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .pillar {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .pillar h5 {
+            color: var(--gold);
+            font-weight: normal;
+            margin-bottom: 0.3rem;
+        }
+
+        .pillar p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        footer .logo {
+            font-size: 1.3rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        footer .tagline {
+            color: var(--blue);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        footer .credits {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .pillars { grid-template-columns: 1fr 1fr; }
+            .step { grid-template-columns: 1fr; text-align: center; }
+            .step-number { margin: 0 auto 1rem; }
+        }
+        .home-nav { position: fixed; top: 15px; left: 15px; z-index: 9999; }
+        .home-nav a { display: inline-block; color: #c9a227; text-decoration: none; padding: 8px 16px; border: 1px solid #c9a227; border-radius: 4px; background: rgba(10, 10, 26, 0.95); font-size: 0.9rem; transition: all 0.2s; }
+        .home-nav a:hover { background: #c9a227; color: #0a0a1a; }
+    </style>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="home-nav"><a href="/">← Home</a></div>
+
+    <div class="bg-gradient"></div>
+
+    <!-- Unified Navigation -->
+    <nav class="nav unified-nav">
+        <a href="../index.html" class="nav-brand" style="text-decoration: none; display: flex; align-items: center; gap: 0.8rem;">
+            <span style="font-size: 1rem; color: var(--gold); letter-spacing: 3px;">HAVE MIND MEDIA</span>
+            <span style="font-size: 0.7rem; color: var(--blue); letter-spacing: 2px; opacity: 0.6;">◯∰⧬⫰∭⧖</span>
+        </a>
+        <div class="nav-menu" style="position: relative;">
+            <button class="nav-toggle" id="navToggle" style="display: flex; align-items: center; gap: 0.6rem; background: transparent; border: 1px solid var(--border); color: var(--blue); padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; letter-spacing: 1px; transition: all 0.3s ease;">
+                <span>Explore</span>
+                <span class="arrow" style="font-size: 0.6rem; transition: transform 0.3s ease;">▼</span>
+            </button>
+            <div class="nav-dropdown" id="navDropdown" style="position: absolute; top: calc(100% + 0.5rem); right: 0; background: rgba(10, 10, 18, 0.98); border: 1px solid var(--border); border-radius: 12px; padding: 0.8rem; min-width: 280px; max-height: 70vh; overflow-y: auto; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);">
+                <a href="../index.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">⌂</span> Home</a>
+                <a href="soul-science.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">☯</span> Soul Science</a>
+                <div style="height: 1px; background: var(--border); margin: 0.5rem 0;"></div>
+                <span style="display: block; padding: 0.4rem 0.8rem; color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">S+ Physical Reality</span>
+                <a href="../physics/three-body-geometry.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">◬</span> Three-Body Solution</a>
+                <a href="../physics/millennium-problems.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">∞</span> Millennium Problems</a>
+                <a href="../physics/jwst-geometric-explorer.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">🔭</span> JWST Explorer</a>
+                <a href="../documents/dec14-model-cern/index.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">⚛</span> CERN Scalar</a>
+                <a href="../documents/epoch-framework/index.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">⏱</span> Epoch Framework</a>
+                <a href="../documents/dec14-unified-theory/index.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">◎</span> Unified Theory</a>
+                <div style="height: 1px; background: var(--border); margin: 0.5rem 0;"></div>
+                <span style="display: block; padding: 0.4rem 0.8rem; color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">S- Mother Earth Science</span>
+                <a href="socratean-education.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--accent); text-decoration: none; border-radius: 6px; font-size: 0.9rem; background: rgba(232, 168, 120, 0.1);"><span style="font-size: 1rem; width: 22px; text-align: center;">🎓</span> Socratean AI</a>
+                <a href="life-facing-wisdom.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">🌿</span> Life-Facing Wisdom</a>
+                <a href="../tools/mind-reading/index.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">🃏</span> Mind Reading</a>
+                <div style="height: 1px; background: var(--border); margin: 0.5rem 0;"></div>
+                <span style="display: block; padding: 0.4rem 0.8rem; color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">Ancient Teachings</span>
+                <a href="../ancient-mysteries/voynich/index.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">📜</span> Voynich Manuscript</a>
+                <a href="../ancient-mysteries/texts/rongorongo-v1.0.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">🗿</span> Rongorongo</a>
+                <a href="../ancient-mysteries/texts/phaistos-v1.0.html" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.8rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem;"><span style="font-size: 1rem; width: 22px; text-align: center;">🌀</span> Phaistos Disk</a>
+            </div>
+        </div>
+    </nav>
+    <script>
+        // Navigation Dropdown
+        document.getElementById('navToggle').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('navDropdown');
+            const toggle = document.getElementById('navToggle');
+            const isActive = dropdown.style.opacity === '1';
+            dropdown.style.opacity = isActive ? '0' : '1';
+            dropdown.style.visibility = isActive ? 'hidden' : 'visible';
+            dropdown.style.transform = isActive ? 'translateY(-10px)' : 'translateY(0)';
+            toggle.querySelector('.arrow').style.transform = isActive ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('navDropdown');
+            const toggle = document.getElementById('navToggle');
+            if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.opacity = '0';
+                dropdown.style.visibility = 'hidden';
+                dropdown.style.transform = 'translateY(-10px)';
+                toggle.querySelector('.arrow').style.transform = 'rotate(0deg)';
+            }
+        });
+    </script>
+
+    <div class="container">
+        <section class="hero">
+            <div class="hero-icon">🏛️</div>
+            <h1>SOCRATEAN</h1>
+            <p class="subtitle">AI-Powered Socratic Learning with Authenticity Verification</p>
+            <p class="tagline">
+                The Witness Protocol - Student Mode. Learn through dialogue, not memorization.
+                Your understanding verified through your own voice.
+            </p>
+            <div class="principle-box">[1 = -1]</div>
+        </section>
+
+        <section>
+            <h2>What is Socratean?</h2>
+            <p>
+                Socratean is an educational system that combines Socratic teaching methodology with AI-powered
+                learning and authenticity verification. It ensures that student work is genuinely their own
+                while facilitating deep understanding through dialogue.
+            </p>
+            <p>
+                The system never gives direct answers. Instead, it guides you through questions, acknowledges
+                correct understanding, and gently probes misconceptions. Your unique writing fingerprint ensures
+                that your work is verifiably yours.
+            </p>
+        </section>
+
+        <section>
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">🔏</div>
+                    <h4>Writing Fingerprint</h4>
+                    <p>Creates a unique profile of your writing style to verify authenticity through sentence patterns, vocabulary, and personal voice.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">💬</div>
+                    <h4>Socratic Learning</h4>
+                    <p>AI tutor guides you through concepts via questions, not answers. True understanding emerges from your own reasoning.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h4>Proficiency Tracking</h4>
+                    <p>Real-time tracking of concepts mastered. Reach 80% proficiency to demonstrate deep understanding.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📝</div>
+                    <h4>Paper Builder</h4>
+                    <p>Build papers using your own quotes from the learning dialogue. Your words, your understanding, verified.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">✅</div>
+                    <h4>Authenticity Certificate</h4>
+                    <p>Verifiable proof that work is genuinely yours. AI detection scores and style match percentages included.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">👨‍🏫</div>
+                    <h4>Professor Dashboard</h4>
+                    <p>Educators can view student sessions, examine dialogues, and verify authenticity with automatic flagging.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>How It Works</h2>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Profile Building (Writing Fingerprint)</h4>
+                        <p>Answer 4 open-ended questions that establish your unique writing patterns: sentence length, vocabulary richness, contraction usage, personal pronoun frequency, and unique phrase patterns.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Subject Selection</h4>
+                        <p>Choose from preset subjects or enter a custom topic to explore. The Socratic dialogue begins.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Socratic Learning</h4>
+                        <p>The AI tutor engages in Socratic dialogue. Every input is analyzed for AI-generated patterns and style match against your fingerprint.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Proficiency Assessment</h4>
+                        <p>Once 80% proficiency is reached, write a synthesis demonstrating deep understanding.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Paper Building & Certification</h4>
+                        <p>Build your paper using numbered quotes from your learning dialogue. Final output includes authenticity score, time to proficiency, and style match percentage.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Philosophy</h2>
+            <div class="philosophy-box">
+                <div class="equation">[1 = -1]</div>
+                <p class="note">The Witness sees both sides without collapsing either.</p>
+                <div class="pillars">
+                    <div class="pillar">
+                        <h5>Human Voice</h5>
+                        <p>AI should amplify, not replace</p>
+                    </div>
+                    <div class="pillar">
+                        <h5>Dialogue</h5>
+                        <p>Socratic method proves understanding</p>
+                    </div>
+                    <div class="pillar">
+                        <h5>Authenticity</h5>
+                        <p>Writing fingerprints establish ownership</p>
+                    </div>
+                    <div class="pillar">
+                        <h5>Clarity</h5>
+                        <p>Clear separation of AI and human contributions</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>AI Detection</h2>
+            <p>The system detects AI-generated content through multiple methods:</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Vocabulary Analysis</h4>
+                    <p>Flags AI-typical words: "delve", "furthermore", "comprehensive", "robust", "leverage", and other patterns.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Pattern Analysis</h4>
+                    <p>Detects uniform sentence length, lack of contractions, and absence of personal pronouns typical of AI.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Style Comparison</h4>
+                    <p>Compares ongoing writing to your established fingerprint, flagging significant deviations.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p class="logo">HAVE MIND MEDIA</p>
+        <p class="tagline">The Mind is in Your Mind</p>
+        <p class="credits">
+            Concept by T0Rs (The Epoch Project), December 2025<br>
+            For educational and research purposes.
+        </p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

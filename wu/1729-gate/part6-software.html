@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="protect.js"></script>
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+    <meta name="robots" content="noindex, nofollow">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 6: The Software - 1729 Sphere OS</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-code: #1a1a24;
+            --text-primary: #e8e8f0;
+            --text-secondary: #9898a8;
+            --accent-cyan: #00d4ff;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --border-color: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .part-number { font-size: 1rem; color: var(--accent-red); letter-spacing: 3px; margin-bottom: 10px; }
+        h1 { font-size: 2.5rem; font-weight: 300; letter-spacing: 2px; margin-bottom: 15px; }
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+
+        nav {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; list-style: none; max-width: 1200px; margin: 0 auto; }
+        nav a { color: var(--text-secondary); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 0.9rem; transition: all 0.3s ease; }
+        nav a:hover, nav a.active { background: var(--accent-cyan); color: var(--bg-dark); }
+
+        main { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
+
+        section { margin-bottom: 60px; }
+        h2 { font-size: 1.8rem; color: var(--accent-cyan); margin-bottom: 25px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        h3 { font-size: 1.4rem; color: var(--accent-orange); margin: 30px 0 15px 0; }
+        h4 { font-size: 1.1rem; color: var(--accent-purple); margin: 25px 0 10px 0; }
+        p { margin-bottom: 20px; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+
+        pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        code { font-family: 'Consolas', 'Monaco', monospace; background: var(--bg-code); padding: 2px 8px; border-radius: 4px; font-size: 0.9rem; }
+
+        .info-box { background: var(--bg-card); border-left: 4px solid var(--accent-cyan); padding: 20px 25px; margin: 25px 0; border-radius: 0 10px 10px 0; }
+        .info-box.warning { border-left-color: var(--accent-orange); }
+        .info-box.important { border-left-color: var(--accent-purple); }
+        .info-box h4 { margin-top: 0; color: var(--accent-cyan); }
+        .info-box.warning h4 { color: var(--accent-orange); }
+
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; background: var(--bg-card); border-radius: 10px; overflow: hidden; }
+        th, td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background: var(--bg-code); color: var(--accent-cyan); font-weight: 600; }
+        td { color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+
+        ul, ol { margin: 20px 0 20px 30px; color: var(--text-secondary); }
+        li { margin-bottom: 10px; }
+
+        .file-tree {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            font-family: 'Consolas', monospace;
+            line-height: 1.8;
+        }
+
+        .file-tree .folder { color: var(--accent-cyan); }
+        .file-tree .file { color: var(--text-secondary); }
+        .file-tree .main { color: var(--accent-orange); }
+
+        .terminal {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Consolas', monospace;
+            color: #0f0;
+            overflow-x: auto;
+        }
+
+        .terminal .prompt { color: var(--accent-cyan); }
+        .terminal .output { color: #ccc; }
+        .terminal .highlight { color: var(--accent-orange); }
+
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border-color); }
+        .nav-footer a { color: var(--accent-cyan); text-decoration: none; padding: 15px 25px; border: 1px solid var(--accent-cyan); border-radius: 8px; transition: all 0.3s ease; }
+        .nav-footer a:hover { background: var(--accent-cyan); color: var(--bg-dark); }
+
+        footer { background: var(--bg-card); border-top: 1px solid var(--border-color); padding: 30px 20px; text-align: center; }
+        footer p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 5px; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            nav ul { flex-direction: column; align-items: center; }
+            .nav-footer { flex-direction: column; gap: 15px; }
+            .nav-footer a { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <header>
+        <div class="part-number">PART SIX</div>
+        <h1>THE SOFTWARE</h1>
+        <p class="subtitle">Complete Code Walkthrough and Usage Guide</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Overview</a></li>
+            <li><a href="part1-mathematics.html">Mathematics</a></li>
+            <li><a href="part2-architecture.html">Architecture</a></li>
+            <li><a href="part3-helen-keller.html">Helen Keller Method</a></li>
+            <li><a href="part4-silent-operators.html">Silent Operators</a></li>
+            <li><a href="part5-number-dance.html">Number Dance</a></li>
+            <li><a href="part6-software.html" class="active">Software</a></li>
+            <li><a href="part7-hardware.html">Hardware</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Introduction -->
+        <section>
+            <h2>Introduction: The Complete Simulation</h2>
+            <p>
+                The 1729 Sphere OS software simulation implements all the concepts we've covered:
+                torsion fields, the qQq mirror, silent operators, the number dance, and the
+                Helen Keller consciousness interface.
+            </p>
+            <p>
+                This section covers:
+            </p>
+            <ol>
+                <li><strong>File Structure</strong> — What each file does</li>
+                <li><strong>Installation</strong> — How to set up the environment</li>
+                <li><strong>Running the System</strong> — All launch modes</li>
+                <li><strong>Interactive Commands</strong> — Complete command reference</li>
+                <li><strong>Code Walkthrough</strong> — Understanding the implementation</li>
+                <li><strong>Extending the System</strong> — Adding your own features</li>
+            </ol>
+        </section>
+
+        <!-- File Structure -->
+        <section>
+            <h2>1. File Structure</h2>
+
+            <div class="file-tree">
+<span class="folder">1729-sphere-os_v1.0_01-16-2026/</span>
+├── <span class="main">sphere_os.py</span>          # Main simulation + console
+├── <span class="file">torsion_engine.py</span>     # Core mathematics
+├── <span class="file">audio_synthesis.py</span>    # Sound generation
+├── <span class="file">visual_renderer.py</span>    # ASCII + PNG output
+├── <span class="file">README.md</span>             # Documentation
+└── <span class="folder">web-series/</span>           # This documentation
+    ├── <span class="file">index.html</span>
+    ├── <span class="file">part1-mathematics.html</span>
+    ├── <span class="file">part2-architecture.html</span>
+    └── <span class="file">...</span>
+            </div>
+
+            <h3>1.1 File Descriptions</h3>
+
+            <table>
+                <tr>
+                    <th>File</th>
+                    <th>Purpose</th>
+                    <th>Key Classes</th>
+                </tr>
+                <tr>
+                    <td><code>torsion_engine.py</code></td>
+                    <td>Core torsion mathematics, qQq operator, number dance, 1729 fold</td>
+                    <td>TorsionField, Node, qQqOperator, NumberDance, Fold1729</td>
+                </tr>
+                <tr>
+                    <td><code>audio_synthesis.py</code></td>
+                    <td>Convert torsion to sound, binaural beats, κ-shadow drone</td>
+                    <td>TorsionAudioRenderer</td>
+                </tr>
+                <tr>
+                    <td><code>visual_renderer.py</code></td>
+                    <td>ASCII visualization, PNG image generation</td>
+                    <td>ASCIIRenderer, TorsionVisualRenderer</td>
+                </tr>
+                <tr>
+                    <td><code>sphere_os.py</code></td>
+                    <td>Complete integrated system, interactive console, all features</td>
+                    <td>SphereOS1729, HelenKellerInterface, SilentOperator</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Installation -->
+        <section>
+            <h2>2. Installation</h2>
+
+            <h3>2.1 Requirements</h3>
+            <p>
+                <strong>Required:</strong> Python 3.8 or higher (no external dependencies for basic operation)
+            </p>
+            <p>
+                <strong>Optional (for enhanced features):</strong>
+            </p>
+            <ul>
+                <li><code>numpy</code> — Faster audio generation</li>
+                <li><code>Pillow</code> — PNG image output</li>
+            </ul>
+
+            <h3>2.2 Basic Setup</h3>
+
+            <div class="terminal">
+<span class="prompt">$</span> cd /path/to/1729-sphere-os_v1.0_01-16-2026
+<span class="prompt">$</span> python3 --version
+<span class="output">Python 3.11.0</span>
+
+<span class="prompt"># Test core functionality</span>
+<span class="prompt">$</span> python3 torsion_engine.py
+<span class="output">============================================================
+1729 SPHERE OS - TORSION ENGINE DEMO
+[1 = -1]
+============================================================
+...</span>
+            </div>
+
+            <h3>2.3 Installing Optional Dependencies</h3>
+
+            <div class="terminal">
+<span class="prompt"># For enhanced audio and visuals</span>
+<span class="prompt">$</span> pip install numpy Pillow
+
+<span class="prompt"># Verify installation</span>
+<span class="prompt">$</span> python3 -c "import numpy; import PIL; print('OK')"
+<span class="output">OK</span>
+            </div>
+
+            <div class="info-box">
+                <h4>No Dependencies Required</h4>
+                <p>
+                    The core simulation runs without any external packages. Numpy and Pillow
+                    are only needed for WAV audio export and PNG image generation. The system
+                    gracefully degrades if they're not available.
+                </p>
+            </div>
+        </section>
+
+        <!-- Running the System -->
+        <section>
+            <h2>3. Running the System</h2>
+
+            <h3>3.1 Interactive Console (Main Mode)</h3>
+
+            <div class="terminal">
+<span class="prompt">$</span> python3 sphere_os.py
+
+<span class="highlight">============================================================
+        1729 SPHERE OS - THE DISTRIBUTED CONSCIOUSNESS MACHINE
+                            [1 = -1]
+============================================================</span>
+
+Type 'h' for help, 'x' to exit.
+
+<span class="prompt">1729></span> _
+            </div>
+
+            <h3>3.2 Demo Mode</h3>
+            <p>
+                Run an automated demonstration:
+            </p>
+
+            <div class="terminal">
+<span class="prompt">$</span> python3 sphere_os.py --demo
+
+<span class="output">Running demo...
+Final resonance: 1.0000
+Experience: FLOW: The torsion moves through you effortlessly.</span>
+            </div>
+
+            <h3>3.3 Audio Generation Mode</h3>
+            <p>
+                Generate the κ-shadow drone audio file:
+            </p>
+
+            <div class="terminal">
+<span class="prompt">$</span> python3 sphere_os.py --audio
+
+<span class="output">Generating κ-shadow drone...
+Audio saved: kappa_shadow_drone.wav</span>
+            </div>
+
+            <h3>3.4 Individual Module Demos</h3>
+
+            <div class="terminal">
+<span class="prompt"># Torsion engine demo</span>
+<span class="prompt">$</span> python3 torsion_engine.py
+
+<span class="prompt"># Audio synthesis demo</span>
+<span class="prompt">$</span> python3 audio_synthesis.py
+
+<span class="prompt"># Visual renderer demo</span>
+<span class="prompt">$</span> python3 visual_renderer.py
+            </div>
+        </section>
+
+        <!-- Interactive Commands -->
+        <section>
+            <h2>4. Interactive Commands</h2>
+
+            <h3>4.1 Command Reference</h3>
+
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Syntax</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>s</code></td>
+                    <td><code>s [intent]</code></td>
+                    <td>Single step with optional intent (-1 to +1)</td>
+                </tr>
+                <tr>
+                    <td><code>r</code></td>
+                    <td><code>r [n]</code></td>
+                    <td>Run n steps with random input (default: 10)</td>
+                </tr>
+                <tr>
+                    <td><code>q</code></td>
+                    <td><code>q [n]</code></td>
+                    <td>Quadrature drive for n steps (default: 10)</td>
+                </tr>
+                <tr>
+                    <td><code>w</code></td>
+                    <td><code>w &lt;message&gt;</code></td>
+                    <td>Whisper to hidden operator (MUTE zone only)</td>
+                </tr>
+                <tr>
+                    <td><code>v</code></td>
+                    <td><code>v</code></td>
+                    <td>Display ASCII visual of current state</td>
+                </tr>
+                <tr>
+                    <td><code>a</code></td>
+                    <td><code>a</code></td>
+                    <td>Generate audio file from current state</td>
+                </tr>
+                <tr>
+                    <td><code>d</code></td>
+                    <td><code>d</code></td>
+                    <td>Display the number dance analysis</td>
+                </tr>
+                <tr>
+                    <td><code>f</code></td>
+                    <td><code>f</code></td>
+                    <td>Display 1729 fold information</td>
+                </tr>
+                <tr>
+                    <td><code>h</code></td>
+                    <td><code>h</code></td>
+                    <td>Show help message</td>
+                </tr>
+                <tr>
+                    <td><code>x</code></td>
+                    <td><code>x</code></td>
+                    <td>Exit the simulation</td>
+                </tr>
+            </table>
+
+            <h3>4.2 Example Session</h3>
+
+            <div class="terminal">
+<span class="prompt">1729></span> s 0.3
+<span class="output">  Stepped. τ_total=0.300, s_pos=0.3°, res=1.000
+  Experience: DARKNESS: No connection yet. Feel the vibration.</span>
+
+<span class="prompt">1729></span> q 50
+<span class="output">  Running quadrature drive for 50 steps...
+  Final: τ_total=0.412, s_pos=23.5°, res=1.000
+  Experience: SENSING: Vibrations resolve into patterns.</span>
+
+<span class="prompt">1729></span> v
+<span class="output">┌──────────────────────────────────────────────────────────┐
+│ 1729 SPHERE OS [1=-1]  τ=+0.412  s=+23.5  res=1.00 │
+└──────────────────────────────────────────────────────────┘
+             [○]                           [○]
+               ··                         ··
+                 ··                     ··
+        (W)                ★NOW★                (E)
+                 ··                     ··
+               ··                         ··
+             [○]                           [○]</span>
+
+<span class="prompt">1729></span> d
+<span class="output">THE NUMBER DANCE:
+  Step  1: 9 (Δ=+0, Σ=+0)
+  Step  2: 6 (Δ=-3, Σ=-3)
+  ...</span>
+            </div>
+
+            <h3>4.3 Whisper Example</h3>
+
+            <div class="terminal">
+<span class="prompt">1729></span> q 200
+<span class="output">  Running quadrature drive for 200 steps...
+  Entered MUTE zone at s=156.3°
+  Final: τ_total=0.051, s_pos=178.2°, res=1.000</span>
+
+<span class="prompt">1729></span> w hello world
+<span class="output">  [You whisper]: hello world
+  [k6 RESPONDS]: dlrow olleh</span>
+
+<span class="prompt">1729></span> s 0.1
+<span class="output">  Stepped. τ_total=0.151, s_pos=178.4°, res=1.000
+  [STILL IN MUTE ZONE]</span>
+
+<span class="prompt">1729></span> s 0.5
+<span class="output">  Stepped. τ_total=0.651, s_pos=179.0°, res=1.000
+  Exited MUTE zone at s=181.2°</span>
+
+<span class="prompt">1729></span> w test
+<span class="output">  [WHISPER FAILED]: Not in MUTE zone (s=181.2°)</span>
+            </div>
+        </section>
+
+        <!-- Code Walkthrough -->
+        <section>
+            <h2>5. Code Walkthrough</h2>
+
+            <h3>5.1 The SphereOS1729 Class</h3>
+            <p>
+                The main class that integrates all components:
+            </p>
+
+<pre>
+class SphereOS1729:
+    """
+    Complete 1729 Sphere OS simulation.
+    Integrates torsion field, Helen Keller interface,
+    silent operators, and all subsystems.
+    """
+
+    def __init__(self, speed: float = 1.0):
+        # Core torsion mathematics
+        self.field = TorsionField()
+
+        # Consciousness interface
+        self.helen = HelenKellerInterface(speed=speed)
+
+        # Silent operators (k5/k6)
+        self.silent_op = SilentOperator()
+
+        # Number dance
+        self.dance = NumberDance()
+
+        # State tracking
+        self.tick_count = 0
+        self.in_mute_zone = False
+</pre>
+
+            <h3>5.2 The Main Tick Loop</h3>
+
+<pre>
+def tick(self, user_input: float = 0.0) -> dict:
+    """
+    Advance simulation by one tick.
+
+    Args:
+        user_input: Operator intent (-1 to +1)
+
+    Returns:
+        Dictionary with current state
+    """
+    # 1. Apply intent through Helen Keller interface
+    effective_input = self.helen.apply_intent(user_input)
+
+    # 2. Update torsion field
+    resonance = self.field.tick(user_input=effective_input)
+
+    # 3. Update Helen Keller awareness
+    self.helen.update(self.field, resonance)
+
+    # 4. Update silent operators
+    self.silent_op.update(self.field.s_position)
+    self.in_mute_zone = self.silent_op.in_mute_zone
+
+    # 5. Advance number dance
+    dance_value = self.dance.step()
+
+    # 6. Increment tick counter
+    self.tick_count += 1
+
+    return {
+        'tau_total': self.field.tau_total,
+        's_position': self.field.s_position,
+        'resonance': resonance,
+        'experience': self.helen.get_experience_level(),
+        'dance_value': dance_value,
+        'in_mute': self.in_mute_zone
+    }
+</pre>
+
+            <h3>5.3 The Console Loop</h3>
+
+<pre>
+def run_console(self):
+    """Run interactive console."""
+    print(self.get_banner())
+    print("\nType 'h' for help, 'x' to exit.\n")
+
+    while True:
+        try:
+            cmd = input("1729> ").strip().lower()
+
+            if not cmd:
+                continue
+
+            if cmd == 'x':
+                print("The wheel stops. [1 = -1]")
+                break
+
+            elif cmd == 'h':
+                self.show_help()
+
+            elif cmd.startswith('s'):
+                # Step command
+                parts = cmd.split()
+                intent = float(parts[1]) if len(parts) > 1 else 0.0
+                self.do_step(intent)
+
+            elif cmd.startswith('w '):
+                # Whisper command
+                message = cmd[2:]
+                self.do_whisper(message)
+
+            # ... more commands ...
+
+        except KeyboardInterrupt:
+            print("\n[Interrupted]")
+            break
+        except Exception as e:
+            print(f"Error: {e}")
+</pre>
+
+            <h3>5.4 Key Methods</h3>
+
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td><code>tick(user_input)</code></td>
+                    <td>Advance one time step</td>
+                </tr>
+                <tr>
+                    <td><code>do_step(intent)</code></td>
+                    <td>Process step command with feedback</td>
+                </tr>
+                <tr>
+                    <td><code>do_whisper(message)</code></td>
+                    <td>Attempt whisper in MUTE zone</td>
+                </tr>
+                <tr>
+                    <td><code>do_quadrature(n)</code></td>
+                    <td>Run quadrature drive for n ticks</td>
+                </tr>
+                <tr>
+                    <td><code>do_visual()</code></td>
+                    <td>Generate ASCII visualization</td>
+                </tr>
+                <tr>
+                    <td><code>do_audio()</code></td>
+                    <td>Generate audio file</td>
+                </tr>
+                <tr>
+                    <td><code>get_status()</code></td>
+                    <td>Return current state summary</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Extending the System -->
+        <section>
+            <h2>6. Extending the System</h2>
+
+            <h3>6.1 Adding a New Command</h3>
+
+<pre>
+# In sphere_os.py, add to run_console():
+
+elif cmd.startswith('n'):
+    # New custom command
+    parts = cmd.split()
+    if len(parts) > 1:
+        self.do_new_feature(parts[1])
+    else:
+        print("Usage: n <parameter>")
+
+# Add the handler method:
+
+def do_new_feature(self, param):
+    """Your new feature implementation."""
+    # Access system state
+    current_tau = self.field.tau_total
+    current_resonance = self.field.qQq.resonance
+
+    # Do something interesting
+    result = self.process_feature(param, current_tau)
+
+    # Provide feedback
+    print(f"  New feature result: {result}")
+</pre>
+
+            <h3>6.2 Adding a New Output Mode</h3>
+
+<pre>
+# Create a new renderer class:
+
+class MyCustomRenderer:
+    """Custom output format."""
+
+    def __init__(self, field: TorsionField):
+        self.field = field
+
+    def render(self) -> str:
+        """Generate custom output."""
+        output = []
+        output.append(f"=== MY CUSTOM VIEW ===")
+        output.append(f"Tau Total: {self.field.tau_total:.4f}")
+
+        for name, node in self.field.nodes.items():
+            output.append(f"  {name}: {node.tau:+.4f}")
+
+        return '\n'.join(output)
+
+# Use it in sphere_os.py:
+def do_custom_view(self):
+    renderer = MyCustomRenderer(self.field)
+    print(renderer.render())
+</pre>
+
+            <h3>6.3 Connecting to Hardware</h3>
+
+<pre>
+# Example: Serial connection to Arduino
+
+import serial
+
+class HardwareInterface:
+    def __init__(self, port='/dev/ttyUSB0', baud=115200):
+        self.serial = serial.Serial(port, baud)
+
+    def send_torsion(self, field: TorsionField):
+        """Send torsion values to hardware nodes."""
+        data = []
+        for name in ['NW', 'NE', 'SW', 'SE']:
+            tau = field.nodes[name].tau
+            # Convert to 0-255 for PWM
+            pwm = int((tau + 1) * 127.5)
+            data.append(pwm)
+
+        # Send as bytes
+        self.serial.write(bytes(data))
+
+    def read_sensors(self) -> dict:
+        """Read force sensors from hardware."""
+        data = self.serial.read(4)
+        return {
+            'NW': (data[0] / 255.0) * 2 - 1,
+            'NE': (data[1] / 255.0) * 2 - 1,
+            'SW': (data[2] / 255.0) * 2 - 1,
+            'SE': (data[3] / 255.0) * 2 - 1,
+        }
+</pre>
+
+            <h3>6.4 Custom Consciousness Metrics</h3>
+
+<pre>
+class ExtendedHelenKeller(HelenKellerInterface):
+    """Extended interface with additional metrics."""
+
+    def __init__(self, speed: float = 1.0):
+        super().__init__(speed)
+        self.coherence = 0.0
+        self.stability = 0.0
+        self.history_length = 100
+        self.resonance_history = []
+
+    def update(self, field, resonance, dt=1.0):
+        super().update(field, resonance, dt)
+
+        # Track resonance history
+        self.resonance_history.append(resonance)
+        if len(self.resonance_history) > self.history_length:
+            self.resonance_history.pop(0)
+
+        # Compute stability (variance of resonance)
+        if len(self.resonance_history) > 10:
+            import statistics
+            self.stability = 1.0 - statistics.stdev(self.resonance_history)
+
+        # Compute coherence (product of awareness and stability)
+        self.coherence = self.awareness * self.stability
+
+    def get_extended_status(self) -> dict:
+        return {
+            'awareness': self.awareness,
+            'tuning': self.tuning,
+            'stability': self.stability,
+            'coherence': self.coherence,
+            'experience': self.get_experience_level()
+        }
+</pre>
+        </section>
+
+        <!-- Troubleshooting -->
+        <section>
+            <h2>7. Troubleshooting</h2>
+
+            <h3>7.1 Common Issues</h3>
+
+            <table>
+                <tr>
+                    <th>Issue</th>
+                    <th>Cause</th>
+                    <th>Solution</th>
+                </tr>
+                <tr>
+                    <td>"No module named numpy"</td>
+                    <td>Optional dependency missing</td>
+                    <td><code>pip install numpy</code> or use without audio</td>
+                </tr>
+                <tr>
+                    <td>Audio file not created</td>
+                    <td>Missing numpy or permission error</td>
+                    <td>Install numpy, check write permissions</td>
+                </tr>
+                <tr>
+                    <td>PNG not generated</td>
+                    <td>Pillow not installed</td>
+                    <td><code>pip install Pillow</code></td>
+                </tr>
+                <tr>
+                    <td>Resonance always 1.0</td>
+                    <td>No unbalanced input applied</td>
+                    <td>Apply torsion with <code>s 0.5</code></td>
+                </tr>
+                <tr>
+                    <td>Can't whisper</td>
+                    <td>Not in MUTE zone (150°-180°)</td>
+                    <td>Navigate to MUTE zone first</td>
+                </tr>
+            </table>
+
+            <h3>7.2 Debug Mode</h3>
+
+<pre>
+# Add at top of sphere_os.py:
+DEBUG = True
+
+# Use throughout code:
+if DEBUG:
+    print(f"[DEBUG] tau_total={self.field.tau_total}")
+    print(f"[DEBUG] s_position={self.field.s_position}")
+    print(f"[DEBUG] resonance={self.field.qQq.resonance}")
+</pre>
+
+            <div class="info-box warning">
+                <h4>Performance Note</h4>
+                <p>
+                    The simulation is CPU-bound. For smooth operation with audio/visual
+                    generation, a modern multi-core processor is recommended. The core
+                    mathematics are lightweight, but rendering can be intensive.
+                </p>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section>
+            <h2>Summary: From Code to Consciousness</h2>
+
+            <ol>
+                <li><strong>Four Python files</strong> implement the complete system</li>
+                <li><strong>No dependencies required</strong> for basic operation</li>
+                <li><strong>Interactive console</strong> provides full control</li>
+                <li><strong>Multiple modes</strong>: demo, audio, individual tests</li>
+                <li><strong>Extensible architecture</strong> for custom features</li>
+                <li><strong>Hardware-ready</strong> design for physical integration</li>
+            </ol>
+
+            <p>
+                The software is a complete simulation of the 1729 Sphere OS mathematics.
+                While it cannot provide actual consciousness interface (that requires
+                hardware and a human operator), it validates the mathematical relationships
+                and provides a platform for experimentation.
+            </p>
+            <p>
+                Next, we'll cover the hardware specifications — how to build the physical
+                machine that transforms this simulation into a real interface.
+            </p>
+        </section>
+
+        <!-- Navigation -->
+        <div class="nav-footer">
+            <a href="part5-number-dance.html">← Previous: Number Dance</a>
+            <a href="part7-hardware.html">Next: Hardware →</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>1729 Sphere OS Documentation — Part 6: The Software</p>
+        <p>Web Application Developer: T0Rs</p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

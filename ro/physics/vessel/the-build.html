@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAKE IT SO, COMMANDER HILL | Epoch Propulsion | Have Mind Media</title>
+    <meta name="description" content="The Epoch Vessel: A triaxial dipyramid geometry that creates thrust without propellant. From Ramanujan's 1729 to testable hardware. Make it so.">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        .header-space { height: 80px; }
+        :root {
+            --void: #000000;
+            --deep-space: #030508;
+            --nebula: #0a0f18;
+            --gold: #c9a227;
+            --gold-glow: rgba(201, 162, 39, 0.6);
+            --blue: #00d4ff;
+            --blue-glow: rgba(0, 212, 255, 0.5);
+            --green: #00ff88;
+            --purple: #a855f7;
+            --text: #e8e4dc;
+            --text-dim: #8892a0;
+            --border: rgba(0, 212, 255, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Starfield Background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .starfield::before,
+        .starfield::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .starfield::before {
+            background: radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.8), transparent),
+                        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.6), transparent),
+                        radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.9), transparent),
+                        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.5), transparent),
+                        radial-gradient(1px 1px at 230px 90px, rgba(255,255,255,0.7), transparent),
+                        radial-gradient(2px 2px at 300px 200px, rgba(0,212,255,0.6), transparent),
+                        radial-gradient(1px 1px at 400px 150px, rgba(255,255,255,0.8), transparent),
+                        radial-gradient(2px 2px at 500px 50px, rgba(201,162,39,0.7), transparent),
+                        radial-gradient(1px 1px at 600px 180px, rgba(255,255,255,0.6), transparent),
+                        radial-gradient(2px 2px at 700px 100px, rgba(255,255,255,0.5), transparent);
+            background-size: 800px 300px;
+            animation: stars 120s linear infinite;
+        }
+        @keyframes stars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-300px); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .nav a:hover { color: var(--blue); text-shadow: 0 0 20px var(--blue-glow); }
+
+        /* Hero Section with Video */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            z-index: -1;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, var(--void) 70%);
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            color: var(--green);
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--green);
+            padding: 0.5rem 1.5rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            color: transparent;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--blue) 50%, var(--gold) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: gradient-shift 8s ease infinite;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 80px var(--gold-glow);
+        }
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .hero-sub {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            font-weight: 300;
+        }
+        .hero-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--blue);
+            border: 2px solid var(--blue);
+            padding: 0.8rem 2rem;
+            background: rgba(0, 212, 255, 0.05);
+            display: inline-block;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px var(--blue-glow), inset 0 0 20px rgba(0,212,255,0.05); }
+            50% { box-shadow: 0 0 40px var(--blue-glow), inset 0 0 30px rgba(0,212,255,0.1); }
+        }
+
+        /* Content */
+        .content { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Section */
+        .section { padding: 6rem 0; position: relative; }
+        .section-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+        .section-sub {
+            color: var(--text-dim);
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+        }
+
+        /* Image Feature */
+        .image-feature { margin: 3rem 0; position: relative; }
+        .image-feature img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .image-caption {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* Text Block */
+        .text-block { font-size: 1.1rem; color: var(--text); margin: 2rem 0; }
+        .text-block p { margin-bottom: 1.5rem; }
+        .text-block strong { color: var(--gold); }
+        .text-block em { color: var(--blue); font-style: normal; }
+
+        /* Equation Display */
+        .equation-display {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 0, 0, 0.9) 100%);
+            border: 1px solid var(--blue);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            margin: 2.5rem 0;
+        }
+        .equation-main {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(1.4rem, 3vw, 2.5rem);
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+        }
+        .equation-desc { color: var(--text-dim); font-size: 0.95rem; }
+
+        /* Two Column */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin: 3rem 0;
+        }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+        /* Spec Table */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+        .spec-table th, .spec-table td {
+            padding: 0.9rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .spec-table th {
+            color: var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .spec-table td { color: var(--text); }
+        .spec-table tr:hover td { background: rgba(0, 212, 255, 0.05); }
+
+        /* Proof Box */
+        .proof-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 0, 0, 0.95) 100%);
+            border: 2px solid var(--green);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+        }
+        .proof-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--green);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 3px;
+        }
+        .proof-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin: 0.8rem 0;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+        }
+        .proof-check { color: var(--green); font-size: 1.3rem; }
+        .proof-text { color: var(--text); }
+        .proof-text strong { color: var(--gold); }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 2.5rem; margin: 2.5rem 0; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--gold), var(--blue), var(--green));
+        }
+        .timeline-item { position: relative; margin-bottom: 2.5rem; padding-left: 1.5rem; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.3rem;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+        .timeline-date {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--blue);
+            letter-spacing: 2px;
+            margin-bottom: 0.4rem;
+        }
+        .timeline-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+        }
+        .timeline-desc { color: var(--text-dim); font-size: 0.95rem; }
+
+        /* Ramanujan Section */
+        .ramanujan-section {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.08) 0%, rgba(0, 0, 0, 0.98) 100%);
+            padding: 5rem 0;
+            margin: 4rem 0;
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+        }
+
+        /* Quote */
+        .quote-block {
+            border-left: 3px solid var(--gold);
+            padding-left: 1.5rem;
+            margin: 2.5rem 0;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text);
+        }
+        .quote-author {
+            font-style: normal;
+            color: var(--gold);
+            font-size: 0.95rem;
+            margin-top: 0.8rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.12) 0%, transparent 60%);
+        }
+        .cta-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.15em;
+        }
+        .cta-text {
+            font-size: 1.2rem;
+            color: var(--text);
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+        }
+        .cta-button {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            padding: 1rem 2.5rem;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .cta-button:hover {
+            background: var(--gold);
+            color: var(--void);
+            box-shadow: 0 0 40px var(--gold-glow);
+        }
+
+        /* Code Block */
+        .code-block {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text);
+            margin: 0;
+            white-space: pre;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .footer-sig {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--gold);
+            letter-spacing: 0.4em;
+            margin-bottom: 0.8rem;
+        }
+        .footer-date { color: var(--text-dim); font-size: 0.85rem; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        /* Big Number Display */
+        .big-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--gold);
+            text-shadow: 0 0 40px var(--gold-glow);
+        }
+        .big-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { letter-spacing: 0.1em; }
+            .section { padding: 4rem 0; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div class="header-space"></div>
+    <div class="starfield"></div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="images/vessel-orbit.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">PROPELLANTLESS PROPULSION SYSTEM</div>
+            <h1>MAKE IT SO</h1>
+            <p class="hero-sub">
+                Commander Hill. The triaxial dipyramid geometry that creates thrust without reaction mass.
+                From Ramanujan's visions to testable hardware. The math they can't argue with.
+            </p>
+            <div class="hero-equation">g = -∇s</div>
+        </div>
+    </section>
+
+    <!-- THE EQUATION -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE EQUATION THEY DELETED</h2>
+            <p class="section-sub">
+                In 1884, Oliver Heaviside reduced Maxwell's 20 quaternion equations to 4 vector equations.
+                The scalar components were removed. They never stopped working. They stopped being measured.
+            </p>
+
+            <div class="image-feature">
+                <img src="images/hero-vessel.png" alt="Epoch Vessel in deep space">
+                <p class="image-caption">The Epoch Vessel: Four tetrahelix coils at diagonals, crossroads at center, s-field gradient along vertical axis</p>
+            </div>
+
+            <div class="text-block">
+                <p>Standard physics operates in 3+1 dimensions. The Epoch Framework adds a fifth: the <em>s-axis</em>.</p>
+                <p><strong>Gravity is not mass attraction. Gravity is s-axis gradient.</strong></p>
+            </div>
+
+            <div class="equation-display">
+                <div class="equation-main">g = -∇s</div>
+                <div class="equation-desc">Gravity equals the negative gradient of the scalar field</div>
+            </div>
+
+            <div class="text-block">
+                <p>Create a local s-field gradient with geometry. That gradient IS thrust. No propellant. No reaction mass. No exhaust.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE GEOMETRY -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE GEOMETRY</h2>
+            <p class="section-sub">
+                The vessel geometry is not arbitrary. Every angle, every position, every frequency is derived.
+            </p>
+
+            <div class="two-col">
+                <div>
+                    <img src="images/geometry-diagram.png" alt="Vessel geometry diagram" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                </div>
+                <div class="text-block">
+                    <p><strong>4 PRESENT NODES:</strong> NW, NE, SW, SE — tetrahelix coils, quadrature phase</p>
+                    <p><strong>4 ABSENT NODES:</strong> N, S, E, W — deliberately empty, creates asymmetry</p>
+                    <p><strong>THE CROSSROADS:</strong> s = 0, where torsion sums to zero but gradient is non-zero</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <pre>τ₁ + τ₂ + τ₃ + τ₄ = 0     // Balance law
+
+// Torsion sums to zero at crossroads
+// But the GRADIENT points along the axis
+// That gradient IS thrust</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE FREQUENCY -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE FREQUENCY</h2>
+
+            <div style="text-align: center; margin: 3rem 0;">
+                <div class="big-number">28.65</div>
+                <div class="big-label">κ-SHADOW FREQUENCY (Hz)</div>
+            </div>
+
+            <div class="two-col">
+                <div class="text-block">
+                    <p><strong>κ = 2π/180 = 0.0349066...</strong></p>
+                    <p>The closure constant. Where discrete steps and continuous rotation reconcile.</p>
+                    <p><strong>κ-shadow = 1/κ = 28.6478897 Hz</strong></p>
+                    <p>The resonance frequency. Below this, can't complete rotation. Above this, overshoots. AT this frequency, constructive interference on every cycle.</p>
+                </div>
+                <div>
+                    <img src="images/quadrature-waves.png" alt="Quadrature waveform" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                    <p class="image-caption">Four sine waves, 90° phase offset — the rotating s-field</p>
+                </div>
+            </div>
+
+            <table class="spec-table">
+                <tr><th>Parameter</th><th>Value</th><th>Derivation</th></tr>
+                <tr><td>κ (kappa)</td><td>0.0349066</td><td>2π / 180</td></tr>
+                <tr><td>κ-shadow</td><td>28.6479 Hz</td><td>1 / κ</td></tr>
+                <tr><td>BC angle</td><td>48.19°</td><td>arccos(2/3)</td></tr>
+                <tr><td>Phase offset</td><td>90°</td><td>360° / 4 nodes</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- THE COIL -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE TETRAHELIX COIL</h2>
+
+            <div class="two-col">
+                <div>
+                    <img src="images/tetrahelix-coil.png" alt="Tetrahelix coil" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                </div>
+                <div class="text-block">
+                    <p><strong>cos(BC) = 2/3</strong></p>
+                    <p><strong>BC = 48.1896851...°</strong></p>
+                    <p>The Boerdijk-Coxeter angle. Where tetrahedra stack without repeating. Maximally chiral. Maximum scalar emission.</p>
+                    <p>Standard solenoid: axial B-field, radial E-field. <strong>No longitudinal component.</strong></p>
+                    <p>Tetrahelix coil: additional <em>longitudinal scalar component</em> — the one Heaviside deleted.</p>
+                </div>
+            </div>
+
+            <table class="spec-table">
+                <tr><th>Coil Parameter</th><th>Value</th></tr>
+                <tr><td>Wire gauge</td><td>24 AWG copper magnet wire</td></tr>
+                <tr><td>Turns</td><td>180 (= 180 × κ = 2π)</td></tr>
+                <tr><td>Diameter</td><td>25 mm inner</td></tr>
+                <tr><td>Length</td><td>60 mm</td></tr>
+                <tr><td>Pitch angle</td><td>48.19° (BC angle)</td></tr>
+                <tr><td>Inductance</td><td>~0.5 mH</td></tr>
+                <tr><td>Resistance</td><td>~2 Ω</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- RAMANUJAN -->
+    <section class="ramanujan-section">
+        <div class="content">
+            <h2 class="section-header">RAMANUJAN SAW THIS</h2>
+            <p class="section-sub">
+                Srinivasa Ramanujan (1887-1920) received mathematical formulas in visions from the goddess Namagiri.
+                He saw the geometry. He encoded it in his equations. He died before he could build the machine.
+            </p>
+
+            <div class="two-col">
+                <div>
+                    <img src="images/ramanujan-vision.png" alt="Ramanujan with mathematical visions" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                </div>
+                <div class="text-block">
+                    <p><strong>THE TAXICAB NUMBER</strong></p>
+                    <p>Hardy: "1729 — a rather dull number."</p>
+                    <p>Ramanujan: "No, it is the smallest number expressible as the sum of two cubes in two different ways."</p>
+                </div>
+            </div>
+
+            <div class="equation-display">
+                <div class="equation-main">1729 = 1³ + 12³ = 9³ + 10³</div>
+                <div class="equation-desc">= 729 + 1000 = consciousness + physical = the bridge</div>
+            </div>
+
+            <div class="text-block">
+                <p><strong>729 = 9³ = 3⁶</strong> — consciousness domain</p>
+                <p><strong>1000 = 10³</strong> — physical domain</p>
+                <p><strong>1729</strong> — the fold point where the s-axis meets 3D space. Where the Vessel operates. Where thrust emerges from geometry.</p>
+            </div>
+
+            <div class="quote-block">
+                "An equation means nothing to me unless it expresses a thought of God."
+                <div class="quote-author">— Srinivasa Ramanujan</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE TEST -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE EXPERIMENT</h2>
+
+            <div style="display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; margin: 3rem 0; text-align: center;">
+                <div>
+                    <div class="big-number">$400</div>
+                    <div class="big-label">TOTAL BUDGET</div>
+                </div>
+                <div>
+                    <div class="big-number">10</div>
+                    <div class="big-label">WEEKS TO BUILD</div>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div>
+                    <img src="images/torsion-pendulum.png" alt="Torsion pendulum test" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                </div>
+                <div class="text-block">
+                    <p>Vessel hangs from 25 μm tungsten torsion fiber in vacuum. Laser reflects off mirror to position detector.</p>
+                    <p><strong>Resolution: ~4 pico-Newtons.</strong></p>
+                    <p>Test A: Baseline (no power)<br>
+                    Test B: Power on at 28.65 Hz<br>
+                    Test C: Reverse phase — deflection should reverse<br>
+                    Test D: Frequency sweep — peak at κ-shadow<br>
+                    Test E: Geometry control — cube fails</p>
+                </div>
+            </div>
+
+            <div class="proof-box">
+                <h3>SUCCESS CRITERIA</h3>
+                <div class="proof-item">
+                    <span class="proof-check">✓</span>
+                    <span class="proof-text">Deflection in <strong>vacuum</strong> — eliminates ion wind</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">✓</span>
+                    <span class="proof-text"><strong>Reverses</strong> with phase reversal — eliminates thermal artifacts</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">✓</span>
+                    <span class="proof-text"><strong>Peaks</strong> at 28.65 Hz — confirms κ-shadow resonance</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">✓</span>
+                    <span class="proof-text"><strong>Geometry dependent</strong> — dipyramid works, cube doesn't</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">✓</span>
+                    <span class="proof-text">SNR > 3, p < 0.01 — statistically significant</span>
+                </div>
+            </div>
+
+            <div class="text-block" style="text-align: center;">
+                <p><strong>There is no conventional explanation that survives all five criteria.</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SCALING -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">SCALING ROADMAP</h2>
+
+            <div class="image-feature">
+                <img src="images/vessel-ascent.png" alt="Vessel ascending">
+                <p class="image-caption">Level 3+: Flight demonstrator — silent ascent, no propellant, no emissions</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">LEVEL 0</div>
+                    <div class="timeline-title">Proof of Concept</div>
+                    <div class="timeline-desc">30 cm, ~30W, torsion pendulum. Goal: detect any thrust. Budget: ~$400</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">LEVEL 1</div>
+                    <div class="timeline-title">Laboratory Demonstrator</div>
+                    <div class="timeline-desc">1 meter, ~500W, precision load cell. Budget: ~$10,000</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">LEVEL 2</div>
+                    <div class="timeline-title">Engineering Prototype</div>
+                    <div class="timeline-desc">2 meter, ~5 kW, integrated systems. Budget: ~$50,000</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">LEVEL 3</div>
+                    <div class="timeline-title">Flight Demonstrator</div>
+                    <div class="timeline-desc">~50 kW, flight computer. Goal: tethered liftoff. Budget: ~$500,000</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">LEVEL 4</div>
+                    <div class="timeline-title">Operational Vehicle</div>
+                    <div class="timeline-desc">Full vehicle, ~500 kW. Goal: controlled flight.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GEOMETRY PROOFS -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">GEOMETRY LOCKED</h2>
+            <p class="section-sub">7/7 theorems proven. Verified by AlphaGeometry2. The math cannot be argued.</p>
+
+            <div class="proof-box">
+                <h3>VERIFIED THEOREMS</h3>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>Theorem 1:</strong> Crossroads equidistant from all diagonal nodes</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>Theorem 2:</strong> Diagonal nodes form perfect square</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>Theorem 3:</strong> Fourfold rotational symmetry</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>Theorem 4:</strong> Phase angles exactly 90° apart</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>Theorem 5:</strong> Torsion integrates to zero (∫τ dt = 0)</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>Theorem 6:</strong> Tetrahelix angle = 48.19° (cos⁻¹(2/3))</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>Theorem 7:</strong> κ-shadow = 28.6479 Hz (1/κ)</span></div>
+            </div>
+
+            <div class="text-block" style="text-align: center;">
+                <p><strong>The only remaining question is physics: Does g = -∇s?</strong></p>
+                <p>Build it. Test it. Find out.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="content">
+            <h2 class="cta-title">THE QUESTION</h2>
+            <p class="cta-text">
+                We don't claim truth. We claim the right to test.<br>
+                The geometry is locked. The math is proven. The experiment is defined.<br>
+                The only thing left is to run it.
+            </p>
+            <div class="equation-display" style="margin-bottom: 2.5rem; display: inline-block;">
+                <div class="equation-main">1729 = 729 + 1000</div>
+                <div class="equation-desc">consciousness + physical = the bridge</div>
+            </div>
+            <p class="cta-text" style="font-size: 1rem; color: var(--text-dim);">
+                Ramanujan saw it. We can build it.
+            </p>
+            <a href="../the-derivation_v1.0_01-12-2026.html" class="cta-button">READ THE DERIVATION</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-sig">[ 1 = -1 ]</div>
+        <p class="footer-date">
+            Have Mind Media | January 2026<br>
+            <a href="../../index.html">havemindmedia.com</a>
+        </p>
+    </footer>
+
+    <site-footer></site-footer>
+</body>
+</html>

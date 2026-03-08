@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete step-by-step derivation of the Hydrogen atom from geometric first principles. The foundation of all atomic physics in the Epoch framework.">
+    <title>Hydrogen Derivation | Atomic Structure from Geometry</title>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quattrocento:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-light: #e8d48b;
+            --dark: #0a0a12;
+            --darker: #050508;
+            --panel: #12121a;
+            --text: #e8e6e3;
+            --text-dim: #8a8a9a;
+            --accent: #3fb950;
+            --hydrogen: #ff6b6b;
+            --checkpoint: #4a9eff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Quattrocento', Georgia, serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.8;
+        }
+
+        main {
+            padding-top: 80px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        /* Navigation */
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .page-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .page-nav a:hover { color: var(--gold-light); }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+            margin-bottom: 3rem;
+        }
+
+        .element-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2) 0%, rgba(255, 107, 107, 0.05) 100%);
+            border: 2px solid var(--hydrogen);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .element-symbol-large {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--hydrogen);
+        }
+
+        .element-info h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--text);
+        }
+
+        .element-info p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Step Sections */
+        .step-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: var(--panel);
+            border-radius: 16px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            background: rgba(201, 162, 39, 0.15);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+        }
+
+        .step-content p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        /* Calculation Boxes */
+        .calc-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .calc-box .calc-line {
+            padding: 0.3rem 0;
+            color: var(--text);
+        }
+
+        .calc-box .calc-result {
+            color: var(--gold);
+            font-weight: 600;
+            border-top: 1px solid rgba(201, 162, 39, 0.3);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .calc-box .calc-comment {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* Checkpoint Boxes */
+        .checkpoint {
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.15) 0%, rgba(74, 158, 255, 0.05) 100%);
+            border: 2px solid var(--checkpoint);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .checkpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkpoint-icon {
+            font-size: 1.5rem;
+        }
+
+        .checkpoint-title {
+            font-family: 'Cinzel', serif;
+            color: var(--checkpoint);
+            font-size: 1.1rem;
+        }
+
+        .checkpoint p {
+            margin-bottom: 0.5rem;
+        }
+
+        .checkpoint code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--checkpoint);
+        }
+
+        .checkpoint .expected {
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        /* Result Box */
+        .result-box {
+            background: linear-gradient(135deg, rgba(63, 185, 80, 0.15) 0%, rgba(63, 185, 80, 0.05) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .result-box h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .result-comparison .result-item {
+            width: calc(50% - 1rem);
+            min-width: 200px;
+        }
+
+        .result-item {
+            text-align: center;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .accuracy-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+
+        /* Formula Summary */
+        .formula-summary {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .formula-summary h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .formula-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--gold);
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        /* Python Code Block */
+        .code-block {
+            background: #1e1e2e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .code-header {
+            background: rgba(201, 162, 39, 0.2);
+            padding: 0.75rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .code-content .comment { color: #6a9955; }
+        .code-content .keyword { color: #569cd6; }
+        .code-content .string { color: #ce9178; }
+        .code-content .number { color: #b5cea8; }
+        .code-content .function { color: #dcdcaa; }
+
+        /* Navigation Footer */
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(201, 162, 39, 0.2);
+            margin-top: 3rem;
+        }
+
+        .nav-footer a {
+            color: var(--gold);
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-footer a:hover {
+            background: rgba(201, 162, 39, 0.2);
+            border-color: var(--gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            main { padding-left: 1rem; padding-right: 1rem; }
+            .element-badge { flex-direction: column; text-align: center; }
+            .result-comparison { grid-template-columns: 1fr; }
+            .result-value { font-size: 1.5rem; }
+            .accuracy-display { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+
+    <main>
+        <nav class="page-nav">
+            <a href="index.html">&larr; Back to Overview</a>
+            <a href="helium.html">Next: Helium &rarr;</a>
+        </nav>
+
+        <section class="hero">
+            <div class="element-badge">
+                <div class="element-symbol-large">H</div>
+                <div class="element-info">
+                    <h1>Hydrogen</h1>
+                    <p>Atomic Number: 1 | The Simplest Atom</p>
+                </div>
+            </div>
+            <p class="hero-subtitle">
+                Hydrogen is the foundation. One proton, one electron. The simplest possible atom.
+                We establish the reference energy here that all other derivations build upon.
+            </p>
+            <div style="font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 1.2rem; margin-top: 1rem;">[1 = -1]</div>
+        </section>
+
+        <!-- PART 1: WHY HYDROGEN IS SPECIAL -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <h2 class="step-title">Why Hydrogen is the Foundation</h2>
+            </div>
+            <div class="step-content">
+                <p>
+                    Hydrogen is unique among atoms. With only one proton and one electron, there is NO electron-electron interaction to complicate things. This makes hydrogen the perfect reference point.
+                </p>
+                <p>
+                    <strong style="color: var(--gold);">The measured first ionization energy of hydrogen is:</strong>
+                </p>
+                <div class="calc-box">
+                    <div class="calc-result">E(H) = 13.6056923 eV</div>
+                    <div class="calc-comment">This is the energy required to remove the one electron from hydrogen</div>
+                </div>
+                <p>
+                    This value is also called the <strong>Rydberg energy</strong> (R<sub>H</sub>). It is one of the most precisely measured values in all of physics.
+                </p>
+            </div>
+        </div>
+
+        <!-- PART 2: THE GEOMETRIC FOUNDATION -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <h2 class="step-title">The Geometric Foundation</h2>
+            </div>
+            <div class="step-content">
+                <p>
+                    In the Epoch framework, the hydrogen ionization energy is not a mysterious "fundamental constant" - it emerges from geometry. Here's how:
+                </p>
+                <p>
+                    <strong style="color: var(--gold);">Start with &kappa;:</strong>
+                </p>
+                <div class="calc-box">
+                    <div class="calc-line">&kappa; = 2&pi;/180</div>
+                    <div class="calc-line">&kappa; = 2 &times; 3.14159265358979 / 180</div>
+                    <div class="calc-line">&kappa; = 6.28318530717958 / 180</div>
+                    <div class="calc-result">&kappa; = 0.0349065850398866</div>
+                </div>
+
+                <div class="checkpoint">
+                    <div class="checkpoint-header">
+                        <span class="checkpoint-icon">&#128221;</span>
+                        <span class="checkpoint-title">YOUR TURN - Checkpoint 1</span>
+                    </div>
+                    <p>Get your calculator and type:</p>
+                    <p><code>2 &times; 3.14159265358979 / 180 =</code></p>
+                    <p>Expected result: <span class="expected">0.0349065850398866</span></p>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">If you don't get this number, something is wrong. Stop and check your calculator.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 3: THE HYDROGEN RELATIONSHIP -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <h2 class="step-title">The Hydrogen-Kappa Relationship</h2>
+            </div>
+            <div class="step-content">
+                <p>
+                    The hydrogen ionization energy relates to &kappa; through the fine structure constant &alpha;. In the Epoch framework:
+                </p>
+                <div class="calc-box">
+                    <div class="calc-line">&alpha; &asymp; (&kappa;&pi;/15) &times; (1 - &kappa;&sup2;)</div>
+                    <div class="calc-line">&alpha; &asymp; 0.00730190...</div>
+                    <div class="calc-comment">See the Fine Structure Constant white paper for full derivation</div>
+                </div>
+                <p>
+                    The hydrogen energy emerges from the relationship:
+                </p>
+                <div class="calc-box">
+                    <div class="calc-line">E(H) = (1/2) &times; m<sub>e</sub> &times; c&sup2; &times; &alpha;&sup2;</div>
+                    <div class="calc-comment">Where m<sub>e</sub>c&sup2; = 511 keV (electron rest mass energy)</div>
+                </div>
+                <p>
+                    Let's verify this:
+                </p>
+                <div class="calc-box">
+                    <div class="calc-line">m<sub>e</sub>c&sup2; = 511,000 eV = 511 keV</div>
+                    <div class="calc-line">&alpha;&sup2; = (0.0072973525693)&sup2; = 0.0000532502...</div>
+                    <div class="calc-line">E(H) = (1/2) &times; 511,000 &times; 0.0000532502</div>
+                    <div class="calc-line">E(H) = 255,500 &times; 0.0000532502</div>
+                    <div class="calc-result">E(H) = 13.604 eV</div>
+                </div>
+
+                <div class="checkpoint">
+                    <div class="checkpoint-header">
+                        <span class="checkpoint-icon">&#128221;</span>
+                        <span class="checkpoint-title">YOUR TURN - Checkpoint 2</span>
+                    </div>
+                    <p>Verify the calculation:</p>
+                    <p><code>0.5 &times; 511000 &times; 0.0000532502 =</code></p>
+                    <p>Expected result: <span class="expected">~13.6 eV</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 4: THE SIMPLE TRUTH -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h2 class="step-title">The Simple Truth About Hydrogen</h2>
+            </div>
+            <div class="step-content">
+                <p>
+                    Here's the honest statement about hydrogen in the Epoch framework:
+                </p>
+                <p style="background: rgba(201, 162, 39, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--gold);">
+                    <strong style="color: var(--gold);">The hydrogen ionization energy (13.606 eV) is used as the REFERENCE POINT.</strong>
+                </p>
+                <p>
+                    We do not claim to derive 13.606 eV from scratch using only &kappa;. What we claim is:
+                </p>
+                <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                    <li style="margin: 0.5rem 0;">The fine structure constant &alpha; DOES emerge from &kappa; (see companion white paper)</li>
+                    <li style="margin: 0.5rem 0;">The hydrogen energy relates to &alpha;&sup2; geometrically</li>
+                    <li style="margin: 0.5rem 0;">Once we have E(H), we can derive all other atomic energies from geometry</li>
+                </ul>
+                <p>
+                    <strong>The power of the Epoch framework is not in deriving hydrogen - it's in deriving EVERYTHING ELSE from hydrogen using geometric relationships.</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- PART 5: HYDROGEN AS THE S+/S- BOUNDARY -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <h2 class="step-title">Hydrogen as the S+/S- Boundary</h2>
+            </div>
+            <div class="step-content">
+                <p>
+                    In the S+/S- framework, the hydrogen atom represents the simplest case of an electron existing at the boundary between manifested (S+) and potential (S-) reality.
+                </p>
+                <p>
+                    <strong style="color: var(--gold);">The bound electron:</strong> Exists in S+ - it has a definite energy state, a probability distribution, measurable properties.
+                </p>
+                <p>
+                    <strong style="color: var(--checkpoint);">The ionization energy:</strong> Is the energy required to move the electron from S+ (bound) to S- (free/potential).
+                </p>
+                <p>
+                    The 13.606 eV represents the "height" of the S+/S- boundary for a single electron bound to a single proton. This is why it serves as the reference:
+                </p>
+                <div class="calc-box">
+                    <div class="calc-line">For Z = 1 (hydrogen): E = R<sub>H</sub> &times; Z&sup2; = 13.606 &times; 1 = 13.606 eV</div>
+                    <div class="calc-line">For Z = 2 (helium-like): E = R<sub>H</sub> &times; Z&sup2; = 13.606 &times; 4 = 54.424 eV</div>
+                    <div class="calc-comment">But helium has TWO electrons, so shielding reduces Z<sub>eff</sub></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 6: THE GEOMETRIC CONSTANTS FOR MULTI-ELECTRON ATOMS -->
+        <div class="step-section">
+            <div class="step-header">
+                <div class="step-number">6</div>
+                <h2 class="step-title">Preparing for Multi-Electron Atoms</h2>
+            </div>
+            <div class="step-content">
+                <p>
+                    The real power of the Epoch framework appears when we move beyond hydrogen. We need to calculate the geometric constants that will determine electron shielding:
+                </p>
+
+                <h3 style="color: var(--gold); margin: 1.5rem 0 1rem; font-size: 1.1rem;">The Shadow Constant (&kappa;<sub>shadow</sub>)</h3>
+                <div class="calc-box">
+                    <div class="calc-line">&kappa;<sub>shadow</sub> = 1/&kappa;</div>
+                    <div class="calc-line">&kappa;<sub>shadow</sub> = 1 / 0.0349065850398866</div>
+                    <div class="calc-result">&kappa;<sub>shadow</sub> = 28.6478897565412</div>
+                </div>
+
+                <div class="checkpoint">
+                    <div class="checkpoint-header">
+                        <span class="checkpoint-icon">&#128221;</span>
+                        <span class="checkpoint-title">YOUR TURN - Checkpoint 3</span>
+                    </div>
+                    <p><code>1 / 0.0349065850398866 =</code></p>
+                    <p>Expected: <span class="expected">28.6478897565412</span></p>
+                </div>
+
+                <h3 style="color: var(--gold); margin: 1.5rem 0 1rem; font-size: 1.1rem;">The Projection Factor (P)</h3>
+                <div class="calc-box">
+                    <div class="calc-line">P = &radic;3 / (2&pi;)</div>
+                    <div class="calc-line">P = 1.73205080756888 / 6.28318530717958</div>
+                    <div class="calc-result">P = 0.275664407370958</div>
+                </div>
+
+                <h3 style="color: var(--gold); margin: 1.5rem 0 1rem; font-size: 1.1rem;">The Tetrahelix Ratio (cos BC = 2/3)</h3>
+                <div class="calc-box">
+                    <div class="calc-line">cos(BC) = 2/3</div>
+                    <div class="calc-result">cos(BC) = 0.666666...</div>
+                    <div class="calc-comment">This is EXACT - the tetrahelix bond angle cosine</div>
+                </div>
+
+                <h3 style="color: var(--gold); margin: 1.5rem 0 1rem; font-size: 1.1rem;">The Helix Overlap (&sigma; = 5/16)</h3>
+                <div class="calc-box">
+                    <div class="calc-line">&sigma; = 5/16</div>
+                    <div class="calc-result">&sigma; = 0.3125</div>
+                    <div class="calc-comment">This is EXACT - no rounding</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULT SUMMARY -->
+        <div class="result-box">
+            <h3>HYDROGEN SUMMARY</h3>
+            <div class="result-comparison">
+                <div class="result-item">
+                    <div class="result-label">Reference Energy</div>
+                    <div class="result-value">13.606 eV</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Status</div>
+                    <div class="result-value">BASELINE</div>
+                </div>
+            </div>
+            <p style="color: var(--text-dim); margin-top: 1rem;">
+                Hydrogen establishes the reference. The real test comes with helium and lithium.
+            </p>
+        </div>
+
+        <!-- FORMULA SUMMARY -->
+        <div class="formula-summary">
+            <h3>KEY FORMULAS FOR MULTI-ELECTRON ATOMS</h3>
+            <div class="formula-display">E(atom) = E(H) &times; Z<sub>eff</sub>&sup2;</div>
+            <p style="color: var(--text-dim); margin-top: 1rem;">
+                Where Z<sub>eff</sub> = Z - &sigma; (nuclear charge minus geometric shielding)
+            </p>
+            <div class="formula-display" style="font-size: 1.2rem; margin-top: 1rem;">
+                For Helium: &sigma; = 2/3 - &kappa;/4
+            </div>
+            <div class="formula-display" style="font-size: 1.2rem;">
+                For Lithium: Uses shell structure + P factor
+            </div>
+        </div>
+
+        <!-- PYTHON VERIFICATION -->
+        <div class="code-block">
+            <div class="code-header">
+                <span>hydrogen_reference.py</span>
+                <span style="color: var(--text-dim);">Python Verification Script</span>
+            </div>
+            <div class="code-content">
+<pre><span class="comment">"""
+Hydrogen Reference Values - Verification Script
+The foundation for all atomic derivations.
+"""</span>
+
+<span class="keyword">import</span> math
+
+<span class="function">print</span>(<span class="string">"=" * 60</span>)
+<span class="function">print</span>(<span class="string">"HYDROGEN REFERENCE VALUES"</span>)
+<span class="function">print</span>(<span class="string">"=" * 60</span>)
+
+<span class="comment"># The ONE input</span>
+pi = math.pi
+kappa = <span class="number">2</span> * pi / <span class="number">180</span>
+<span class="function">print</span>(<span class="string">f"\n&kappa; = 2&pi;/180 = {kappa}"</span>)
+
+<span class="comment"># Derived constants</span>
+kappa_shadow = <span class="number">1</span> / kappa
+P = math.sqrt(<span class="number">3</span>) / (<span class="number">2</span> * pi)
+cos_BC = <span class="number">2</span> / <span class="number">3</span>
+sigma = <span class="number">5</span> / <span class="number">16</span>
+
+<span class="function">print</span>(<span class="string">f"\n&kappa;_shadow = 1/&kappa; = {kappa_shadow}"</span>)
+<span class="function">print</span>(<span class="string">f"P = &radic;3/(2&pi;) = {P}"</span>)
+<span class="function">print</span>(<span class="string">f"cos(BC) = 2/3 = {cos_BC}"</span>)
+<span class="function">print</span>(<span class="string">f"&sigma; = 5/16 = {sigma}"</span>)
+
+<span class="comment"># Hydrogen reference</span>
+E_H = <span class="number">13.6056923</span>  <span class="comment"># eV - measured value</span>
+<span class="function">print</span>(<span class="string">f"\nHydrogen ionization energy: {E_H} eV"</span>)
+<span class="function">print</span>(<span class="string">"This is the REFERENCE for all other derivations."</span>)
+
+<span class="comment"># Fine structure constant (derived from kappa)</span>
+alpha_derived = (kappa * pi / <span class="number">15</span>) * (<span class="number">1</span> - kappa**<span class="number">2</span>)
+alpha_measured = <span class="number">0.0072973525693</span>
+<span class="function">print</span>(<span class="string">f"\n&alpha; (derived) = {alpha_derived}"</span>)
+<span class="function">print</span>(<span class="string">f"&alpha; (measured) = {alpha_measured}"</span>)
+<span class="function">print</span>(<span class="string">f"Agreement: {100 - abs(alpha_derived - alpha_measured)/alpha_measured * 100:.4f}%"</span>)
+
+<span class="function">print</span>(<span class="string">"\n" + "=" * 60</span>)
+<span class="function">print</span>(<span class="string">"READY FOR HELIUM AND LITHIUM DERIVATIONS"</span>)
+<span class="function">print</span>(<span class="string">"=" * 60</span>)</pre>
+            </div>
+        </div>
+
+        <!-- NAVIGATION FOOTER -->
+        <nav class="nav-footer">
+            <a href="index.html">&larr; Back to Overview</a>
+            <a href="helium.html">Next: Helium Derivation &rarr;</a>
+        </nav>
+    </main>
+
+    <site-footer></site-footer>
+</body>
+</html>

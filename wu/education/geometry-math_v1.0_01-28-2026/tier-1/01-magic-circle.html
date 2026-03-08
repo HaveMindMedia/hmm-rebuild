@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Magic Circle | Geometry Math</title>
+    <meta name="description" content="A circle is everywhere a point can reach while staying the same distance from home.">
+    <link rel="stylesheet" href="../css/geometry-math.css">
+    <style>
+        .big-text {
+            font-size: 1.4rem;
+            color: var(--gold-light);
+            text-align: center;
+            margin: 2rem 0;
+            line-height: 1.6;
+        }
+
+        .trace-info {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .clear-btn {
+            background: transparent;
+            border: 1px solid var(--text-dim);
+            color: var(--text-dim);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .clear-btn:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        .discovery-box {
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--cyan);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .discovery-box h3 {
+            color: var(--cyan);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .discovery-box p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .hidden-at-start {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .hidden-at-start.revealed {
+            opacity: 1;
+        }
+
+        .try-this {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid var(--gold);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .try-this h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="lesson-badge tier-1">Tier 1 - Discovery</div>
+        <h1>The Magic Circle</h1>
+        <p class="subtitle">A point walked everywhere it could reach. It made something beautiful.</p>
+    </header>
+
+    <main class="lesson-content">
+        <div class="container">
+
+            <p class="big-text">
+                Imagine a point. It wants to explore, but it has a rule:<br>
+                <strong>Stay the same distance from home.</strong>
+            </p>
+
+            <div class="demo-container highlight">
+                <p class="demo-instruction">
+                    Drag the blue dot around. Watch what path it makes.
+                </p>
+                <div id="circle-demo" class="demo-canvas"></div>
+                <div class="trace-info">
+                    <span id="trace-message">Move the dot to draw...</span>
+                    <br>
+                    <button class="clear-btn" id="clear-trace">Clear Drawing</button>
+                </div>
+            </div>
+
+            <div class="discovery-box hidden-at-start" id="discovery-1">
+                <h3>You discovered it!</h3>
+                <p>When a point stays the same distance from a center and walks everywhere it can... it makes a <strong>circle</strong>.</p>
+            </div>
+
+            <h2>What Is a Circle, Really?</h2>
+
+            <p>
+                Most people think a circle is just a round shape. But that's like saying a song is "just sounds."
+            </p>
+
+            <p>
+                A circle is something much more interesting:
+            </p>
+
+            <div class="key-insight">
+                <p>A circle is <strong>everywhere a point can reach</strong> while staying the same distance from center.</p>
+            </div>
+
+            <p>
+                That "same distance" has a special name: the <strong>radius</strong>.
+            </p>
+
+            <div class="try-this">
+                <h4>Try This:</h4>
+                <p>Tie a string to a pencil. Hold the other end in place. Now draw with the pencil, keeping the string tight. What shape do you make?</p>
+            </div>
+
+            <h2>The Circle Keeps a Secret</h2>
+
+            <p>
+                The point on the circle is always moving. But something stays the same.
+            </p>
+
+            <div class="demo-container">
+                <p class="demo-instruction">Watch the distance from center. Does it ever change?</p>
+                <div id="radius-demo" class="demo-canvas"></div>
+                <div class="values-panel numbers-layer visible">
+                    <div class="value-box">
+                        <div class="label">Distance from Center</div>
+                        <div class="value" id="radius-value">1.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                The point can be anywhere on the circle — top, bottom, left, right — but the distance to center is <em>always the same</em>.
+            </p>
+
+            <div class="discovery-box">
+                <h3>The Circle's Secret</h3>
+                <p>Everything on a circle is <strong>equally connected</strong> to the center.</p>
+            </div>
+
+            <h2>Why Does This Matter?</h2>
+
+            <p>
+                Circles are everywhere:
+            </p>
+
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2299;</span>
+                    Wheels roll because every point is the same distance from center
+                </li>
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2299;</span>
+                    Planets orbit in (nearly) circles around stars
+                </li>
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2299;</span>
+                    Sound waves, light waves — they're circles too (we'll see how!)
+                </li>
+                <li style="margin: 1rem 0; padding-left: 2rem; position: relative;">
+                    <span style="position: absolute; left: 0;">&#x2299;</span>
+                    The ripples when you drop a stone in water
+                </li>
+            </ul>
+
+            <p>
+                When you understand the circle, you start to understand <em>everything that moves</em>.
+            </p>
+
+            <div class="key-insight">
+                <p>The circle isn't just a shape.<br>It's the <strong>shape of motion</strong>.</p>
+            </div>
+
+            <h2>What You Learned</h2>
+
+            <ul style="list-style: none; padding: 0; font-size: 1.1rem;">
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; A circle is all the points the same distance from center
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; That distance is called the <strong>radius</strong>
+                </li>
+                <li style="margin: 1rem 0; padding: 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 8px;">
+                    &#x2713; The circle is the shape of motion and connection
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="../index.html" class="nav-button">
+                    <span class="label">Return to</span>
+                    All Lessons
+                </a>
+                <a href="02-going-around.html" class="nav-button">
+                    <span class="label">Next Lesson</span>
+                    Going Around &#x2192;
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="signature">[1 = -1]</div>
+        <p>Geometry Math | <strong>Have Mind Media</strong></p>
+    </footer>
+
+    <script src="../js/circle-engine.js"></script>
+    <script src="../js/components/circle-canvas.js"></script>
+    <script>
+        // First demo: trace the circle
+        const demo1 = new CircleCanvas('circle-demo', {
+            radius: 120,
+            showGrid: false,
+            showAxes: false,
+            showProjections: false,
+            showAngle: false,
+            showCoordinates: false,
+            showTrace: true,
+            interactive: true,
+            onAngleChange: function(angle, values) {
+                // Reveal the discovery after some movement
+                const discovery = document.getElementById('discovery-1');
+                if (demo1.tracePoints.length > 100) {
+                    discovery.classList.add('revealed');
+                    document.getElementById('trace-message').textContent = 'You traced a circle!';
+                }
+            }
+        });
+
+        // Clear trace button
+        document.getElementById('clear-trace').addEventListener('click', function() {
+            demo1.clearTrace();
+            document.getElementById('trace-message').textContent = 'Move the dot to draw...';
+        });
+
+        // Second demo: show radius
+        const demo2 = new CircleCanvas('radius-demo', {
+            radius: 100,
+            showGrid: false,
+            showAxes: true,
+            showProjections: false,
+            showAngle: true,
+            showCoordinates: false,
+            showTrace: false,
+            interactive: true,
+            onAngleChange: function(angle, values) {
+                // The radius is always 1 (normalized)
+                document.getElementById('radius-value').textContent = '1.00';
+            }
+        });
+    </script>
+</body>
+</html>

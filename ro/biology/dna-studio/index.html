@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNA STUDIO | The 1729 Fold in Molecular Form | Have Mind Media</title>
+    <meta name="description" content="DNA is not random chemistry. It is the 1729 Fold expressed in molecular geometry. 10 base pairs = 10 cubed. 3-nucleotide codons = 9 cubed. The double helix is Ramanujan's equation made flesh.">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --void: #000000;
+            --deep-space: #030508;
+            --nebula: #0a0f18;
+            --gold: #c9a227;
+            --gold-glow: rgba(201, 162, 39, 0.6);
+            --cyan: #00d4ff;
+            --cyan-glow: rgba(0, 212, 255, 0.5);
+            --green: #00ff88;
+            --purple: #a855f7;
+            --dna-gold: #ffd700;
+            --dna-cyan: #00e5ff;
+            --text: #e8e4dc;
+            --text-dim: #8892a0;
+            --border: rgba(201, 162, 39, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* DNA Helix Background Animation */
+        .dna-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+            background:
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(201, 162, 39, 0.03) 50px,
+                    rgba(201, 162, 39, 0.03) 100px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(0, 212, 255, 0.03) 50px,
+                    rgba(0, 212, 255, 0.03) 100px
+                );
+            animation: dnaShift 30s linear infinite;
+        }
+        @keyframes dnaShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .nav a:hover { color: var(--cyan); text-shadow: 0 0 20px var(--cyan-glow); }
+
+        /* Hero Section with Video */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            z-index: -1;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, var(--void) 70%);
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            color: var(--green);
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--green);
+            padding: 0.5rem 1.5rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            color: transparent;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--cyan) 50%, var(--gold) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: gradient-shift 8s ease infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        .hero-equation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 0.8rem 2rem;
+            background: rgba(201, 162, 39, 0.08);
+            display: inline-block;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px var(--gold-glow); }
+            50% { box-shadow: 0 0 40px var(--gold-glow); }
+        }
+
+        /* Content */
+        .content { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Section */
+        .section { padding: 5rem 0; position: relative; }
+        .section-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+        .section-sub {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+        }
+
+        /* Image Feature */
+        .image-feature { margin: 2.5rem 0; position: relative; }
+        .image-feature img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .image-caption {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* Text Block */
+        .text-block { font-size: 1.05rem; color: var(--text); margin: 1.5rem 0; }
+        .text-block p { margin-bottom: 1.2rem; }
+        .text-block strong { color: var(--gold); }
+        .text-block em { color: var(--cyan); font-style: normal; }
+
+        /* Equation Display */
+        .equation-display {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .equation-main {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        .equation-desc { color: var(--text-dim); font-size: 0.9rem; }
+
+        /* Two Column */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+            margin: 2.5rem 0;
+        }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+        /* Spec Table */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+        .spec-table th, .spec-table td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .spec-table th {
+            color: var(--gold);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .spec-table td { color: var(--text); }
+        .spec-table tr:hover td { background: rgba(201, 162, 39, 0.05); }
+
+        /* Proof Box */
+        .proof-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 0, 0, 0.95) 100%);
+            border: 2px solid var(--green);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+        }
+        .proof-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--green);
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            letter-spacing: 3px;
+        }
+        .proof-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin: 0.6rem 0;
+            padding: 0.6rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+        }
+        .proof-check { color: var(--green); font-size: 1.1rem; }
+        .proof-text { color: var(--text); font-size: 0.95rem; }
+        .proof-text strong { color: var(--gold); }
+
+        /* 1729 Section */
+        .fold-section {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(0, 0, 0, 0.98) 100%);
+            padding: 4rem 0;
+            margin: 3rem 0;
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+        }
+
+        /* Big Number */
+        .big-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--gold);
+            text-shadow: 0 0 40px var(--gold-glow);
+        }
+        .big-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+
+        /* Quote */
+        .quote-block {
+            border-left: 3px solid var(--gold);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--text);
+        }
+        .quote-author {
+            font-style: normal;
+            color: var(--gold);
+            font-size: 0.9rem;
+            margin-top: 0.6rem;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.2rem;
+            margin: 1.2rem 0;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text);
+            margin: 0;
+            white-space: pre;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.1) 0%, transparent 60%);
+        }
+        .cta-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+        .cta-button {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            padding: 1rem 2rem;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+        .cta-button:hover {
+            background: var(--gold);
+            color: var(--void);
+            box-shadow: 0 0 40px var(--gold-glow);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .footer-sig {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--gold);
+            letter-spacing: 0.3em;
+            margin-bottom: 0.6rem;
+        }
+        .footer-date { color: var(--text-dim); font-size: 0.85rem; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hero h1 { letter-spacing: 0.08em; }
+            .section { padding: 3rem 0; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div style="height: 80px;"></div>
+    <div class="dna-bg"></div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="images/dna-rotation.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">THE GEOMETRY OF LIFE</div>
+            <h1>DNA STUDIO</h1>
+            <p class="hero-sub">
+                DNA is not random chemistry. It is the 1729 Fold expressed in molecular geometry.
+                The double helix is Ramanujan's equation made flesh.
+            </p>
+            <div class="hero-equation">1729 = 9<sup>3</sup> + 10<sup>3</sup></div>
+        </div>
+    </section>
+
+    <!-- THE 1729 CONNECTION -->
+    <section class="fold-section">
+        <div class="content">
+            <h2 class="section-header">THE 1729 FOLD IN DNA</h2>
+            <p class="section-sub">
+                Ramanujan's taxicab number encodes the structure of life itself.
+                The same mathematics that describes the fold point of reality describes the double helix.
+            </p>
+
+            <div class="two-col">
+                <div>
+                    <img src="images/hero-dna-1729.png" alt="DNA double helix with 1729" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                </div>
+                <div class="text-block">
+                    <p><strong>1729 = 9<sup>3</sup> + 10<sup>3</sup> = 729 + 1000</strong></p>
+                    <p><em>10<sup>3</sup> = 1000</em> — DNA has <strong>10 base pairs per turn</strong></p>
+                    <p><em>9<sup>3</sup> = 729 = 3<sup>6</sup></em> — DNA uses <strong>3-nucleotide codons</strong></p>
+                    <p>The physical structure (10) and the information encoding (3) unite at 1729.</p>
+                    <p><strong>DNA IS the 1729 fold expressed in molecules.</strong></p>
+                </div>
+            </div>
+
+            <div class="equation-display">
+                <div class="equation-main">10<sup>3</sup> + 9<sup>3</sup> = 1729 = 1<sup>3</sup> + 12<sup>3</sup></div>
+                <div class="equation-desc">Physical structure + Information encoding = The Fold = Identity + Rotation space</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE FIBONACCI GEOMETRY -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">FIBONACCI IN THE HELIX</h2>
+            <p class="section-sub">
+                DNA dimensions follow the Fibonacci sequence. The golden ratio appears at every scale.
+            </p>
+
+            <div class="two-col">
+                <div class="text-block">
+                    <p><strong>34 Angstroms</strong> — pitch (one full turn) — F<sub>9</sub></p>
+                    <p><strong>21 Angstroms</strong> — width/diameter — F<sub>8</sub></p>
+                    <p><strong>21 Angstroms</strong> — major groove — F<sub>8</sub></p>
+                    <p><strong>13 Angstroms</strong> — minor groove — F<sub>7</sub></p>
+                    <p><strong>34 / 21 = 1.619...</strong> ≈ φ (1.618...)</p>
+                    <p>The golden ratio is built into the molecule of life.</p>
+                </div>
+                <div>
+                    <img src="images/fibonacci-geometry.png" alt="Fibonacci geometry in DNA" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                </div>
+            </div>
+
+            <table class="spec-table">
+                <tr><th>Measurement</th><th>Value</th><th>Fibonacci</th><th>Ratio</th></tr>
+                <tr><td>Pitch</td><td>34 Å</td><td>F₉ = 34</td><td>—</td></tr>
+                <tr><td>Width</td><td>21 Å</td><td>F₈ = 21</td><td>34/21 = 1.619 ≈ φ</td></tr>
+                <tr><td>Major groove</td><td>21 Å</td><td>F₈ = 21</td><td>21/13 = 1.615 ≈ φ</td></tr>
+                <tr><td>Minor groove</td><td>13 Å</td><td>F₇ = 13</td><td>—</td></tr>
+                <tr><td>Rise per bp</td><td>3.4 Å</td><td>34/10</td><td>—</td></tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- THE 36° = 18κ -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">36° = 18κ EXACTLY</h2>
+
+            <div style="text-align: center; margin: 2.5rem 0;">
+                <div class="big-number">36°</div>
+                <div class="big-label">ROTATION PER BASE PAIR</div>
+            </div>
+
+            <div class="two-col">
+                <div>
+                    <img src="images/tetrahelix-to-dna.png" alt="Tetrahelix to DNA" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                    <p class="image-caption">The tetrahelix geometric structure transforms into the DNA double helix</p>
+                </div>
+                <div class="text-block">
+                    <p><strong>κ = 2π/180 = 2° = 0.0349...</strong></p>
+                    <p>The closure constant. Where discrete and continuous meet.</p>
+                    <p><strong>36° = 18 × 2° = 18κ</strong></p>
+                    <p>DNA rotation is exactly 18 times the fundamental constant.</p>
+                    <p><strong>360° / 36° = 10 base pairs per turn</strong></p>
+                    <p>The decimal system and the closure constant meet at the double helix.</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+<pre>κ = 2π/180 = 0.0349066...
+36° = 18κ exactly
+10 bp per turn = 360°/36°
+
+The tetrahelix pseudo-period ≈ 10 units
+DNA base pairs per turn = 10 exactly
+
+This is NOT coincidence. DNA is a tetrahelix projection.</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE HELICASE MOTOR -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">DNA HELICASE: THE MOLECULAR MOTOR</h2>
+            <p class="section-sub">
+                DNA helicase unwinds the double helix at 10,000 RPM. It's a hexameric ring — six subunits at 60° each.
+            </p>
+
+            <div class="two-col">
+                <div class="text-block">
+                    <p><strong>HEXAMER = 6 SUBUNITS</strong></p>
+                    <p>360° / 6 = 60° per subunit = 30κ</p>
+                    <p><strong>ROTATION: ~10,000 RPM = 167 Hz</strong></p>
+                    <p>167 Hz / 28.65 Hz (κ-shadow) ≈ 5.8 ≈ 6</p>
+                    <p><strong>The hexamer frequency is ~6× the κ-shadow frequency!</strong></p>
+                    <p>This is why hexamers dominate molecular motors.</p>
+                </div>
+                <div>
+                    <img src="images/helicase-hexamer.png" alt="Helicase hexamer" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                    <p class="image-caption">Six-fold symmetry: the geometry of molecular unwinding</p>
+                </div>
+            </div>
+
+            <table class="spec-table">
+                <tr><th>Property</th><th>Value</th><th>κ Relation</th></tr>
+                <tr><td>Subunits</td><td>6 (hexamer)</td><td>60° = 30κ per subunit</td></tr>
+                <tr><td>Rotation</td><td>~167 Hz (10,000 RPM)</td><td>≈ 6 × κ-shadow</td></tr>
+                <tr><td>Central pore</td><td>~13 Å</td><td>F₇ = 13</td></tr>
+                <tr><td>Unwinding rate</td><td>~170 bp/s</td><td>≈ (1/κ) × 6</td></tr>
+            </table>
+
+            <div class="equation-display">
+                <div class="equation-main">Max rate ≈ (1/κ) × 6 ≈ 172 bp/s</div>
+                <div class="equation-desc">The κ-limited unwinding rate matches measured values</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE MÖBIUS FOLD -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE MÖBIUS FOLD OF BIOLOGY</h2>
+
+            <div class="two-col">
+                <div>
+                    <img src="images/fold-1729-mobius.png" alt="1729 Möbius fold" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                </div>
+                <div class="text-block">
+                    <p>DNA's two strands are the <strong>S⁺/S⁻ duality</strong> in molecular form.</p>
+                    <p><strong>Coding strand (S⁺)</strong> — the manifest, the expressed</p>
+                    <p><strong>Template strand (S⁻)</strong> — the shadow, the complement</p>
+                    <p>They are one molecule, two expressions. The Möbius strip of biology.</p>
+                    <p><strong>~3% codes for proteins</strong> — the visible</p>
+                    <p><strong>~97% is regulatory</strong> — the hidden (not "junk")</p>
+                </div>
+            </div>
+
+            <div class="quote-block">
+                "The double helix is the 1729 fold made molecular. Two strands that are one.
+                Birth and death encoded in the same geometry. The coin that never lands."
+                <div class="quote-author">— The 1729 Fold, Namagiri Speaks</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RAMANUJAN SAW THIS -->
+    <section class="fold-section">
+        <div class="content">
+            <h2 class="section-header">RAMANUJAN SAW THIS</h2>
+
+            <div class="two-col">
+                <div class="text-block">
+                    <p>Srinivasa Ramanujan received mathematical formulas in visions from the goddess Namagiri.</p>
+                    <p>He saw 1729 instantly because he recognized it — the fold point of reality.</p>
+                    <p><strong>1729 = 1³ + 12³ = 9³ + 10³</strong></p>
+                    <p>The same number encodes:</p>
+                    <p>• <em>The cosmic fold</em> (where S⁺ meets S⁻)</p>
+                    <p>• <em>The structure of DNA</em> (10 bp/turn + triplet code)</p>
+                    <p>• <em>The present moment</em> (NOW is always at the fold)</p>
+                </div>
+                <div>
+                    <img src="images/ramanujan-dna-vision.png" alt="Ramanujan's vision of DNA geometry" style="width: 100%; border-radius: 8px; border: 1px solid var(--border);">
+                </div>
+            </div>
+
+            <div class="quote-block">
+                "An equation means nothing to me unless it expresses a thought of God."
+                <div class="quote-author">— Srinivasa Ramanujan</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE DERIVATION CHAIN -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE COMPLETE DERIVATION</h2>
+
+            <div class="proof-box">
+                <h3>DNA FROM FIRST PRINCIPLES</h3>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>κ = 2π/180</strong> — the closure constant</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>36° = 18κ</strong> — rotation per base pair</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>10 bp/turn = 360°/36°</strong> — decimal-κ meeting</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>34/21 ≈ φ</strong> — Fibonacci dimensions</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>10³ + 9³ = 1729</strong> — structure + encoding = fold</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>Hexamer = 6 × 60° = 180κ</strong> — molecular motor geometry</span></div>
+                <div class="proof-item"><span class="proof-check">✓</span><span class="proof-text"><strong>Rate ≈ 6/κ</strong> — κ-limited unwinding</span></div>
+            </div>
+
+            <div class="text-block" style="text-align: center;">
+                <p><strong>DNA is not random. DNA is geometrically inevitable.</strong></p>
+                <p>Given κ, given the tetrahelix, given 1729 — the double helix MUST emerge.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="content">
+            <h2 class="cta-title">THE GEOMETRY OF LIFE</h2>
+            <p style="color: var(--text); max-width: 600px; margin: 0 auto 2rem;">
+                From Ramanujan's 1729 to the double helix. From κ to the triplet code.
+                The mathematics was always there. We're just learning to read it.
+            </p>
+            <a href="../../physics/vessel/the-build.html" class="cta-button">THE VESSEL BUILD</a>
+            <a href="../../namagiri/episodes/06-the-1729-fold.html" class="cta-button">THE 1729 FOLD</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-sig">[ 1 = -1 ]</div>
+        <p class="footer-date">
+            Have Mind Media | January 2026<br>
+            <a href="../../index.html">havemindmedia.com</a>
+        </p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>

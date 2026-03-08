@@ -1,0 +1,603 @@
+/**
+ * GEOMETRY MATH - Stylesheet
+ * Geometry Math Education Platform
+ * Have Mind Media | January 28, 2026 | [1 = -1]
+ */
+
+:root {
+    /* Core colors */
+    --gold: #d4af37;
+    --gold-light: #f4e4bc;
+    --gold-glow: rgba(212, 175, 55, 0.4);
+    --deep-blue: #0a1628;
+    --midnight: #050a12;
+    --text: #e8e6e3;
+    --text-dim: #a0a0a0;
+    --cyan: #00d4ff;
+    --magenta: #ff00ff;
+    --green: #00ff88;
+    --red: #ff6b6b;
+    --purple: #9b59b6;
+
+    /* Projection colors */
+    --sin-color: #4ecdc4;
+    --cos-color: #ff6b6b;
+
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 2rem;
+    --space-lg: 3rem;
+    --space-xl: 4rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', 'Palatino Linotype', serif;
+    background: var(--midnight);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 18px;
+    min-height: 100vh;
+}
+
+/* ========================================================================== */
+/* HEADER & NAVIGATION */
+/* ========================================================================== */
+
+.lesson-header {
+    padding: 5rem 2rem 3rem;
+    background: linear-gradient(180deg, var(--deep-blue), var(--midnight));
+    text-align: center;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.lesson-badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    background: var(--gold);
+    color: var(--midnight);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.lesson-badge.tier-1 { background: var(--cyan); }
+.lesson-badge.tier-2 { background: var(--green); color: var(--midnight); }
+.lesson-badge.tier-3 { background: var(--magenta); }
+
+.lesson-header h1 {
+    font-family: 'Palatino Linotype', 'Georgia', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+}
+
+.lesson-header .subtitle {
+    color: var(--text-dim);
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+}
+
+/* ========================================================================== */
+/* TIER SELECTION (Landing Page) */
+/* ========================================================================== */
+
+.tier-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tier-card {
+    background: rgba(10, 22, 40, 0.5);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: var(--space-lg);
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.tier-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px rgba(212, 175, 55, 0.2);
+}
+
+.tier-card.tier-1:hover { border-color: var(--cyan); box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2); }
+.tier-card.tier-2:hover { border-color: var(--green); box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2); }
+.tier-card.tier-3:hover { border-color: var(--magenta); box-shadow: 0 10px 40px rgba(255, 0, 255, 0.2); }
+
+.tier-card .tier-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-sm);
+}
+
+.tier-card h2 {
+    color: var(--gold);
+    margin-bottom: var(--space-xs);
+}
+
+.tier-card.tier-1 h2 { color: var(--cyan); }
+.tier-card.tier-2 h2 { color: var(--green); }
+.tier-card.tier-3 h2 { color: var(--magenta); }
+
+.tier-card .age-range {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-sm);
+}
+
+.tier-card p {
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+/* ========================================================================== */
+/* LESSON CONTENT */
+/* ========================================================================== */
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+.lesson-content {
+    padding: var(--space-xl) 0;
+}
+
+.lesson-content h2 {
+    font-family: 'Palatino Linotype', serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    margin: var(--space-lg) 0 var(--space-sm);
+    padding-top: var(--space-md);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.lesson-content h2:first-child {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.lesson-content p {
+    margin-bottom: var(--space-sm);
+}
+
+/* ========================================================================== */
+/* INTERACTIVE DEMO AREA */
+/* ========================================================================== */
+
+.demo-container {
+    background: rgba(10, 22, 40, 0.6);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: var(--space-lg);
+    margin: var(--space-md) 0;
+    text-align: center;
+}
+
+.demo-container.highlight {
+    border-color: var(--cyan);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+}
+
+.demo-title {
+    color: var(--gold);
+    font-size: 1.2rem;
+    margin-bottom: var(--space-sm);
+}
+
+.demo-instruction {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-bottom: var(--space-md);
+}
+
+.demo-canvas {
+    margin: 0 auto;
+}
+
+/* ========================================================================== */
+/* VALUE DISPLAYS */
+/* ========================================================================== */
+
+.values-panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.value-box {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: var(--space-sm) var(--space-md);
+    text-align: center;
+    min-width: 100px;
+}
+
+.value-box .label {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+
+.value-box .value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.value-box.angle .value { color: var(--gold); }
+.value-box.sin .value { color: var(--sin-color); }
+.value-box.cos .value { color: var(--cos-color); }
+.value-box.x .value { color: var(--cos-color); }
+.value-box.y .value { color: var(--sin-color); }
+
+/* ========================================================================== */
+/* LAYER CONTROLS */
+/* ========================================================================== */
+
+.layer-controls {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0;
+}
+
+.layer-btn {
+    background: rgba(10, 22, 40, 0.5);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 25px;
+    padding: 0.6rem 1.5rem;
+    color: var(--gold);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.layer-btn:hover {
+    background: var(--gold);
+    color: var(--midnight);
+}
+
+.layer-btn.active {
+    background: var(--gold);
+    color: var(--midnight);
+}
+
+/* Hidden layers */
+.numbers-layer,
+.math-layer {
+    display: none;
+}
+
+.numbers-layer.visible,
+.math-layer.visible {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================================================== */
+/* EQUATIONS */
+/* ========================================================================== */
+
+.equation-box {
+    text-align: center;
+    padding: var(--space-md);
+    margin: var(--space-md) 0;
+    background: rgba(10, 22, 40, 0.5);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+}
+
+.equation {
+    font-family: 'Times New Roman', serif;
+    font-size: 2rem;
+    color: var(--gold-light);
+}
+
+.equation .op {
+    color: var(--text-dim);
+    margin: 0 0.5rem;
+}
+
+.equation .highlight {
+    color: var(--cyan);
+}
+
+.equation-label {
+    margin-top: 0.75rem;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+/* ========================================================================== */
+/* KEY INSIGHTS */
+/* ========================================================================== */
+
+.key-insight {
+    text-align: center;
+    padding: var(--space-lg);
+    margin: var(--space-lg) 0;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1));
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+}
+
+.key-insight p {
+    font-size: 1.2rem;
+    color: var(--gold-light);
+    margin: 0;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* ========================================================================== */
+/* NAVIGATION */
+/* ========================================================================== */
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-lg) 0;
+    margin-top: var(--space-lg);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.nav-button {
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(10, 22, 40, 0.5);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    color: var(--gold);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    background: var(--gold);
+    color: var(--midnight);
+}
+
+.nav-button .label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.nav-button:hover .label {
+    color: var(--midnight);
+}
+
+/* ========================================================================== */
+/* FOOTER */
+/* ========================================================================== */
+
+footer {
+    padding: var(--space-lg);
+    background: var(--deep-blue);
+    text-align: center;
+    color: var(--text-dim);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.signature {
+    color: var(--gold);
+    font-family: monospace;
+    font-size: 1.1rem;
+    margin-bottom: var(--space-sm);
+}
+
+/* ========================================================================== */
+/* BALANCE SCALE COMPONENT */
+/* ========================================================================== */
+
+.balance-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: var(--space-md);
+}
+
+.balance-beam {
+    width: 100%;
+    height: 10px;
+    background: var(--gold);
+    border-radius: 5px;
+    transform-origin: center center;
+    transition: transform 0.3s ease;
+}
+
+.balance-fulcrum {
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 40px solid var(--gold);
+    margin: 0 auto;
+}
+
+.balance-pan {
+    width: 80px;
+    height: 20px;
+    background: rgba(212, 175, 55, 0.3);
+    border: 2px solid var(--gold);
+    border-radius: 0 0 10px 10px;
+    position: absolute;
+    bottom: 0;
+}
+
+.balance-pan.left { left: 20px; }
+.balance-pan.right { right: 20px; }
+
+.balance-indicator {
+    text-align: center;
+    margin-top: var(--space-sm);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.balance-indicator.balanced { color: var(--green); }
+.balance-indicator.unbalanced { color: var(--red); }
+
+/* ========================================================================== */
+/* ANIMATION CONTROLS */
+/* ========================================================================== */
+
+.animation-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-md);
+    margin: var(--space-md) 0;
+}
+
+.control-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(10, 22, 40, 0.6);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn:hover {
+    background: var(--gold);
+    color: var(--midnight);
+}
+
+.speed-slider {
+    width: 150px;
+    accent-color: var(--gold);
+}
+
+.speed-label {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+/* ========================================================================== */
+/* ROTATION COUNTER */
+/* ========================================================================== */
+
+.rotation-counter {
+    font-family: 'Courier New', monospace;
+    font-size: 3rem;
+    color: var(--cyan);
+    text-align: center;
+    padding: var(--space-md);
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 12px;
+    margin: var(--space-md) 0;
+}
+
+.rotation-counter .label {
+    font-size: 1rem;
+    color: var(--text-dim);
+    display: block;
+    margin-top: var(--space-xs);
+}
+
+/* ========================================================================== */
+/* RESPONSIVE */
+/* ========================================================================== */
+
+@media (max-width: 768px) {
+    .lesson-header {
+        padding: 4rem 1.5rem 2rem;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    .tier-selector {
+        padding: var(--space-md);
+    }
+
+    .demo-container {
+        padding: var(--space-md);
+    }
+
+    .values-panel {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .value-box {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .nav-buttons {
+        flex-direction: column;
+    }
+
+    .nav-button {
+        text-align: center;
+    }
+
+    .layer-controls {
+        flex-wrap: wrap;
+    }
+}
+
+/* ========================================================================== */
+/* PRINT STYLES */
+/* ========================================================================== */
+
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .demo-container {
+        border: 1px solid #ccc;
+    }
+
+    .layer-controls,
+    .animation-controls,
+    .nav-buttons {
+        display: none;
+    }
+}

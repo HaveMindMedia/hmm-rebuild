@@ -1,0 +1,2509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Signature | Prediction Engine</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           VIEWS
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           IDENTITY VIEW
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .identity-view {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .identity-card {
+            background: rgba(8, 8, 20, 0.95);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .identity-card h1 {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #c9a227;
+            letter-spacing: 5px;
+            margin-bottom: 8px;
+        }
+
+        .identity-card .subtitle {
+            text-align: center;
+            font-size: 0.5rem;
+            color: #4a5568;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.55rem;
+            color: #6e7a94;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            border-radius: 8px;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: rgba(201, 162, 39, 0.5);
+        }
+
+        .unique-id-box {
+            background: rgba(201, 162, 39, 0.08);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .uid-label {
+            font-size: 0.45rem;
+            color: #5a6577;
+            margin-bottom: 8px;
+        }
+
+        .uid-value {
+            font-size: 1.1rem;
+            color: #c9a227;
+            letter-spacing: 1px;
+            word-break: break-all;
+        }
+
+        .begin-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #c9a227, #a88a1f);
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .begin-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(201, 162, 39, 0.3); }
+        .begin-btn:disabled { background: #3a3a3a; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           QUESTION VIEW
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .question-view {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(100, 100, 100, 0.15);
+        }
+
+        .q-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .q-tier {
+            font-size: 0.5rem;
+            color: #c9a227;
+            padding: 4px 10px;
+            background: rgba(201, 162, 39, 0.15);
+            border-radius: 10px;
+        }
+
+        .q-count {
+            font-size: 0.55rem;
+            color: #6e7a94;
+        }
+
+        .prediction-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pred-label {
+            font-size: 0.45rem;
+            color: #4a5568;
+        }
+
+        .pred-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4a5568;
+        }
+
+        .pred-indicator.watching { background: #c9a227; animation: pulse 1.5s infinite; }
+        .pred-indicator.match { background: #7dd87d; }
+        .pred-indicator.variance { background: #c77daa; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .prime-badge {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .prime-name {
+            font-size: 0.6rem;
+            color: #c9a227;
+            letter-spacing: 3px;
+            padding: 6px 20px;
+            background: rgba(201, 162, 39, 0.1);
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .question-card {
+            background: rgba(8, 8, 20, 0.95);
+            border: 1px solid rgba(100, 100, 100, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .q-prompt {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #e8e4d9;
+            margin-bottom: 25px;
+        }
+
+        .response-area textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(100, 100, 100, 0.2);
+            border-radius: 10px;
+            color: #e8e4d9;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            resize: vertical;
+        }
+
+        .response-area textarea:focus {
+            outline: none;
+            border-color: rgba(201, 162, 39, 0.4);
+        }
+
+        .response-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.5rem;
+        }
+
+        .word-count { color: #4a5568; }
+
+        .verbosity-tag {
+            padding: 3px 10px;
+            border-radius: 10px;
+            background: rgba(100, 100, 100, 0.2);
+            color: #6e7a94;
+        }
+
+        .verbosity-tag.brief { background: rgba(100, 180, 245, 0.15); color: #6ab4f5; }
+        .verbosity-tag.moderate { background: rgba(201, 162, 39, 0.15); color: #c9a227; }
+        .verbosity-tag.expressive { background: rgba(200, 100, 170, 0.15); color: #c77daa; }
+
+        .q-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            background: rgba(201, 162, 39, 0.15);
+            border: 1px solid rgba(201, 162, 39, 0.4);
+            border-radius: 25px;
+            color: #c9a227;
+            font-family: 'Courier New', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover { background: rgba(201, 162, 39, 0.25); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .nav-btn.primary { background: #c9a227; color: #000; border-color: #c9a227; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           ANALYSIS PANEL (shows after each answer)
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .analysis-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .analysis-overlay.hidden { display: none; }
+
+        .analysis-card {
+            background: rgba(10, 10, 25, 0.98);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 15px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .analysis-card h2 {
+            font-size: 0.7rem;
+            color: #c9a227;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+        }
+
+        .prediction-result {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .prediction-result.match {
+            background: rgba(125, 216, 125, 0.1);
+            border: 1px solid rgba(125, 216, 125, 0.3);
+        }
+
+        .prediction-result.variance {
+            background: rgba(200, 125, 170, 0.1);
+            border: 1px solid rgba(200, 125, 170, 0.3);
+        }
+
+        .result-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .result-title {
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .prediction-result.match .result-title { color: #7dd87d; }
+        .prediction-result.variance .result-title { color: #c77daa; }
+
+        .result-desc {
+            font-size: 0.55rem;
+            color: #7a8599;
+            line-height: 1.6;
+        }
+
+        .detected-values {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .value-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .value-label {
+            font-size: 0.45rem;
+            color: #5a6577;
+            margin-bottom: 5px;
+        }
+
+        .value-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .value-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s;
+        }
+
+        .value-fill.splus { background: #00c8dc; }
+        .value-fill.coin { background: #c9a227; }
+        .value-fill.sminus { background: #c83296; }
+
+        .value-percent {
+            font-size: 0.6rem;
+            color: #9ba4b8;
+        }
+
+        .continue-btn {
+            padding: 14px 40px;
+            background: #c9a227;
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .continue-btn:hover { background: #d4af37; }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           TIER COMPLETE / UNLOCK
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .tier-complete-card {
+            text-align: center;
+        }
+
+        .tier-complete-card h2 {
+            font-size: 0.8rem;
+            color: #7dd87d;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .match-rate {
+            font-size: 2.5rem;
+            color: #c9a227;
+            margin: 20px 0;
+        }
+
+        .match-rate-label {
+            font-size: 0.5rem;
+            color: #5a6577;
+        }
+
+        .unlock-message {
+            font-size: 0.6rem;
+            color: #7dd87d;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(125, 216, 125, 0.1);
+            border-radius: 10px;
+        }
+
+        .rebuild-message {
+            font-size: 0.6rem;
+            color: #c77daa;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(200, 125, 170, 0.1);
+            border-radius: 10px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           SIGNATURE VIEW
+           ═══════════════════════════════════════════════════════════════════ */
+
+        .signature-view {
+            display: grid;
+            grid-template-columns: 260px 1fr 260px;
+            min-height: 100vh;
+        }
+
+        .sig-panel {
+            background: rgba(5, 5, 15, 0.98);
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .sig-panel.left { border-right: 1px solid rgba(100, 100, 100, 0.15); }
+        .sig-panel.right { border-left: 1px solid rgba(100, 100, 100, 0.15); }
+
+        .panel-title {
+            font-size: 0.6rem;
+            color: #c9a227;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.15);
+        }
+
+        .prime-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(100, 100, 100, 0.1);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .prime-row:hover {
+            background: rgba(201, 162, 39, 0.05);
+        }
+
+        .prime-row-name {
+            font-size: 0.55rem;
+            color: #7a8599;
+        }
+
+        .three-zone-mini {
+            width: 80px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .zone-mini {
+            height: 100%;
+            transition: width 0.4s;
+        }
+
+        .zone-mini.splus { background: #00c8dc; }
+        .zone-mini.coin { background: #c9a227; }
+        .zone-mini.sminus { background: #c83296; }
+
+        .sig-center {
+            position: relative;
+        }
+
+        .sig-header {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .sig-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(125, 216, 125, 0.05));
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 20px;
+            padding: 12px 30px;
+        }
+
+        .sig-name {
+            font-size: 1rem;
+            color: #e8e4d9;
+        }
+
+        .sig-id {
+            font-size: 0.6rem;
+            color: #c9a227;
+            margin-top: 3px;
+        }
+
+        .sig-stage {
+            font-size: 0.45rem;
+            color: #5a6577;
+            margin-top: 5px;
+        }
+
+        #sphereCanvas {
+            width: 100%;
+            height: calc(100vh - 120px);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.5rem;
+            border-bottom: 1px solid rgba(100, 100, 100, 0.1);
+        }
+
+        .stat-label { color: #5a6577; }
+        .stat-value { color: #9ba4b8; }
+
+        .evolution-section {
+            margin-top: 20px;
+        }
+
+        .evo-title {
+            font-size: 0.5rem;
+            color: #6e7a94;
+            margin-bottom: 10px;
+        }
+
+        .evo-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.45rem;
+            color: #5a6577;
+        }
+
+        .evo-change {
+            color: #7dd87d;
+        }
+
+        .evo-change.down {
+            color: #c77daa;
+        }
+
+        .retake-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: rgba(201, 162, 39, 0.15);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 20px;
+            color: #c9a227;
+            font-family: 'Courier New', monospace;
+            font-size: 0.55rem;
+            cursor: pointer;
+        }
+
+        .retake-btn:hover {
+            background: rgba(201, 162, 39, 0.25);
+        }
+
+        .export-btn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 12px;
+            background: rgba(125, 216, 125, 0.15);
+            border: 1px solid rgba(125, 216, 125, 0.3);
+            border-radius: 20px;
+            color: #7dd87d;
+            font-family: 'Courier New', monospace;
+            font-size: 0.55rem;
+            cursor: pointer;
+        }
+
+        .export-btn:hover {
+            background: rgba(125, 216, 125, 0.25);
+        }
+
+        /* SIGNATURE ACTION BUTTONS */
+        .sig-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap; justify-content: center;
+        }
+
+        .sig-action-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 10px 8px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.45rem;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            border: 1px solid;
+            transition: all 0.2s;
+        }
+
+        .sig-action-btn.save {
+            background: rgba(201, 162, 39, 0.15);
+            border-color: rgba(201, 162, 39, 0.3);
+            color: #c9a227;
+        }
+
+        .sig-action-btn.download {
+            background: rgba(125, 216, 125, 0.15);
+            border-color: rgba(125, 216, 125, 0.3);
+            color: #7dd87d;
+        }
+
+        .sig-action-btn.upload {
+            background: rgba(0, 200, 220, 0.15);
+            border-color: rgba(0, 200, 220, 0.3);
+            color: #00c8dc;
+        }
+
+        .sig-action-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .export-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .export-overlay.hidden { display: none; }
+
+        .export-card {
+            background: rgba(10, 10, 25, 0.98);
+            border: 1px solid rgba(125, 216, 125, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .export-card h2 {
+            font-size: 0.7rem;
+            color: #7dd87d;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .export-data {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 0.55rem;
+            color: #9ba4b8;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .export-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .export-actions button {
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.55rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .copy-btn {
+            background: #7dd87d;
+            color: #000;
+        }
+
+        .download-btn {
+            background: #c9a227;
+            color: #000;
+        }
+
+        .close-export-btn {
+            background: rgba(100, 100, 100, 0.3);
+            color: #9ba4b8;
+            border: 1px solid rgba(100, 100, 100, 0.3) !important;
+        }
+
+        .export-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        .export-tab {
+            padding: 8px 16px;
+            background: rgba(100, 100, 100, 0.2);
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            border-radius: 15px;
+            color: #6e7a94;
+            font-family: 'Courier New', monospace;
+            font-size: 0.5rem;
+            cursor: pointer;
+        }
+
+        .export-tab.active {
+            background: rgba(201, 162, 39, 0.2);
+            border-color: rgba(201, 162, 39, 0.4);
+            color: #c9a227;
+        }
+
+        .verification-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(100, 100, 100, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 0.45rem;
+            color: #5a6577;
+        }
+
+        .verification-box .hash {
+            color: #c9a227;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        /* CALIBRATION SECTION */
+        .calibration-section {
+            margin: 20px 0;
+            border: 1px solid rgba(100, 100, 100, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .calibration-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: rgba(100, 100, 100, 0.1);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .calibration-header:hover {
+            background: rgba(100, 100, 100, 0.2);
+        }
+
+        .calibration-toggle {
+            font-size: 1rem;
+            color: #c9a227;
+            width: 20px;
+            text-align: center;
+        }
+
+        .calibration-label {
+            font-size: 0.5rem;
+            color: #6e7a94;
+            letter-spacing: 1px;
+        }
+
+        .calibration-fields {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .calibration-fields.hidden {
+            display: none;
+        }
+
+        .accuracy-notice {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(201, 162, 39, 0.08);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .notice-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(201, 162, 39, 0.3);
+            color: #c9a227;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .notice-text {
+            font-size: 0.5rem;
+            color: #9ba4b8;
+            line-height: 1.6;
+        }
+
+        .notice-text strong {
+            color: #c9a227;
+        }
+
+        .calibration-status {
+            text-align: center;
+            font-size: 0.5rem;
+            color: #5a6577;
+            padding-top: 10px;
+        }
+
+        .calib-level {
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .calib-level.basic {
+            background: rgba(100, 100, 100, 0.3);
+            color: #7a8599;
+        }
+
+        .calib-level.enhanced {
+            background: rgba(201, 162, 39, 0.2);
+            color: #c9a227;
+        }
+
+        .calib-level.full {
+            background: rgba(125, 216, 125, 0.2);
+            color: #7dd87d;
+        }
+
+        .home-link {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 10001;
+        }
+        .home-link a {
+            color: #c9a227;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #c9a227;
+            border-radius: 3px;
+            background: rgba(10, 10, 15, 0.95);
+            font-family: sans-serif;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+        .home-link a:hover {
+            background: #c9a227;
+            color: #000;
+        }
+    </style>
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</head>
+<body>
+    <site-header></site-header>
+
+    <div class="home-link">
+        <a href="/">← Home</a>
+    </div>
+
+    <!-- IDENTITY VIEW -->
+    <div class="view active" id="identityView">
+        <div class="identity-view">
+            <div class="identity-card">
+                <h1>S-SIGNATURE</h1>
+                <div class="subtitle">Prediction Engine v1.0</div>
+
+                <div class="input-group">
+                    <label>DISPLAY NAME (this is what others will see)</label>
+                    <input type="text" id="displayNameInput" placeholder="Choose any name or alias..." oninput="updateIdentity()">
+                </div>
+
+                <div class="calibration-section">
+                    <div class="calibration-header" onclick="toggleCalibration()">
+                        <span class="calibration-toggle" id="calibToggle">+</span>
+                        <span class="calibration-label">CALIBRATION DATA (optional, private)</span>
+                    </div>
+                    <div class="calibration-fields hidden" id="calibrationFields">
+                        <div class="accuracy-notice">
+                            <div class="notice-icon">!</div>
+                            <div class="notice-text">
+                                Accurate birth data improves prediction precision.
+                                This information is <strong>never displayed publicly</strong> and is only used
+                                for signature calibration. Without it, readings are still valid but less precise.
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>REAL NAME (for internal calibration only)</label>
+                            <input type="text" id="realNameInput" placeholder="Your actual name..." oninput="updateIdentity()">
+                        </div>
+                        <div class="input-group">
+                            <label>BIRTH DATE</label>
+                            <input type="date" id="birthInput" onchange="updateIdentity()">
+                        </div>
+                        <div class="calibration-status" id="calibStatus">
+                            Calibration: <span class="calib-level basic">BASIC</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="unique-id-box">
+                    <div class="uid-label">YOUR UNIQUE IDENTIFIER</div>
+                    <div class="uid-value" id="uidDisplay">---</div>
+                </div>
+
+                <button class="begin-btn" id="beginBtn" onclick="beginAssessment()" disabled>BEGIN ASSESSMENT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTION VIEW -->
+    <div class="view" id="questionView">
+        <div class="question-view">
+            <div class="q-header">
+                <div class="q-progress">
+                    <span class="q-tier" id="tierLabel">TIER 1: FOUNDATION</span>
+                    <span class="q-count" id="qCount">1 / 8</span>
+                </div>
+                <div class="prediction-status">
+                    <span class="pred-label">PREDICTION</span>
+                    <div class="pred-indicator watching" id="predIndicator"></div>
+                </div>
+            </div>
+
+            <div class="prime-badge">
+                <span class="prime-name" id="primeName">LOVE</span>
+            </div>
+
+            <div class="question-card">
+                <div class="q-prompt" id="qPrompt">
+                    Question text here...
+                </div>
+
+                <div class="response-area">
+                    <textarea id="responseInput" placeholder="Take your time. There are no wrong answers..." oninput="updateWordCount()"></textarea>
+                    <div class="response-meta">
+                        <span class="word-count" id="wordCount">0 words</span>
+                        <span class="verbosity-tag" id="verbosityTag">waiting</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="q-nav">
+                <button class="nav-btn" id="prevBtn" onclick="prevQuestion()" disabled>BACK</button>
+                <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()">CONTINUE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ANALYSIS OVERLAY -->
+    <div class="analysis-overlay hidden" id="analysisOverlay">
+        <div class="analysis-card" id="analysisCard">
+            <!-- Content injected dynamically -->
+        </div>
+    </div>
+
+    <!-- SIGNATURE VIEW -->
+    <div class="view" id="signatureView">
+        <div class="signature-view">
+            <div class="sig-panel left">
+                <div class="panel-title">PRIMES</div>
+                <div id="primesList"></div>
+            </div>
+
+            <div class="sig-center">
+                <div class="sig-header">
+                    <div class="sig-badge">
+                        <div class="sig-name" id="sigName">---</div>
+                        <div class="sig-id" id="sigId">---</div>
+                        <div class="sig-stage" id="sigStage">STAGE I - FORMING</div>
+                    </div>
+                </div>
+                <canvas id="sphereCanvas"></canvas>
+            </div>
+
+            <div class="sig-panel right">
+                <div class="panel-title">STATISTICS</div>
+                <div id="statsPanel"></div>
+
+                <div class="evolution-section">
+                    <div class="evo-title">PREDICTION HISTORY</div>
+                    <div id="evolutionPanel"></div>
+                </div>
+
+                <button class="retake-btn" onclick="retakeAssessment()">CONTINUE QUESTIONS</button>
+
+                <div class="sig-actions">
+                    <button class="sig-action-btn save" onclick="saveCardToPhotos()">SAVE TO PHOTOS</button>
+                    <button class="sig-action-btn download" onclick="downloadSignatureFile()">DOWNLOAD .SSG</button>
+                    <button class="sig-action-btn upload" onclick="triggerUpload()">UPLOAD .SSG</button>
+                </div>
+                <input type="file" id="uploadInput" accept=".ssg,.json" style="display:none" onchange="handleUpload(event)">
+            </div>
+        </div>
+    </div>
+
+    <!-- EXPORT OVERLAY -->
+    <div class="export-overlay hidden" id="exportOverlay">
+        <div class="export-card">
+            <h2>SIGNATURE EXPORT</h2>
+            <div class="export-tabs">
+                <button class="export-tab active" onclick="setExportMode('compact')">COMPACT</button>
+                <button class="export-tab" onclick="setExportMode('full')">FULL DATA</button>
+            </div>
+            <div class="export-data" id="exportData"></div>
+            <div class="verification-box">
+                <div>Verification Hash (tamper detection):</div>
+                <div class="hash" id="verifyHash">---</div>
+            </div>
+            <div class="export-actions">
+                <button class="download-btn" onclick="downloadSignature()">DOWNLOAD .SSG</button>
+                <button class="copy-btn" onclick="copyExportData()">COPY</button>
+                <button class="close-export-btn" onclick="closeExport()">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // QUESTION BANK
+        // ═══════════════════════════════════════════════════════════════════
+
+        const PRIMES = [
+            { id: 'love', name: 'LOVE', hue: 340 },
+            { id: 'awareness', name: 'AWARENESS', hue: 200 },
+            { id: 'power', name: 'POWER', hue: 30 },
+            { id: 'truth', name: 'TRUTH', hue: 60 },
+            { id: 'change', name: 'CHANGE', hue: 160 },
+            { id: 'material', name: 'MATERIAL', hue: 280 },
+            { id: 'relation', name: 'RELATION', hue: 120 },
+            { id: 'cosmos', name: 'COSMOS', hue: 240 }
+        ];
+
+        const QUESTIONS = [
+            // TIER 1: BASE 8
+            {
+                id: 1,
+                prime: 'love',
+                tier: 1,
+                prompt: "Someone who hurt you deeply asks for your forgiveness. What happens inside you?",
+                indicators: {
+                    sPlus: ['earn', 'deserve', 'consequence', 'trust', 'protect', 'prove', 'action', 'first', 'why should'],
+                    coin: ['both', 'and', 'boundary', 'forgive myself', 'process', 'time', 'understand', 'heal', 'complex'],
+                    sMinus: ['everyone', 'compassion', 'release', 'holding', 'hurts me', 'their pain', 'let go', 'already', 'freely']
+                }
+            },
+            {
+                id: 2,
+                prime: 'awareness',
+                tier: 1,
+                prompt: "When you're alone with nothing to do, where does your attention go?",
+                indicators: {
+                    sPlus: ['plan', 'task', 'productive', 'list', 'should', 'next', 'work', 'organize', 'idle', 'waste'],
+                    coin: ['sometimes', 'depends', 'both', 'notice', 'watching', 'curious', 'varies', 'moment'],
+                    sMinus: ['inner', 'feel', 'stillness', 'peace', 'quiet', 'breath', 'present', 'just be', 'meditation', 'wander']
+                }
+            },
+            {
+                id: 3,
+                prime: 'power',
+                tier: 1,
+                prompt: "You see something wrong happening. No one else is acting. What do you do?",
+                indicators: {
+                    sPlus: ['act', 'intervene', 'stop', 'confront', 'someone has to', 'step up', 'fix', 'handle', 'take charge'],
+                    coin: ['assess', 'depends', 'right moment', 'consider', 'impact', 'wisdom', 'appropriate', 'context'],
+                    sMinus: ['witness', 'pray', 'energy', 'presence', 'trust', 'not my place', 'send love', 'hold space', 'violence begets']
+                }
+            },
+            {
+                id: 4,
+                prime: 'truth',
+                tier: 1,
+                prompt: "You discover something you've believed for years is probably false. How do you respond?",
+                indicators: {
+                    sPlus: ['proof', 'evidence', 'verify', 'source', 'need to know', 'facts', 'research', 'certain', 'prove'],
+                    coin: ['interesting', 'what else', 'curious', 'beliefs are maps', 'hold lightly', 'both could be', 'learn'],
+                    sMinus: ['feel', 'intuition', 'reveals itself', 'truth within', 'experience', 'trust', 'know somehow', 'sense']
+                }
+            },
+            {
+                id: 5,
+                prime: 'change',
+                tier: 1,
+                prompt: "Something you've worked hard to build is ending. It served its purpose but now it's time to let go. What do you feel?",
+                indicators: {
+                    sPlus: ['loss', 'grief', 'invested', 'effort', 'unfair', 'waste', 'hard', 'built', 'mine', 'keep'],
+                    coin: ['grateful', 'both', 'sad and', 'natural', 'cycle', 'ending and beginning', 'bittersweet', 'honor'],
+                    sMinus: ['relief', 'free', 'liberation', 'release', 'new', 'emerging', 'welcome', 'ready', 'light', 'transform']
+                }
+            },
+            {
+                id: 6,
+                prime: 'material',
+                tier: 1,
+                prompt: "You receive unexpected money - more than you need. What happens next?",
+                indicators: {
+                    sPlus: ['save', 'invest', 'secure', 'future', 'emergency', 'build', 'wealth', 'smart', 'grow', 'protect'],
+                    coin: ['some save', 'some share', 'balance', 'flow', 'enjoy', 'enough', 'both', 'grateful', 'use wisely'],
+                    sMinus: ['share', 'give', 'others', 'redistribute', 'need less', 'abundance', 'trust', 'universe', 'blessed to give']
+                }
+            },
+            {
+                id: 7,
+                prime: 'relation',
+                tier: 1,
+                prompt: "Someone wants to get closer to you than you're comfortable with. What do you do?",
+                indicators: {
+                    sPlus: ['boundary', 'space', 'no', 'clear', 'protect', 'distance', 'my needs', 'firm', 'tell them'],
+                    coin: ['explore', 'why uncomfortable', 'talk', 'negotiate', 'adjust', 'understand', 'both', 'flexible', 'honest'],
+                    sMinus: ['maybe I should', 'open more', 'their needs', 'accommodate', 'try', 'give chance', 'don\'t want to hurt', 'accept']
+                }
+            },
+            {
+                id: 8,
+                prime: 'cosmos',
+                tier: 1,
+                prompt: "Late at night, when everything is quiet, what questions come to you?",
+                indicators: {
+                    sPlus: ['tomorrow', 'tasks', 'handle', 'solve', 'work', 'bills', 'schedule', 'how will I', 'practical', 'list'],
+                    coin: ['both', 'practical and', 'meaning and', 'wonder', 'sometimes', 'varies', 'grounded', 'all of it'],
+                    sMinus: ['why', 'meaning', 'purpose', 'cosmic', 'soul', 'existence', 'universe', 'infinite', 'who am I', 'what is']
+                }
+            },
+
+            // TIER 2: ASPECT DEPTH (9-16 for now, expandable)
+            {
+                id: 9,
+                prime: 'love',
+                tier: 2,
+                aspect: 'self',
+                prompt: "When you fail at something important, what does your inner voice say?",
+                indicators: {
+                    sPlus: ['should have', 'stupid', 'do better', 'weakness', 'unacceptable', 'fix this', 'never again', 'my fault'],
+                    coin: ['human', 'learn', 'okay', 'growth', 'compassion', 'next time', 'kind to myself', 'part of process'],
+                    sMinus: ['universe', 'meant to be', 'surrender', 'accept', 'release', 'not about me', 'serve', 'lesson']
+                }
+            },
+            {
+                id: 10,
+                prime: 'love',
+                tier: 2,
+                aspect: 'other',
+                prompt: "Someone you care about makes a choice you think is harmful to them. What do you do?",
+                indicators: {
+                    sPlus: ['tell them', 'stop', 'warn', 'intervention', 'make them', 'can\'t watch', 'confront', 'wrong'],
+                    coin: ['share concern', 'their choice', 'support', 'boundary', 'love and', 'express and let', 'both'],
+                    sMinus: ['their path', 'trust them', 'send love', 'not my place', 'soul journey', 'lessons', 'just love']
+                }
+            },
+            {
+                id: 11,
+                prime: 'awareness',
+                tier: 2,
+                aspect: 'mental',
+                prompt: "When your mind is racing, what do you do?",
+                indicators: {
+                    sPlus: ['list', 'organize', 'solve', 'address', 'work through', 'analyze', 'figure out', 'control'],
+                    coin: ['notice', 'observe', 'step back', 'both do and', 'breathe and', 'acknowledge', 'curious'],
+                    sMinus: ['surrender', 'breathe', 'let go', 'meditate', 'trust', 'allow', 'presence', 'still', 'quiet']
+                }
+            },
+            {
+                id: 12,
+                prime: 'truth',
+                tier: 2,
+                aspect: 'personal',
+                prompt: "When was the last time you lied to yourself? How did you discover it?",
+                indicators: {
+                    sPlus: ['realized logically', 'evidence', 'proved', 'facts showed', 'analyzed', 'figured out', 'clear now'],
+                    coin: ['body told me', 'both knew and', 'slowly', 'layers', 'gentle', 'process', 'compassion'],
+                    sMinus: ['felt it', 'soul knew', 'always knew', 'intuition', 'dream', 'deep down', 'spirit', 'heart']
+                }
+            },
+            {
+                id: 13,
+                prime: 'power',
+                tier: 2,
+                aspect: 'creative',
+                prompt: "When you create something, where does it come from?",
+                indicators: {
+                    sPlus: ['skill', 'practice', 'learned', 'technique', 'effort', 'work', 'developed', 'training', 'I made'],
+                    coin: ['both', 'through me', 'skill and', 'collaboration', 'me and something else', 'channel and craft'],
+                    sMinus: ['through me', 'source', 'divine', 'downloads', 'spirit', 'muse', 'channeled', 'given', 'flows']
+                }
+            },
+            {
+                id: 14,
+                prime: 'change',
+                tier: 2,
+                aspect: 'personal',
+                prompt: "What's the most significant way you've changed in the past five years?",
+                indicators: {
+                    sPlus: ['achieved', 'accomplished', 'built', 'learned', 'grew', 'stronger', 'better at', 'improved'],
+                    coin: ['softened and', 'both', 'integrated', 'balanced', 'whole', 'accepted', 'complex'],
+                    sMinus: ['surrendered', 'let go', 'opened', 'released', 'awakened', 'softer', 'less ego', 'more love']
+                }
+            },
+            {
+                id: 15,
+                prime: 'material',
+                tier: 2,
+                aspect: 'body',
+                prompt: "How do you care for your body? What does it need that you sometimes deny it?",
+                indicators: {
+                    sPlus: ['exercise', 'discipline', 'routine', 'optimize', 'performance', 'control', 'regiment', 'strict'],
+                    coin: ['listen', 'balance', 'sometimes strict', 'needs vary', 'intuitive and', 'both push and rest'],
+                    sMinus: ['temple', 'honor', 'trust it', 'intuitive', 'gentle', 'rest', 'love', 'accept', 'enough']
+                }
+            },
+            {
+                id: 16,
+                prime: 'cosmos',
+                tier: 2,
+                aspect: 'meaning',
+                prompt: "What gives your life meaning? Has this changed?",
+                indicators: {
+                    sPlus: ['achievement', 'goals', 'success', 'impact', 'legacy', 'building', 'contribution', 'recognition'],
+                    coin: ['connection and', 'both', 'purpose and presence', 'meaning in moment and mission', 'changes'],
+                    sMinus: ['being', 'love', 'presence', 'serving', 'connection', 'spiritual', 'just existing', 'soul']
+                }
+            }
+        ];
+
+        // ═══════════════════════════════════════════════════════════════════
+        // STATE
+        // ═══════════════════════════════════════════════════════════════════
+
+        let state = {
+            displayName: '',
+            realName: '',
+            birthDate: '',
+            uniqueId: '',
+            calibrationLevel: 'basic', // basic, enhanced, full
+            currentQuestion: 0,
+            currentTier: 1,
+            responses: {},
+            signature: {},
+            predictions: {},
+            matchHistory: [],
+            totalMatches: 0,
+            totalQuestions: 0
+        };
+
+        // Initialize signature
+        PRIMES.forEach(p => {
+            state.signature[p.id] = {
+                sPlus: 0.33,
+                coin: 0.34,
+                sMinus: 0.33,
+                responses: 0,
+                lastUpdated: null
+            };
+        });
+
+        // ═══════════════════════════════════════════════════════════════════
+        // IDENTITY GENERATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        const SYMBOLS = ['◬', '⫯', '∮', '⧉', '△', '∯', '⫲', '⧫', '◭', '∲', '⧊', '⫳'];
+        const WORDS = ['soul', 'mind', 'echo', 'wave', 'light', 'path', 'seed', 'flux', 'pulse', 'glow', 'veil', 'edge'];
+        const ASPECTS = ['crossed', 'rising', 'seeking', 'turning', 'weaving', 'sailing', 'dancing', 'holding'];
+
+        function toggleCalibration() {
+            const fields = document.getElementById('calibrationFields');
+            const toggle = document.getElementById('calibToggle');
+            if (fields.classList.contains('hidden')) {
+                fields.classList.remove('hidden');
+                toggle.textContent = '−';
+            } else {
+                fields.classList.add('hidden');
+                toggle.textContent = '+';
+            }
+        }
+
+        function updateIdentity() {
+            const displayName = document.getElementById('displayNameInput').value;
+            const realName = document.getElementById('realNameInput').value;
+            const birth = document.getElementById('birthInput').value;
+
+            state.displayName = displayName;
+            state.realName = realName;
+            state.birthDate = birth;
+
+            // Update calibration level
+            if (realName && birth) {
+                state.calibrationLevel = 'full';
+            } else if (realName || birth) {
+                state.calibrationLevel = 'enhanced';
+            } else {
+                state.calibrationLevel = 'basic';
+            }
+
+            // Update calibration status display
+            const calibStatus = document.getElementById('calibStatus');
+            if (calibStatus) {
+                const levelClass = state.calibrationLevel;
+                const levelText = state.calibrationLevel.toUpperCase();
+                calibStatus.innerHTML = `Calibration: <span class="calib-level ${levelClass}">${levelText}</span>`;
+            }
+
+            if (!displayName) {
+                document.getElementById('uidDisplay').textContent = '---';
+                document.getElementById('beginBtn').disabled = true;
+                return;
+            }
+
+            // Generate unique ID using calibration data if available, otherwise display name
+            const idSeed = (realName || displayName) + birth + 'ssig';
+            let hash = 0;
+            for (let i = 0; i < idSeed.length; i++) {
+                hash = ((hash << 5) - hash) + idSeed.charCodeAt(i);
+                hash = hash & hash;
+            }
+
+            const w1 = WORDS[Math.abs(hash) % WORDS.length];
+            const asp = ASPECTS[Math.abs(hash >> 8) % ASPECTS.length];
+            const w2 = WORDS[Math.abs(hash >> 16) % WORDS.length];
+
+            let symbols = '';
+            for (let i = 0; i < 4; i++) {
+                symbols += SYMBOLS[Math.abs(hash >> (i * 5)) % SYMBOLS.length];
+            }
+
+            state.uniqueId = `${w1}${asp}${w2}${symbols}`;
+            document.getElementById('uidDisplay').textContent = state.uniqueId;
+            document.getElementById('beginBtn').disabled = false;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // VIEWS
+        // ═══════════════════════════════════════════════════════════════════
+
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        function beginAssessment() {
+            showView('questionView');
+            state.currentQuestion = 0;
+            state.currentTier = 1;
+            renderQuestion();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // QUESTION RENDERING
+        // ═══════════════════════════════════════════════════════════════════
+
+        function renderQuestion() {
+            const tierQuestions = QUESTIONS.filter(q => q.tier === state.currentTier);
+            const q = tierQuestions[state.currentQuestion];
+
+            if (!q) {
+                // Tier complete
+                showTierComplete();
+                return;
+            }
+
+            const prime = PRIMES.find(p => p.id === q.prime);
+
+            document.getElementById('tierLabel').textContent = `TIER ${state.currentTier}: ${state.currentTier === 1 ? 'FOUNDATION' : 'ASPECT DEPTH'}`;
+            document.getElementById('qCount').textContent = `${state.currentQuestion + 1} / ${tierQuestions.length}`;
+            document.getElementById('primeName').textContent = prime.name;
+            document.getElementById('qPrompt').textContent = q.prompt;
+
+            // Reset response area
+            document.getElementById('responseInput').value = state.responses[q.id] || '';
+            updateWordCount();
+
+            // Navigation
+            document.getElementById('prevBtn').disabled = state.currentQuestion === 0;
+            document.getElementById('nextBtn').textContent = state.currentQuestion === tierQuestions.length - 1 ? 'COMPLETE TIER' : 'CONTINUE';
+
+            // Generate prediction
+            generatePrediction(q);
+
+            // Reset indicator
+            document.getElementById('predIndicator').className = 'pred-indicator watching';
+        }
+
+        function updateWordCount() {
+            const text = document.getElementById('responseInput').value;
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+            const count = words.length;
+
+            document.getElementById('wordCount').textContent = `${count} words`;
+
+            const verbTag = document.getElementById('verbosityTag');
+            if (count === 0) {
+                verbTag.textContent = 'waiting';
+                verbTag.className = 'verbosity-tag';
+            } else if (count < 20) {
+                verbTag.textContent = 'brief';
+                verbTag.className = 'verbosity-tag brief';
+            } else if (count < 60) {
+                verbTag.textContent = 'moderate';
+                verbTag.className = 'verbosity-tag moderate';
+            } else {
+                verbTag.textContent = 'expressive';
+                verbTag.className = 'verbosity-tag expressive';
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // PREDICTION ENGINE
+        // ═══════════════════════════════════════════════════════════════════
+
+        function generatePrediction(question) {
+            const sig = state.signature[question.prime];
+
+            // Predict based on current signature
+            state.predictions[question.id] = {
+                expectedSPlus: sig.sPlus,
+                expectedCoin: sig.coin,
+                expectedSMinus: sig.sMinus
+            };
+        }
+
+        function analyzeResponse(question, responseText) {
+            const text = responseText.toLowerCase();
+            const indicators = question.indicators;
+
+            let sPlusScore = 0;
+            let coinScore = 0;
+            let sMinusScore = 0;
+
+            // Count indicator matches
+            indicators.sPlus.forEach(kw => {
+                if (text.includes(kw)) sPlusScore++;
+            });
+
+            indicators.coin.forEach(kw => {
+                if (text.includes(kw)) coinScore++;
+            });
+
+            indicators.sMinus.forEach(kw => {
+                if (text.includes(kw)) sMinusScore++;
+            });
+
+            // Normalize
+            const total = sPlusScore + coinScore + sMinusScore + 0.1; // Avoid div by zero
+            const detected = {
+                sPlus: sPlusScore / total,
+                coin: coinScore / total,
+                sMinus: sMinusScore / total
+            };
+
+            // If no keywords matched, weight toward coin (neutral)
+            if (total < 1) {
+                detected.sPlus = 0.3;
+                detected.coin = 0.4;
+                detected.sMinus = 0.3;
+            }
+
+            return detected;
+        }
+
+        function comparePrediction(question, detected) {
+            const prediction = state.predictions[question.id];
+
+            // Calculate match score
+            const sPlusDiff = Math.abs(prediction.expectedSPlus - detected.sPlus);
+            const coinDiff = Math.abs(prediction.expectedCoin - detected.coin);
+            const sMinusDiff = Math.abs(prediction.expectedSMinus - detected.sMinus);
+
+            const avgDiff = (sPlusDiff + coinDiff + sMinusDiff) / 3;
+            const matchScore = Math.max(0, 1 - avgDiff * 2); // 0-1 range
+
+            return {
+                score: matchScore,
+                isMatch: matchScore >= 0.6, // 60% threshold
+                variance: avgDiff
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // NAVIGATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        function prevQuestion() {
+            if (state.currentQuestion > 0) {
+                state.currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            const tierQuestions = QUESTIONS.filter(q => q.tier === state.currentTier);
+            const q = tierQuestions[state.currentQuestion];
+
+            const responseText = document.getElementById('responseInput').value;
+
+            if (responseText.trim().length < 10) {
+                // Need more response
+                return;
+            }
+
+            // Store response
+            state.responses[q.id] = responseText;
+
+            // Analyze
+            const detected = analyzeResponse(q, responseText);
+            const comparison = comparePrediction(q, detected);
+
+            // Update signature
+            updateSignature(q.prime, detected);
+
+            // Record match
+            state.matchHistory.push({
+                questionId: q.id,
+                prime: q.prime,
+                detected: detected,
+                comparison: comparison,
+                timestamp: Date.now()
+            });
+
+            state.totalQuestions++;
+            if (comparison.isMatch) state.totalMatches++;
+
+            // Show analysis
+            showAnalysis(q, detected, comparison);
+        }
+
+        function updateSignature(primeId, detected) {
+            const sig = state.signature[primeId];
+            const weight = 0.3; // How much new data affects signature
+
+            sig.sPlus = sig.sPlus * (1 - weight) + detected.sPlus * weight;
+            sig.coin = sig.coin * (1 - weight) + detected.coin * weight;
+            sig.sMinus = sig.sMinus * (1 - weight) + detected.sMinus * weight;
+
+            // Normalize
+            const total = sig.sPlus + sig.coin + sig.sMinus;
+            sig.sPlus /= total;
+            sig.coin /= total;
+            sig.sMinus /= total;
+
+            sig.responses++;
+            sig.lastUpdated = Date.now();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // ANALYSIS DISPLAY
+        // ═══════════════════════════════════════════════════════════════════
+
+        function showAnalysis(question, detected, comparison) {
+            const prime = PRIMES.find(p => p.id === question.prime);
+            const isMatch = comparison.isMatch;
+
+            const indicator = document.getElementById('predIndicator');
+            indicator.className = `pred-indicator ${isMatch ? 'match' : 'variance'}`;
+
+            const card = document.getElementById('analysisCard');
+            card.innerHTML = `
+                <h2>RESPONSE ANALYZED</h2>
+
+                <div class="prediction-result ${isMatch ? 'match' : 'variance'}">
+                    <div class="result-icon">${isMatch ? '◈' : '◇'}</div>
+                    <div class="result-title">${isMatch ? 'SIGNATURE STABLE' : 'GROWTH DETECTED'}</div>
+                    <div class="result-desc">
+                        ${isMatch
+                            ? 'Your response aligns with your established pattern. Signature reinforced.'
+                            : 'Your response shows evolution beyond current signature. New data integrated.'}
+                    </div>
+                </div>
+
+                <div class="detected-values">
+                    <div class="value-box">
+                        <div class="value-label">S+ PHYSICAL</div>
+                        <div class="value-bar">
+                            <div class="value-fill splus" style="width: ${detected.sPlus * 100}%"></div>
+                        </div>
+                        <div class="value-percent">${Math.round(detected.sPlus * 100)}%</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="value-label">COIN BALANCE</div>
+                        <div class="value-bar">
+                            <div class="value-fill coin" style="width: ${detected.coin * 100}%"></div>
+                        </div>
+                        <div class="value-percent">${Math.round(detected.coin * 100)}%</div>
+                    </div>
+                    <div class="value-box">
+                        <div class="value-label">S- SOUL</div>
+                        <div class="value-bar">
+                            <div class="value-fill sminus" style="width: ${detected.sMinus * 100}%"></div>
+                        </div>
+                        <div class="value-percent">${Math.round(detected.sMinus * 100)}%</div>
+                    </div>
+                </div>
+
+                <button class="continue-btn" onclick="continueAfterAnalysis()">CONTINUE</button>
+            `;
+
+            document.getElementById('analysisOverlay').classList.remove('hidden');
+        }
+
+        function continueAfterAnalysis() {
+            document.getElementById('analysisOverlay').classList.add('hidden');
+
+            const tierQuestions = QUESTIONS.filter(q => q.tier === state.currentTier);
+
+            if (state.currentQuestion < tierQuestions.length - 1) {
+                state.currentQuestion++;
+                renderQuestion();
+            } else {
+                showTierComplete();
+            }
+        }
+
+        function showTierComplete() {
+            const tierQuestions = QUESTIONS.filter(q => q.tier === state.currentTier);
+            const tierMatches = state.matchHistory.filter(m => {
+                const q = QUESTIONS.find(question => question.id === m.questionId);
+                return q && q.tier === state.currentTier;
+            });
+
+            const matchRate = tierMatches.length > 0
+                ? tierMatches.filter(m => m.comparison.isMatch).length / tierMatches.length
+                : 0;
+
+            const shouldUnlock = matchRate >= 0.6;
+            const nextTierExists = QUESTIONS.some(q => q.tier === state.currentTier + 1);
+
+            const card = document.getElementById('analysisCard');
+            card.innerHTML = `
+                <div class="tier-complete-card">
+                    <h2>TIER ${state.currentTier} COMPLETE</h2>
+
+                    <div class="match-rate">${Math.round(matchRate * 100)}%</div>
+                    <div class="match-rate-label">PREDICTION MATCH RATE</div>
+
+                    ${shouldUnlock && nextTierExists ? `
+                        <div class="unlock-message">
+                            Signature stable. Tier ${state.currentTier + 1} unlocked.
+                            Deeper questions await.
+                        </div>
+                        <button class="continue-btn" onclick="startNextTier()">CONTINUE TO TIER ${state.currentTier + 1}</button>
+                    ` : shouldUnlock && !nextTierExists ? `
+                        <div class="unlock-message">
+                            Assessment complete. View your full signature.
+                        </div>
+                        <button class="continue-btn" onclick="showSignature()">VIEW SIGNATURE</button>
+                    ` : `
+                        <div class="rebuild-message">
+                            Significant variance detected. Your signature is evolving.
+                            New patterns are being integrated.
+                        </div>
+                        <button class="continue-btn" onclick="showSignature()">VIEW SIGNATURE</button>
+                    `}
+                </div>
+            `;
+
+            document.getElementById('analysisOverlay').classList.remove('hidden');
+        }
+
+        function startNextTier() {
+            document.getElementById('analysisOverlay').classList.add('hidden');
+            state.currentTier++;
+            state.currentQuestion = 0;
+            renderQuestion();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SIGNATURE VIEW
+        // ═══════════════════════════════════════════════════════════════════
+
+        function showSignature() {
+            document.getElementById('analysisOverlay').classList.add('hidden');
+            showView('signatureView');
+
+            document.getElementById('sigName').textContent = state.displayName;
+            document.getElementById('sigId').textContent = state.uniqueId;
+
+            const stage = state.totalQuestions < 8 ? 'I - FORMING' :
+                          state.totalQuestions < 16 ? 'II - EMERGING' :
+                          state.totalQuestions < 32 ? 'III - SHAPING' : 'IV - CRYSTALLIZING';
+            document.getElementById('sigStage').textContent = `STAGE ${stage}`;
+
+            renderPrimesList();
+            renderStats();
+            renderEvolution();
+            initSphere();
+        }
+
+        function renderPrimesList() {
+            const container = document.getElementById('primesList');
+
+            container.innerHTML = PRIMES.map(p => {
+                const sig = state.signature[p.id];
+                return `
+                    <div class="prime-row">
+                        <span class="prime-row-name">${p.name}</span>
+                        <div class="three-zone-mini">
+                            <div class="zone-mini splus" style="width: ${sig.sPlus * 100}%"></div>
+                            <div class="zone-mini coin" style="width: ${sig.coin * 100}%"></div>
+                            <div class="zone-mini sminus" style="width: ${sig.sMinus * 100}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderStats() {
+            const matchRate = state.totalQuestions > 0
+                ? Math.round((state.totalMatches / state.totalQuestions) * 100)
+                : 0;
+
+            // Calculate overall position
+            let totalPos = 0;
+            PRIMES.forEach(p => {
+                const sig = state.signature[p.id];
+                totalPos += sig.sMinus - sig.sPlus;
+            });
+            const avgPos = totalPos / PRIMES.length;
+
+            let posLabel = 'Centered';
+            if (avgPos < -0.1) posLabel = 'S+ Leaning';
+            else if (avgPos > 0.1) posLabel = 'S- Leaning';
+
+            // Calculate coin average
+            let totalCoin = 0;
+            PRIMES.forEach(p => totalCoin += state.signature[p.id].coin);
+            const avgCoin = Math.round((totalCoin / PRIMES.length) * 100);
+
+            document.getElementById('statsPanel').innerHTML = `
+                <div class="stat-row">
+                    <span class="stat-label">Questions Answered</span>
+                    <span class="stat-value">${state.totalQuestions}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Prediction Match</span>
+                    <span class="stat-value">${matchRate}%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Overall Position</span>
+                    <span class="stat-value">${posLabel}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Coin Integration</span>
+                    <span class="stat-value">${avgCoin}%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Current Tier</span>
+                    <span class="stat-value">${state.currentTier}</span>
+                </div>
+            `;
+        }
+
+        function renderEvolution() {
+            const recent = state.matchHistory.slice(-5).reverse();
+
+            document.getElementById('evolutionPanel').innerHTML = recent.map(m => {
+                const q = QUESTIONS.find(question => question.id === m.questionId);
+                const prime = PRIMES.find(p => p.id === m.prime);
+                return `
+                    <div class="evo-item">
+                        <span>${prime ? prime.name : 'Unknown'}</span>
+                        <span class="evo-change ${m.comparison.isMatch ? '' : 'down'}">
+                            ${m.comparison.isMatch ? 'stable' : 'evolved'}
+                        </span>
+                    </div>
+                `;
+            }).join('') || '<div class="evo-item"><span>No history yet</span></div>';
+        }
+
+        function retakeAssessment() {
+            showView('questionView');
+            renderQuestion();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // THREE.JS SPHERE
+        // ═══════════════════════════════════════════════════════════════════
+
+        let scene, camera, renderer, sphereGroup, lines = [];
+
+        function hslToHex(h, s, l) {
+            s /= 100; l /= 100;
+            const a = s * Math.min(l, 1 - l);
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return parseInt(`${f(0)}${f(8)}${f(4)}`, 16);
+        }
+
+        function initSphere() {
+            const canvas = document.getElementById('sphereCanvas');
+            const container = canvas.parentElement;
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 4;
+
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            sphereGroup = new THREE.Group();
+            scene.add(sphereGroup);
+
+            createSphereContent();
+            animateSphere();
+
+            // Interaction
+            let isDragging = false, prevMouse = { x: 0, y: 0 };
+
+            canvas.addEventListener('mousedown', e => {
+                isDragging = true;
+                prevMouse = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                sphereGroup.rotation.y += (e.clientX - prevMouse.x) * 0.008;
+                sphereGroup.rotation.x += (e.clientY - prevMouse.y) * 0.008;
+                prevMouse = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener('mouseup', () => isDragging = false);
+            canvas.addEventListener('mouseleave', () => isDragging = false);
+
+            canvas.addEventListener('wheel', e => {
+                e.preventDefault();
+                camera.position.z = Math.max(2, Math.min(7, camera.position.z + e.deltaY * 0.003));
+            });
+        }
+
+        function createSphereContent() {
+            lines = [];
+            while (sphereGroup.children.length) sphereGroup.remove(sphereGroup.children[0]);
+
+            // Core
+            const coreGeom = new THREE.SphereGeometry(0.1, 32, 32);
+            const coreMat = new THREE.MeshBasicMaterial({ color: 0xc9a227, transparent: true, opacity: 0.85 });
+            sphereGroup.add(new THREE.Mesh(coreGeom, coreMat));
+
+            // Glow
+            const glowGeom = new THREE.SphereGeometry(0.15, 32, 32);
+            const glowMat = new THREE.MeshBasicMaterial({ color: 0xc9a227, transparent: true, opacity: 0.15 });
+            sphereGroup.add(new THREE.Mesh(glowGeom, glowMat));
+
+            sphereGroup.add(new THREE.PointLight(0xc9a227, 0.7, 5));
+
+            // Lines for each prime
+            const goldenRatio = (1 + Math.sqrt(5)) / 2;
+
+            PRIMES.forEach((prime, i) => {
+                const sig = state.signature[prime.id];
+                const development = sig.responses > 0 ? Math.min(1, sig.responses / 4) : 0.3;
+
+                const t = i / PRIMES.length;
+                const inclination = Math.acos(1 - 2 * t);
+                const azimuth = 2 * Math.PI * goldenRatio * i;
+
+                const length = 0.5 + development * 0.8;
+                const radius = 0.18;
+
+                const x = Math.sin(inclination) * Math.cos(azimuth);
+                const y = Math.sin(inclination) * Math.sin(azimuth);
+                const z = Math.cos(inclination);
+                const dir = new THREE.Vector3(x, y, z).normalize();
+
+                // Create three segments
+                let currentPos = radius;
+
+                // S+ segment
+                const sPlusLen = length * sig.sPlus;
+                if (sPlusLen > 0.02) {
+                    const geom = new THREE.CylinderGeometry(0.008, 0.012, sPlusLen, 8);
+                    const mat = new THREE.MeshBasicMaterial({ color: 0x00c8dc, transparent: true, opacity: 0.7 });
+                    const mesh = new THREE.Mesh(geom, mat);
+                    mesh.position.copy(dir.clone().multiplyScalar(currentPos + sPlusLen / 2));
+                    mesh.lookAt(0, 0, 0);
+                    mesh.rotateX(Math.PI / 2);
+                    sphereGroup.add(mesh);
+                    lines.push(mesh);
+                    currentPos += sPlusLen;
+                }
+
+                // COIN segment
+                const coinLen = length * sig.coin;
+                if (coinLen > 0.02) {
+                    const geom = new THREE.CylinderGeometry(0.01, 0.01, coinLen, 8);
+                    const mat = new THREE.MeshBasicMaterial({ color: 0xc9a227, transparent: true, opacity: 0.85 });
+                    const mesh = new THREE.Mesh(geom, mat);
+                    mesh.position.copy(dir.clone().multiplyScalar(currentPos + coinLen / 2));
+                    mesh.lookAt(0, 0, 0);
+                    mesh.rotateX(Math.PI / 2);
+                    sphereGroup.add(mesh);
+                    lines.push(mesh);
+                    currentPos += coinLen;
+                }
+
+                // S- segment
+                const sMinusLen = length * sig.sMinus;
+                if (sMinusLen > 0.02) {
+                    const geom = new THREE.CylinderGeometry(0.012, 0.008, sMinusLen, 8);
+                    const mat = new THREE.MeshBasicMaterial({ color: 0xc83296, transparent: true, opacity: 0.7 });
+                    const mesh = new THREE.Mesh(geom, mat);
+                    mesh.position.copy(dir.clone().multiplyScalar(currentPos + sMinusLen / 2));
+                    mesh.lookAt(0, 0, 0);
+                    mesh.rotateX(Math.PI / 2);
+                    sphereGroup.add(mesh);
+                    lines.push(mesh);
+                    currentPos += sMinusLen;
+                }
+
+                // Tip
+                const tipGeom = new THREE.SphereGeometry(0.015, 8, 8);
+                const tipColor = sig.coin > 0.4 ? 0xc9a227 : (sig.sMinus > sig.sPlus ? 0xc83296 : 0x00c8dc);
+                const tipMat = new THREE.MeshBasicMaterial({ color: tipColor, transparent: true, opacity: 0.9 });
+                const tip = new THREE.Mesh(tipGeom, tipMat);
+                tip.position.copy(dir.clone().multiplyScalar(radius + length));
+                sphereGroup.add(tip);
+            });
+        }
+
+        function animateSphere() {
+            requestAnimationFrame(animateSphere);
+
+            sphereGroup.rotation.y += 0.002;
+
+            const time = Date.now() * 0.001;
+            lines.forEach((mesh, i) => {
+                mesh.material.opacity = 0.5 + Math.sin(time * 0.8 + i * 0.5) * 0.2;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // EXPORT FUNCTIONS WITH TAMPER PROTECTION
+        // ═══════════════════════════════════════════════════════════════════
+
+        let currentExportMode = 'compact';
+        let currentExportData = null;
+
+        // Simple hash function for verification
+        function generateHash(data) {
+            const str = JSON.stringify(data);
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            // Convert to hex and add signature markers
+            const hex = Math.abs(hash).toString(16).padStart(8, '0');
+            return `SSG-${hex}-${state.uniqueId.slice(-4)}`;
+        }
+
+        function buildCompactSignature() {
+            // Compact format: minimal size, still verifiable
+            const compact = {
+                v: '1.2',
+                t: Date.now(),
+                d: state.displayName,
+                u: state.uniqueId,
+                c: state.calibrationLevel[0], // 'b', 'e', or 'f'
+                q: state.totalQuestions,
+                m: state.totalMatches,
+                r: state.currentTier,
+                s: {}
+            };
+
+            // Signature as percentages (3 digits each, no decimals)
+            PRIMES.forEach(p => {
+                const sig = state.signature[p.id];
+                compact.s[p.id[0]] = [
+                    Math.round(sig.sPlus * 100),
+                    Math.round(sig.coin * 100),
+                    Math.round(sig.sMinus * 100)
+                ];
+            });
+
+            // Add verification hash
+            compact.h = generateHash(compact);
+
+            return compact;
+        }
+
+        function buildFullExport() {
+            const full = {
+                meta: {
+                    version: '1.2',
+                    exportedAt: new Date().toISOString(),
+                    displayName: state.displayName,
+                    uniqueId: state.uniqueId,
+                    calibrationLevel: state.calibrationLevel
+                },
+                stats: {
+                    totalQuestions: state.totalQuestions,
+                    totalMatches: state.totalMatches,
+                    matchRate: state.totalQuestions > 0
+                        ? Math.round((state.totalMatches / state.totalQuestions) * 100)
+                        : 0,
+                    currentTier: state.currentTier
+                },
+                signature: {},
+                responses: state.responses,
+                matchHistory: state.matchHistory.map(m => ({
+                    questionId: m.questionId,
+                    prime: m.prime,
+                    detected: m.detected,
+                    isMatch: m.comparison.isMatch,
+                    matchScore: Math.round(m.comparison.score * 100),
+                    timestamp: m.timestamp
+                }))
+            };
+
+            PRIMES.forEach(p => {
+                const sig = state.signature[p.id];
+                full.signature[p.id] = {
+                    name: p.name,
+                    sPlus: Math.round(sig.sPlus * 100),
+                    coin: Math.round(sig.coin * 100),
+                    sMinus: Math.round(sig.sMinus * 100),
+                    responses: sig.responses
+                };
+            });
+
+            // Add verification hash
+            full.hash = generateHash(full);
+
+            return full;
+        }
+
+        function setExportMode(mode) {
+            currentExportMode = mode;
+            document.querySelectorAll('.export-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            updateExportDisplay();
+        }
+
+        function updateExportDisplay() {
+            if (currentExportMode === 'compact') {
+                currentExportData = buildCompactSignature();
+            } else {
+                currentExportData = buildFullExport();
+            }
+
+            document.getElementById('exportData').textContent = JSON.stringify(currentExportData, null, 2);
+            document.getElementById('verifyHash').textContent = currentExportData.h || currentExportData.hash;
+        }
+
+        function showExport() {
+            updateExportDisplay();
+            document.getElementById('exportOverlay').classList.remove('hidden');
+        }
+
+        function downloadSignature() {
+            const data = currentExportMode === 'compact'
+                ? buildCompactSignature()
+                : buildFullExport();
+
+            const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+
+            // Filename includes unique ID fragment for identification
+            const idFragment = state.uniqueId.replace(/[^a-z]/gi, '').slice(0, 8);
+            a.href = url;
+            a.download = `signature_${idFragment}_${Date.now()}.ssg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            const btn = document.querySelector('.download-btn');
+            btn.textContent = 'DOWNLOADED!';
+            setTimeout(() => btn.textContent = 'DOWNLOAD .SSG', 2000);
+        }
+
+        function copyExportData() {
+            const data = document.getElementById('exportData').textContent;
+            navigator.clipboard.writeText(data).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = 'COPIED!';
+                setTimeout(() => btn.textContent = 'COPY', 2000);
+            });
+        }
+
+        function closeExport() {
+            document.getElementById('exportOverlay').classList.add('hidden');
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // IMPORT & VERIFICATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        function verifySignature(data) {
+            // Extract and remove hash
+            const providedHash = data.h || data.hash;
+            const dataCopy = JSON.parse(JSON.stringify(data));
+            delete dataCopy.h;
+            delete dataCopy.hash;
+
+            // Regenerate hash
+            const expectedHash = generateHash(dataCopy);
+
+            return {
+                valid: providedHash === expectedHash,
+                providedHash,
+                expectedHash
+            };
+        }
+
+        // Tamper protection philosophy:
+        // 1. Hash verification catches edits
+        // 2. If someone uploads another's signature, predictions fail immediately
+        // 3. The system self-corrects through prediction matching
+        // 4. Abuse is unfruitful - you can't pretend to be someone else for long
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SAVE TO PHOTOS / DOWNLOAD / UPLOAD
+        // ═══════════════════════════════════════════════════════════════════
+
+        async function saveCardToPhotos() {
+            // Create a card element for capture
+            const card = document.createElement('div');
+            card.style.cssText = `
+                width: 400px;
+                padding: 25px;
+                background: linear-gradient(145deg, #0a0a14, #000);
+                border: 1px solid rgba(201, 162, 39, 0.4);
+                border-radius: 20px;
+                font-family: 'Courier New', monospace;
+                color: #e8e4d9;
+                position: fixed;
+                top: -9999px;
+                left: -9999px;
+            `;
+
+            const stage = state.totalQuestions < 8 ? 'I - FORMING' :
+                          state.totalQuestions < 16 ? 'II - EMERGING' :
+                          state.totalQuestions < 32 ? 'III - SHAPING' : 'IV - CRYSTALLIZING';
+
+            const matchRate = state.totalQuestions > 0
+                ? Math.round((state.totalMatches / state.totalQuestions) * 100)
+                : 0;
+
+            // Build prime bars HTML
+            let primeBars = '';
+            PRIMES.forEach(p => {
+                const sig = state.signature[p.id];
+                const sPlus = Math.round(sig.sPlus * 100);
+                const coin = Math.round(sig.coin * 100);
+                const sMinus = Math.round(sig.sMinus * 100);
+                primeBars += `
+                    <div style="display:flex;align-items:center;margin-bottom:8px;">
+                        <div style="width:80px;font-size:11px;color:#7a8599;">${p.name}</div>
+                        <div style="flex:1;height:12px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden;display:flex;">
+                            <div style="width:${sPlus}%;height:100%;background:linear-gradient(90deg,#00c8dc,#00a0b0);"></div>
+                            <div style="width:${coin}%;height:100%;background:linear-gradient(90deg,#dab440,#c9a227);"></div>
+                            <div style="width:${sMinus}%;height:100%;background:linear-gradient(90deg,#c83296,#a02878);"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            card.innerHTML = `
+                <div style="text-align:center;padding-bottom:15px;border-bottom:1px solid rgba(201,162,39,0.2);margin-bottom:20px;">
+                    <div style="font-size:10px;letter-spacing:4px;color:#c9a227;">S-SIGNATURE</div>
+                    <div style="font-size:22px;color:#e8e4d9;margin:8px 0;">${state.displayName}</div>
+                    <div style="font-size:12px;color:#c9a227;">${state.uniqueId}</div>
+                    <div style="display:inline-block;margin-top:10px;padding:4px 12px;background:rgba(201,162,39,0.15);border:1px solid rgba(201,162,39,0.3);border-radius:12px;font-size:9px;color:#c9a227;">STAGE ${stage}</div>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:0 5px;margin-bottom:8px;font-size:9px;">
+                    <span style="color:#00c8dc;">S+ PHYSICAL</span>
+                    <span style="color:#c9a227;">COIN</span>
+                    <span style="color:#c83296;">S- SOUL</span>
+                </div>
+                ${primeBars}
+                <div style="display:flex;justify-content:space-around;padding:15px 0;border-top:1px solid rgba(100,100,100,0.15);border-bottom:1px solid rgba(100,100,100,0.15);margin:15px 0;">
+                    <div style="text-align:center;">
+                        <div style="font-size:18px;color:#c9a227;">${state.totalQuestions}</div>
+                        <div style="font-size:8px;color:#5a6577;">QUESTIONS</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:18px;color:#c9a227;">${matchRate}%</div>
+                        <div style="font-size:8px;color:#5a6577;">MATCH RATE</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:18px;color:#c9a227;">${state.currentTier}</div>
+                        <div style="font-size:8px;color:#5a6577;">TIER</div>
+                    </div>
+                </div>
+                <div style="text-align:center;font-size:8px;color:#3a3a4a;">
+                    ${generateHash({u: state.uniqueId, s: state.signature})} | HAVE MIND MEDIA
+                </div>
+            `;
+
+            document.body.appendChild(card);
+
+            try {
+                // Use html2canvas if available
+                if (typeof html2canvas !== 'undefined') {
+                    const canvas = await html2canvas(card, { backgroundColor: '#000', scale: 2 });
+                    const link = document.createElement('a');
+                    link.download = `s-signature-${state.uniqueId.replace(/[^a-z]/gi,'').slice(0,8)}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                } else {
+                    alert('Long-press or screenshot to save your signature card');
+                }
+            } catch (e) {
+                alert('Screenshot the signature view to save');
+            }
+
+            document.body.removeChild(card);
+        }
+
+        function downloadSignatureFile() {
+            const data = buildCompactSignature();
+            const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const idFragment = state.uniqueId.replace(/[^a-z]/gi, '').slice(0, 8);
+            a.href = url;
+            a.download = `${idFragment}_${Date.now()}.ssg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function triggerUpload() {
+            document.getElementById('uploadInput').click();
+        }
+
+        function handleUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    // Verify hash
+                    const verification = verifySignature(data);
+                    if (!verification.valid) {
+                        alert('Signature verification failed. File may be tampered.');
+                        return;
+                    }
+
+                    // Load the signature
+                    loadUploadedSignature(data);
+
+                } catch (err) {
+                    alert('Invalid signature file');
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function loadUploadedSignature(data) {
+            // Handle compact format
+            if (data.v && data.s) {
+                state.displayName = data.d;
+                state.uniqueId = data.u;
+                state.calibrationLevel = data.c === 'f' ? 'full' : data.c === 'e' ? 'enhanced' : 'basic';
+                state.totalQuestions = data.q;
+                state.totalMatches = data.m;
+                state.currentTier = data.r;
+
+                // Expand signature
+                const primeMap = { l: 'love', a: 'awareness', p: 'power', t: 'truth', c: 'change', m: 'material', r: 'relation', o: 'cosmos' };
+                Object.entries(data.s).forEach(([key, vals]) => {
+                    const primeId = primeMap[key];
+                    if (primeId && state.signature[primeId]) {
+                        state.signature[primeId].sPlus = vals[0] / 100;
+                        state.signature[primeId].coin = vals[1] / 100;
+                        state.signature[primeId].sMinus = vals[2] / 100;
+                    }
+                });
+            }
+            // Handle full format
+            else if (data.meta && data.signature) {
+                state.displayName = data.meta.displayName;
+                state.uniqueId = data.meta.uniqueId;
+                state.calibrationLevel = data.meta.calibrationLevel || 'basic';
+                state.totalQuestions = data.stats.totalQuestions;
+                state.totalMatches = data.stats.totalMatches;
+                state.currentTier = data.stats.currentTier;
+
+                Object.entries(data.signature).forEach(([primeId, sig]) => {
+                    if (state.signature[primeId]) {
+                        state.signature[primeId].sPlus = sig.sPlus / 100;
+                        state.signature[primeId].coin = sig.coin / 100;
+                        state.signature[primeId].sMinus = sig.sMinus / 100;
+                    }
+                });
+            }
+
+            saveToLocalStorage();
+            showSignature();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // LOCAL STORAGE PERSISTENCE
+        // ═══════════════════════════════════════════════════════════════════
+
+        const STORAGE_KEY = 's_signature_data';
+
+        function saveToLocalStorage() {
+            const saveData = {
+                version: '1.1',
+                savedAt: new Date().toISOString(),
+                state: {
+                    displayName: state.displayName,
+                    uniqueId: state.uniqueId,
+                    calibrationLevel: state.calibrationLevel,
+                    currentTier: state.currentTier,
+                    totalQuestions: state.totalQuestions,
+                    totalMatches: state.totalMatches,
+                    responses: state.responses,
+                    signature: state.signature,
+                    matchHistory: state.matchHistory
+                }
+            };
+
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData));
+                console.log('Signature saved to localStorage');
+                return true;
+            } catch (e) {
+                console.error('Failed to save:', e);
+                return false;
+            }
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (!saved) return null;
+
+                const data = JSON.parse(saved);
+                console.log('Found saved signature from:', data.savedAt);
+                return data;
+            } catch (e) {
+                console.error('Failed to load:', e);
+                return null;
+            }
+        }
+
+        function restoreSavedSignature(data) {
+            state.displayName = data.state.displayName;
+            state.uniqueId = data.state.uniqueId;
+            state.calibrationLevel = data.state.calibrationLevel || 'basic';
+            state.currentTier = data.state.currentTier;
+            state.totalQuestions = data.state.totalQuestions;
+            state.totalMatches = data.state.totalMatches;
+            state.responses = data.state.responses;
+            state.signature = data.state.signature;
+            state.matchHistory = data.state.matchHistory || [];
+
+            // Go to signature view
+            showSignature();
+        }
+
+        function clearSavedSignature() {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+
+        // Check for saved data on page load
+        function checkForSavedData() {
+            const saved = loadFromLocalStorage();
+            if (saved && saved.state && saved.state.displayName) {
+                // Show restore prompt
+                const card = document.querySelector('.identity-card');
+                const existingPrompt = document.getElementById('restorePrompt');
+                if (existingPrompt) existingPrompt.remove();
+
+                const restorePrompt = document.createElement('div');
+                restorePrompt.id = 'restorePrompt';
+                restorePrompt.style.cssText = `
+                    background: rgba(125, 216, 125, 0.1);
+                    border: 1px solid rgba(125, 216, 125, 0.3);
+                    border-radius: 10px;
+                    padding: 15px;
+                    margin-bottom: 20px;
+                    text-align: center;
+                `;
+                restorePrompt.innerHTML = `
+                    <div style="font-size: 0.5rem; color: #7dd87d; margin-bottom: 8px;">
+                        SAVED SIGNATURE FOUND
+                    </div>
+                    <div style="font-size: 0.7rem; color: #e8e4d9; margin-bottom: 5px;">
+                        ${saved.state.displayName}
+                    </div>
+                    <div style="font-size: 0.5rem; color: #c9a227; margin-bottom: 10px;">
+                        ${saved.state.uniqueId}
+                    </div>
+                    <div style="font-size: 0.45rem; color: #5a6577; margin-bottom: 12px;">
+                        Saved: ${new Date(saved.savedAt).toLocaleDateString()}
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <button onclick="restoreSavedSignature(loadFromLocalStorage())" style="
+                            padding: 8px 20px;
+                            background: #7dd87d;
+                            border: none;
+                            border-radius: 15px;
+                            color: #000;
+                            font-family: 'Courier New', monospace;
+                            font-size: 0.5rem;
+                            cursor: pointer;
+                        ">RESTORE</button>
+                        <button onclick="document.getElementById('restorePrompt').remove()" style="
+                            padding: 8px 20px;
+                            background: rgba(100, 100, 100, 0.3);
+                            border: 1px solid rgba(100, 100, 100, 0.3);
+                            border-radius: 15px;
+                            color: #9ba4b8;
+                            font-family: 'Courier New', monospace;
+                            font-size: 0.5rem;
+                            cursor: pointer;
+                        ">START NEW</button>
+                    </div>
+                `;
+                card.insertBefore(restorePrompt, card.firstChild);
+            }
+        }
+
+        // Auto-save after each question
+        const originalUpdateSignature = updateSignature;
+        updateSignature = function(primeId, detected) {
+            originalUpdateSignature(primeId, detected);
+            saveToLocalStorage();
+        };
+
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', checkForSavedData);
+        checkForSavedData(); // Also run immediately in case DOM already loaded
+    </script>
+    <site-footer></site-footer>
+</body>
+</html>

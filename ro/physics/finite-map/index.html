@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Finite Map of Infinity | Epoch Framework | Have Mind Media</title>
+    <meta name="description" content="93,838 JWST JADES galaxies mapped using Epoch Framework coordinates. The map is finite. The void does not exist. Navigate.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/unified-theme.css">
+
+    <style>
+        .hero-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, rgba(0, 255, 255, 0.05) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-section h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #00ffff;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .hero-section .tagline {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #004466, #002233);
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+
+        .cta-primary:hover {
+            background: linear-gradient(135deg, #006688, #004466);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: rgba(0, 40, 60, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            color: #00ffff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-card .label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .figure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .figure-card {
+            background: rgba(10, 10, 20, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .figure-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+        }
+
+        .figure-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .figure-card .caption {
+            padding: 1rem;
+        }
+
+        .figure-card h3 {
+            color: #00ffff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .figure-card p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .constants-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .constants-table th,
+        .constants-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .constants-table th {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .constants-table td:first-child {
+            color: #00ffff;
+        }
+
+        .finding-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(10, 10, 20, 0.9) 100%);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .finding-box h3 {
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .finding-box .highlight {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffff00;
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00ffff;
+            border-color: #00ffff;
+        }
+
+        .signature {
+            text-align: center;
+            padding: 3rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+    <div class="stars"></div>
+    <site-header></site-header>
+
+    <section class="hero-section">
+        <h1>THE FINITE MAP OF INFINITY</h1>
+        <p class="tagline">
+            93,838 galaxies from JWST JADES mapped using Epoch Framework coordinates.
+            Not distances. Scalar positions on a finite map.
+        </p>
+        <a href="../finite-map-explorer.html" class="cta-primary">Launch 3D Explorer</a>
+    </section>
+
+    <main class="content-wide">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value">93,838</div>
+                <div class="label">Total Objects</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">3.07%</div>
+                <div class="label">Map Coverage to Ro</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">s = -14.3</div>
+                <div class="label">Deepest Observation</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">27.57%</div>
+                <div class="label">Projection Factor P</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Framework Constants</h2>
+        <table class="constants-table">
+            <tr>
+                <th>Constant</th>
+                <th>Value</th>
+                <th>Meaning</th>
+            </tr>
+            <tr>
+                <td>kappa</td>
+                <td>2pi/180 = 0.0349</td>
+                <td>The single input - everything derives from this</td>
+            </tr>
+            <tr>
+                <td>alpha</td>
+                <td>1/(2pi*kappa) = 4.5595</td>
+                <td>Scalar transform coefficient</td>
+            </tr>
+            <tr>
+                <td>P</td>
+                <td>sqrt(3)/(2pi) = 0.2757</td>
+                <td>Projection factor (visible/shadow)</td>
+            </tr>
+            <tr>
+                <td>S_RO</td>
+                <td>-466</td>
+                <td>Theoretical Ro boundary</td>
+            </tr>
+            <tr>
+                <td>S_CMB</td>
+                <td>-32</td>
+                <td>CMB position (z = 1089)</td>
+            </tr>
+        </table>
+
+        <h2 class="section-title">The Transform</h2>
+        <p style="font-size: 1.2rem; text-align: center; padding: 2rem; font-family: 'JetBrains Mono', monospace;">
+            <span style="color: #00ffff;">s = -alpha * ln(1 + z)</span>
+        </p>
+        <p style="text-align: center; color: var(--text-dim); max-width: 600px; margin: 0 auto;">
+            Redshift (z) maps to scalar position (s). This is NOT a distance.
+            It's a position on the finite map. The map has boundaries.
+            The void does not exist.
+        </p>
+
+        <div class="finding-box">
+            <h3>KEY FINDING: Angular Spread is CONSTANT</h3>
+            <p>Standard Model predicts angular spread should DECREASE with distance (more distant objects appear smaller).</p>
+            <p style="margin: 1rem 0;">Epoch Framework predicts angular spread is INDEPENDENT of scalar position.</p>
+            <p class="highlight">
+                OBSERVED:<br>
+                s = -3 to 0: RA_std = 0.0498<br>
+                s = -6 to -3: RA_std = 0.0501<br>
+                s = -9 to -6: RA_std = 0.0508<br>
+                s = -12 to -9: RA_std = 0.0511
+            </p>
+            <p style="margin-top: 1rem;">Angular spread is CONSTANT (~0.05 degrees) regardless of scalar depth. This contradicts Standard Model. This confirms Epoch Framework.</p>
+        </div>
+
+        <h2 class="section-title">Analysis Figures</h2>
+        <div class="figure-grid">
+            <div class="figure-card">
+                <a href="01_scalar_distribution.png" target="_blank">
+                    <img src="01_scalar_distribution.png" alt="Scalar Distribution">
+                </a>
+                <div class="caption">
+                    <h3>Scalar Distribution</h3>
+                    <p>Distribution of scalar positions (s) and redshifts (z) across the dataset. Median s = -5.35.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="02_sky_coverage.png" target="_blank">
+                    <img src="02_sky_coverage.png" alt="Sky Coverage">
+                </a>
+                <div class="caption">
+                    <h3>Sky Coverage</h3>
+                    <p>GOODS-S and GOODS-N fields colored by scalar depth. Shows the two deep field observation areas.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="03_cone_view.png" target="_blank">
+                    <img src="03_cone_view.png" alt="Cone View">
+                </a>
+                <div class="caption">
+                    <h3>Cone View</h3>
+                    <p>3D cone view showing angular position vs scalar depth. The observation "cone" into the finite map.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="04_spherical_shell.png" target="_blank">
+                    <img src="04_spherical_shell.png" alt="Spherical Shell">
+                </a>
+                <div class="caption">
+                    <h3>Spherical Shell View</h3>
+                    <p>Objects mapped to unit sphere with radial distance = normalized scalar position.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="05_layer_structure.png" target="_blank">
+                    <img src="05_layer_structure.png" alt="Layer Structure">
+                </a>
+                <div class="caption">
+                    <h3>Layer Structure Analysis</h3>
+                    <p>Layer distribution, cumulative depth, quality vs depth, and observation window vs finite map boundaries.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="06_finite_map_complete.png" target="_blank">
+                    <img src="06_finite_map_complete.png" alt="Complete Finite Map">
+                </a>
+                <div class="caption">
+                    <h3>The Complete Finite Map</h3>
+                    <p>Full 3D visualization with framework constants and statistics. Observer at center, Ro boundary as outer sphere.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="07_z_to_s_transform.png" target="_blank">
+                    <img src="07_z_to_s_transform.png" alt="Z to S Transform">
+                </a>
+                <div class="caption">
+                    <h3>Redshift to Scalar Transform</h3>
+                    <p>The logarithmic relationship between redshift z and scalar position s. Key points marked including CMB.</p>
+                </div>
+            </div>
+
+            <div class="figure-card">
+                <a href="08_validation_summary.png" target="_blank">
+                    <img src="08_validation_summary.png" alt="Validation Summary">
+                </a>
+                <div class="caption">
+                    <h3>Framework Validation Summary</h3>
+                    <p>Density peaks, quality distribution vs P, uncertainty patterns, and overall validation results.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Data Source</h2>
+        <p>
+            <strong>JWST JADES (GOODS-S Deep Photometry v2.0)</strong><br>
+            92,497 photometric redshifts from NIRCam<br>
+            1,341 spectroscopic redshifts from NIRSpec<br>
+            Redshift range: z = 0.01 to 21.99
+        </p>
+
+        <h2 class="section-title">What This Means</h2>
+        <ul style="line-height: 2; font-size: 1.1rem;">
+            <li>We have observed only <strong>3%</strong> of the finite map</li>
+            <li>The CMB is at s = -32, roughly <strong>7%</strong> of the way to Ro</li>
+            <li>Angular spread being constant with depth <strong>contradicts Standard Model</strong></li>
+            <li>The data is consistent with scalar position, <strong>not distance</strong></li>
+            <li>The map is <strong>finite</strong>. The void does not exist.</li>
+        </ul>
+
+        <nav class="nav-links">
+            <a href="../finite-map-explorer.html">3D Interactive Explorer</a>
+            <a href="../index.html">Back to Physics</a>
+            <a href="../../index.html">Home</a>
+        </nav>
+
+        <div class="signature">[1 = -1]</div>
+    </main>
+
+    <site-footer></site-footer>
+
+    <script src="../../js/components/site-header.js" defer></script>
+    <script src="../../js/components/site-footer.js" defer></script>
+</body>
+</html>

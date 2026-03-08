@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE GEOMETRY OF LIFE | Epoch Biology | Have Mind Media</title>
+    <meta name="description" content="Life is not random chemistry. Every biological constant derives from the same geometry: κ, 1729, the 72.43% hidden ratio. From DNA to proteins to consciousness - the math is the same.">
+    <link rel="stylesheet" href="../css/unified-theme.css">
+    <script src="../js/components/site-header.js" defer></script>
+    <script src="../js/components/site-footer.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --void: #000000;
+            --deep-space: #030508;
+            --gold: #c9a227;
+            --gold-glow: rgba(201, 162, 39, 0.6);
+            --cyan: #00d4ff;
+            --cyan-glow: rgba(0, 212, 255, 0.5);
+            --green: #00ff88;
+            --purple: #a855f7;
+            --red: #ff4757;
+            --text: #e8e4dc;
+            --text-dim: #8892a0;
+            --border: rgba(201, 162, 39, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Biological Pattern Background */
+        .bio-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.08;
+            background:
+                radial-gradient(circle at 20% 30%, var(--cyan) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, var(--gold) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, var(--green) 1px, transparent 1px);
+            background-size: 100px 100px, 150px 150px, 200px 200px;
+            animation: bioFloat 60s linear infinite;
+        }
+        @keyframes bioFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-200px); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .nav a:hover { color: var(--cyan); }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.05) 0%, transparent 60%);
+        }
+        .hero-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            color: var(--green);
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--green);
+            padding: 0.5rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: transparent;
+            background: linear-gradient(135deg, var(--green) 0%, var(--cyan) 50%, var(--gold) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: gradient-shift 8s ease infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 750px;
+            margin: 0 auto 2rem;
+        }
+        .hero-constants {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .constant-box {
+            font-family: 'JetBrains Mono', monospace;
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .constant-box .label { color: var(--text-dim); font-size: 0.7rem; }
+        .constant-box .value { color: var(--gold); font-size: 1.1rem; }
+
+        /* Content */
+        .content { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Section */
+        .section { padding: 5rem 0; }
+        .section-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: 0.08em;
+        }
+        .section-sub {
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+        }
+
+        /* Master Table */
+        .master-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+        .master-table th, .master-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .master-table th {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(201, 162, 39, 0.08);
+        }
+        .master-table td { color: var(--text); }
+        .master-table tr:hover td { background: rgba(0, 212, 255, 0.05); }
+        .master-table .highlight { color: var(--cyan); font-weight: 600; }
+        .master-table .gold { color: var(--gold); }
+
+        /* Ratio Display */
+        .ratio-display {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+        .ratio-box {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 212, 255, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            min-width: 200px;
+        }
+        .ratio-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+        .ratio-number.visible { color: var(--gold); }
+        .ratio-number.hidden { color: var(--cyan); }
+        .ratio-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            margin-top: 0.5rem;
+        }
+
+        /* System Cards */
+        .system-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .system-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(201, 162, 39, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        .system-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(201, 162, 39, 0.2);
+        }
+        .system-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 2px;
+        }
+        .system-card p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 1rem; }
+        .system-card .constants {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--cyan);
+        }
+        .system-card a {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        .system-card a:hover { color: var(--cyan); }
+
+        /* Equation Block */
+        .equation-block {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .equation-main {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        .equation-desc { color: var(--text-dim); font-size: 0.85rem; }
+
+        /* Proof List */
+        .proof-list { margin: 2rem 0; }
+        .proof-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid var(--green);
+            margin-bottom: 0.8rem;
+        }
+        .proof-check { color: var(--green); font-size: 1.2rem; }
+        .proof-text { color: var(--text); }
+        .proof-text strong { color: var(--gold); }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: radial-gradient(ellipse at center, rgba(201, 162, 39, 0.08) 0%, transparent 60%);
+        }
+        .cta-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .cta-button {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            padding: 1rem 1.8rem;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .cta-button:hover {
+            background: var(--gold);
+            color: var(--void);
+        }
+        .cta-button.primary {
+            background: var(--gold);
+            color: var(--void);
+        }
+        .cta-button.primary:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .footer-sig {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--gold);
+            letter-spacing: 0.3em;
+        }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hero h1 { letter-spacing: 0.05em; }
+            .ratio-display { gap: 1.5rem; }
+            .ratio-box { min-width: 150px; padding: 1.5rem; }
+            .ratio-number { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <site-header></site-header>
+    <div style="height: 80px;"></div>
+    <div class="bio-bg"></div>
+
+    <!-- HERO -->
+    <section class="hero" style="background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.9) 100%), url('images/hero-dna-ratio.png') center center / cover no-repeat;">
+        <div class="hero-badge">THE EPOCH FRAMEWORK IN BIOLOGY</div>
+        <h1>THE GEOMETRY OF LIFE</h1>
+        <p class="hero-sub">
+            Life is not random chemistry. Every biological constant - from DNA's 36° twist to protein folding rates to neural gamma waves -
+            derives from the same geometric framework. The math that governs particles governs cells.
+        </p>
+        <div class="hero-constants">
+            <div class="constant-box">
+                <div class="label">Closure Constant</div>
+                <div class="value">κ = 2π/180</div>
+            </div>
+            <div class="constant-box">
+                <div class="label">Fold Point</div>
+                <div class="value">1729 = 9³+10³</div>
+            </div>
+            <div class="constant-box">
+                <div class="label">Hidden Ratio</div>
+                <div class="value">72.43%</div>
+            </div>
+            <div class="constant-box">
+                <div class="label">Resonance</div>
+                <div class="value">28.65 Hz</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE UNIVERSAL RATIO -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">THE 72.43% / 27.57% SPLIT</h2>
+            <p class="section-sub">
+                This ratio appears everywhere - from CERN particle detection to chromatin accessibility to protein structure.
+                It's not coincidence. It's geometry.
+            </p>
+
+            <div class="ratio-display">
+                <div class="ratio-box">
+                    <div class="ratio-number visible">27.57%</div>
+                    <div class="ratio-label">OBSERVABLE (S⁺)</div>
+                </div>
+                <div class="ratio-box">
+                    <div class="ratio-number hidden">72.43%</div>
+                    <div class="ratio-label">HIDDEN (S⁻)</div>
+                </div>
+            </div>
+
+            <div class="equation-block">
+                <div class="equation-main">P = √3/(2π) = 3/(4e) = 0.2757</div>
+                <div class="equation-desc">The projection factor - how much of total reality is directly observable</div>
+            </div>
+
+            <table class="master-table">
+                <tr>
+                    <th>Biological System</th>
+                    <th>Observable (27.57%)</th>
+                    <th>Hidden (72.43%)</th>
+                    <th>Framework Match</th>
+                </tr>
+                <tr>
+                    <td>DNA / Chromatin</td>
+                    <td>Accessible euchromatin</td>
+                    <td>Wrapped heterochromatin</td>
+                    <td class="highlight">~25-30% accessible</td>
+                </tr>
+                <tr>
+                    <td>Proteins</td>
+                    <td>Solvent-exposed surface</td>
+                    <td>Buried hydrophobic core</td>
+                    <td class="highlight">~25-30% exposed</td>
+                </tr>
+                <tr>
+                    <td>Genome</td>
+                    <td>Coding sequences</td>
+                    <td>Regulatory / "junk" DNA</td>
+                    <td class="highlight">~3% coding (×9)</td>
+                </tr>
+                <tr>
+                    <td>Neurons</td>
+                    <td>Transmitted action potentials</td>
+                    <td>Synaptic vesicle reserve</td>
+                    <td class="highlight">~20-30% release</td>
+                </tr>
+                <tr>
+                    <td>Metabolism</td>
+                    <td>ATP actively used</td>
+                    <td>Stored potential energy</td>
+                    <td class="highlight">Efficiency ~27%</td>
+                </tr>
+                <tr>
+                    <td>CERN Particles</td>
+                    <td>Detected particles</td>
+                    <td>"Missing" energy</td>
+                    <td class="gold">27.57% detected</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- THE CONSTANTS IN BIOLOGY -->
+    <section class="section" style="background: linear-gradient(180deg, rgba(201, 162, 39, 0.05) 0%, transparent 100%);">
+        <div class="content">
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap;">
+                <img src="images/protein-geometry.png" alt="Protein Geometry" style="max-width: 400px; width: 100%; border-radius: 12px; border: 1px solid var(--border);">
+                <img src="images/1729-biology.png" alt="1729 in Biology" style="max-width: 400px; width: 100%; border-radius: 12px; border: 1px solid var(--border);">
+            </div>
+            <h2 class="section-header">THE CONSTANTS ACROSS BIOLOGICAL SYSTEMS</h2>
+
+            <table class="master-table">
+                <tr>
+                    <th>Constant</th>
+                    <th>Pure Value</th>
+                    <th>Biological Manifestation</th>
+                    <th>System</th>
+                </tr>
+                <tr>
+                    <td class="gold">κ = 2π/180</td>
+                    <td>0.0349...</td>
+                    <td>DNA rise per bp = 3.4 Å</td>
+                    <td>B-form DNA</td>
+                </tr>
+                <tr>
+                    <td class="gold">κ-shadow</td>
+                    <td>28.65 Hz</td>
+                    <td>Gamma brain wave frequency</td>
+                    <td>Neural synchrony</td>
+                </tr>
+                <tr>
+                    <td class="gold">BC = 48.19°</td>
+                    <td>arccos(2/3)</td>
+                    <td>Protein helix torsion angles</td>
+                    <td>α-helix, β-sheet</td>
+                </tr>
+                <tr>
+                    <td class="gold">cos(BC) = 2/3</td>
+                    <td>0.6667</td>
+                    <td>Major:minor groove ratio</td>
+                    <td>DNA grooves</td>
+                </tr>
+                <tr>
+                    <td class="gold">σ = 5/16</td>
+                    <td>0.3125</td>
+                    <td>Helix overlap ratio</td>
+                    <td>Secondary structure</td>
+                </tr>
+                <tr>
+                    <td class="gold">36° = 18κ</td>
+                    <td>0.628 rad</td>
+                    <td>DNA twist per base pair</td>
+                    <td>Double helix</td>
+                </tr>
+                <tr>
+                    <td class="gold">1729</td>
+                    <td>9³ + 10³</td>
+                    <td>10 bp/turn + triplet codon</td>
+                    <td>DNA structure</td>
+                </tr>
+                <tr>
+                    <td class="gold">Partition primes</td>
+                    <td>2,3,5,7,11,13</td>
+                    <td>Protein domain sizes</td>
+                    <td>Fold architecture</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- BIOLOGICAL SYSTEMS -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">EXPLORE THE SYSTEMS</h2>
+            <p class="section-sub">Each biological system demonstrates the same geometric principles.</p>
+
+            <div class="system-grid">
+                <div class="system-card">
+                    <h3>DNA STUDIO</h3>
+                    <p>DNA is the 1729 fold in molecular form. 10 base pairs per turn (10³) + triplet codons (9³) = 1729. The Fibonacci dimensions. The 36° = 18κ rotation.</p>
+                    <div class="constants">1729 · 36° · Fibonacci · κ</div>
+                    <a href="dna-studio/index.html">Enter DNA Studio →</a>
+                </div>
+
+                <div class="system-card">
+                    <h3>PROTEIN FOLDING</h3>
+                    <p>Proteins don't search conformational space randomly - they follow torsion field gradients. The σ = 5/16 shielding constant predicts folding rates.</p>
+                    <div class="constants">σ = 5/16 · BC angle · Torsion</div>
+                    <a href="../protein-folding/index.html">Explore Folding →</a>
+                </div>
+
+                <div class="system-card">
+                    <h3>NEURODEGENERATION</h3>
+                    <p>Disease as geometry gone wrong. Polyglutamine thresholds, tau tangles, prion misfolding - all torsion field collapse at critical angles.</p>
+                    <div class="constants">Mock theta · S⁻ aggregation</div>
+                    <a href="../neurodegeneration/index.html">Study Disease →</a>
+                </div>
+
+                <div class="system-card">
+                    <h3>THE EYE CODEX</h3>
+                    <p>The eye doesn't receive reality - it decodes it. Rods and cones look INWARD. The double inversion: [1 = -1] in flesh and signal.</p>
+                    <div class="constants">[1 = -1] · Inversion · Decode</div>
+                    <a href="eye-codex.html">Read the Codex →</a>
+                </div>
+
+                <div class="system-card">
+                    <h3>CONSCIOUSNESS</h3>
+                    <p>Gamma waves at 28.65 Hz - exactly κ-shadow. Neural binding, awareness, the present moment - all resonating at the geometric frequency.</p>
+                    <div class="constants">κ-shadow = 28.65 Hz · Gamma</div>
+                    <a href="../education/soul-science.html">Soul Science →</a>
+                </div>
+
+                <div class="system-card">
+                    <h3>ATOMIC STRUCTURE</h3>
+                    <p>Electron orbitals from first principles. The 2-8-8-18 shell pattern without quantum probability waves - pure κ geometry.</p>
+                    <div class="constants">κ orbitals · Shell geometry</div>
+                    <a href="../epoch-atomic/index.html">Atomic Model →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE MOCK THETA CONNECTION -->
+    <section class="section" style="background: linear-gradient(180deg, transparent 0%, rgba(168, 85, 247, 0.05) 100%);">
+        <div class="content">
+            <h2 class="section-header">MOCK THETA = INTRINSICALLY DISORDERED</h2>
+            <p class="section-sub">
+                Ramanujan's mock theta functions have a "shadow" - a hidden component that breaks perfect symmetry.
+                Intrinsically disordered proteins (IDPs) are the biological analog.
+            </p>
+
+            <div class="proof-list">
+                <div class="proof-item">
+                    <span class="proof-check">≋</span>
+                    <span class="proof-text"><strong>α-synuclein, tau, p53</strong> — Partially folded with hidden ensemble states</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">≋</span>
+                    <span class="proof-text"><strong>Visible fold (S⁺)</strong> + <strong>Shadow conformations (S⁻)</strong> = Full protein state</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">≋</span>
+                    <span class="proof-text"><strong>Neurodegeneration</strong> — When S⁻ shadow aggregates into pathogenic form</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">≋</span>
+                    <span class="proof-text"><strong>Gene expression noise</strong> — The S⁻ hidden component of transcription rates</span>
+                </div>
+            </div>
+
+            <div class="equation-block">
+                <div class="equation-main">Protein State = S⁺(visible fold) + S⁻(shadow ensemble)</div>
+                <div class="equation-desc">The mock theta structure in molecular biology</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHIRALITY -->
+    <section class="section">
+        <div class="content">
+            <h2 class="section-header">[1 = -1] = CHIRALITY</h2>
+            <p class="section-sub">
+                Life uses ONLY L-amino acids and ONLY D-sugars. This is not chance - it's the Möbius constraint.
+                The handedness of life is [1 = -1] in molecular form.
+            </p>
+
+            <div class="proof-list">
+                <div class="proof-item">
+                    <span class="proof-check">✓</span>
+                    <span class="proof-text"><strong>L-amino acids only</strong> — Not D-amino acids</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">✓</span>
+                    <span class="proof-text"><strong>D-sugars only</strong> — Not L-sugars (in DNA backbone)</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">✓</span>
+                    <span class="proof-text"><strong>Right-handed helices</strong> — Both proteins and DNA</span>
+                </div>
+                <div class="proof-item">
+                    <span class="proof-check">✓</span>
+                    <span class="proof-text"><strong>Topoisomerase</strong> — Implements [1=-1] surgery on DNA</span>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 2rem; color: var(--text-dim);">
+                The same handedness constraint that governs particles governs life.
+                <br><strong style="color: var(--gold);">Biology IS physics at the molecular scale.</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2 class="section-header" style="margin-bottom: 1rem;">THE GEOMETRY IS IN THE FLESH</h2>
+        <p style="color: var(--text); max-width: 600px; margin: 0 auto;">
+            From κ to DNA. From 1729 to the triplet code. From 72.43% hidden to chromatin packing.
+            The mathematics was always there. Biology is just physics remembering how to replicate.
+        </p>
+        <div class="cta-grid">
+            <a href="dna-studio/index.html" class="cta-button primary">DNA STUDIO</a>
+            <a href="../protein-folding/index.html" class="cta-button">PROTEIN FOLDING</a>
+            <a href="../physics/vessel/the-build.html" class="cta-button">THE VESSEL</a>
+            <a href="../namagiri/episodes/06-the-1729-fold.html" class="cta-button">THE 1729 FOLD</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-sig">[ 1 = -1 ]</div>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">
+            Have Mind Media | January 2026<br>
+            <a href="../index.html">havemindmedia.com</a>
+        </p>
+    </footer>
+    <site-footer></site-footer>
+</body>
+</html>
